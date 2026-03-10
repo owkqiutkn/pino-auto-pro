@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ContactMap from "@/components/ContactMap";
+import InventoryLineup from "@/components/InventoryLineup";
 
 const heroImage = "/new-landing/hero.jpg";
 const financingImage = "/new-landing/financing.jpg";
@@ -7,13 +8,6 @@ const missionImage = "/new-landing/mission.jpg";
 const aboutImage = "/new-landing/about.jpg";
 const aboutBackgroundImage = "https://images.pexels.com/photos/33271364/pexels-photo-33271364.jpeg";
 const mapImage = "/new-landing/map.jpg";
-
-const inventoryCards = [
-    { title: "Audi A5 S-Line", year: "2019", price: "$32,900", km: "64,000 km", image: "/new-landing/hero.jpg" },
-    { title: "BMW 430i xDrive", year: "2020", price: "$39,500", km: "51,200 km", image: "/new-landing/financing.jpg" },
-    { title: "Mercedes C300", year: "2021", price: "$42,900", km: "38,000 km", image: "/new-landing/mission.jpg" },
-    { title: "Lexus IS 300", year: "2022", price: "$44,200", km: "22,600 km", image: "/new-landing/about.jpg" },
-];
 
 const categoryCards = [
     { name: "Sedan", image: "/new-landing/category-sedan.jpg" },
@@ -35,7 +29,7 @@ const featureCards = [
         description: "Count on our finance team for hassle-free savings!",
         image: "/new-landing/feature-finance.jpg",
         icon: "$",
-        iconImage: "https://img.icons8.com/?id=13025&format=png&size=36",
+        iconImage: "https://img.icons8.com/?id=123072&format=png&size=36",
     },
     {
         title: "Contact Us",
@@ -144,7 +138,7 @@ export default function NewLandingPage() {
                         {featureCards.map((item) => (
                             <div
                                 key={item.title}
-                                className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-white/20 bg-[#020617] shadow-[0_22px_55px_rgba(0,0,0,0.7)]"
+                                className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-white/20 bg-[#020617] shadow-[0_22px_55px_rgba(0,0,0,0.7)] transition-transform duration-300 ease-out hover:-translate-y-2"
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
@@ -152,12 +146,12 @@ export default function NewLandingPage() {
                                     alt={item.title}
                                     className="absolute inset-0 h-full w-full object-cover scale-110 opacity-60"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-br from-[#1d4ed8]/80 via-[#1e40af]/90 to-[#1d4ed8]/85 mix-blend-multiply" />
+                                <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/90 to-black/95 mix-blend-multiply" />
                                 <div className="relative z-10 flex h-full w-full flex-col justify-center p-5">
-                                    <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-[11px] font-bold">
+                                    <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-[11px] font-black text-blue-600">
                                         {"iconImage" in item && item.iconImage ? (
                                             /* eslint-disable-next-line @next/next/no-img-element */
-                                            <img src={item.iconImage} alt="" className="h-5 w-5 brightness-0 invert" aria-hidden />
+                                            <img src={item.iconImage} alt="" className="h-5 w-5 scale-110 [filter:brightness(0)_saturate(100%)_invert(27%)_sepia(51%)_saturate(2878%)_hue-rotate(217deg)_contrast(1.15)]" aria-hidden />
                                         ) : (
                                             item.icon
                                         )}
@@ -175,40 +169,12 @@ export default function NewLandingPage() {
                 </div>
             </section>
 
-            <section id="inventory" className="bg-[#f2f2f3] py-10 text-black">
-                <div className="mx-auto max-w-6xl px-4">
-                        <div className="mb-6 flex items-center justify-between">
-                        <h2 className="text-lg font-black uppercase">Inventory Lineup</h2>
-                        <div className="flex gap-2 text-[10px] font-bold uppercase">
-                            <span className="rounded-sm bg-[#1d4ed8] px-2 py-1 text-white">Featured</span>
-                            <span className="rounded-sm bg-[#1f1f25] px-2 py-1 text-white">New Arrivals</span>
-                            <Link href="/inventory" className="rounded-sm border border-[#1d4ed8] px-2 py-1 text-[#1d4ed8]">View All</Link>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-                        {inventoryCards.map((car) => (
-                            <Link key={car.title} href="/inventory" className="overflow-hidden rounded-sm border bg-white shadow-sm">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={car.image} alt={car.title} className="h-32 w-full object-cover" />
-                                <div className="p-3 text-[11px]">
-                                    <h3 className="text-xs font-bold uppercase">{car.title}</h3>
-                                    <p className="mt-1 text-[10px] text-gray-600">{car.year} • {car.km}</p>
-                                    <p className="mt-2 text-sm font-black text-[#1d4ed8]">{car.price}</p>
-                                    <div className="mt-2 flex items-center justify-between text-[10px]">
-                                        <span className="rounded bg-gray-100 px-2 py-1">Certified</span>
-                                        <span className="font-bold text-[#1f1f25]">View Details</span>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            <InventoryLineup />
 
             <section id="financing" className="relative overflow-hidden py-16">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={financingImage} alt="Financing background" className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-[#0f172a]/90" />
+                <div className="absolute inset-0 bg-black/90" />
                 <div className="relative mx-auto max-w-3xl px-4 text-center">
                     <h2 className="text-3xl font-black">Apply For Financing</h2>
                     <p className="mt-2 text-xs text-white/90">What Type of Vehicle Do You Want?</p>

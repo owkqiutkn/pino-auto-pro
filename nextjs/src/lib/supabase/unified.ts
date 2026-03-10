@@ -123,6 +123,27 @@ export class SassClient {
         return query;
     }
 
+    /** Available cars marked as featured, newest first. */
+    async getFeaturedCars(limit: number = 8) {
+        return this.client
+            .from('cars')
+            .select('*')
+            .eq('status', 'available')
+            .eq('featured', true)
+            .order('created_at', { ascending: false })
+            .limit(limit);
+    }
+
+    /** Available cars ordered by most recently added (created_at desc). */
+    async getNewArrivalsCars(limit: number = 8) {
+        return this.client
+            .from('cars')
+            .select('*')
+            .eq('status', 'available')
+            .order('created_at', { ascending: false })
+            .limit(limit);
+    }
+
     async getCarBySlug(slug: string) {
         return this.client
             .from('cars')
