@@ -59,7 +59,7 @@ export default function NewLandingPage() {
                 <div className="relative z-10 mx-auto max-w-6xl px-4">
                     <header className="flex items-center justify-between py-1 md:py-2 text-[11px]">
                         <div className="flex items-center gap-3">
-                            <div className="text-sm font-black tracking-wider">M&L Autos</div>
+                            <div className="text-sm font-black tracking-wider">Pino Auto Pro</div>
                         </div>
                         <nav className="hidden md:flex items-center gap-5 font-semibold uppercase tracking-wide text-white/85">
                             <a href="#inventory" className="hover:text-[#1d4ed8]">Inventory</a>
@@ -138,7 +138,7 @@ export default function NewLandingPage() {
                         {featureCards.map((item) => (
                             <div
                                 key={item.title}
-                                className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-white/20 bg-[#020617] shadow-[0_22px_55px_rgba(0,0,0,0.7)] transition-transform duration-300 ease-out hover:-translate-y-2"
+                                className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-blue-400/30 bg-[#020617] shadow-[0_22px_55px_rgba(0,0,0,0.7)] transition-transform duration-300 ease-out hover:-translate-y-2"
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
@@ -197,7 +197,7 @@ export default function NewLandingPage() {
                     <div className="rounded-sm border p-6">
                         <h3 className="text-xl font-black">Our Mission</h3>
                         <p className="mt-3 text-sm text-gray-700">
-                            At M&amp;L Autos, our mission is to redefine automotive service around five core principles.
+                            At Pino Auto Pro, our mission is to redefine automotive service around five core principles.
                         </p>
                         <ul className="mt-4 list-disc space-y-2 pl-5 text-xs text-gray-700">
                             <li>
@@ -233,9 +233,9 @@ export default function NewLandingPage() {
                 <div className="absolute inset-0 bg-black/70" />
                 <div className="relative mx-auto max-w-6xl px-4">
                     <div className="max-w-xl bg-black/60 p-6 md:p-7">
-                        <h3 className="text-3xl font-black">About M&amp;L Autos</h3>
+                        <h3 className="text-3xl font-black">About Pino Auto Pro</h3>
                         <p className="mt-3 text-sm text-white/85">
-                            M&amp;L Autos is your trusted pre-owned vehicle destination in Mississauga, making every step of buying a car clear, simple, and
+                            Pino Auto Pro is your trusted pre-owned vehicle destination in Mississauga, making every step of buying a car clear, simple, and
                             stress-free. We offer a carefully selected lineup of quality used cars, trucks, and SUVs, each thoroughly inspected for reliability
                             and real value.
                         </p>
@@ -245,7 +245,7 @@ export default function NewLandingPage() {
                             drive away confident in your decision.
                         </p>
                         <p className="mt-3 text-sm text-white/80">
-                            Choose M&amp;L Autos for quality vehicles, honest service, and a smooth buying experience in Mississauga and beyond.
+                            Choose Pino Auto Pro for quality vehicles, honest service, and a smooth buying experience in Mississauga and beyond.
                         </p>
                         <div className="mt-5 flex flex-wrap gap-3 text-xs font-bold">
                             <a href="#about" className="rounded bg-white px-4 py-2 text-black uppercase tracking-wide">
@@ -313,23 +313,27 @@ export default function NewLandingPage() {
                     </div>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                         {[
-                            "Smooth purchase process and very fair pricing. Team was responsive and transparent from day one.",
-                            "Fast approval and excellent support. The car was exactly as described and in great condition.",
-                            "Great after-sale support and clean paperwork. I recommend this dealership to friends.",
-                        ].map((text, index) => (
+                            { name: "James M.", text: "Smooth purchase process and very fair pricing. Team was responsive and transparent from day one.", role: "Buyer" as const },
+                            { name: "Sarah K.", text: "Fast approval and excellent support. The car was exactly as described and in great condition.", role: "Buyer" as const },
+                            { name: "Mike T.", text: "Great after-sale support and clean paperwork. I recommend this dealership to friends.", role: "Seller" as const },
+                        ].map((review, index) => (
                             <div
                                 key={index}
-                                className="group rounded-xl border border-white/10 bg-white/5 p-0 shadow-[0_18px_60px_rgba(0,0,0,0.65)] backdrop-blur-sm transition-transform transition-shadow duration-300 hover:-translate-y-1.5 hover:border-[#4338ca]/70 hover:shadow-[0_28px_80px_rgba(0,0,0,0.9)]"
+                                className="group rounded-xl border border-[#1d4ed8]/30 bg-[#1e3a5f]/25 p-0 shadow-[0_18px_60px_rgba(0,0,0,0.65),0_0_40px_rgba(29,78,216,0.08)] backdrop-blur-sm transition-transform transition-shadow duration-300 hover:-translate-y-1.5 hover:border-[#4338ca]/70 hover:shadow-[0_28px_80px_rgba(0,0,0,0.9),0_0_50px_rgba(67,56,202,0.12)]"
                             >
-                                <div className="flex items-center justify-between bg-gradient-to-r from-[#1d4ed8] to-[#1e40af] px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-white">
-                                    <span>{index === 2 ? "Customer Story" : "Customer Review"}</span>
-                                    <span>{String(index + 1).padStart(2, "0")}</span>
-                                </div>
-                                <div className="p-4">
-                                    <p className="text-sm leading-relaxed text-white/80">{text}</p>
-                                    <p className="mt-3 text-[11px] font-semibold uppercase tracking-wide text-white/60">
-                                        {index === 2 ? "Verified Seller" : "Verified Customer"}
-                                    </p>
+                                <div className="flex items-start gap-3 p-4">
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1d4ed8]/25 ring-2 ring-[#1d4ed8]/40">
+                                        <span className="text-lg font-bold text-white/80">
+                                            {review.name.charAt(0)}
+                                        </span>
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                        <p className="text-sm font-semibold text-white">{review.name}</p>
+                                        <p className="mt-1 text-[11px] font-medium uppercase tracking-wide text-white/60">
+                                            {review.role}
+                                        </p>
+                                        <p className="mt-3 text-sm leading-relaxed text-white/80">{review.text}</p>
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -413,8 +417,8 @@ export default function NewLandingPage() {
                     </div>
                 </div>
                 <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60">
-                    <div>Powered by M&L Autos.</div>
-                    <div>Copyright 2026 M&L Autos.</div>
+                    <div>Powered by Pino Auto Pro.</div>
+                    <div>Copyright 2026 Pino Auto Pro.</div>
                 </div>
             </footer>
         </div>
