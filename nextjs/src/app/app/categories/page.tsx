@@ -5,7 +5,7 @@ import { Loader2, Plus, Trash2 } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/types";
 
-type BodyType = Database["public"]["Tables"]["body_types"]["Row"];
+type Category = Database["public"]["Tables"]["categories"]["Row"];
 
 function getErrorMessage(error: unknown, fallback: string) {
     if (error instanceof Error && error.message) {
@@ -17,32 +17,32 @@ function getErrorMessage(error: unknown, fallback: string) {
     return fallback;
 }
 
-export default function BodyTypesPage() {
-    const [bodyTypes, setBodyTypes] = useState<BodyType[]>([]);
+export default function CategoriesPage() {
+    const [categories, setCategories] = useState<Category[]>([]);
     const [name, setName] = useState("");
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
 
-    const loadBodyTypes = useCallback(async () => {
+    const loadCategories = useCallback(async () => {
         try {
             setLoading(true);
             const client = await createSPASassClient();
-            const { data, error: bodyTypesError } = await client.getBodyTypes();
-            if (bodyTypesError) throw bodyTypesError;
-            setBodyTypes(data || []);
+            const { data, error: categoriesError } = await client.getCategories();
+            if (categoriesError) throw categoriesError;
+            setCategories(data || []);
             setError("");
         } catch (err) {
             console.error(err);
-            setError(getErrorMessage(err, "Failed to load body types."));
+            setError(getErrorMessage(err, "Failed to load categories."));
         } finally {
             setLoading(false);
         }
     }, []);
 
     useEffect(() => {
-        loadBodyTypes();
-    }, [loadBodyTypes]);
+        loadCategories();
+    }, [loadCategories]);
 
     const handleCreate = async (event: FormEvent) => {
         event.preventDefault();
@@ -51,29 +51,29 @@ export default function BodyTypesPage() {
             setSaving(true);
             setError("");
             const client = await createSPASassClient();
-            const { error: createError } = await client.createBodyType(name.trim());
+            const { error: createError } = await client.createCategory(name.trim());
             if (createError) throw createError;
             setName("");
-            await loadBodyTypes();
+            await loadCategories();
         } catch (err) {
             console.error(err);
-            setError(getErrorMessage(err, "Failed to create body type."));
+            setError(getErrorMessage(err, "Failed to create category."));
         } finally {
             setSaving(false);
         }
     };
 
     const handleDelete = async (id: string) => {
-        if (!window.confirm("Delete this body type?")) return;
+        if (!window.confirm("Delete this category?")) return;
         try {
             setError("");
             const client = await createSPASassClient();
-            const { error: deleteError } = await client.deleteBodyType(id);
+            const { error: deleteError } = await client.deleteCategory(id);
             if (deleteError) throw deleteError;
-            await loadBodyTypes();
+            await loadCategories();
         } catch (err) {
             console.error(err);
-            setError(getErrorMessage(err, "Failed to delete body type."));
+            setError(getErrorMessage(err, "Failed to delete category."));
         }
     };
 
@@ -87,14 +87,14 @@ export default function BodyTypesPage() {
 
     return (
         <div className="space-y-4 max-w-3xl">
-            <h1 className="text-2xl font-semibold">Body Types</h1>
+            <h1 className="text-2xl font-semibold">Categories</h1>
 
             <form onSubmit={handleCreate} className="bg-white border rounded-lg p-4 flex gap-2">
                 <input
                     value={name}
                     onChange={(event) => setName(event.target.value)}
                     required
-                    placeholder="Body type name"
+                    placeholder="Category name"
                     className="flex-1 border rounded-md px-3 py-2"
                 />
                 <button
@@ -119,13 +119,13 @@ export default function BodyTypesPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {bodyTypes.map((bodyType) => (
-                            <tr key={bodyType.id} className="border-t">
-                                <td className="p-3">{bodyType.name}</td>
-                                <td className="p-3">{new Date(bodyType.created_at).toLocaleDateString()}</td>
+                        {categories.map((category) => (
+                            <tr key={category.id} className="border-t">
+                                <td className="p-3">{category.name}</td>
+                                <td className="p-3">{new Date(category.created_at).toLocaleDateString()}</td>
                                 <td className="p-3">
                                     <button
-                                        onClick={() => handleDelete(bodyType.id)}
+                                        onClick={() => handleDelete(category.id)}
                                         className="text-red-600 hover:text-red-700 inline-flex items-center"
                                     >
                                         <Trash2 className="w-4 h-4 mr-1" />
@@ -134,10 +134,10 @@ export default function BodyTypesPage() {
                                 </td>
                             </tr>
                         ))}
-                        {bodyTypes.length === 0 ? (
+                        {categories.length === 0 ? (
                             <tr>
                                 <td className="p-3 text-gray-500" colSpan={3}>
-                                    No body types yet.
+                                    No categories yet.
                                 </td>
                             </tr>
                         ) : null}

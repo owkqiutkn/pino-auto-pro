@@ -8,7 +8,7 @@ type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
 interface InventoryPageProps {
     searchParams: Promise<{
         brand?: string;
-        body_type?: string;
+        category?: string;
         model?: string;
         year?: string;
         km?: string;
@@ -45,7 +45,7 @@ function PriceDisplay({ car }: { car: Car }) {
 export default async function InventoryPage({ searchParams }: InventoryPageProps) {
     const params = await searchParams;
     const brand = params.brand?.trim() || undefined;
-    const bodyType = params.body_type?.trim() || undefined;
+    const category = params.category?.trim() || undefined;
     const model = params.model?.trim() || undefined;
     const year = toNumber(params.year);
     const kmMax = toNumber(params.km);
@@ -54,7 +54,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
     const client = await createSSRSassClient();
     const { data: cars, error } = await client.getAvailableCars({
         brand,
-        bodyType,
+        category,
         model,
         year,
         kmMax,

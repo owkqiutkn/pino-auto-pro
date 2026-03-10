@@ -39,7 +39,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      body_types: {
+      categories: {
         Row: {
           created_at: string
           id: string
@@ -142,10 +142,11 @@ export type Database = {
       cars: {
         Row: {
           brand: string
-          body_type: string | null
+          category: string | null
           created_at: string
           description: string | null
           discounted_price: number | null
+          featured: boolean
           id: string
           km: number
           model: string
@@ -158,10 +159,11 @@ export type Database = {
         }
         Insert: {
           brand: string
-          body_type?: string | null
+          category?: string | null
           created_at?: string
           description?: string | null
           discounted_price?: number | null
+          featured?: boolean
           id?: string
           km: number
           model: string
@@ -174,10 +176,11 @@ export type Database = {
         }
         Update: {
           brand?: string
-          body_type?: string | null
+          category?: string | null
           created_at?: string
           description?: string | null
           discounted_price?: number | null
+          featured?: boolean
           id?: string
           km?: number
           model?: string

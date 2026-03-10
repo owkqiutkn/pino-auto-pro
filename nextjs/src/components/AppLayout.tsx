@@ -48,7 +48,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         { name: 'Homepage', href: '/app', icon: Home },
         { name: 'Cars', href: '/app/cars', icon: CarFront },
         { name: 'Brands', href: '/app/brands', icon: Tags },
-        { name: 'Body Types', href: '/app/body-types', icon: Shapes },
+        { name: 'Categories', href: '/app/categories', icon: Shapes },
         { name: 'Brand Models', href: '/app/brand-models', icon: ListTree },
         { name: 'User Settings', href: '/app/user-settings', icon: User },
     ];

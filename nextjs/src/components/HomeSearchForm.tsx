@@ -14,12 +14,12 @@ type BrandModelItem = {
 };
 
 interface HomeSearchFormProps {
-    bodyTypes: OptionItem[];
+    categories: OptionItem[];
     brands: OptionItem[];
     brandModels: BrandModelItem[];
 }
 
-export default function HomeSearchForm({ bodyTypes, brands, brandModels }: HomeSearchFormProps) {
+export default function HomeSearchForm({ categories, brands, brandModels }: HomeSearchFormProps) {
     const [brand, setBrand] = useState("");
     const [model, setModel] = useState("");
 
@@ -54,11 +54,11 @@ export default function HomeSearchForm({ bodyTypes, brands, brandModels }: HomeS
                 ))}
             </select>
             <select
-                name="body_type"
+                name="category"
                 className="w-full bg-[#f8f5f5] border-none rounded-lg h-12 px-4 focus:ring-2 focus:ring-[#f20d0d]/50 appearance-none"
             >
-                <option value="">All Body Types</option>
-                {bodyTypes.map((item) => (
+                <option value="">All Categories</option>
+                {categories.map((item) => (
                     <option key={item.id} value={item.name}>
                         {item.name}
                     </option>

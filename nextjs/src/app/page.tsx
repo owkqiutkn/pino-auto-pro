@@ -5,7 +5,7 @@ import HomeSearchForm from "@/components/HomeSearchForm";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
-type BodyType = Database["public"]["Tables"]["body_types"]["Row"];
+type Category = Database["public"]["Tables"]["categories"]["Row"];
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
 type BrandModel = Database["public"]["Tables"]["brand_models"]["Row"];
 
@@ -36,11 +36,11 @@ export default async function Home() {
     const client = await createSSRSassClient();
 
     const { data: cars } = await client.getAvailableCars();
-    const { data: bodyTypes } = await client.getBodyTypes();
+    const { data: categories } = await client.getCategories();
     const { data: brands } = await client.getBrands();
     const { data: brandModels } = await client.getBrandModels();
     const featuredCars = ((cars ?? []) as Car[]).slice(0, 6);
-    const bodyTypesList = (bodyTypes ?? []) as BodyType[];
+    const categoriesList = (categories ?? []) as Category[];
     const brandsList = (brands ?? []) as Brand[];
     const brandModelsList = (brandModels ?? []) as BrandModel[];
     const { data: images } = await client.getCarImagesForCars(featuredCars.map((car) => car.id));
@@ -152,7 +152,7 @@ export default async function Home() {
                         Find Your Perfect Match
                     </h2>
                     <HomeSearchForm
-                        bodyTypes={bodyTypesList}
+                        categories={categoriesList}
                         brands={brandsList}
                         brandModels={brandModelsList}
                     />

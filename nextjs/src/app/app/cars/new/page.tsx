@@ -10,7 +10,7 @@ import { Database } from "@/lib/types";
 type CarStatus = "available" | "sold" | "hidden";
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
 type BrandModel = Database["public"]["Tables"]["brand_models"]["Row"];
-type BodyType = Database["public"]["Tables"]["body_types"]["Row"];
+type Category = Database["public"]["Tables"]["categories"]["Row"];
 
 function getErrorMessage(err: unknown) {
     if (err instanceof Error) {
@@ -41,18 +41,19 @@ export default function NewCarPage() {
     const [title, setTitle] = useState("");
     const [brand, setBrand] = useState("");
     const [model, setModel] = useState("");
-    const [bodyType, setBodyType] = useState("");
+    const [category, setCategory] = useState("");
     const [year, setYear] = useState<number | "">("");
     const [km, setKm] = useState<number | "">("");
     const [price, setPrice] = useState<number | "">("");
     const [discountedPrice, setDiscountedPrice] = useState<number | "">("");
     const [description, setDescription] = useState("");
     const [status, setStatus] = useState<CarStatus>("available");
+    const [featured, setFeatured] = useState(false);
     const [mainImageFile, setMainImageFile] = useState<File | null>(null);
     const [extraImageFiles, setExtraImageFiles] = useState<File[]>([]);
     const [brands, setBrands] = useState<Brand[]>([]);
     const [brandModels, setBrandModels] = useState<BrandModel[]>([]);
-    const [bodyTypes, setBodyTypes] = useState<BodyType[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
 
     const currentYear = new Date().getFullYear();
     const yearOptions = useMemo(
@@ -102,18 +103,18 @@ export default function NewCarPage() {
     }, []);
 
     useEffect(() => {
-        const loadBodyTypes = async () => {
+        const loadCategories = async () => {
             try {
                 const client = await createSPASassClient();
-                const { data, error: bodyTypesError } = await client.getBodyTypes();
-                if (bodyTypesError) throw bodyTypesError;
-                setBodyTypes(data || []);
+                const { data, error: categoriesError } = await client.getCategories();
+                if (categoriesError) throw categoriesError;
+                setCategories(data || []);
             } catch (err) {
-                console.error("Load body types failed:", err);
-                setError("Failed to load body types.");
+                console.error("Load categories failed:", err);
+                setError("Failed to load categories.");
             }
         };
-        loadBodyTypes();
+        loadCategories();
     }, []);
 
     useEffect(() => {
@@ -194,13 +195,14 @@ export default function NewCarPage() {
                     title,
                     brand,
                     model,
-                    body_type: bodyType || null,
+                    category: category || null,
                     year: Number(year),
                     km: Number(km),
                     price: parsedPrice,
                     discounted_price: parsedDiscountedPrice,
                     description: description || null,
                     status,
+                    featured,
                 });
 
                 if (!createError && data) {
@@ -284,9 +286,9 @@ export default function NewCarPage() {
                             </option>
                         ))}
                     </select>
-                    <select value={bodyType} onChange={(e) => setBodyType(e.target.value)} className="border rounded-md px-3 py-2">
-                        <option value="">Select body type (optional)</option>
-                        {bodyTypes.map((item) => (
+                    <select value={category} onChange={(e) => setCategory(e.target.value)} className="border rounded-md px-3 py-2">
+                        <option value="">Select category (optional)</option>
+                        {categories.map((item) => (
                             <option key={item.id} value={item.name}>
                                 {item.name}
                             </option>
@@ -328,6 +330,15 @@ export default function NewCarPage() {
                     <option value="sold">sold</option>
                     <option value="hidden">hidden</option>
                 </select>
+                <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={featured}
+                        onChange={(e) => setFeatured(e.target.checked)}
+                        className="rounded border-gray-300"
+                    />
+                    <span className="text-sm font-medium">Featured</span>
+                </label>
                 <div className="space-y-4">
                     <div className="border rounded-md p-3 space-y-2">
                         <label className="block text-sm font-medium">Main Image</label>

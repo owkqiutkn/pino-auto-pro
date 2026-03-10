@@ -13,7 +13,7 @@ type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
 type CarStatus = "available" | "sold" | "hidden";
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
 type BrandModel = Database["public"]["Tables"]["brand_models"]["Row"];
-type BodyType = Database["public"]["Tables"]["body_types"]["Row"];
+type Category = Database["public"]["Tables"]["categories"]["Row"];
 
 export default function EditCarPage() {
     const params = useParams<{ id: string }>();
@@ -28,16 +28,17 @@ export default function EditCarPage() {
     const [title, setTitle] = useState("");
     const [brand, setBrand] = useState("");
     const [model, setModel] = useState("");
-    const [bodyType, setBodyType] = useState("");
+    const [category, setCategory] = useState("");
     const [year, setYear] = useState<number | "">("");
     const [km, setKm] = useState<number | "">("");
     const [price, setPrice] = useState<number | "">("");
     const [discountedPrice, setDiscountedPrice] = useState<number | "">("");
     const [description, setDescription] = useState("");
     const [status, setStatus] = useState<CarStatus>("available");
+    const [featured, setFeatured] = useState(false);
     const [brands, setBrands] = useState<Brand[]>([]);
     const [brandModels, setBrandModels] = useState<BrandModel[]>([]);
-    const [bodyTypes, setBodyTypes] = useState<BodyType[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
 
     const currentYear = new Date().getFullYear();
     const yearOptions = useMemo(
@@ -71,13 +72,14 @@ export default function EditCarPage() {
             setTitle(carData.title);
             setBrand(carData.brand);
             setModel(carData.model);
-            setBodyType(carData.body_type ?? "");
+            setCategory(carData.category ?? "");
             setYear(carData.year);
             setKm(carData.km);
             setPrice(carData.price);
             setDiscountedPrice(carData.discounted_price ?? "");
             setDescription(carData.description || "");
             setStatus(carData.status as CarStatus);
+            setFeatured(carData.featured ?? false);
             setError("");
         } catch (err) {
             console.error(err);
@@ -99,15 +101,15 @@ export default function EditCarPage() {
         }
     }, []);
 
-    const loadBodyTypes = useCallback(async () => {
+    const loadCategories = useCallback(async () => {
         try {
             const client = await createSPASassClient();
-            const { data, error: bodyTypesError } = await client.getBodyTypes();
-            if (bodyTypesError) throw bodyTypesError;
-            setBodyTypes(data || []);
+            const { data, error: categoriesError } = await client.getCategories();
+            if (categoriesError) throw categoriesError;
+            setCategories(data || []);
         } catch (err) {
             console.error(err);
-            setError("Failed to load body types.");
+            setError("Failed to load categories.");
         }
     }, []);
 
@@ -115,9 +117,9 @@ export default function EditCarPage() {
         if (id) {
             loadData();
             loadBrands();
-            loadBodyTypes();
+            loadCategories();
         }
-    }, [id, loadBodyTypes, loadData, loadBrands]);
+    }, [id, loadCategories, loadData, loadBrands]);
 
     useEffect(() => {
         const loadModels = async () => {
@@ -167,13 +169,14 @@ export default function EditCarPage() {
                 title,
                 brand,
                 model,
-                body_type: bodyType || null,
+                category: category || null,
                 year: Number(year),
                 km: Number(km),
                 price: parsedPrice,
                 discounted_price: parsedDiscountedPrice,
                 description: description || null,
                 status,
+                featured,
             });
             if (updateError) throw updateError;
             await loadData();
@@ -317,9 +320,9 @@ export default function EditCarPage() {
                             </option>
                         ))}
                     </select>
-                    <select value={bodyType} onChange={(e) => setBodyType(e.target.value)} className="border rounded-md px-3 py-2">
-                        <option value="">Select body type (optional)</option>
-                        {bodyTypes.map((item) => (
+                    <select value={category} onChange={(e) => setCategory(e.target.value)} className="border rounded-md px-3 py-2">
+                        <option value="">Select category (optional)</option>
+                        {categories.map((item) => (
                             <option key={item.id} value={item.name}>
                                 {item.name}
                             </option>
@@ -356,12 +359,21 @@ export default function EditCarPage() {
                     className="w-full border rounded-md px-3 py-2"
                 />
                 <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={5} placeholder="Description" className="w-full border rounded-md px-3 py-2" />
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                     <select value={status} onChange={(e) => setStatus(e.target.value as CarStatus)} className="border rounded-md px-3 py-2">
                         <option value="available">available</option>
                         <option value="sold">sold</option>
                         <option value="hidden">hidden</option>
                     </select>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={featured}
+                            onChange={(e) => setFeatured(e.target.checked)}
+                            className="rounded border-gray-300"
+                        />
+                        <span className="text-sm font-medium">Featured</span>
+                    </label>
                     <button type="button" onClick={handleMarkSold} className="px-3 py-2 rounded-md border hover:bg-gray-50">
                         Mark sold
                     </button>
