@@ -9,7 +9,7 @@ import {
     X,
     ChevronDown,
     LogOut,
-    Key, Files, LucideListTodo,
+    Key, CarFront, Tags, ListTree,
 } from 'lucide-react';
 import { useGlobal } from "@/lib/context/GlobalContext";
 import { createSPASassClient } from "@/lib/supabase/client";
@@ -46,8 +46,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
     const navigation = [
         { name: 'Homepage', href: '/app', icon: Home },
-        { name: 'Example Storage', href: '/app/storage', icon: Files },
-        { name: 'Example Table', href: '/app/table', icon: LucideListTodo },
+        { name: 'Cars', href: '/app/cars', icon: CarFront },
+        { name: 'Brands', href: '/app/brands', icon: Tags },
+        { name: 'Brand Models', href: '/app/brand-models', icon: ListTree },
         { name: 'User Settings', href: '/app/user-settings', icon: User },
     ];
 
@@ -79,7 +80,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 {/* Navigation */}
                 <nav className="mt-4 px-2 space-y-1">
                     {navigation.map((item) => {
-                        const isActive = pathname === item.href;
+                        const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
                         return (
                             <Link
                                 key={item.name}
