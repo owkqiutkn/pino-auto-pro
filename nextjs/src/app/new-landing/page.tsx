@@ -24,22 +24,25 @@ const categoryCards = [
 
 const featureCards = [
     {
-        title: "Certified Vehicles",
-        description: "Multi-point inspected inventory with quality assurance.",
+        title: "View Inventory",
+        description: "Browse from our selection of pre-owned cars, trucks and SUVs.",
         image: "/new-landing/feature-certified.jpg",
         icon: "✓",
+        iconImage: "https://img.icons8.com/?id=12666&format=png&size=36",
     },
     {
-        title: "Great Finance Rates",
-        description: "Fast approvals and flexible terms tailored to you.",
+        title: "Apply For Financing",
+        description: "Count on our finance team for hassle-free savings!",
         image: "/new-landing/feature-finance.jpg",
         icon: "$",
+        iconImage: "https://img.icons8.com/?id=13025&format=png&size=36",
     },
     {
-        title: "Trade-In Support",
-        description: "Fair market trade values with a smooth process.",
+        title: "Contact Us",
+        description: "Call or email our team for more information!",
         image: "/new-landing/feature-tradein.jpg",
-        icon: "↺",
+        icon: "✉",
+        iconImage: "https://img.icons8.com/?id=63598&format=png&size=36",
     },
 ];
 
@@ -152,7 +155,12 @@ export default function NewLandingPage() {
                                 <div className="absolute inset-0 bg-gradient-to-br from-[#1d4ed8]/80 via-[#1e40af]/90 to-[#1d4ed8]/85 mix-blend-multiply" />
                                 <div className="relative z-10 flex h-full w-full flex-col justify-center p-5">
                                     <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-[11px] font-bold">
-                                        {item.icon}
+                                        {"iconImage" in item && item.iconImage ? (
+                                            /* eslint-disable-next-line @next/next/no-img-element */
+                                            <img src={item.iconImage} alt="" className="h-5 w-5 brightness-0 invert" aria-hidden />
+                                        ) : (
+                                            item.icon
+                                        )}
                                     </div>
                                     <div className="text-sm md:text-base font-bold tracking-wide">
                                         {item.title}
