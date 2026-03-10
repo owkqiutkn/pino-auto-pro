@@ -1,6 +1,10 @@
 import Link from "next/link";
 import ContactMap from "@/components/ContactMap";
 import InventoryLineup from "@/components/InventoryLineup";
+import { createSSRSassClient } from "@/lib/supabase/server";
+import { Database } from "@/lib/types";
+
+type Brand = Database["public"]["Tables"]["brands"]["Row"];
 
 const heroImage = "/new-landing/hero.jpg";
 const financingImage = "/new-landing/financing.jpg";
@@ -40,7 +44,11 @@ const featureCards = [
     },
 ];
 
-export default function NewLandingPage() {
+export default async function NewLandingPage() {
+    const client = await createSSRSassClient();
+    const { data: brandsData } = await client.getBrands();
+    const brands = (brandsData ?? []) as Brand[];
+
     return (
         <div className="bg-[#0f0f12] text-white">
             <div className="fixed right-4 top-[150px] z-[9999] hidden flex-col gap-2 lg:flex" aria-label="Quick actions">
@@ -121,10 +129,20 @@ export default function NewLandingPage() {
                             Find your perfect match from our curated inventory and get approved fast.
                         </p>
                         <form action="/inventory" method="get" className="mt-6 grid max-w-5xl mx-auto grid-cols-1 gap-2 md:grid-cols-4">
-                            <input name="year" placeholder="Year" className="h-10 rounded-sm bg-white px-3 text-xs text-black placeholder:text-gray-500" />
-                            <input name="brand" placeholder="Brand" className="h-10 rounded-sm bg-white px-3 text-xs text-black placeholder:text-gray-500" />
-                            <input name="price" placeholder="Max Price" className="h-10 rounded-sm bg-white px-3 text-xs text-black placeholder:text-gray-500" />
-                            <button className="h-10 rounded-sm bg-[#1d4ed8] text-xs font-bold uppercase tracking-wide hover:bg-[#4338ca]">
+                            <select name="year" className="h-10 rounded-sm bg-white px-3 text-xs text-black outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]" defaultValue="">
+                                <option value="" disabled>Year</option>
+                                {Array.from({ length: new Date().getFullYear() - 1990 + 2 }, (_, i) => 1990 + i).reverse().map((y) => (
+                                    <option key={y} value={y}>{y}</option>
+                                ))}
+                            </select>
+                            <select name="brand" className="h-10 rounded-sm bg-white px-3 text-xs text-black outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]" defaultValue="">
+                                <option value="" disabled>Brand</option>
+                                {brands.map((b) => (
+                                    <option key={b.id} value={b.name}>{b.name}</option>
+                                ))}
+                            </select>
+                            <input name="price" placeholder="Max Price" className="h-10 rounded-sm bg-white px-3 text-xs text-black placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]" />
+                            <button className="h-10 rounded-sm bg-[#1d4ed8] text-xs font-bold uppercase tracking-wide hover:bg-[#1e40af]">
                                 Search Inventory
                             </button>
                         </form>
@@ -279,7 +297,7 @@ export default function NewLandingPage() {
                                 />
                                 <div className="border-t border-white/5 bg-gradient-to-r from-[#1d283a] via-[#111827] to-[#1d283a] p-3 text-center">
                                     <div className="text-xs font-bold uppercase tracking-wide">{item.name}</div>
-                                    <button className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#1d4ed8] px-3 py-1 text-[10px] font-bold uppercase tracking-wide hover:bg-[#4338ca]">
+                                    <button className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#1d4ed8] px-3 py-1 text-[10px] font-bold uppercase tracking-wide hover:bg-[#1e40af]">
                                         View Listings
                                     </button>
                                 </div>
@@ -369,7 +387,7 @@ export default function NewLandingPage() {
                         <h4 className="mb-3 font-bold uppercase text-white">Contact</h4>
                         <p className="text-white/60">1230 Automotive Blvd</p>
                         <p className="text-white/60">Sales: (555) 123-4567</p>
-                        <p className="text-white/60">info@mlautos.com</p>
+                        <p className="text-white/60">info@pinoautopro.com</p>
                         <div className="mt-4 flex items-center gap-3">
                             <a
                                 href="https://facebook.com"
