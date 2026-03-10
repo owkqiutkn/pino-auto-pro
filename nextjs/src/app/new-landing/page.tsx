@@ -1,9 +1,11 @@
 import Link from "next/link";
+import ContactMap from "@/components/ContactMap";
 
 const heroImage = "/new-landing/hero.jpg";
 const financingImage = "/new-landing/financing.jpg";
 const missionImage = "/new-landing/mission.jpg";
 const aboutImage = "/new-landing/about.jpg";
+const aboutBackgroundImage = "https://images.pexels.com/photos/33271364/pexels-photo-33271364.jpeg";
 const mapImage = "/new-landing/map.jpg";
 
 const inventoryCards = [
@@ -47,22 +49,24 @@ export default function NewLandingPage() {
             <section className="relative min-h-[440px] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={heroImage} alt="ML Autos hero" className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-black/50" />
+                <div className="absolute inset-0 bg-black/70" />
                 <div className="absolute inset-x-0 top-0 h-10 md:h-12 bg-[#0a0a0d]/90" />
 
                 <div className="relative z-10 mx-auto max-w-6xl px-4">
                     <header className="flex items-center justify-between py-1 md:py-2 text-[11px]">
                         <div className="flex items-center gap-3">
                             <div className="text-sm font-black tracking-wider">M&L Autos</div>
-                            <span className="h-4 w-px bg-white/30" />
-                            <span className="text-white/70">Premium Pre-Owned</span>
                         </div>
                         <nav className="hidden md:flex items-center gap-5 font-semibold uppercase tracking-wide text-white/85">
                             <a href="#inventory" className="hover:text-[#ff4747]">Inventory</a>
                             <a href="#financing" className="hover:text-[#ff4747]">Finance</a>
                             <a href="#about" className="hover:text-[#ff4747]">About</a>
                             <a href="#contact" className="hover:text-[#ff4747]">Contact</a>
-                            <span className="text-white/60">○ ○ ○</span>
+                            <div className="flex items-center gap-1 text-white/50">
+                                <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/40" />
+                                <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/70" />
+                                <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/30" />
+                            </div>
                         </nav>
                     </header>
 
@@ -180,13 +184,28 @@ export default function NewLandingPage() {
                     <div className="rounded-sm border p-6">
                         <h3 className="text-xl font-black">Our Mission</h3>
                         <p className="mt-3 text-sm text-gray-700">
-                            We help drivers buy high-quality used vehicles with confidence. Every unit is inspected and priced fairly.
+                            At M&amp;L Autos, our mission is to redefine automotive service around five core principles.
                         </p>
                         <ul className="mt-4 list-disc space-y-2 pl-5 text-xs text-gray-700">
-                            <li>Customer first, always.</li>
-                            <li>Transparent process and pricing.</li>
-                            <li>Strong vehicle quality standards.</li>
+                            <li>
+                                <span className="font-semibold">Customer-Centric Care:</span> Your satisfaction is the focus from first visit to final keys.
+                            </li>
+                            <li>
+                                <span className="font-semibold">Service Excellence:</span> Skilled technicians deliver high-quality, reliable automotive solutions.
+                            </li>
+                            <li>
+                                <span className="font-semibold">Transparency &amp; Trust:</span> Clear explanations, upfront pricing, and honest recommendations.
+                            </li>
+                            <li>
+                                <span className="font-semibold">Innovation &amp; Expertise:</span> Up-to-date with the latest automotive technology for efficient results.
+                            </li>
+                            <li>
+                                <span className="font-semibold">Community Engagement:</span> Supporting local initiatives and contributing positively to our community.
+                            </li>
                         </ul>
+                        <p className="mt-4 text-xs text-gray-700">
+                            We are committed to exceeding expectations, building long-term relationships, and setting a new standard in automotive care and customer service.
+                        </p>
                         <div className="mt-6 grid grid-cols-2 gap-3">
                             <Link href="/inventory" className="rounded bg-[#f05454] px-3 py-2 text-center text-xs font-bold text-white">View Inventory</Link>
                             <a href="#contact" className="rounded bg-[#f05454] px-3 py-2 text-center text-xs font-bold text-white">Contact Us</a>
@@ -197,40 +216,87 @@ export default function NewLandingPage() {
 
             <section id="about" className="relative py-16">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={aboutImage} alt="About background" className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-black/50" />
+                <img src={aboutBackgroundImage} alt="About background" className="absolute inset-0 h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-black/70" />
                 <div className="relative mx-auto max-w-6xl px-4">
-                    <div className="max-w-md bg-black/60 p-6">
-                        <h3 className="text-3xl font-black">About M&L Autos</h3>
+                    <div className="max-w-xl bg-black/60 p-6 md:p-7">
+                        <h3 className="text-3xl font-black">About M&amp;L Autos</h3>
                         <p className="mt-3 text-sm text-white/85">
-                            A modern dealership experience focused on quality inventory, quick financing, and long-term support.
+                            M&amp;L Autos is your trusted pre-owned vehicle destination in Mississauga, making every step of buying a car clear, simple, and
+                            stress-free. We offer a carefully selected lineup of quality used cars, trucks, and SUVs, each thoroughly inspected for reliability
+                            and real value.
                         </p>
+                        <p className="mt-3 text-sm text-white/80">
+                            Our friendly team helps you choose the right vehicle, explains your options in plain language, and works with you on flexible
+                            financing that fits your budget. With fair trade-in values, transparent deals, and a genuine focus on satisfaction, we want you to
+                            drive away confident in your decision.
+                        </p>
+                        <p className="mt-3 text-sm text-white/80">
+                            Choose M&amp;L Autos for quality vehicles, honest service, and a smooth buying experience in Mississauga and beyond.
+                        </p>
+                        <div className="mt-5 flex flex-wrap gap-3 text-xs font-bold">
+                            <a href="#about" className="rounded bg-white px-4 py-2 text-black uppercase tracking-wide">
+                                About
+                            </a>
+                            <a href="#contact" className="rounded bg-[#e10f18] px-4 py-2 text-white uppercase tracking-wide">
+                                Contact Us
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section className="bg-[#2a2d33] py-10 text-white">
-                <div className="mx-auto grid max-w-6xl grid-cols-2 gap-4 px-4 md:grid-cols-4">
-                    {categoryCards.map((item) => (
-                        <div key={item.name} className="overflow-hidden rounded-sm border border-white/20 bg-[#343841]">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={item.image} alt={item.name} className="h-20 w-full object-cover" />
-                            <div className="p-3 text-center">
-                                <div className="text-xs font-bold uppercase">{item.name}</div>
-                                <button className="mt-2 rounded-sm bg-[#4d5a70] px-3 py-1 text-[10px] font-bold uppercase">
-                                    View Listings
-                                </button>
+            <section className="bg-[#17181f] py-10 text-white">
+                <div className="mx-auto max-w-6xl px-4">
+                    <div className="mb-4 flex items-center justify-between">
+                        <h3 className="text-lg font-black uppercase tracking-wide">Browse by Category</h3>
+                        <span className="text-[10px] uppercase text-white/60">Sedan • SUV • Coupe • Truck</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                        {categoryCards.map((item) => (
+                            <div
+                                key={item.name}
+                                className="group overflow-hidden rounded-sm border border-white/10 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)]"
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src={item.image}
+                                    alt={item.name}
+                                    className="h-20 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                />
+                                <div className="border-t border-white/5 bg-gradient-to-r from-[#2a2d36] via-[#1b1c24] to-[#2a2d36] p-3 text-center">
+                                    <div className="text-xs font-bold uppercase tracking-wide">{item.name}</div>
+                                    <button className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#e10f18] px-3 py-1 text-[10px] font-bold uppercase tracking-wide hover:bg-[#ff2730]">
+                                        View Listings
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </section>
 
-            <section className="bg-[#f7f7f7] py-10 text-black">
+            <section className="bg-[#111217] py-12 text-white">
                 <div className="mx-auto max-w-6xl px-4">
-                    <div className="mb-4 flex items-center justify-between">
-                        <h3 className="text-lg font-black">What Our Customers Say</h3>
-                        <span className="text-xs text-gray-500">Real Reviews</span>
+                    <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-white/60">
+                                Customer Reviews
+                            </p>
+                            <h3 className="text-xl font-black tracking-tight sm:text-2xl">
+                                What Our Customers Say
+                            </h3>
+                        </div>
+                        <div className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-[11px] font-medium text-white/80 ring-1 ring-white/10">
+                            <div className="flex items-center text-[#f4c84b]">
+                                <span className="mr-0.5 text-xs">★</span>
+                                <span className="mr-0.5 text-xs">★</span>
+                                <span className="mr-0.5 text-xs">★</span>
+                                <span className="mr-0.5 text-xs">★</span>
+                                <span className="text-xs">★</span>
+                            </div>
+                            <span>4.9/5 from 500+ customer reviews</span>
+                        </div>
                     </div>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                         {[
@@ -238,14 +304,19 @@ export default function NewLandingPage() {
                             "Fast approval and excellent support. The car was exactly as described and in great condition.",
                             "Great after-sale support and clean paperwork. I recommend this dealership to friends.",
                         ].map((text, index) => (
-                            <div key={index} className="rounded-sm border bg-white">
-                                <div className="flex items-center justify-between bg-[#e10f18] px-3 py-2 text-xs text-white">
-                                    <span>Google Review</span>
-                                    <span>{index + 1}</span>
+                            <div
+                                key={index}
+                                className="group rounded-xl border border-white/10 bg-white/5 p-0 shadow-[0_18px_60px_rgba(0,0,0,0.65)] backdrop-blur-sm transition-transform transition-shadow duration-300 hover:-translate-y-1.5 hover:border-[#e10f18]/70 hover:shadow-[0_28px_80px_rgba(0,0,0,0.9)]"
+                            >
+                                <div className="flex items-center justify-between bg-gradient-to-r from-[#e10f18] to-[#ff2730] px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-white">
+                                    <span>{index === 2 ? "Customer Story" : "Customer Review"}</span>
+                                    <span>{String(index + 1).padStart(2, "0")}</span>
                                 </div>
                                 <div className="p-4">
-                                    <p className="text-sm text-gray-700">{text}</p>
-                                    <p className="mt-3 text-xs font-bold text-[#1f1f25]">Verified Customer</p>
+                                    <p className="text-sm leading-relaxed text-white/80">{text}</p>
+                                    <p className="mt-3 text-[11px] font-semibold uppercase tracking-wide text-white/60">
+                                        {index === 2 ? "Verified Seller" : "Verified Customer"}
+                                    </p>
                                 </div>
                             </div>
                         ))}
@@ -254,8 +325,7 @@ export default function NewLandingPage() {
             </section>
 
             <section id="contact" className="bg-[#ececec] py-0 text-black">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={mapImage} alt="Dealership map" className="h-44 w-full object-cover md:h-56" />
+                <ContactMap />
             </section>
 
             <footer className="bg-[#171717] py-10 text-xs text-white/80">
@@ -283,6 +353,50 @@ export default function NewLandingPage() {
                         <p className="text-white/60">1230 Automotive Blvd</p>
                         <p className="text-white/60">Sales: (555) 123-4567</p>
                         <p className="text-white/60">info@mlautos.com</p>
+                        <div className="mt-4 flex items-center gap-3">
+                            <a
+                                href="https://facebook.com"
+                                aria-label="Visit us on Facebook"
+                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-[#1877f2]/60"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src="https://img.icons8.com/?id=118466&format=png&size=32"
+                                    alt="Facebook"
+                                    className="h-4 w-4"
+                                />
+                            </a>
+                            <a
+                                href="https://instagram.com"
+                                aria-label="Visit us on Instagram"
+                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-[#e1306c]/60"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src="https://img.icons8.com/?id=32292&format=png&size=32"
+                                    alt="Instagram"
+                                    className="h-4 w-4"
+                                />
+                            </a>
+                            <a
+                                href="https://x.com"
+                                aria-label="Visit us on X"
+                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-white/70"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src="https://img.icons8.com/?id=01GWmP9aUoPj&format=png&size=32"
+                                    alt="X (Twitter)"
+                                    className="h-4 w-4"
+                                />
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60">
