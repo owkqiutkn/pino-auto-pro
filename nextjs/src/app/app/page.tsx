@@ -2,7 +2,7 @@
 import React from 'react';
 import { useGlobal } from '@/lib/context/GlobalContext';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { CalendarDays, Settings, ExternalLink } from 'lucide-react';
+import { CalendarDays, Settings } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardContent() {
@@ -44,7 +44,7 @@ export default function DashboardContent() {
                     <CardDescription>Frequently used features</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4">
                         <Link
                             href="/app/user-settings"
                             className="flex items-center gap-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
@@ -55,19 +55,6 @@ export default function DashboardContent() {
                             <div>
                                 <h3 className="font-medium">User Settings</h3>
                                 <p className="text-sm text-gray-500">Manage your account preferences</p>
-                            </div>
-                        </Link>
-
-                        <Link
-                            href="/app/table"
-                            className="flex items-center gap-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-                        >
-                            <div className="p-2 bg-primary-50 rounded-full">
-                                <ExternalLink className="h-4 w-4 text-primary-600" />
-                            </div>
-                            <div>
-                                <h3 className="font-medium">Example Page</h3>
-                                <p className="text-sm text-gray-500">Check out example features</p>
                             </div>
                         </Link>
                     </div>

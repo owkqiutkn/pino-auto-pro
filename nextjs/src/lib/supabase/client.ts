@@ -21,6 +21,7 @@ export async function createSPASassClientAuthenticated() {
     const user = await client.auth.getSession();
     if (!user.data || !user.data.session) {
         window.location.href = '/auth/login';
+        throw new Error('User session required');
     }
     // This must be some bug that SupabaseClient is not properly recognized, so must be ignored
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -39,6 +39,136 @@ export type Database = {
   }
   public: {
     Tables: {
+      brand_models: {
+        Row: {
+          brand_id: string
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          brand_id: string
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          brand_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "brand_models_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brands"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      brands: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      car_images: {
+        Row: {
+          car_id: string
+          created_at: string
+          id: string
+          image_url: string
+          is_cover: boolean
+          sort_order: number
+        }
+        Insert: {
+          car_id: string
+          created_at?: string
+          id?: string
+          image_url: string
+          is_cover?: boolean
+          sort_order?: number
+        }
+        Update: {
+          car_id?: string
+          created_at?: string
+          id?: string
+          image_url?: string
+          is_cover?: boolean
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "car_images_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cars: {
+        Row: {
+          brand: string
+          created_at: string
+          description: string | null
+          discounted_price: number | null
+          id: string
+          km: number
+          model: string
+          price: number
+          slug: string
+          status: string
+          title: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          brand: string
+          created_at?: string
+          description?: string | null
+          discounted_price?: number | null
+          id?: string
+          km: number
+          model: string
+          price: number
+          slug: string
+          status?: string
+          title: string
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          brand?: string
+          created_at?: string
+          description?: string | null
+          discounted_price?: number | null
+          id?: string
+          km?: number
+          model?: string
+          price?: number
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
       todo_list: {
         Row: {
           created_at: string
