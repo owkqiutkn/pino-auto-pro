@@ -13,6 +13,7 @@ type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
 type CarStatus = "available" | "sold" | "hidden";
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
 type BrandModel = Database["public"]["Tables"]["brand_models"]["Row"];
+type BodyType = Database["public"]["Tables"]["body_types"]["Row"];
 
 export default function EditCarPage() {
     const params = useParams<{ id: string }>();
@@ -27,6 +28,7 @@ export default function EditCarPage() {
     const [title, setTitle] = useState("");
     const [brand, setBrand] = useState("");
     const [model, setModel] = useState("");
+    const [bodyType, setBodyType] = useState("");
     const [year, setYear] = useState<number | "">("");
     const [km, setKm] = useState<number | "">("");
     const [price, setPrice] = useState<number | "">("");
@@ -35,6 +37,7 @@ export default function EditCarPage() {
     const [status, setStatus] = useState<CarStatus>("available");
     const [brands, setBrands] = useState<Brand[]>([]);
     const [brandModels, setBrandModels] = useState<BrandModel[]>([]);
+    const [bodyTypes, setBodyTypes] = useState<BodyType[]>([]);
 
     const currentYear = new Date().getFullYear();
     const yearOptions = useMemo(
@@ -68,6 +71,7 @@ export default function EditCarPage() {
             setTitle(carData.title);
             setBrand(carData.brand);
             setModel(carData.model);
+            setBodyType(carData.body_type ?? "");
             setYear(carData.year);
             setKm(carData.km);
             setPrice(carData.price);
@@ -95,12 +99,25 @@ export default function EditCarPage() {
         }
     }, []);
 
+    const loadBodyTypes = useCallback(async () => {
+        try {
+            const client = await createSPASassClient();
+            const { data, error: bodyTypesError } = await client.getBodyTypes();
+            if (bodyTypesError) throw bodyTypesError;
+            setBodyTypes(data || []);
+        } catch (err) {
+            console.error(err);
+            setError("Failed to load body types.");
+        }
+    }, []);
+
     useEffect(() => {
         if (id) {
             loadData();
             loadBrands();
+            loadBodyTypes();
         }
-    }, [id, loadData, loadBrands]);
+    }, [id, loadBodyTypes, loadData, loadBrands]);
 
     useEffect(() => {
         const loadModels = async () => {
@@ -150,6 +167,7 @@ export default function EditCarPage() {
                 title,
                 brand,
                 model,
+                body_type: bodyType || null,
                 year: Number(year),
                 km: Number(km),
                 price: parsedPrice,
@@ -290,10 +308,18 @@ export default function EditCarPage() {
 
             <form onSubmit={handleSave} className="bg-white border rounded-lg p-5 space-y-4">
                 <input value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="Title" className="w-full border rounded-md px-3 py-2" />
-                <div className="grid sm:grid-cols-2 gap-3">
+                <div className="grid sm:grid-cols-3 gap-3">
                     <select value={brand} onChange={(e) => { setBrand(e.target.value); setModel(""); }} required className="border rounded-md px-3 py-2">
                         <option value="">Select brand</option>
                         {brands.map((item) => (
+                            <option key={item.id} value={item.name}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
+                    <select value={bodyType} onChange={(e) => setBodyType(e.target.value)} className="border rounded-md px-3 py-2">
+                        <option value="">Select body type (optional)</option>
+                        {bodyTypes.map((item) => (
                             <option key={item.id} value={item.name}>
                                 {item.name}
                             </option>

@@ -9,7 +9,7 @@ import {
     X,
     ChevronDown,
     LogOut,
-    Key, CarFront, Tags, ListTree,
+    Key, CarFront, Tags, ListTree, Shapes,
 } from 'lucide-react';
 import { useGlobal } from "@/lib/context/GlobalContext";
 import { createSPASassClient } from "@/lib/supabase/client";
@@ -48,6 +48,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         { name: 'Homepage', href: '/app', icon: Home },
         { name: 'Cars', href: '/app/cars', icon: CarFront },
         { name: 'Brands', href: '/app/brands', icon: Tags },
+        { name: 'Body Types', href: '/app/body-types', icon: Shapes },
         { name: 'Brand Models', href: '/app/brand-models', icon: ListTree },
         { name: 'User Settings', href: '/app/user-settings', icon: User },
     ];

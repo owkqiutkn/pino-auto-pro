@@ -89,6 +89,8 @@ export class SassClient {
 
     async getAvailableCars(filters?: {
         brand?: string;
+        bodyType?: string;
+        model?: string;
         year?: number;
         kmMax?: number;
         priceMax?: number;
@@ -101,6 +103,12 @@ export class SassClient {
 
         if (filters?.brand) {
             query = query.eq('brand', filters.brand);
+        }
+        if (filters?.bodyType) {
+            query = query.eq('body_type', filters.bodyType);
+        }
+        if (filters?.model) {
+            query = query.eq('model', filters.model);
         }
         if (filters?.year) {
             query = query.eq('year', filters.year);
@@ -189,6 +197,28 @@ export class SassClient {
     async deleteBrand(id: string) {
         return this.client
             .from('brands')
+            .delete()
+            .eq('id', id);
+    }
+
+    async getBodyTypes() {
+        return this.client
+            .from('body_types')
+            .select('*')
+            .order('name', { ascending: true });
+    }
+
+    async createBodyType(name: string) {
+        return this.client
+            .from('body_types')
+            .insert({ name })
+            .select('*')
+            .single();
+    }
+
+    async deleteBodyType(id: string) {
+        return this.client
+            .from('body_types')
             .delete()
             .eq('id', id);
     }

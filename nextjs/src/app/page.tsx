@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { createSSRSassClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/types";
+import HomeSearchForm from "@/components/HomeSearchForm";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
+type BodyType = Database["public"]["Tables"]["body_types"]["Row"];
+type Brand = Database["public"]["Tables"]["brands"]["Row"];
+type BrandModel = Database["public"]["Tables"]["brand_models"]["Row"];
 
 function formatPrice(value: number) {
     return new Intl.NumberFormat("en-US", {
@@ -32,7 +36,13 @@ export default async function Home() {
     const client = await createSSRSassClient();
 
     const { data: cars } = await client.getAvailableCars();
+    const { data: bodyTypes } = await client.getBodyTypes();
+    const { data: brands } = await client.getBrands();
+    const { data: brandModels } = await client.getBrandModels();
     const featuredCars = ((cars ?? []) as Car[]).slice(0, 6);
+    const bodyTypesList = (bodyTypes ?? []) as BodyType[];
+    const brandsList = (brands ?? []) as Brand[];
+    const brandModelsList = (brandModels ?? []) as BrandModel[];
     const { data: images } = await client.getCarImagesForCars(featuredCars.map((car) => car.id));
     const imagesList = (images ?? []) as CarImage[];
 
@@ -141,31 +151,11 @@ export default async function Home() {
                         <span className="text-[#f20d0d]">⌕</span>
                         Find Your Perfect Match
                     </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <select className="w-full bg-[#f8f5f5] border-none rounded-lg h-12 px-4 focus:ring-2 focus:ring-[#f20d0d]/50 appearance-none">
-                            <option>All Body Types</option>
-                            <option>SUV</option>
-                            <option>Sedan</option>
-                            <option>Coupe</option>
-                            <option>Truck</option>
-                        </select>
-                        <select className="w-full bg-[#f8f5f5] border-none rounded-lg h-12 px-4 focus:ring-2 focus:ring-[#f20d0d]/50 appearance-none">
-                            <option>Any Make</option>
-                            <option>BMW</option>
-                            <option>Mercedes-Benz</option>
-                            <option>Audi</option>
-                            <option>Lexus</option>
-                        </select>
-                        <select className="w-full bg-[#f8f5f5] border-none rounded-lg h-12 px-4 focus:ring-2 focus:ring-[#f20d0d]/50 appearance-none">
-                            <option>Any Model</option>
-                        </select>
-                        <Link
-                            href="/inventory"
-                            className="bg-[#f20d0d] text-white rounded-lg h-12 font-bold inline-flex items-center justify-center hover:opacity-90"
-                        >
-                            Search Results
-                        </Link>
-                    </div>
+                    <HomeSearchForm
+                        bodyTypes={bodyTypesList}
+                        brands={brandsList}
+                        brandModels={brandModelsList}
+                    />
                 </div>
             </section>
 

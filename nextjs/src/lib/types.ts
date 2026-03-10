@@ -39,6 +39,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      body_types: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       brand_models: {
         Row: {
           brand_id: string
@@ -124,6 +142,7 @@ export type Database = {
       cars: {
         Row: {
           brand: string
+          body_type: string | null
           created_at: string
           description: string | null
           discounted_price: number | null
@@ -139,6 +158,7 @@ export type Database = {
         }
         Insert: {
           brand: string
+          body_type?: string | null
           created_at?: string
           description?: string | null
           discounted_price?: number | null
@@ -154,6 +174,7 @@ export type Database = {
         }
         Update: {
           brand?: string
+          body_type?: string | null
           created_at?: string
           description?: string | null
           discounted_price?: number | null

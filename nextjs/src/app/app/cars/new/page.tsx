@@ -10,6 +10,7 @@ import { Database } from "@/lib/types";
 type CarStatus = "available" | "sold" | "hidden";
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
 type BrandModel = Database["public"]["Tables"]["brand_models"]["Row"];
+type BodyType = Database["public"]["Tables"]["body_types"]["Row"];
 
 function getErrorMessage(err: unknown) {
     if (err instanceof Error) {
@@ -40,6 +41,7 @@ export default function NewCarPage() {
     const [title, setTitle] = useState("");
     const [brand, setBrand] = useState("");
     const [model, setModel] = useState("");
+    const [bodyType, setBodyType] = useState("");
     const [year, setYear] = useState<number | "">("");
     const [km, setKm] = useState<number | "">("");
     const [price, setPrice] = useState<number | "">("");
@@ -50,6 +52,7 @@ export default function NewCarPage() {
     const [extraImageFiles, setExtraImageFiles] = useState<File[]>([]);
     const [brands, setBrands] = useState<Brand[]>([]);
     const [brandModels, setBrandModels] = useState<BrandModel[]>([]);
+    const [bodyTypes, setBodyTypes] = useState<BodyType[]>([]);
 
     const currentYear = new Date().getFullYear();
     const yearOptions = useMemo(
@@ -96,6 +99,21 @@ export default function NewCarPage() {
             }
         };
         loadBrands();
+    }, []);
+
+    useEffect(() => {
+        const loadBodyTypes = async () => {
+            try {
+                const client = await createSPASassClient();
+                const { data, error: bodyTypesError } = await client.getBodyTypes();
+                if (bodyTypesError) throw bodyTypesError;
+                setBodyTypes(data || []);
+            } catch (err) {
+                console.error("Load body types failed:", err);
+                setError("Failed to load body types.");
+            }
+        };
+        loadBodyTypes();
     }, []);
 
     useEffect(() => {
@@ -176,6 +194,7 @@ export default function NewCarPage() {
                     title,
                     brand,
                     model,
+                    body_type: bodyType || null,
                     year: Number(year),
                     km: Number(km),
                     price: parsedPrice,
@@ -256,10 +275,18 @@ export default function NewCarPage() {
 
             <form onSubmit={handleSubmit} className="bg-white border rounded-lg p-5 space-y-4">
                 <input value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="Title" className="w-full border rounded-md px-3 py-2" />
-                <div className="grid sm:grid-cols-2 gap-3">
+                <div className="grid sm:grid-cols-3 gap-3">
                     <select value={brand} onChange={(e) => setBrand(e.target.value)} required className="border rounded-md px-3 py-2">
                         <option value="">Select brand</option>
                         {brands.map((item) => (
+                            <option key={item.id} value={item.name}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
+                    <select value={bodyType} onChange={(e) => setBodyType(e.target.value)} className="border rounded-md px-3 py-2">
+                        <option value="">Select body type (optional)</option>
+                        {bodyTypes.map((item) => (
                             <option key={item.id} value={item.name}>
                                 {item.name}
                             </option>
