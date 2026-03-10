@@ -48,7 +48,7 @@ export default function NewLandingPage() {
         <div className="bg-[#0f0f12] text-white">
             <div className="fixed right-4 top-[150px] z-[9999] hidden flex-col gap-2 lg:flex" aria-label="Quick actions">
                 {["Get Approved", "Book Test Drive", "Value Trade"].map((item) => (
-                    <a key={item} href="#financing" className="rounded-sm bg-[#e10f18] px-3 py-2 text-[10px] font-bold uppercase">
+                    <a key={item} href="#financing" className="rounded-sm bg-[#1d4ed8] px-3 py-2 text-[10px] font-bold uppercase">
                         {item}
                     </a>
                 ))}
@@ -65,10 +65,10 @@ export default function NewLandingPage() {
                             <div className="text-sm font-black tracking-wider">M&L Autos</div>
                         </div>
                         <nav className="hidden md:flex items-center gap-5 font-semibold uppercase tracking-wide text-white/85">
-                            <a href="#inventory" className="hover:text-[#ff4747]">Inventory</a>
-                            <a href="#financing" className="hover:text-[#ff4747]">Finance</a>
-                            <a href="#about" className="hover:text-[#ff4747]">About</a>
-                            <a href="#contact" className="hover:text-[#ff4747]">Contact</a>
+                            <a href="#inventory" className="hover:text-[#1d4ed8]">Inventory</a>
+                            <a href="#financing" className="hover:text-[#1d4ed8]">Finance</a>
+                            <a href="#about" className="hover:text-[#1d4ed8]">About</a>
+                            <a href="#contact" className="hover:text-[#1d4ed8]">Contact</a>
                             <div className="flex items-center gap-2 text-white/80">
                                 <a
                                     href="https://facebook.com"
@@ -127,7 +127,7 @@ export default function NewLandingPage() {
                             <input name="year" placeholder="Year" className="h-10 rounded-sm bg-white px-3 text-xs text-black placeholder:text-gray-500" />
                             <input name="brand" placeholder="Brand" className="h-10 rounded-sm bg-white px-3 text-xs text-black placeholder:text-gray-500" />
                             <input name="price" placeholder="Max Price" className="h-10 rounded-sm bg-white px-3 text-xs text-black placeholder:text-gray-500" />
-                            <button className="h-10 rounded-sm bg-[#e10f18] text-xs font-bold uppercase tracking-wide hover:bg-[#ff1d29]">
+                            <button className="h-10 rounded-sm bg-[#1d4ed8] text-xs font-bold uppercase tracking-wide hover:bg-[#4338ca]">
                                 Search Inventory
                             </button>
                         </form>
@@ -135,13 +135,13 @@ export default function NewLandingPage() {
                 </div>
             </section>
 
-            <section className="relative z-20 bg-[#e10f18] pt-10 pb-10 md:pt-12 md:pb-14">
+            <section className="relative z-20 bg-[#020617] pt-10 pb-10 md:pt-12 md:pb-14">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-3 -mt-20 md:-mt-28">
                         {featureCards.map((item) => (
                             <div
                                 key={item.title}
-                                className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-white/20 bg-[#7f0b12] shadow-[0_22px_55px_rgba(0,0,0,0.7)]"
+                                className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-white/20 bg-[#020617] shadow-[0_22px_55px_rgba(0,0,0,0.7)]"
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
@@ -149,7 +149,7 @@ export default function NewLandingPage() {
                                     alt={item.title}
                                     className="absolute inset-0 h-full w-full object-cover scale-110 opacity-60"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-br from-[#3f0509]/80 via-[#b10f18]/90 to-[#ff4242]/85 mix-blend-multiply" />
+                                <div className="absolute inset-0 bg-gradient-to-br from-[#1d4ed8]/80 via-[#1e40af]/90 to-[#1d4ed8]/85 mix-blend-multiply" />
                                 <div className="relative z-10 flex h-full w-full flex-col justify-center p-5">
                                     <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-[11px] font-bold">
                                         {item.icon}
@@ -169,12 +169,12 @@ export default function NewLandingPage() {
 
             <section id="inventory" className="bg-[#f2f2f3] py-10 text-black">
                 <div className="mx-auto max-w-6xl px-4">
-                    <div className="mb-6 flex items-center justify-between">
+                        <div className="mb-6 flex items-center justify-between">
                         <h2 className="text-lg font-black uppercase">Inventory Lineup</h2>
                         <div className="flex gap-2 text-[10px] font-bold uppercase">
-                            <span className="rounded-sm bg-[#e10f18] px-2 py-1 text-white">Featured</span>
+                            <span className="rounded-sm bg-[#1d4ed8] px-2 py-1 text-white">Featured</span>
                             <span className="rounded-sm bg-[#1f1f25] px-2 py-1 text-white">New Arrivals</span>
-                            <Link href="/inventory" className="rounded-sm border border-[#e10f18] px-2 py-1 text-[#e10f18]">View All</Link>
+                            <Link href="/inventory" className="rounded-sm border border-[#1d4ed8] px-2 py-1 text-[#1d4ed8]">View All</Link>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -185,7 +185,7 @@ export default function NewLandingPage() {
                                 <div className="p-3 text-[11px]">
                                     <h3 className="text-xs font-bold uppercase">{car.title}</h3>
                                     <p className="mt-1 text-[10px] text-gray-600">{car.year} • {car.km}</p>
-                                    <p className="mt-2 text-sm font-black text-[#e10f18]">{car.price}</p>
+                                    <p className="mt-2 text-sm font-black text-[#1d4ed8]">{car.price}</p>
                                     <div className="mt-2 flex items-center justify-between text-[10px]">
                                         <span className="rounded bg-gray-100 px-2 py-1">Certified</span>
                                         <span className="font-bold text-[#1f1f25]">View Details</span>
@@ -200,7 +200,7 @@ export default function NewLandingPage() {
             <section id="financing" className="relative overflow-hidden py-16">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={financingImage} alt="Financing background" className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-[#b10f18]/85" />
+                <div className="absolute inset-0 bg-[#0f172a]/90" />
                 <div className="relative mx-auto max-w-3xl px-4 text-center">
                     <h2 className="text-3xl font-black">Apply For Financing</h2>
                     <p className="mt-2 text-xs text-white/90">What Type of Vehicle Do You Want?</p>
@@ -246,8 +246,8 @@ export default function NewLandingPage() {
                             We are committed to exceeding expectations, building long-term relationships, and setting a new standard in automotive care and customer service.
                         </p>
                         <div className="mt-6 grid grid-cols-2 gap-3">
-                            <Link href="/inventory" className="rounded bg-[#f05454] px-3 py-2 text-center text-xs font-bold text-white">View Inventory</Link>
-                            <a href="#contact" className="rounded bg-[#f05454] px-3 py-2 text-center text-xs font-bold text-white">Contact Us</a>
+                            <Link href="/inventory" className="rounded bg-[#1d4ed8] px-3 py-2 text-center text-xs font-bold text-white">View Inventory</Link>
+                            <a href="#contact" className="rounded bg-[#1d4ed8] px-3 py-2 text-center text-xs font-bold text-white">Contact Us</a>
                         </div>
                     </div>
                 </div>
@@ -277,7 +277,7 @@ export default function NewLandingPage() {
                             <a href="#about" className="rounded bg-white px-4 py-2 text-black uppercase tracking-wide">
                                 About
                             </a>
-                            <a href="#contact" className="rounded bg-[#e10f18] px-4 py-2 text-white uppercase tracking-wide">
+                            <a href="#contact" className="rounded bg-[#1d4ed8] px-4 py-2 text-white uppercase tracking-wide">
                                 Contact Us
                             </a>
                         </div>
@@ -295,7 +295,7 @@ export default function NewLandingPage() {
                         {categoryCards.map((item) => (
                             <div
                                 key={item.name}
-                                className="group overflow-hidden rounded-sm border border-white/10 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)]"
+                                    className="group overflow-hidden rounded-sm border border-white/10 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)]"
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
@@ -303,9 +303,9 @@ export default function NewLandingPage() {
                                     alt={item.name}
                                     className="h-20 w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                 />
-                                <div className="border-t border-white/5 bg-gradient-to-r from-[#2a2d36] via-[#1b1c24] to-[#2a2d36] p-3 text-center">
+                                <div className="border-t border-white/5 bg-gradient-to-r from-[#1d283a] via-[#111827] to-[#1d283a] p-3 text-center">
                                     <div className="text-xs font-bold uppercase tracking-wide">{item.name}</div>
-                                    <button className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#e10f18] px-3 py-1 text-[10px] font-bold uppercase tracking-wide hover:bg-[#ff2730]">
+                                    <button className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#1d4ed8] px-3 py-1 text-[10px] font-bold uppercase tracking-wide hover:bg-[#4338ca]">
                                         View Listings
                                     </button>
                                 </div>
@@ -345,9 +345,9 @@ export default function NewLandingPage() {
                         ].map((text, index) => (
                             <div
                                 key={index}
-                                className="group rounded-xl border border-white/10 bg-white/5 p-0 shadow-[0_18px_60px_rgba(0,0,0,0.65)] backdrop-blur-sm transition-transform transition-shadow duration-300 hover:-translate-y-1.5 hover:border-[#e10f18]/70 hover:shadow-[0_28px_80px_rgba(0,0,0,0.9)]"
+                                className="group rounded-xl border border-white/10 bg-white/5 p-0 shadow-[0_18px_60px_rgba(0,0,0,0.65)] backdrop-blur-sm transition-transform transition-shadow duration-300 hover:-translate-y-1.5 hover:border-[#4338ca]/70 hover:shadow-[0_28px_80px_rgba(0,0,0,0.9)]"
                             >
-                                <div className="flex items-center justify-between bg-gradient-to-r from-[#e10f18] to-[#ff2730] px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-white">
+                                <div className="flex items-center justify-between bg-gradient-to-r from-[#1d4ed8] to-[#1e40af] px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-white">
                                     <span>{index === 2 ? "Customer Story" : "Customer Review"}</span>
                                     <span>{String(index + 1).padStart(2, "0")}</span>
                                 </div>

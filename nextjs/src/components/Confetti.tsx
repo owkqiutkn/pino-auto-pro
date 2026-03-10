@@ -29,7 +29,7 @@ const Confetti: React.FC<ConfettiProps> = ({ active }) => {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        const colors = ['#ffd700', '#ff0000', '#00ff00', '#0000ff', '#ff00ff'];
+        const colors = ['#ffd700', '#1d4ed8', '#00ff00', '#0000ff', '#7c3aed'];
 
         particles.current = Array.from({ length: 50 }, (): Particle => ({
             x: canvas.width / 2,
