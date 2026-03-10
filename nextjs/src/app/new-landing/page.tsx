@@ -46,6 +46,13 @@ const featureCards = [
 export default function NewLandingPage() {
     return (
         <div className="bg-[#0f0f12] text-white">
+            <div className="fixed right-4 top-[150px] z-[9999] hidden flex-col gap-2 lg:flex" aria-label="Quick actions">
+                {["Get Approved", "Book Test Drive", "Value Trade"].map((item) => (
+                    <a key={item} href="#financing" className="rounded-sm bg-[#e10f18] px-3 py-2 text-[10px] font-bold uppercase">
+                        {item}
+                    </a>
+                ))}
+            </div>
             <section className="relative min-h-[440px] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={heroImage} alt="ML Autos hero" className="absolute inset-0 h-full w-full object-cover" />
@@ -62,10 +69,49 @@ export default function NewLandingPage() {
                             <a href="#financing" className="hover:text-[#ff4747]">Finance</a>
                             <a href="#about" className="hover:text-[#ff4747]">About</a>
                             <a href="#contact" className="hover:text-[#ff4747]">Contact</a>
-                            <div className="flex items-center gap-1 text-white/50">
-                                <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/40" />
-                                <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/70" />
-                                <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/30" />
+                            <div className="flex items-center gap-2 text-white/80">
+                                <a
+                                    href="https://facebook.com"
+                                    aria-label="Visit us on Facebook"
+                                    className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20 hover:bg-white/10 hover:ring-[#1877f2]/60"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src="https://img.icons8.com/?id=118466&format=png&size=32"
+                                        alt="Facebook"
+                                        className="h-3.5 w-3.5 brightness-0 invert"
+                                    />
+                                </a>
+                                <a
+                                    href="https://instagram.com"
+                                    aria-label="Visit us on Instagram"
+                                    className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20 hover:bg-white/10 hover:ring-[#e1306c]/60"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src="https://img.icons8.com/?id=32292&format=png&size=32"
+                                        alt="Instagram"
+                                        className="h-3.5 w-3.5 brightness-0 invert"
+                                    />
+                                </a>
+                                <a
+                                    href="https://x.com"
+                                    aria-label="Visit us on X"
+                                    className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20 hover:bg-white/10 hover:ring-white/70"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src="https://img.icons8.com/?id=01GWmP9aUoPj&format=png&size=32"
+                                        alt="X (Twitter)"
+                                        className="h-3.5 w-3.5 brightness-0 invert"
+                                    />
+                                </a>
                             </div>
                         </nav>
                     </header>
@@ -85,13 +131,6 @@ export default function NewLandingPage() {
                                 Search Inventory
                             </button>
                         </form>
-                        <div className="absolute right-4 top-[150px] hidden flex-col gap-2 lg:flex">
-                            {["Get Approved", "Book Test Drive", "Value Trade"].map((item) => (
-                                <a key={item} href="#financing" className="rounded-sm bg-[#e10f18] px-3 py-2 text-[10px] font-bold uppercase">
-                                    {item}
-                                </a>
-                            ))}
-                        </div>
                     </div>
                 </div>
             </section>
@@ -365,7 +404,7 @@ export default function NewLandingPage() {
                                 <img
                                     src="https://img.icons8.com/?id=118466&format=png&size=32"
                                     alt="Facebook"
-                                    className="h-4 w-4"
+                                    className="h-4 w-4 brightness-0 invert"
                                 />
                             </a>
                             <a
@@ -379,7 +418,7 @@ export default function NewLandingPage() {
                                 <img
                                     src="https://img.icons8.com/?id=32292&format=png&size=32"
                                     alt="Instagram"
-                                    className="h-4 w-4"
+                                    className="h-4 w-4 brightness-0 invert"
                                 />
                             </a>
                             <a
@@ -393,7 +432,7 @@ export default function NewLandingPage() {
                                 <img
                                     src="https://img.icons8.com/?id=01GWmP9aUoPj&format=png&size=32"
                                     alt="X (Twitter)"
-                                    className="h-4 w-4"
+                                    className="h-4 w-4 brightness-0 invert"
                                 />
                             </a>
                         </div>
