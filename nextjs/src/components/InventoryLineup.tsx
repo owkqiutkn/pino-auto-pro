@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 type Segment = "featured" | "new-arrivals";
 
@@ -26,6 +27,7 @@ function formatPrice(value: number) {
 }
 
 export default function InventoryLineup() {
+    const t = useTranslations("NewLanding.inventorySection");
     const [segment, setSegment] = useState<Segment>("featured");
     const [page, setPage] = useState(1);
     const [cars, setCars] = useState<Car[]>([]);
@@ -76,7 +78,7 @@ export default function InventoryLineup() {
             <div className="mx-auto max-w-6xl px-4">
                 <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                     <h2 className="text-lg font-black uppercase">
-                        Inventory Lineup
+                        {t("title")}
                     </h2>
                     <div className="flex w-full flex-col gap-2 text-[10px] font-bold uppercase md:w-auto md:flex-row">
                         <button
@@ -87,8 +89,8 @@ export default function InventoryLineup() {
                                     ? "w-full rounded-sm bg-[#1d4ed8] px-2 py-1 text-center text-white md:w-auto"
                                     : "w-full rounded-sm bg-[#1f1f25] px-2 py-1 text-center text-white hover:bg-[#2d2d35] md:w-auto"
                             }
-                        >
-                            Featured
+                            >
+                            {t("segments.featured")}
                         </button>
                         <button
                             type="button"
@@ -98,14 +100,14 @@ export default function InventoryLineup() {
                                     ? "w-full rounded-sm bg-[#1d4ed8] px-2 py-1 text-center text-white md:w-auto"
                                     : "w-full rounded-sm bg-[#1f1f25] px-2 py-1 text-center text-white hover:bg-[#2d2d35] md:w-auto"
                             }
-                        >
-                            New Arrivals
+                            >
+                            {t("segments.newArrivals")}
                         </button>
                         <Link
                             href="/inventory"
                             className="w-full rounded-sm border border-[#1d4ed8] px-2 py-1 text-center text-[#1d4ed8] hover:bg-[#1d4ed8]/5 md:w-auto"
-                        >
-                            View All
+                            >
+                            {t("cta.viewAll")}
                         </Link>
                     </div>
                 </div>
@@ -127,7 +129,7 @@ export default function InventoryLineup() {
                     </div>
                 ) : cars.length === 0 ? (
                     <p className="py-8 text-center text-sm text-gray-600">
-                        No vehicles in this section right now.
+                        {t("emptyState.message")}
                     </p>
                 ) : (
                     <>
@@ -148,6 +150,7 @@ export default function InventoryLineup() {
                                         />
                                     ) : (
                                         <div className="flex h-32 w-full items-center justify-center text-gray-400 text-xs">
+                                            {/* Intentionally left as plain text; can be localized if you expose it often */}
                                             No image
                                         </div>
                                     )}
@@ -172,10 +175,10 @@ export default function InventoryLineup() {
                                     </p>
                                     <div className="mt-2 flex items-center justify-between text-[10px]">
                                         <span className="rounded bg-gray-100 px-2 py-1">
-                                            Certified
+                                            {t("badges.certified")}
                                         </span>
                                         <span className="font-bold text-[#1f1f25]">
-                                            View Details
+                                            {t("badges.viewDetails")}
                                         </span>
                                     </div>
                                 </div>
@@ -190,10 +193,10 @@ export default function InventoryLineup() {
                                 disabled={page === 1}
                                 className="rounded-sm border border-[#1f1f25] px-3 py-1.5 text-sm font-bold uppercase text-[#1f1f25] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1f1f25] hover:text-white"
                             >
-                                Previous
+                                {t("pagination.previous")}
                             </button>
                             <span className="text-sm font-medium text-gray-600">
-                                Page {page} of {totalPages}
+                                {t("pagination.pageOf", { page, totalPages })}
                             </span>
                             <button
                                 type="button"
@@ -201,7 +204,7 @@ export default function InventoryLineup() {
                                 disabled={page === totalPages}
                                 className="rounded-sm border border-[#1f1f25] px-3 py-1.5 text-sm font-bold uppercase text-[#1f1f25] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1f1f25] hover:text-white"
                             >
-                                Next
+                                {t("pagination.next")}
                             </button>
                         </div>
                     )}

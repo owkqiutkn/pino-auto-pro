@@ -1,0 +1,265 @@
+{
+  "Navbar": {
+    "brand": "Pino Auto Pro",
+    "links": {
+      "inventory": "Inventory",
+      "about": "About",
+      "contact": "Contact"
+    },
+    "language": {
+      "label": "Language",
+      "en": "English",
+      "fr": "Français"
+    }
+  },
+  "NewLanding": {
+    "hero": {
+      "title": "Luxury and Performance Vehicles, Ready to Drive.",
+      "subtitle": "Find your perfect match from our curated inventory and get approved fast.",
+      "filters": {
+        "year": "Year",
+        "brand": "Brand",
+        "maxPrice": "Max Price",
+        "search": "Search Inventory"
+      }
+    },
+    "features": {
+      "viewInventory": {
+        "title": "View Inventory",
+        "description": "Browse from our selection of pre-owned cars, trucks and SUVs."
+      },
+      "applyFinancing": {
+        "title": "Apply For Financing",
+        "description": "Count on our finance team for hassle-free savings!"
+      },
+      "contactUs": {
+        "title": "Contact Us",
+        "description": "Call or email our team for more information!"
+      }
+    },
+    "financing": {
+      "title": "Apply For Financing",
+      "body": "We offer financing options to help you get behind the wheel. Just ask our team will walk you through your options and find a plan that works for you.",
+      "cta": "Get in touch"
+    },
+    "mission": {
+      "title": "Our Mission",
+      "intro": "At Pino Auto Pro, our mission is to redefine automotive service around five core principles.",
+      "points": {
+        "customerCare": {
+          "title": "Customer-Centric Care:",
+          "body": "Your satisfaction is the focus from first visit to final keys."
+        },
+        "serviceExcellence": {
+          "title": "Service Excellence:",
+          "body": "Skilled technicians deliver high-quality, reliable automotive solutions."
+        },
+        "transparency": {
+          "title": "Transparency & Trust:",
+          "body": "Clear explanations, upfront pricing, and honest recommendations."
+        },
+        "innovation": {
+          "title": "Innovation & Expertise:",
+          "body": "Up-to-date with the latest automotive technology for efficient results."
+        },
+        "community": {
+          "title": "Community Engagement:",
+          "body": "Supporting local initiatives and contributing positively to our community."
+        }
+      },
+      "outro": "We are committed to exceeding expectations, building long-term relationships, and setting a new standard in automotive care and customer service.",
+      "buttons": {
+        "viewInventory": "View Inventory",
+        "contactUs": "Contact Us"
+      }
+    },
+    "about": {
+      "title": "About Pino Auto Pro",
+      "paragraph1": "Pino Auto Pro is your trusted pre-owned vehicle destination in Mississauga, making every step of buying a car clear, simple, and stress-free. We offer a carefully selected lineup of quality used cars, trucks, and SUVs, each thoroughly inspected for reliability and real value.",
+      "paragraph2": "Our friendly team helps you choose the right vehicle, explains your options in plain language, and works with you on flexible financing that fits your budget. With fair trade-in values, transparent deals, and a genuine focus on satisfaction, we want you to drive away confident in your decision.",
+      "paragraph3": "Choose Pino Auto Pro for quality vehicles, honest service, and a smooth buying experience in Mississauga and beyond.",
+      "cta": "Contact Us"
+    },
+    "categories": {
+      "title": "Browse by Category",
+      "subtitle": "Sedan • SUV • Coupe • Truck",
+      "items": {
+        "sedan": "Sedan",
+        "suv": "SUV",
+        "coupe": "Coupe",
+        "truck": "Truck"
+      },
+      "viewListings": "View Listings"
+    },
+    "reviews": {
+      "label": "Customer Reviews",
+      "title": "What Our Customers Say",
+      "summary": "4.9/5 from 500+ customer reviews",
+      "items": {
+        "james": {
+          "name": "James M.",
+          "role": "Buyer",
+          "text": "Smooth purchase process and very fair pricing. Team was responsive and transparent from day one."
+        },
+        "sarah": {
+          "name": "Sarah K.",
+          "role": "Buyer",
+          "text": "Fast approval and excellent support. The car was exactly as described and in great condition."
+        },
+        "mike": {
+          "name": "Mike T.",
+          "role": "Seller",
+          "text": "Great after-sale support and clean paperwork. I recommend this dealership to friends."
+        }
+      }
+    },
+    "footer": {
+      "contactTitle": "Contact",
+      "addressLine1": "1230 Automotive Blvd",
+      "phone": "Sales: (555) 123-4567",
+      "email": "info@pinoautopro.com",
+      "hoursTitle": "Hours",
+      "hours": {
+        "mon": "Mon: 9am-7pm",
+        "tue": "Tue: 9am-7pm",
+        "wed": "Wed: 9am-7pm",
+        "thu": "Thu: 9am-7pm",
+        "fri": "Fri: 9am-7pm",
+        "sat": "Sat: 10am-5pm",
+        "sun": "Sun: Closed"
+      },
+      "inventoryTitle": "Inventory",
+      "inventoryItems": {
+        "sedan": "Sedan",
+        "suv": "SUV",
+        "coupe": "Coupe"
+      },
+      "poweredBy": "Powered by Pino Auto Pro.",
+      "copyright": "Copyright 2026 Pino Auto Pro."
+    },
+    "contactForm": {
+      "nameLabel": "Your Name",
+      "namePlaceholder": "Enter your full name",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "Enter your email",
+      "messageLabel": "Write Your Message",
+      "messagePlaceholder": "Write us your question here...",
+      "submit": "Send Message"
+    },
+    "inventorySection": {
+      "title": "Inventory Lineup",
+      "segments": {
+        "featured": "Featured",
+        "newArrivals": "New Arrivals"
+      },
+      "cta": {
+        "viewAll": "View All"
+      },
+      "emptyState": {
+        "message": "No vehicles in this section right now."
+      },
+      "badges": {
+        "certified": "Certified",
+        "viewDetails": "View Details"
+      },
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "pageOf": "Page {page} of {totalPages}"
+      }
+    }
+  },
+  "Inventory": {
+    "page": {
+      "heroAria": "Inventory hero section",
+      "errorTitle": "Inventory",
+      "errorMessage": "Failed to load vehicles.",
+      "title": "Vehicles In Stock",
+      "count": "Showing {shown} of {total} vehicles",
+      "card": {
+        "noImage": "No image",
+        "fallbackBodyStyle": "4D",
+        "stockPrefix": "Stock #",
+        "transmission": "Manual / Standard",
+        "dealerPriceLabel": "Dealer Price",
+        "taxNote": "+ HST and Licensing",
+        "fairDeal": "▲ FAIR DEAL",
+        "fairDealSource": "CarGurus",
+        "viewDetails": "View Details"
+      },
+      "emptyFiltered": "No vehicles match your filters."
+    },
+    "filters": {
+      "heading": "Filter Results",
+      "bodyTypes": "Body Types",
+      "anyBodyType": "Any",
+      "make": "Make",
+      "allMakes": "All Makes",
+      "model": "Model",
+      "modelsPlaceholder": "Models",
+      "price": "Price",
+      "noMinMax": "No minimum or maximum",
+      "setRange": "Set range below",
+      "priceMin": "Min",
+      "priceMax": "Max",
+      "mileage": "Mileage",
+      "mileagePlaceholder": "KM",
+      "year": "Year",
+      "yearPlaceholder": "YYYY",
+      "exteriorColor": "Exterior Colour",
+      "anyExteriorColor": "Any",
+      "transmission": "Transmission",
+      "anyTransmission": "Any",
+      "engine": "Engine",
+      "anyEngine": "Any",
+      "fuel": "Fuel",
+      "anyFuel": "Any",
+      "reset": "Reset Filters"
+    },
+    "search": {
+      "placeholder": "Search by make and model..."
+    },
+    "sort": {
+      "default": "Sort By",
+      "priceAsc": "Price: Low to High",
+      "priceDesc": "Price: High to Low",
+      "yearDesc": "Year: Newest First",
+      "yearAsc": "Year: Oldest First"
+    }
+  },
+  "App": {
+    "Dashboard": {
+      "welcome": "Welcome, {name}! 👋",
+      "memberForDays": "Member for {days} days",
+      "quickActionsTitle": "Quick Actions",
+      "quickActionsDescription": "Frequently used features",
+      "userSettingsTitle": "User Settings",
+      "userSettingsDescription": "Manage your account preferences"
+    },
+    "Cars": {
+      "title": "Cars",
+      "addCar": "Add Car",
+      "loadError": "Failed to load cars.",
+      "missingTable": "Cars table is missing. Run Supabase migrations and reload.",
+      "deleteConfirm": "Delete this car?",
+      "deleteError": "Failed to delete car.",
+      "emptyTitle": "No cars yet",
+      "emptyDescription": "Add your first vehicle to start managing inventory.",
+      "table": {
+        "image": "Image",
+        "title": "Title",
+        "price": "Price",
+        "year": "Year",
+        "km": "KM",
+        "status": "Status",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+      }
+    }
+  }
+}
+

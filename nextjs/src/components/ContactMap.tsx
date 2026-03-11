@@ -3,11 +3,13 @@
 import {useEffect, useRef} from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import {useTranslations} from "next-intl";
 
 const defaultCenter = {lat: 45.5019, lng: -73.5674};
 
 export default function ContactMap() {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
+    const t = useTranslations("NewLanding.contactForm");
 
     useEffect(() => {
         if (!mapContainerRef.current) return;
@@ -53,34 +55,34 @@ export default function ContactMap() {
                             <form className="space-y-4 w-full">
                                 <div>
                                     <label htmlFor="contact-name" className="block text-xs font-semibold uppercase tracking-wide text-gray-600">
-                                        Your Name
+                                        {t("nameLabel")}
                                     </label>
                                     <input
                                         id="contact-name"
                                         type="text"
-                                        placeholder="Enter your full name"
+                                        placeholder={t("namePlaceholder")}
                                         className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:border-[#1d4ed8] focus:ring-2 focus:ring-[#1d4ed8]/40"
                                     />
                                 </div>
                                 <div>
                                     <label htmlFor="contact-email" className="block text-xs font-semibold uppercase tracking-wide text-gray-600">
-                                        Email Address
+                                        {t("emailLabel")}
                                     </label>
                                     <input
                                         id="contact-email"
                                         type="email"
-                                        placeholder="Enter your email"
+                                        placeholder={t("emailPlaceholder")}
                                         className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:border-[#1d4ed8] focus:ring-2 focus:ring-[#1d4ed8]/40"
                                     />
                                 </div>
                                 <div>
                                     <label htmlFor="contact-message" className="block text-xs font-semibold uppercase tracking-wide text-gray-600">
-                                        Write Your Message
+                                        {t("messageLabel")}
                                     </label>
                                     <textarea
                                         id="contact-message"
                                         rows={3}
-                                        placeholder="Write us your question here..."
+                                        placeholder={t("messagePlaceholder")}
                                         className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:border-[#1d4ed8] focus:ring-2 focus:ring-[#1d4ed8]/40"
                                     />
                                 </div>
@@ -88,7 +90,7 @@ export default function ContactMap() {
                                     type="button"
                                     className="inline-flex w-full items-center justify-center rounded-md bg-[#1d4ed8] px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-[#1e40af]"
                                 >
-                                    Send Message
+                                    {t("submit")}
                                 </button>
                             </form>
                         </div>

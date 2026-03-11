@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 const DEBOUNCE_MS = 350;
 
@@ -13,6 +14,7 @@ export default function InventorySearchInput({ initialValue = "" }: InventorySea
     const router = useRouter();
     const searchParams = useSearchParams();
     const [value, setValue] = useState(initialValue);
+    const t = useTranslations("Inventory.search");
 
     useEffect(() => {
         setValue(initialValue);
@@ -40,7 +42,7 @@ export default function InventorySearchInput({ initialValue = "" }: InventorySea
     return (
         <input
             type="search"
-            placeholder="Search by make and model..."
+            placeholder={t("placeholder")}
             value={value}
             onChange={handleChange}
             className="flex-1 rounded border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 sm:max-w-xs"

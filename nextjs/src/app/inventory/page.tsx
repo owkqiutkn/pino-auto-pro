@@ -6,6 +6,7 @@ import InventorySortSelect from "@/components/InventorySortSelect";
 import SiteNavbar from "@/components/SiteNavbar";
 import { createSSRSassClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/types";
+import { getTranslations } from "next-intl/server";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
@@ -52,12 +53,13 @@ function formatPrice(value: number) {
     }).format(value);
 }
 
-function InventoryHero() {
+async function InventoryHero() {
+    const t = await getTranslations("Inventory.page");
     return (
         <section
             className="relative overflow-hidden"
             style={{ backgroundImage: `url(${INVENTORY_HERO_IMAGE})`, backgroundPosition: "center 10%", backgroundSize: "cover" }}
-            aria-label="Inventory hero section"
+            aria-label={t("heroAria")}
         >
             <div className="absolute inset-0 bg-black/70" />
             <div className="relative z-[10020]">
@@ -91,6 +93,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
     const sort = params.sort?.trim() || undefined;
 
     const client = await createSSRSassClient();
+    const t = await getTranslations("Inventory.page");
     const [
         { data: cars, error },
         { data: brandsData },
@@ -128,8 +131,8 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
             <div className="min-h-screen bg-white">
                 <InventoryHero />
                 <div className="max-w-5xl mx-auto px-4 py-16">
-                    <h1 className="text-3xl font-bold text-gray-900">Inventory</h1>
-                    <p className="mt-6 text-red-600">Failed to load vehicles.</p>
+                    <h1 className="text-3xl font-bold text-gray-900">{t("errorTitle")}</h1>
+                    <p className="mt-6 text-red-600">{t("errorMessage")}</p>
                 </div>
             </div>
         );
@@ -209,7 +212,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                 {/* Main content */}
                 <main className="min-w-0 flex-1">
                     <h1 className="text-2xl font-bold text-gray-900 md:text-3xl">
-                        Vehicles In Stock
+                        {t("title")}
                     </h1>
 
                     <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -217,7 +220,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                             <InventorySearchInput initialValue={searchQuery ?? ""} />
                         </Suspense>
                         <p className="text-sm text-gray-600">
-                            Showing {filteredCars.length} of {carsList.length} Vehicles
+                            {t("count", { shown: filteredCars.length, total: carsList.length })}
                         </p>
                         <Suspense fallback={<div className="h-10 w-36 animate-pulse rounded border bg-gray-100" />}>
                             <InventorySortSelect currentSort={sort ?? ""} />
@@ -244,11 +247,11 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                             />
                                         ) : (
                                             <div className="flex h-full w-full items-center justify-center text-gray-400">
-                                                No image
+                                                {t("card.noImage")}
                                             </div>
                                         )}
                                         <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#0c1320] text-[8px] font-bold text-white">
-                                            M&L
+                                            PAP
                                         </div>
                                     </div>
                                     <div className="p-4">
@@ -256,15 +259,18 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                             {car.year} {car.brand} {car.model}
                                         </h2>
                                         <p className="mt-0.5 text-sm text-gray-600">
-                                            {car.category ?? "4D"} {car.model} {car.km.toLocaleString()} Km
+                                            {(car.category ?? t("card.fallbackBodyStyle"))} {car.model} {car.km.toLocaleString()} km
                                         </p>
                                         <ul className="mt-3 space-y-0.5 text-xs text-gray-600">
                                             <li>{car.km.toLocaleString()} km</li>
-                                            <li>Stock # {car.id.slice(0, 6).toUpperCase()}</li>
-                                            <li>Manual / Standard</li>
+                                            <li>
+                                                {t("card.stockPrefix")}
+                                                {car.id.slice(0, 6).toUpperCase()}
+                                            </li>
+                                            <li>{t("card.transmission")}</li>
                                         </ul>
                                         <div className="mt-3">
-                                            <p className="text-[10px] text-gray-500">Dealer Price</p>
+                                            <p className="text-[10px] text-gray-500">{t("card.dealerPriceLabel")}</p>
                                             {car.discounted_price != null ? (
                                                 <p>
                                                     <span className="text-sm text-gray-500 line-through">
@@ -280,20 +286,20 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                                 </p>
                                             )}
                                             <p className="mt-0.5 text-[10px] text-gray-500">
-                                                + HST and Licensing
+                                                {t("card.taxNote")}
                                             </p>
                                         </div>
                                         <div className="mt-3 flex items-center gap-2 text-xs text-gray-600">
                                             <span className="rounded bg-emerald-100 px-2 py-0.5 text-emerald-700">
-                                                ▲ FAIR DEAL
+                                                {t("card.fairDeal")}
                                             </span>
-                                            <span className="text-[10px]">CarGurus</span>
+                                            <span className="text-[10px]">{t("card.fairDealSource")}</span>
                                         </div>
                                         <button
                                             type="button"
                                             className="mt-4 w-full rounded bg-[#0c1320] py-2 text-sm font-bold text-white hover:bg-gray-800"
                                         >
-                                            View Details
+                                            {t("card.viewDetails")}
                                         </button>
                                     </div>
                                 </Link>
@@ -303,7 +309,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
 
                     {filteredCars.length === 0 && (
                         <div className="py-16 text-center text-gray-500">
-                            No vehicles match your filters.
+                            {t("emptyFiltered")}
                         </div>
                     )}
                 </main>

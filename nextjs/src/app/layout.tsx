@@ -2,35 +2,39 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from '@vercel/analytics/next';
 import CookieConsent from "@/components/Cookies";
-import { GoogleAnalytics } from '@next/third-parties/google'
-
+import { GoogleAnalytics } from '@next/third-parties/google';
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: process.env.NEXT_PUBLIC_PRODUCTNAME,
   description: "The best way to build your SaaS product.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  let theme = process.env.NEXT_PUBLIC_THEME
-  if(!theme) {
-    theme = "theme-sass3"
+  let theme = process.env.NEXT_PUBLIC_THEME;
+  if (!theme) {
+    theme = "theme-sass3";
   }
   const gaID = process.env.NEXT_PUBLIC_GOOGLE_TAG;
-  return (
-    <html lang="en">
-    <body className={theme}>
-      {children}
-      <Analytics />
-      <CookieConsent />
-      { gaID && (
-          <GoogleAnalytics gaId={gaID}/>
-      )}
+  const locale = await getLocale();
+  const messages = await getMessages();
 
-    </body>
+  return (
+    <html lang={locale}>
+      <body className={theme}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          {children}
+        </NextIntlClientProvider>
+        <Analytics />
+        <CookieConsent />
+        {gaID && <GoogleAnalytics gaId={gaID} />}
+      </body>
     </html>
   );
 }
+

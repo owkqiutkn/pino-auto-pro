@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 const DEBOUNCE_MS = 350;
 
@@ -56,6 +57,7 @@ export default function InventoryFilters({
 }: InventoryFiltersProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const t = useTranslations("Inventory.filters");
 
     const [priceMin, setPriceMin] = useState<number | "">(toNum(filters.priceMin));
     const [priceMax, setPriceMax] = useState<number | "">(toNum(filters.priceMax));
@@ -118,13 +120,13 @@ export default function InventoryFilters({
         <aside className="w-64 shrink-0">
             <div className="space-y-5">
                 <div className="flex items-center gap-2">
-                    <h2 className="text-sm font-bold uppercase text-gray-800">Filter Results</h2>
+                    <h2 className="text-sm font-bold uppercase text-gray-800">{t("heading")}</h2>
                     <span className="text-gray-500" aria-hidden="true">☰</span>
                 </div>
 
                 <div>
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
-                        Body Types
+                        {t("bodyTypes")}
                     </label>
                     <select
                         name="category"
@@ -132,7 +134,7 @@ export default function InventoryFilters({
                         onChange={handleSelectChange("category")}
                         className={selectClass}
                     >
-                        <option value="">Any</option>
+                        <option value="">{t("anyBodyType")}</option>
                         {categories.map((c) => (
                             <option key={c.id} value={c.name}>
                                 {c.name}
@@ -143,7 +145,7 @@ export default function InventoryFilters({
 
                 <div>
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
-                        Make
+                        {t("make")}
                     </label>
                     <select
                         name="brand"
@@ -151,7 +153,7 @@ export default function InventoryFilters({
                         onChange={handleSelectChange("brand")}
                         className={selectClass}
                     >
-                        <option value="">All Makes</option>
+                        <option value="">{t("allMakes")}</option>
                         {brands.map((b) => (
                             <option key={b.id} value={b.name}>
                                 {b.name}
@@ -162,7 +164,7 @@ export default function InventoryFilters({
 
                 <div>
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
-                        Model
+                        {t("model")}
                     </label>
                     <select
                         name="model"
@@ -170,7 +172,7 @@ export default function InventoryFilters({
                         onChange={handleSelectChange("model")}
                         className={selectClass}
                     >
-                        <option value="">Models</option>
+                        <option value="">{t("modelsPlaceholder")}</option>
                         {models.map((m) => (
                             <option key={m} value={m}>
                                 {m}
@@ -181,22 +183,22 @@ export default function InventoryFilters({
 
                 <div>
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
-                        Price
+                        {t("price")}
                     </label>
                     <p className="mb-2 text-xs text-gray-500">
-                        {!priceMin && !priceMax ? "No minimum or maximum" : "Set range below"}
+                        {!priceMin && !priceMax ? t("noMinMax") : t("setRange")}
                     </p>
                     <div className="flex gap-2">
                         <input
                             type="number"
-                            placeholder="Min"
+                            placeholder={t("priceMin")}
                             value={priceMin}
                             onChange={(e) => setPriceMin(toNum(e.target.value))}
                             className={inputClass}
                         />
                         <input
                             type="number"
-                            placeholder="Max"
+                            placeholder={t("priceMax")}
                             value={priceMax}
                             onChange={(e) => setPriceMax(toNum(e.target.value))}
                             className={inputClass}
@@ -206,19 +208,19 @@ export default function InventoryFilters({
 
                 <div>
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
-                        Mileage
+                        {t("mileage")}
                     </label>
                     <div className="flex gap-2">
                         <input
                             type="number"
-                            placeholder="KM"
+                            placeholder={t("mileagePlaceholder")}
                             value={kmMin}
                             onChange={(e) => setKmMin(toNum(e.target.value))}
                             className={inputClass}
                         />
                         <input
                             type="number"
-                            placeholder="KM"
+                            placeholder={t("mileagePlaceholder")}
                             value={kmMax}
                             onChange={(e) => setKmMax(toNum(e.target.value))}
                             className={inputClass}
@@ -228,12 +230,12 @@ export default function InventoryFilters({
 
                 <div>
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
-                        Year
+                        {t("year")}
                     </label>
                     <div className="flex gap-2">
                         <input
                             type="number"
-                            placeholder="YYYY"
+                            placeholder={t("yearPlaceholder")}
                             min={1990}
                             max={currentYear}
                             value={yearMin}
@@ -242,7 +244,7 @@ export default function InventoryFilters({
                         />
                         <input
                             type="number"
-                            placeholder="YYYY"
+                            placeholder={t("yearPlaceholder")}
                             min={1990}
                             max={currentYear}
                             value={yearMax}
@@ -254,7 +256,7 @@ export default function InventoryFilters({
 
                 <div>
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
-                        Exterior Colour
+                        {t("exteriorColor")}
                     </label>
                     <select
                         name="exteriorColor"
@@ -262,7 +264,7 @@ export default function InventoryFilters({
                         onChange={handleSelectChange("exteriorColor")}
                         className={selectClass}
                     >
-                        <option value="">Any</option>
+                        <option value="">{t("anyExteriorColor")}</option>
                         {exteriorColors.map((color) => (
                             <option key={color.id} value={color.name}>
                                 {color.name}
@@ -273,7 +275,7 @@ export default function InventoryFilters({
 
                 <div>
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
-                        Transmission
+                        {t("transmission")}
                     </label>
                     <select
                         name="transmission"
@@ -281,7 +283,7 @@ export default function InventoryFilters({
                         onChange={handleSelectChange("transmission")}
                         className={selectClass}
                     >
-                        <option value="">Any</option>
+                        <option value="">{t("anyTransmission")}</option>
                         {transmissions.map((transmission) => (
                             <option key={transmission.id} value={transmission.name}>
                                 {transmission.name}
@@ -292,7 +294,7 @@ export default function InventoryFilters({
 
                 <div>
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
-                        Engine
+                        {t("engine")}
                     </label>
                     <select
                         name="engine"
@@ -300,7 +302,7 @@ export default function InventoryFilters({
                         onChange={handleSelectChange("engine")}
                         className={selectClass}
                     >
-                        <option value="">Any</option>
+                        <option value="">{t("anyEngine")}</option>
                         {engines.map((engine) => (
                             <option key={engine.id} value={engine.name}>
                                 {engine.name}
@@ -311,7 +313,7 @@ export default function InventoryFilters({
 
                 <div>
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
-                        Fuel
+                        {t("fuel")}
                     </label>
                     <select
                         name="fuel"
@@ -319,7 +321,7 @@ export default function InventoryFilters({
                         onChange={handleSelectChange("fuel")}
                         className={selectClass}
                     >
-                        <option value="">Any</option>
+                        <option value="">{t("anyFuel")}</option>
                         {fuels.map((fuel) => (
                             <option key={fuel.id} value={fuel.name}>
                                 {fuel.name}
@@ -332,7 +334,7 @@ export default function InventoryFilters({
                     href="/inventory"
                     className="block w-full rounded border border-gray-300 py-2 text-center text-sm font-bold uppercase text-gray-700 hover:bg-gray-50"
                 >
-                    Reset Filters
+                    {t("reset")}
                 </Link>
             </div>
         </aside>

@@ -1,0 +1,265 @@
+{
+  "Navbar": {
+    "brand": "Pino Auto Pro",
+    "links": {
+      "inventory": "Inventaire",
+      "about": "À propos",
+      "contact": "Contact"
+    },
+    "language": {
+      "label": "Langue",
+      "en": "Anglais",
+      "fr": "Français"
+    }
+  },
+  "NewLanding": {
+    "hero": {
+      "title": "Véhicules de luxe et de performance, prêts à prendre la route.",
+      "subtitle": "Trouvez le véhicule idéal dans notre inventaire sélectionné et obtenez une approbation rapide.",
+      "filters": {
+        "year": "Année",
+        "brand": "Marque",
+        "maxPrice": "Prix max",
+        "search": "Rechercher dans l'inventaire"
+      }
+    },
+    "features": {
+      "viewInventory": {
+        "title": "Voir l'inventaire",
+        "description": "Parcourez notre sélection de voitures, camions et VUS d'occasion."
+      },
+      "applyFinancing": {
+        "title": "Demander du financement",
+        "description": "Faites confiance à notre équipe de financement pour des économies sans tracas !"
+      },
+      "contactUs": {
+        "title": "Contactez-nous",
+        "description": "Appelez ou écrivez à notre équipe pour plus d'informations !"
+      }
+    },
+    "financing": {
+      "title": "Demander du financement",
+      "body": "Nous offrons des options de financement pour vous aider à prendre le volant. Notre équipe vous expliquera vos options et trouvera un plan adapté à votre budget.",
+      "cta": "Nous joindre"
+    },
+    "mission": {
+      "title": "Notre mission",
+      "intro": "Chez Pino Auto Pro, notre mission est de redéfinir le service automobile autour de cinq principes clés.",
+      "points": {
+        "customerCare": {
+          "title": "Service axé sur le client :",
+          "body": "Votre satisfaction est au cœur de chaque étape, de la première visite à la remise des clés."
+        },
+        "serviceExcellence": {
+          "title": "Excellence du service :",
+          "body": "Des techniciens qualifiés offrent des solutions automobiles fiables et de haute qualité."
+        },
+        "transparency": {
+          "title": "Transparence et confiance :",
+          "body": "Explications claires, prix annoncés à l'avance et recommandations honnêtes."
+        },
+        "innovation": {
+          "title": "Innovation et expertise :",
+          "body": "Toujours à jour avec les dernières technologies automobiles pour des résultats efficaces."
+        },
+        "community": {
+          "title": "Engagement communautaire :",
+          "body": "Soutenir les initiatives locales et contribuer positivement à notre communauté."
+        }
+      },
+      "outro": "Nous sommes déterminés à dépasser les attentes, à bâtir des relations à long terme et à établir une nouvelle référence en matière de service automobile et d'expérience client.",
+      "buttons": {
+        "viewInventory": "Voir l'inventaire",
+        "contactUs": "Contactez-nous"
+      }
+    },
+    "about": {
+      "title": "À propos de Pino Auto Pro",
+      "paragraph1": "Pino Auto Pro est votre destination de confiance pour les véhicules d'occasion à Mississauga, où chaque étape de l'achat est claire, simple et sans stress. Nous offrons une sélection soignée de voitures, camions et VUS d'occasion, tous inspectés en profondeur pour leur fiabilité et leur véritable valeur.",
+      "paragraph2": "Notre équipe chaleureuse vous aide à choisir le bon véhicule, explique vos options en termes simples et travaille avec vous sur un financement flexible adapté à votre budget. Avec des valeurs d'échange justes, des ententes transparentes et une réelle priorité accordée à votre satisfaction, nous voulons que vous repartiez en toute confiance.",
+      "paragraph3": "Choisissez Pino Auto Pro pour des véhicules de qualité, un service honnête et une expérience d'achat fluide à Mississauga et ailleurs.",
+      "cta": "Contactez-nous"
+    },
+    "categories": {
+      "title": "Parcourir par catégorie",
+      "subtitle": "Berline • VUS • Coupé • Camion",
+      "items": {
+        "sedan": "Berline",
+        "suv": "VUS",
+        "coupe": "Coupé",
+        "truck": "Camion"
+      },
+      "viewListings": "Voir les annonces"
+    },
+    "reviews": {
+      "label": "Avis des clients",
+      "title": "Ce que disent nos clients",
+      "summary": "4,9/5 selon plus de 500 avis",
+      "items": {
+        "james": {
+          "name": "James M.",
+          "role": "Acheteur",
+          "text": "Processus d'achat fluide et prix très raisonnables. L'équipe a été réactive et transparente dès le premier jour."
+        },
+        "sarah": {
+          "name": "Sarah K.",
+          "role": "Acheteuse",
+          "text": "Approbation rapide et excellent accompagnement. La voiture correspondait exactement à la description et était en excellent état."
+        },
+        "mike": {
+          "name": "Mike T.",
+          "role": "Vendeur",
+          "text": "Excellent suivi après la vente et documents clairs. Je recommande ce concessionnaire à mes amis."
+        }
+      }
+    },
+    "footer": {
+      "contactTitle": "Contact",
+      "addressLine1": "1230 Automotive Blvd",
+      "phone": "Ventes : (555) 123-4567",
+      "email": "info@pinoautopro.com",
+      "hoursTitle": "Heures d'ouverture",
+      "hours": {
+        "mon": "Lun : 9 h à 19 h",
+        "tue": "Mar : 9 h à 19 h",
+        "wed": "Mer : 9 h à 19 h",
+        "thu": "Jeu : 9 h à 19 h",
+        "fri": "Ven : 9 h à 19 h",
+        "sat": "Sam : 10 h à 17 h",
+        "sun": "Dim : Fermé"
+      },
+      "inventoryTitle": "Inventaire",
+      "inventoryItems": {
+        "sedan": "Berline",
+        "suv": "VUS",
+        "coupe": "Coupé"
+      },
+      "poweredBy": "Propulsé par Pino Auto Pro.",
+      "copyright": "Copyright 2026 Pino Auto Pro."
+    },
+    "contactForm": {
+      "nameLabel": "Votre nom",
+      "namePlaceholder": "Entrez votre nom complet",
+      "emailLabel": "Adresse courriel",
+      "emailPlaceholder": "Entrez votre adresse courriel",
+      "messageLabel": "Écrivez votre message",
+      "messagePlaceholder": "Écrivez-nous votre question ici...",
+      "submit": "Envoyer le message"
+    },
+    "inventorySection": {
+      "title": "Sélection de l'inventaire",
+      "segments": {
+        "featured": "En vedette",
+        "newArrivals": "Nouveaux arrivages"
+      },
+      "cta": {
+        "viewAll": "Voir tout"
+      },
+      "emptyState": {
+        "message": "Aucun véhicule dans cette section pour le moment."
+      },
+      "badges": {
+        "certified": "Certifié",
+        "viewDetails": "Voir les détails"
+      },
+      "pagination": {
+        "previous": "Précédent",
+        "next": "Suivant",
+        "pageOf": "Page {page} sur {totalPages}"
+      }
+    }
+  },
+  "Inventory": {
+    "page": {
+      "heroAria": "Section héros de l'inventaire",
+      "errorTitle": "Inventaire",
+      "errorMessage": "Échec du chargement des véhicules.",
+      "title": "Véhicules en stock",
+      "count": "Affichage de {shown} sur {total} véhicules",
+      "card": {
+        "noImage": "Aucune image",
+        "fallbackBodyStyle": "4P",
+        "stockPrefix": "No de stock ",
+        "transmission": "Manuelle / Standard",
+        "dealerPriceLabel": "Prix du concessionnaire",
+        "taxNote": "+ TVH et immatriculation",
+        "fairDeal": "▲ BON PRIX",
+        "fairDealSource": "CarGurus",
+        "viewDetails": "Voir les détails"
+      },
+      "emptyFiltered": "Aucun véhicule ne correspond à vos filtres."
+    },
+    "filters": {
+      "heading": "Filtrer les résultats",
+      "bodyTypes": "Types de carrosserie",
+      "anyBodyType": "Tous",
+      "make": "Marque",
+      "allMakes": "Toutes les marques",
+      "model": "Modèle",
+      "modelsPlaceholder": "Modèles",
+      "price": "Prix",
+      "noMinMax": "Aucun minimum ni maximum",
+      "setRange": "Définissez la plage ci-dessous",
+      "priceMin": "Min",
+      "priceMax": "Max",
+      "mileage": "Kilométrage",
+      "mileagePlaceholder": "KM",
+      "year": "Année",
+      "yearPlaceholder": "AAAA",
+      "exteriorColor": "Couleur extérieure",
+      "anyExteriorColor": "Toutes",
+      "transmission": "Transmission",
+      "anyTransmission": "Toutes",
+      "engine": "Moteur",
+      "anyEngine": "Tous",
+      "fuel": "Carburant",
+      "anyFuel": "Tous",
+      "reset": "Réinitialiser les filtres"
+    },
+    "search": {
+      "placeholder": "Rechercher par marque et modèle..."
+    },
+    "sort": {
+      "default": "Trier par",
+      "priceAsc": "Prix : du plus bas au plus élevé",
+      "priceDesc": "Prix : du plus élevé au plus bas",
+      "yearDesc": "Année : plus récent d'abord",
+      "yearAsc": "Année : plus ancien d'abord"
+    }
+  },
+  "App": {
+    "Dashboard": {
+      "welcome": "Bienvenue, {name} ! 👋",
+      "memberForDays": "Membre depuis {days} jours",
+      "quickActionsTitle": "Actions rapides",
+      "quickActionsDescription": "Fonctionnalités utilisées fréquemment",
+      "userSettingsTitle": "Paramètres utilisateur",
+      "userSettingsDescription": "Gérez les préférences de votre compte"
+    },
+    "Cars": {
+      "title": "Véhicules",
+      "addCar": "Ajouter un véhicule",
+      "loadError": "Échec du chargement des véhicules.",
+      "missingTable": "La table des véhicules est manquante. Exécutez les migrations Supabase puis rechargez.",
+      "deleteConfirm": "Supprimer ce véhicule ?",
+      "deleteError": "Échec de la suppression du véhicule.",
+      "emptyTitle": "Aucun véhicule pour l'instant",
+      "emptyDescription": "Ajoutez votre premier véhicule pour commencer à gérer l'inventaire.",
+      "table": {
+        "image": "Image",
+        "title": "Titre",
+        "price": "Prix",
+        "year": "Année",
+        "km": "KM",
+        "status": "Statut",
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "actions": {
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      }
+    }
+  }
+}
+
