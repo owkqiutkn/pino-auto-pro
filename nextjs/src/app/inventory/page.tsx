@@ -254,20 +254,17 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                             PAP
                                         </div>
                                     </div>
-                                    <div className="p-4">
-                                        <h2 className="text-lg font-bold text-gray-900">
+                                    <div className="flex h-[300px] flex-col p-4">
+                                        <h2 className="text-base font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
                                             {car.year} {car.brand} {car.model}
                                         </h2>
                                         <p className="mt-0.5 text-sm text-gray-600">
                                             {(car.category ?? t("card.fallbackBodyStyle"))} {car.model} {car.km.toLocaleString()} km
                                         </p>
                                         <ul className="mt-3 space-y-0.5 text-xs text-gray-600">
-                                            <li>{car.km.toLocaleString()} km</li>
-                                            <li>
-                                                {t("card.stockPrefix")}
-                                                {car.id.slice(0, 6).toUpperCase()}
-                                            </li>
-                                            <li>{t("card.transmission")}</li>
+                                            {car.engine && <li>{car.engine}</li>}
+                                            {car.fuel && <li>{car.fuel}</li>}
+                                            {car.transmission && <li>{car.transmission}</li>}
                                         </ul>
                                         <div className="mt-3">
                                             <p className="text-[10px] text-gray-500">{t("card.dealerPriceLabel")}</p>
@@ -297,7 +294,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                         </div>
                                         <button
                                             type="button"
-                                            className="mt-4 w-full rounded bg-[#0c1320] py-2 text-sm font-bold text-white hover:bg-gray-800"
+                                            className="mt-auto w-full rounded bg-[#0c1320] py-2 text-sm font-bold text-white hover:bg-gray-800"
                                         >
                                             {t("card.viewDetails")}
                                         </button>
