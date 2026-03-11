@@ -92,7 +92,11 @@ export class SassClient {
         category?: string;
         model?: string;
         year?: number;
+        yearMin?: number;
+        yearMax?: number;
+        kmMin?: number;
         kmMax?: number;
+        priceMin?: number;
         priceMax?: number;
     }) {
         let query = this.client
@@ -110,11 +114,23 @@ export class SassClient {
         if (filters?.model) {
             query = query.eq('model', filters.model);
         }
-        if (filters?.year) {
+        if (typeof filters?.year === 'number') {
             query = query.eq('year', filters.year);
+        }
+        if (typeof filters?.yearMin === 'number') {
+            query = query.gte('year', filters.yearMin);
+        }
+        if (typeof filters?.yearMax === 'number') {
+            query = query.lte('year', filters.yearMax);
+        }
+        if (typeof filters?.kmMin === 'number') {
+            query = query.gte('km', filters.kmMin);
         }
         if (typeof filters?.kmMax === 'number') {
             query = query.lte('km', filters.kmMax);
+        }
+        if (typeof filters?.priceMin === 'number') {
+            query = query.gte('price', filters.priceMin);
         }
         if (typeof filters?.priceMax === 'number') {
             query = query.lte('price', filters.priceMax);
@@ -240,6 +256,94 @@ export class SassClient {
     async deleteCategory(id: string) {
         return this.client
             .from('categories')
+            .delete()
+            .eq('id', id);
+    }
+
+    async getExteriorColors() {
+        return this.client
+            .from('exterior_colors')
+            .select('*')
+            .order('name', { ascending: true });
+    }
+
+    async createExteriorColor(name: string) {
+        return this.client
+            .from('exterior_colors')
+            .insert({ name })
+            .select('*')
+            .single();
+    }
+
+    async deleteExteriorColor(id: string) {
+        return this.client
+            .from('exterior_colors')
+            .delete()
+            .eq('id', id);
+    }
+
+    async getEngines() {
+        return this.client
+            .from('engines')
+            .select('*')
+            .order('name', { ascending: true });
+    }
+
+    async createEngine(name: string) {
+        return this.client
+            .from('engines')
+            .insert({ name })
+            .select('*')
+            .single();
+    }
+
+    async deleteEngine(id: string) {
+        return this.client
+            .from('engines')
+            .delete()
+            .eq('id', id);
+    }
+
+    async getFuels() {
+        return this.client
+            .from('fuels')
+            .select('*')
+            .order('name', { ascending: true });
+    }
+
+    async createFuel(name: string) {
+        return this.client
+            .from('fuels')
+            .insert({ name })
+            .select('*')
+            .single();
+    }
+
+    async deleteFuel(id: string) {
+        return this.client
+            .from('fuels')
+            .delete()
+            .eq('id', id);
+    }
+
+    async getTransmissions() {
+        return this.client
+            .from('transmissions')
+            .select('*')
+            .order('name', { ascending: true });
+    }
+
+    async createTransmission(name: string) {
+        return this.client
+            .from('transmissions')
+            .insert({ name })
+            .select('*')
+            .single();
+    }
+
+    async deleteTransmission(id: string) {
+        return this.client
+            .from('transmissions')
             .delete()
             .eq('id', id);
     }

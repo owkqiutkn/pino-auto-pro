@@ -153,36 +153,49 @@ export default async function NewLandingPage() {
             <section className="relative z-20 bg-[#071d38] pt-10 pb-10 md:pt-12 md:pb-14">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-3 -mt-20 md:-mt-28">
-                        {featureCards.map((item) => (
-                            <div
-                                key={item.title}
-                                className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-blue-400/30 bg-[#071d38] shadow-[0_22px_55px_rgba(0,0,0,0.7)] transition-transform duration-300 ease-out hover:-translate-y-2"
-                            >
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src={item.image}
-                                    alt={item.title}
-                                    className="absolute inset-0 h-full w-full object-cover scale-110 opacity-60"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-br from-blue-950/70 via-blue-950/85 to-blue-950/95 mix-blend-multiply" />
-                                <div className="relative z-10 flex h-full w-full flex-col justify-center p-5">
-                                    <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-[11px] font-black text-blue-600">
-                                        {"iconImage" in item && item.iconImage ? (
-                                            /* eslint-disable-next-line @next/next/no-img-element */
-                                            <img src={item.iconImage} alt="" className="h-5 w-5 scale-110 [filter:brightness(0)_saturate(100%)_invert(27%)_sepia(51%)_saturate(2878%)_hue-rotate(217deg)_contrast(1.15)]" aria-hidden />
-                                        ) : (
-                                            item.icon
-                                        )}
+                        {featureCards.map((item) => {
+                            const cardContent = (
+                                <div className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-blue-400/30 bg-[#071d38] shadow-[0_22px_55px_rgba(0,0,0,0.7)] transition-transform duration-300 ease-out hover:-translate-y-2">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={item.image}
+                                        alt={item.title}
+                                        className="absolute inset-0 h-full w-full object-cover scale-110 opacity-60"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-950/70 via-blue-950/85 to-blue-950/95 mix-blend-multiply" />
+                                    <div className="relative z-10 flex h-full w-full flex-col justify-center p-5">
+                                        <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-[11px] font-black text-blue-600">
+                                            {"iconImage" in item && item.iconImage ? (
+                                                /* eslint-disable-next-line @next/next/no-img-element */
+                                                <img src={item.iconImage} alt="" className="h-5 w-5 scale-110 [filter:brightness(0)_saturate(100%)_invert(27%)_sepia(51%)_saturate(2878%)_hue-rotate(217deg)_contrast(1.15)]" aria-hidden />
+                                            ) : (
+                                                item.icon
+                                            )}
+                                        </div>
+                                        <div className="text-sm md:text-base font-bold tracking-wide">
+                                            {item.title}
+                                        </div>
+                                        <p className="mt-1 text-[11px] md:text-xs leading-snug text-white/90">
+                                            {item.description}
+                                        </p>
                                     </div>
-                                    <div className="text-sm md:text-base font-bold tracking-wide">
-                                        {item.title}
-                                    </div>
-                                    <p className="mt-1 text-[11px] md:text-xs leading-snug text-white/90">
-                                        {item.description}
-                                    </p>
                                 </div>
-                            </div>
-                        ))}
+                            );
+
+                            if (item.title === "Contact Us") {
+                                return (
+                                    <a key={item.title} href="#contact" className="block">
+                                        {cardContent}
+                                    </a>
+                                );
+                            }
+
+                            return (
+                                <div key={item.title}>
+                                    {cardContent}
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </section>
@@ -272,7 +285,13 @@ export default async function NewLandingPage() {
                 </div>
             </section>
 
-            <section className="bg-[#17181f] py-10 text-white">
+            <section className="flex flex-col justify-end bg-gradient-to-b from-[#0c1320] via-[#15161d] to-[#17181f] py-6 min-h-[80px]">
+                <div className="mx-auto max-w-6xl px-4 w-full">
+                    <div className="mx-auto h-px max-w-xs bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-80" />
+                </div>
+            </section>
+
+            <section className="bg-[#17181f] pt-3 pb-10 text-white">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="mb-4 flex items-center justify-between">
                         <h3 className="text-lg font-black uppercase tracking-wide">Browse by Category</h3>
@@ -282,7 +301,7 @@ export default async function NewLandingPage() {
                         {categoryCards.map((item) => (
                             <div
                                 key={item.name}
-                                    className="group overflow-hidden rounded-sm border border-white/10 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)]"
+                                className="group overflow-hidden rounded-sm border border-white/10 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)]"
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
@@ -299,6 +318,12 @@ export default async function NewLandingPage() {
                             </div>
                         ))}
                     </div>
+                </div>
+            </section>
+
+            <section className="bg-gradient-to-b from-[#17181f] via-[#15161d] to-[#111217] py-6">
+                <div className="mx-auto max-w-6xl px-4">
+                    <div className="mx-auto h-px max-w-xs bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-80" />
                 </div>
             </section>
 
@@ -332,7 +357,7 @@ export default async function NewLandingPage() {
                         ].map((review, index) => (
                             <div
                                 key={index}
-                                className="group rounded-xl border border-[#1d4ed8]/30 bg-[#1e3a5f]/25 p-0 shadow-[0_18px_60px_rgba(0,0,0,0.65),0_0_40px_rgba(29,78,216,0.08)] backdrop-blur-sm transition-transform transition-shadow duration-300 hover:-translate-y-1.5 hover:border-[#4338ca]/70 hover:shadow-[0_28px_80px_rgba(0,0,0,0.9),0_0_50px_rgba(67,56,202,0.12)]"
+                                className="group rounded-xl border border-[#1d4ed8]/30 bg-[#1e3a5f]/30 p-0 transition-transform duration-300 hover:-translate-y-1.5 hover:border-[#4338ca]/70"
                             >
                                 <div className="flex items-start gap-3 p-4">
                                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1d4ed8]/25 ring-2 ring-[#1d4ed8]/40">
@@ -354,7 +379,7 @@ export default async function NewLandingPage() {
                 </div>
             </section>
 
-            <section id="contact" className="bg-[#ececec] py-0 text-black">
+            <section id="contact" className="bg-[#0c1320] pt-0 pb-0 text-white">
                 <ContactMap />
             </section>
 

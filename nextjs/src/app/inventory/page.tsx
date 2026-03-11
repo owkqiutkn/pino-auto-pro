@@ -1,18 +1,30 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import InventoryFilters from "@/components/InventoryFilters";
+import InventorySearchInput from "@/components/InventorySearchInput";
+import InventorySortSelect from "@/components/InventorySortSelect";
+import SiteNavbar from "@/components/SiteNavbar";
 import { createSSRSassClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/types";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
+type Brand = Database["public"]["Tables"]["brands"]["Row"];
+type Category = Database["public"]["Tables"]["categories"]["Row"];
 
 interface InventoryPageProps {
     searchParams: Promise<{
         brand?: string;
         category?: string;
         model?: string;
-        year?: string;
-        km?: string;
-        price?: string;
+        search?: string;
+        yearMin?: string;
+        yearMax?: string;
+        kmMin?: string;
+        kmMax?: string;
+        priceMin?: string;
+        priceMax?: string;
+        sort?: string;
     }>;
 }
 
@@ -23,23 +35,11 @@ function toNumber(value?: string) {
 }
 
 function formatPrice(value: number) {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("en-CA", {
         style: "currency",
-        currency: "USD",
+        currency: "CAD",
         maximumFractionDigits: 0,
     }).format(value);
-}
-
-function PriceDisplay({ car }: { car: Car }) {
-    if (car.discounted_price !== null) {
-        return (
-            <p className="mt-1">
-                <span className="text-primary-700 font-semibold">{formatPrice(car.discounted_price)}</span>{" "}
-                <span className="text-sm text-gray-500 line-through">{formatPrice(car.price)}</span>
-            </p>
-        );
-    }
-    return <p className="text-primary-700 font-semibold mt-1">{formatPrice(car.price)}</p>;
 }
 
 export default async function InventoryPage({ searchParams }: InventoryPageProps) {
@@ -47,132 +47,209 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
     const brand = params.brand?.trim() || undefined;
     const category = params.category?.trim() || undefined;
     const model = params.model?.trim() || undefined;
-    const year = toNumber(params.year);
-    const kmMax = toNumber(params.km);
-    const priceMax = toNumber(params.price);
+    const searchQuery = params.search?.trim() || undefined;
+    const yearMin = toNumber(params.yearMin);
+    const yearMax = toNumber(params.yearMax);
+    const kmMin = toNumber(params.kmMin);
+    const kmMax = toNumber(params.kmMax);
+    const priceMin = toNumber(params.priceMin);
+    const priceMax = toNumber(params.priceMax);
+    const sort = params.sort?.trim() || undefined;
 
     const client = await createSSRSassClient();
-    const { data: cars, error } = await client.getAvailableCars({
-        brand,
-        category,
-        model,
-        year,
-        kmMax,
-        priceMax,
-    });
+    const [
+        { data: cars, error },
+        { data: brandsData },
+        { data: categoriesData },
+    ] = await Promise.all([
+        client.getAvailableCars({
+            brand,
+            category: category || undefined,
+            model,
+            yearMin,
+            yearMax,
+            kmMin,
+            kmMax,
+            priceMin,
+            priceMax,
+        }),
+        client.getBrands(),
+        client.getCategories(),
+    ]);
 
     if (error) {
         return (
-            <div className="max-w-5xl mx-auto px-4 py-16">
-                <h1 className="text-3xl font-bold">Inventory</h1>
-                <p className="mt-6 text-red-600">Failed to load vehicles.</p>
+            <div className="min-h-screen bg-white">
+                <SiteNavbar variant="standalone" />
+                <div className="max-w-5xl mx-auto px-4 py-16">
+                    <h1 className="text-3xl font-bold text-gray-900">Inventory</h1>
+                    <p className="mt-6 text-red-600">Failed to load vehicles.</p>
+                </div>
             </div>
         );
     }
 
     const carsList = (cars ?? []) as Car[];
-    const carIds = carsList.map((car) => car.id);
+    let filteredCars = carsList;
+    if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        filteredCars = carsList.filter(
+            (c) =>
+                c.title.toLowerCase().includes(q) ||
+                c.brand?.toLowerCase().includes(q) ||
+                c.model?.toLowerCase().includes(q)
+        );
+    }
+
+    const effectivePrice = (c: Car) => c.discounted_price ?? c.price;
+    if (sort === "price-asc") filteredCars = [...filteredCars].sort((a, b) => effectivePrice(a) - effectivePrice(b));
+    if (sort === "price-desc") filteredCars = [...filteredCars].sort((a, b) => effectivePrice(b) - effectivePrice(a));
+    if (sort === "year-desc") filteredCars = [...filteredCars].sort((a, b) => b.year - a.year);
+    if (sort === "year-asc") filteredCars = [...filteredCars].sort((a, b) => a.year - b.year);
+
+    const brands = (brandsData ?? []) as Brand[];
+    const categories = (categoriesData ?? []) as Category[];
+    const models = Array.from(new Set(carsList.map((c) => c.model).filter(Boolean))).sort();
+
+    const carIds = carsList.map((c) => c.id);
     const { data: allImages } = await client.getCarImagesForCars(carIds);
     const allImagesList = (allImages ?? []) as CarImage[];
     const imagesByCar = new Map<string, CarImage[]>();
-    for (const image of allImagesList) {
-        const bucket = imagesByCar.get(image.car_id) || [];
-        bucket.push(image);
-        imagesByCar.set(image.car_id, bucket);
+    for (const img of allImagesList) {
+        const bucket = imagesByCar.get(img.car_id) || [];
+        bucket.push(img);
+        imagesByCar.set(img.car_id, bucket);
     }
 
-    const brands = Array.from(new Set(carsList.map((car) => car.brand))).sort();
+    const currentYear = new Date().getFullYear();
 
     return (
-        <div className="max-w-6xl mx-auto px-4 py-10">
-            <div className="flex items-center justify-between gap-3 flex-wrap">
-                <h1 className="text-3xl font-bold">Vehicle Inventory</h1>
-                <Link href="/" className="text-primary-600 hover:text-primary-700 font-medium">
-                    Back to home
-                </Link>
-            </div>
+        <div className="min-h-screen bg-white">
+            <SiteNavbar variant="standalone" />
 
-            <form className="mt-6 grid md:grid-cols-4 gap-3 p-4 bg-white border rounded-lg">
-                <select name="brand" defaultValue={brand || ""} className="border rounded-md px-3 py-2">
-                    <option value="">All brands</option>
-                    {brands.map((option) => (
-                        <option key={option} value={option}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
-                <input
-                    name="year"
-                    type="number"
-                    defaultValue={year}
-                    placeholder="Year (exact)"
-                    className="border rounded-md px-3 py-2"
-                />
-                <input
-                    name="km"
-                    type="number"
-                    defaultValue={kmMax}
-                    placeholder="Max km"
-                    className="border rounded-md px-3 py-2"
-                />
-                <input
-                    name="price"
-                    type="number"
-                    defaultValue={priceMax}
-                    placeholder="Max price"
-                    className="border rounded-md px-3 py-2"
-                />
-                <div className="md:col-span-4 flex gap-3">
-                    <button
-                        type="submit"
-                        className="px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700"
-                    >
-                        Apply filters
-                    </button>
-                    <Link
-                        href="/inventory"
-                        className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50"
-                    >
-                        Reset
-                    </Link>
-                </div>
-            </form>
+            <div className="mx-auto flex max-w-7xl gap-8 px-4 py-8">
+                <Suspense fallback={<aside className="w-64 shrink-0"><div className="h-[500px] animate-pulse rounded border bg-gray-100" /></aside>}>
+                    <InventoryFilters
+                        brands={brands}
+                        categories={categories}
+                        models={models}
+                        currentYear={currentYear}
+                        filters={{
+                            category,
+                            brand,
+                            model,
+                            priceMin: priceMin ?? "",
+                            priceMax: priceMax ?? "",
+                            kmMin: kmMin ?? "",
+                            kmMax: kmMax ?? "",
+                            yearMin: yearMin ?? "",
+                            yearMax: yearMax ?? "",
+                        }}
+                    />
+                </Suspense>
 
-            <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {carsList.map((car) => {
-                    const images = imagesByCar.get(car.id) || [];
-                    const cover = images.find((item) => item.is_cover) || images[0];
-                    return (
-                        <Link
-                            key={car.id}
-                            href={`/inventory/${car.slug}`}
-                            className="border rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow"
-                        >
-                            <div className="aspect-[4/3] bg-gray-100">
-                                {cover ? (
-                                    // eslint-disable-next-line @next/next/no-img-element
-                                    <img src={cover.image_url} alt={car.title} className="w-full h-full object-cover" />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                        No image
+                {/* Main content */}
+                <main className="min-w-0 flex-1">
+                    <h1 className="text-2xl font-bold text-gray-900 md:text-3xl">
+                        Vehicles In Stock
+                    </h1>
+
+                    <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <Suspense fallback={<div className="h-10 max-w-xs flex-1 animate-pulse rounded border bg-gray-100" />}>
+                            <InventorySearchInput initialValue={searchQuery ?? ""} />
+                        </Suspense>
+                        <p className="text-sm text-gray-600">
+                            Showing {filteredCars.length} of {carsList.length} Vehicles
+                        </p>
+                        <Suspense fallback={<div className="h-10 w-36 animate-pulse rounded border bg-gray-100" />}>
+                            <InventorySortSelect currentSort={sort ?? ""} />
+                        </Suspense>
+                    </div>
+
+                    <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        {filteredCars.map((car) => {
+                            const images = imagesByCar.get(car.id) || [];
+                            const cover = images.find((i) => i.is_cover) || images[0];
+                            return (
+                                <Link
+                                    key={car.id}
+                                    href={`/inventory/${car.slug}`}
+                                    className="overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md"
+                                >
+                                    <div className="relative aspect-[4/3] bg-gray-100">
+                                        {cover ? (
+                                            /* eslint-disable-next-line @next/next/no-img-element */
+                                            <img
+                                                src={cover.image_url}
+                                                alt={car.title}
+                                                className="h-full w-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="flex h-full w-full items-center justify-center text-gray-400">
+                                                No image
+                                            </div>
+                                        )}
+                                        <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#0c1320] text-[8px] font-bold text-white">
+                                            M&L
+                                        </div>
                                     </div>
-                                )}
-                            </div>
-                            <div className="p-4">
-                                <h2 className="font-semibold text-lg">{car.title}</h2>
-                                <PriceDisplay car={car} />
-                                <p className="mt-2 text-sm text-gray-600">
-                                    {car.year} • {car.km.toLocaleString()} km
-                                </p>
-                            </div>
-                        </Link>
-                    );
-                })}
-            </div>
+                                    <div className="p-4">
+                                        <h2 className="text-lg font-bold text-gray-900">
+                                            {car.year} {car.brand} {car.model}
+                                        </h2>
+                                        <p className="mt-0.5 text-sm text-gray-600">
+                                            {car.category ?? "4D"} {car.model} {car.km.toLocaleString()} Km
+                                        </p>
+                                        <ul className="mt-3 space-y-0.5 text-xs text-gray-600">
+                                            <li>{car.km.toLocaleString()} km</li>
+                                            <li>Stock # {car.id.slice(0, 6).toUpperCase()}</li>
+                                            <li>Manual / Standard</li>
+                                        </ul>
+                                        <div className="mt-3">
+                                            <p className="text-[10px] text-gray-500">Dealer Price</p>
+                                            {car.discounted_price != null ? (
+                                                <p>
+                                                    <span className="text-sm text-gray-500 line-through">
+                                                        {formatPrice(car.price)}
+                                                    </span>
+                                                    <span className="ml-2 text-lg font-bold text-red-600">
+                                                        {formatPrice(car.discounted_price)}
+                                                    </span>
+                                                </p>
+                                            ) : (
+                                                <p className="text-lg font-bold text-red-600">
+                                                    {formatPrice(car.price)}
+                                                </p>
+                                            )}
+                                            <p className="mt-0.5 text-[10px] text-gray-500">
+                                                + HST and Licensing
+                                            </p>
+                                        </div>
+                                        <div className="mt-3 flex items-center gap-2 text-xs text-gray-600">
+                                            <span className="rounded bg-emerald-100 px-2 py-0.5 text-emerald-700">
+                                                ▲ FAIR DEAL
+                                            </span>
+                                            <span className="text-[10px]">CarGurus</span>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            className="mt-4 w-full rounded bg-[#0c1320] py-2 text-sm font-bold text-white hover:bg-gray-800"
+                                        >
+                                            View Details
+                                        </button>
+                                    </div>
+                                </Link>
+                            );
+                        })}
+                    </div>
 
-            {carsList.length === 0 && (
-                <div className="mt-10 text-center text-gray-500">No vehicles match your filters.</div>
-            )}
+                    {filteredCars.length === 0 && (
+                        <div className="py-16 text-center text-gray-500">
+                            No vehicles match your filters.
+                        </div>
+                    )}
+                </main>
+            </div>
         </div>
     );
 }

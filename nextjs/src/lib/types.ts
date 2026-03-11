@@ -39,6 +39,78 @@ export type Database = {
   }
   public: {
     Tables: {
+      exterior_colors: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      engines: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      fuels: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      transmissions: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           created_at: string
@@ -143,6 +215,9 @@ export type Database = {
         Row: {
           brand: string
           category: string | null
+          exterior_color: string | null
+          engine: string | null
+          fuel: string | null
           created_at: string
           description: string | null
           discounted_price: number | null
@@ -153,6 +228,7 @@ export type Database = {
           price: number
           slug: string
           status: string
+          transmission: string | null
           title: string
           updated_at: string
           year: number
@@ -160,6 +236,9 @@ export type Database = {
         Insert: {
           brand: string
           category?: string | null
+          exterior_color?: string | null
+          engine?: string | null
+          fuel?: string | null
           created_at?: string
           description?: string | null
           discounted_price?: number | null
@@ -170,6 +249,7 @@ export type Database = {
           price: number
           slug: string
           status?: string
+          transmission?: string | null
           title: string
           updated_at?: string
           year: number
@@ -177,6 +257,9 @@ export type Database = {
         Update: {
           brand?: string
           category?: string | null
+          exterior_color?: string | null
+          engine?: string | null
+          fuel?: string | null
           created_at?: string
           description?: string | null
           discounted_price?: number | null
@@ -187,6 +270,7 @@ export type Database = {
           price?: number
           slug?: string
           status?: string
+          transmission?: string | null
           title?: string
           updated_at?: string
           year?: number

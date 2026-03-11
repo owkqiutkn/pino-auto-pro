@@ -14,6 +14,10 @@ type CarStatus = "available" | "sold" | "hidden";
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
 type BrandModel = Database["public"]["Tables"]["brand_models"]["Row"];
 type Category = Database["public"]["Tables"]["categories"]["Row"];
+type ExteriorColor = Database["public"]["Tables"]["exterior_colors"]["Row"];
+type Engine = Database["public"]["Tables"]["engines"]["Row"];
+type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
+type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 
 export default function EditCarPage() {
     const params = useParams<{ id: string }>();
@@ -39,6 +43,14 @@ export default function EditCarPage() {
     const [brands, setBrands] = useState<Brand[]>([]);
     const [brandModels, setBrandModels] = useState<BrandModel[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
+    const [exteriorColors, setExteriorColors] = useState<ExteriorColor[]>([]);
+    const [engines, setEngines] = useState<Engine[]>([]);
+    const [fuels, setFuels] = useState<Fuel[]>([]);
+    const [transmissions, setTransmissions] = useState<Transmission[]>([]);
+    const [exteriorColor, setExteriorColor] = useState("");
+    const [engine, setEngine] = useState("");
+    const [fuel, setFuel] = useState("");
+    const [transmission, setTransmission] = useState("");
 
     const currentYear = new Date().getFullYear();
     const yearOptions = useMemo(
@@ -80,6 +92,10 @@ export default function EditCarPage() {
             setDescription(carData.description || "");
             setStatus(carData.status as CarStatus);
             setFeatured(carData.featured ?? false);
+            setExteriorColor(carData.exterior_color ?? "");
+            setEngine(carData.engine ?? "");
+            setFuel(carData.fuel ?? "");
+            setTransmission(carData.transmission ?? "");
             setError("");
         } catch (err) {
             console.error(err);
@@ -113,13 +129,38 @@ export default function EditCarPage() {
         }
     }, []);
 
+    const loadAttributes = useCallback(async () => {
+        try {
+            const client = await createSPASassClient();
+            const [{ data: exteriorColorData, error: exteriorError }, { data: engineData, error: engineError }, { data: fuelData, error: fuelError }, { data: transmissionData, error: transmissionError }] =
+                await Promise.all([
+                    client.getExteriorColors(),
+                    client.getEngines(),
+                    client.getFuels(),
+                    client.getTransmissions(),
+                ]);
+            if (exteriorError) throw exteriorError;
+            if (engineError) throw engineError;
+            if (fuelError) throw fuelError;
+            if (transmissionError) throw transmissionError;
+            setExteriorColors(exteriorColorData || []);
+            setEngines(engineData || []);
+            setFuels(fuelData || []);
+            setTransmissions(transmissionData || []);
+        } catch (err) {
+            console.error(err);
+            setError("Failed to load car attributes.");
+        }
+    }, []);
+
     useEffect(() => {
         if (id) {
             loadData();
             loadBrands();
             loadCategories();
+            loadAttributes();
         }
-    }, [id, loadCategories, loadData, loadBrands]);
+    }, [id, loadAttributes, loadCategories, loadData, loadBrands]);
 
     useEffect(() => {
         const loadModels = async () => {
@@ -170,6 +211,10 @@ export default function EditCarPage() {
                 brand,
                 model,
                 category: category || null,
+                exterior_color: exteriorColor || null,
+                engine: engine || null,
+                fuel: fuel || null,
+                transmission: transmission || null,
                 year: Number(year),
                 km: Number(km),
                 price: parsedPrice,
@@ -331,6 +376,48 @@ export default function EditCarPage() {
                     <select value={model} onChange={(e) => setModel(e.target.value)} required disabled={!brand} className="border rounded-md px-3 py-2 disabled:bg-gray-100">
                         <option value="">{brand ? "Select model" : "Select brand first"}</option>
                         {brandModels.map((item) => (
+                            <option key={item.id} value={item.name}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="grid sm:grid-cols-4 gap-3">
+                    <select
+                        value={exteriorColor}
+                        onChange={(e) => setExteriorColor(e.target.value)}
+                        className="border rounded-md px-3 py-2"
+                    >
+                        <option value="">Exterior color (optional)</option>
+                        {exteriorColors.map((item) => (
+                            <option key={item.id} value={item.name}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
+                    <select value={engine} onChange={(e) => setEngine(e.target.value)} className="border rounded-md px-3 py-2">
+                        <option value="">Engine (optional)</option>
+                        {engines.map((item) => (
+                            <option key={item.id} value={item.name}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
+                    <select value={fuel} onChange={(e) => setFuel(e.target.value)} className="border rounded-md px-3 py-2">
+                        <option value="">Fuel (optional)</option>
+                        {fuels.map((item) => (
+                            <option key={item.id} value={item.name}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
+                    <select
+                        value={transmission}
+                        onChange={(e) => setTransmission(e.target.value)}
+                        className="border rounded-md px-3 py-2"
+                    >
+                        <option value="">Transmission (optional)</option>
+                        {transmissions.map((item) => (
                             <option key={item.id} value={item.name}>
                                 {item.name}
                             </option>

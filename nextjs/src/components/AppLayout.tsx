@@ -9,7 +9,15 @@ import {
     X,
     ChevronDown,
     LogOut,
-    Key, CarFront, Tags, ListTree, Shapes,
+    Key,
+    CarFront,
+    Tags,
+    ListTree,
+    Shapes,
+    Droplets,
+    Gauge,
+    Fuel,
+    Cog,
 } from 'lucide-react';
 import { useGlobal } from "@/lib/context/GlobalContext";
 import { createSPASassClient } from "@/lib/supabase/client";
@@ -50,6 +58,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         { name: 'Brands', href: '/app/brands', icon: Tags },
         { name: 'Categories', href: '/app/categories', icon: Shapes },
         { name: 'Brand Models', href: '/app/brand-models', icon: ListTree },
+        { name: 'Exterior Colors', href: '/app/exterior-colors', icon: Droplets },
+        { name: 'Engines', href: '/app/engines', icon: Gauge },
+        { name: 'Fuels', href: '/app/fuels', icon: Fuel },
+        { name: 'Transmissions', href: '/app/transmissions', icon: Cog },
         { name: 'User Settings', href: '/app/user-settings', icon: User },
     ];
 
