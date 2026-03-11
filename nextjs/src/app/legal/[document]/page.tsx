@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { use } from 'react';
 import LegalDocument from '@/components/LegalDocument';
 import { notFound, useParams } from 'next/navigation';
 
@@ -23,7 +23,12 @@ type LegalDocument = keyof typeof legalDocuments;
 
 type RouteDocument = 'terms' | 'privacy' | 'cookies';
 
-export default function LegalPage() {
+type LegalPageProps = {
+    params?: Promise<Record<string, string | string[]>>;
+};
+
+export default function LegalPage({ params }: LegalPageProps) {
+    use(params ?? Promise.resolve({})); // Unwrap to satisfy Next.js 15 async dynamic APIs
     const { document: rawDocument } = useParams<{ document: RouteDocument | string[] }>();
     const document = Array.isArray(rawDocument) ? rawDocument[0] : rawDocument;
 

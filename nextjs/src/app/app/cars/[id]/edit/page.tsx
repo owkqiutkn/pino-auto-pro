@@ -25,8 +25,12 @@ type Engine = Database["public"]["Tables"]["engines"]["Row"];
 type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
 type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 
-type EditCarPageProps = { searchParams?: Promise<Record<string, string | string[] | undefined>> };
-export default function EditCarPage({ searchParams }: EditCarPageProps) {
+type EditCarPageProps = {
+    params?: Promise<Record<string, string | string[]>>;
+    searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+export default function EditCarPage({ params, searchParams }: EditCarPageProps) {
+    use(params ?? Promise.resolve({})); // Unwrap to satisfy Next.js 15 async dynamic APIs
     use(searchParams ?? Promise.resolve({}));
     const { id } = useParams<{ id: string }>();
     const locale = useLocale();
@@ -363,9 +367,14 @@ export default function EditCarPage({ searchParams }: EditCarPageProps) {
             {error && <p className="text-red-600">{error}</p>}
 
             <form onSubmit={handleSave} className="bg-white border rounded-lg p-5 space-y-4">
-                <input value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="Title" className="w-full border rounded-md px-3 py-2" />
+                <div>
+                    <label htmlFor="edit-title" className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                    <input id="edit-title" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="e.g. BMW 320i 2020" className="w-full border rounded-md px-3 py-2" />
+                </div>
                 <div className="grid sm:grid-cols-3 gap-3">
-                    <select value={brand} onChange={(e) => { setBrand(e.target.value); setModel(""); }} required className="border rounded-md px-3 py-2">
+                    <div>
+                        <label htmlFor="edit-brand" className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
+                        <select id="edit-brand" value={brand} onChange={(e) => { setBrand(e.target.value); setModel(""); }} required className="border rounded-md px-3 py-2 w-full">
                         <option value="">Select brand</option>
                         {brands.map((item) => (
                             <option key={item.id} value={item.name}>
@@ -373,7 +382,10 @@ export default function EditCarPage({ searchParams }: EditCarPageProps) {
                             </option>
                         ))}
                     </select>
-                    <select value={category} onChange={(e) => setCategory(e.target.value)} className="border rounded-md px-3 py-2">
+                    </div>
+                    <div>
+                        <label htmlFor="edit-category" className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <select id="edit-category" value={category} onChange={(e) => setCategory(e.target.value)} className="border rounded-md px-3 py-2 w-full">
                         <option value="">Select category (optional)</option>
                         {categories.map((item) => (
                             <option key={item.id} value={item.name_en ?? item.name}>
@@ -381,7 +393,10 @@ export default function EditCarPage({ searchParams }: EditCarPageProps) {
                             </option>
                         ))}
                     </select>
-                    <select value={model} onChange={(e) => setModel(e.target.value)} required disabled={!brand} className="border rounded-md px-3 py-2 disabled:bg-gray-100">
+                    </div>
+                    <div>
+                        <label htmlFor="edit-model" className="block text-sm font-medium text-gray-700 mb-1">Model</label>
+                        <select id="edit-model" value={model} onChange={(e) => setModel(e.target.value)} required disabled={!brand} className="border rounded-md px-3 py-2 w-full disabled:bg-gray-100">
                         <option value="">{brand ? "Select model" : "Select brand first"}</option>
                         {brandModels.map((item) => (
                             <option key={item.id} value={item.name}>
@@ -389,51 +404,68 @@ export default function EditCarPage({ searchParams }: EditCarPageProps) {
                             </option>
                         ))}
                     </select>
+                    </div>
                 </div>
                 <div className="grid sm:grid-cols-4 gap-3">
-                    <select
-                        value={exteriorColor}
-                        onChange={(e) => setExteriorColor(e.target.value)}
-                        className="border rounded-md px-3 py-2"
-                    >
-                        <option value="">Exterior color (optional)</option>
+                    <div>
+                        <label htmlFor="edit-exterior-color" className="block text-sm font-medium text-gray-700 mb-1">Exterior Color</label>
+                        <select
+                            id="edit-exterior-color"
+                            value={exteriorColor}
+                            onChange={(e) => setExteriorColor(e.target.value)}
+                            className="border rounded-md px-3 py-2 w-full"
+                        >
+                        <option value="">Select (optional)</option>
                         {exteriorColors.map((item) => (
                             <option key={item.id} value={item.name_en ?? item.name}>
                                 {getLocalizedExteriorColorName(item as never, locale)}
                             </option>
                         ))}
                     </select>
-                    <select value={engine} onChange={(e) => setEngine(e.target.value)} className="border rounded-md px-3 py-2">
-                        <option value="">Engine (optional)</option>
+                    </div>
+                    <div>
+                        <label htmlFor="edit-engine" className="block text-sm font-medium text-gray-700 mb-1">Engine</label>
+                        <select id="edit-engine" value={engine} onChange={(e) => setEngine(e.target.value)} className="border rounded-md px-3 py-2 w-full">
+                        <option value="">Select (optional)</option>
                         {engines.map((item) => (
                             <option key={item.id} value={item.name_en ?? item.name}>
                                 {getLocalizedEngineName(item, locale)}
                             </option>
                         ))}
                     </select>
-                    <select value={fuel} onChange={(e) => setFuel(e.target.value)} className="border rounded-md px-3 py-2">
-                        <option value="">Fuel (optional)</option>
+                    </div>
+                    <div>
+                        <label htmlFor="edit-fuel" className="block text-sm font-medium text-gray-700 mb-1">Fuel</label>
+                        <select id="edit-fuel" value={fuel} onChange={(e) => setFuel(e.target.value)} className="border rounded-md px-3 py-2 w-full">
+                        <option value="">Select (optional)</option>
                         {fuels.map((item) => (
                             <option key={item.id} value={item.name_en ?? item.name}>
                                 {getLocalizedFuelName(item, locale)}
                             </option>
                         ))}
                     </select>
-                    <select
-                        value={transmission}
-                        onChange={(e) => setTransmission(e.target.value)}
-                        className="border rounded-md px-3 py-2"
-                    >
-                        <option value="">Transmission (optional)</option>
+                    </div>
+                    <div>
+                        <label htmlFor="edit-transmission" className="block text-sm font-medium text-gray-700 mb-1">Transmission</label>
+                        <select
+                            id="edit-transmission"
+                            value={transmission}
+                            onChange={(e) => setTransmission(e.target.value)}
+                            className="border rounded-md px-3 py-2 w-full"
+                        >
+                        <option value="">Select (optional)</option>
                         {transmissions.map((item) => (
                             <option key={item.id} value={item.name_en ?? item.name}>
                                 {getLocalizedTransmissionName(item as never, locale)}
                             </option>
                         ))}
                     </select>
+                    </div>
                 </div>
                 <div className="grid sm:grid-cols-3 gap-3">
-                    <select value={year === "" ? "" : String(year)} onChange={(e) => setYear(e.target.value ? Number(e.target.value) : "")} required className="border rounded-md px-3 py-2">
+                    <div>
+                        <label htmlFor="edit-year" className="block text-sm font-medium text-gray-700 mb-1">Year</label>
+                        <select id="edit-year" value={year === "" ? "" : String(year)} onChange={(e) => setYear(e.target.value ? Number(e.target.value) : "")} required className="border rounded-md px-3 py-2 w-full">
                         <option value="">Select year</option>
                         {yearOptions.map((optionYear) => (
                             <option key={optionYear} value={optionYear}>
@@ -441,25 +473,42 @@ export default function EditCarPage({ searchParams }: EditCarPageProps) {
                             </option>
                         ))}
                     </select>
-                    <input value={km} onChange={(e) => setKm(Number(e.target.value))} type="number" required placeholder="KM" className="border rounded-md px-3 py-2" />
-                    <input value={price} onChange={(e) => setPrice(Number(e.target.value))} type="number" required placeholder="Price" className="border rounded-md px-3 py-2" />
+                    </div>
+                    <div>
+                        <label htmlFor="edit-km" className="block text-sm font-medium text-gray-700 mb-1">Mileage (km)</label>
+                        <input id="edit-km" value={km} onChange={(e) => setKm(Number(e.target.value))} type="number" required placeholder="e.g. 50000" className="border rounded-md px-3 py-2 w-full" />
+                    </div>
+                    <div>
+                        <label htmlFor="edit-price" className="block text-sm font-medium text-gray-700 mb-1">Price</label>
+                        <input id="edit-price" value={price} onChange={(e) => setPrice(Number(e.target.value))} type="number" required placeholder="e.g. 25000" className="border rounded-md px-3 py-2 w-full" />
+                    </div>
                 </div>
-                <input
-                    value={discountedPrice}
-                    onChange={(e) => setDiscountedPrice(e.target.value ? Number(e.target.value) : "")}
-                    type="number"
-                    min={0}
-                    max={price === "" ? undefined : Number(price)}
-                    placeholder="Discounted price (optional)"
-                    className="w-full border rounded-md px-3 py-2"
-                />
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={5} placeholder="Description" className="w-full border rounded-md px-3 py-2" />
+                <div>
+                    <label htmlFor="edit-discounted-price" className="block text-sm font-medium text-gray-700 mb-1">Discounted Price (optional)</label>
+                    <input
+                        id="edit-discounted-price"
+                        value={discountedPrice}
+                        onChange={(e) => setDiscountedPrice(e.target.value ? Number(e.target.value) : "")}
+                        type="number"
+                        min={0}
+                        max={price === "" ? undefined : Number(price)}
+                        placeholder="Leave empty for no discount"
+                        className="w-full border rounded-md px-3 py-2"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="edit-description" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea id="edit-description" value={description} onChange={(e) => setDescription(e.target.value)} rows={5} placeholder="Vehicle description, features, condition..." className="w-full border rounded-md px-3 py-2" />
+                </div>
                 <div className="flex flex-wrap items-center gap-3">
-                    <select value={status} onChange={(e) => setStatus(e.target.value as CarStatus)} className="border rounded-md px-3 py-2">
+                    <div>
+                        <label htmlFor="edit-status" className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select id="edit-status" value={status} onChange={(e) => setStatus(e.target.value as CarStatus)} className="border rounded-md px-3 py-2">
                         <option value="available">available</option>
                         <option value="sold">sold</option>
                         <option value="hidden">hidden</option>
                     </select>
+                    </div>
                     <label className="flex items-center gap-2 cursor-pointer">
                         <input
                             type="checkbox"

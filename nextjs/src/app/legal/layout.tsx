@@ -27,10 +27,12 @@ const legalDocuments = [
 
 type LegalLayoutProps = {
     children: React.ReactNode;
+    params?: Promise<Record<string, string | string[]>>;
     searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export default function LegalLayout({ children, searchParams }: LegalLayoutProps) {
+export default function LegalLayout({ children, params, searchParams }: LegalLayoutProps) {
+    use(params ?? Promise.resolve({})); // Unwrap to satisfy Next.js 15 async dynamic APIs
     use(searchParams ?? Promise.resolve({})); // Unwrap to satisfy Next.js 15 async dynamic APIs
     const router = useRouter();
 
