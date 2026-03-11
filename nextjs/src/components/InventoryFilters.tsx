@@ -58,6 +58,7 @@ export default function InventoryFilters({
     const router = useRouter();
     const searchParams = useSearchParams();
     const t = useTranslations("Inventory.filters");
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     const [priceMin, setPriceMin] = useState<number | "">(toNum(filters.priceMin));
     const [priceMax, setPriceMax] = useState<number | "">(toNum(filters.priceMax));
@@ -117,9 +118,28 @@ export default function InventoryFilters({
     const inputClass = "w-full rounded border border-gray-300 bg-gray-50 px-2 py-1.5 text-sm";
 
     return (
-        <aside className="w-64 shrink-0">
-            <div className="space-y-5">
-                <div className="flex items-center gap-2">
+        <aside className="w-full md:w-64 md:shrink-0">
+            {/* Mobile toggle */}
+            <button
+                type="button"
+                className="mb-4 flex w-full items-center justify-between rounded border border-gray-300 bg-gray-50 px-3 py-2 text-sm font-semibold text-gray-800 md:hidden"
+                onClick={() => setMobileOpen((open) => !open)}
+                aria-expanded={mobileOpen}
+                aria-controls="inventory-filters-panel"
+            >
+                <span className="uppercase tracking-wide text-[11px]">
+                    {t("heading")}
+                </span>
+                <span className="text-xs text-gray-500">
+                    {mobileOpen ? "−" : "+"}
+                </span>
+            </button>
+
+            <div
+                id="inventory-filters-panel"
+                className={`space-y-5 ${mobileOpen ? "block" : "hidden"} md:block`}
+            >
+                <div className="hidden items-center gap-2 md:flex">
                     <h2 className="text-sm font-bold uppercase text-gray-800">{t("heading")}</h2>
                     <span className="text-gray-500" aria-hidden="true">☰</span>
                 </div>

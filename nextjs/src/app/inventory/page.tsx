@@ -180,8 +180,8 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
         <div className="min-h-screen bg-white">
             <InventoryHero />
 
-            <div className="mx-auto flex max-w-7xl gap-8 px-4 py-8">
-                <Suspense fallback={<aside className="w-64 shrink-0"><div className="h-[500px] animate-pulse rounded border bg-gray-100" /></aside>}>
+            <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 md:flex-row md:gap-8">
+                <Suspense fallback={<aside className="w-full md:w-64 md:shrink-0"><div className="h-[300px] animate-pulse rounded border bg-gray-100" /></aside>}>
                     <InventoryFilters
                         brands={brands}
                         categories={categories}
