@@ -122,7 +122,7 @@ export default function InventoryFilters({
             {/* Mobile toggle */}
             <button
                 type="button"
-                className="mb-4 flex w-full items-center justify-between rounded border border-gray-300 bg-gray-50 px-3 py-2 text-sm font-semibold text-gray-800 md:hidden"
+                className="mb-1 flex w-full items-center justify-between rounded border border-gray-300 bg-gray-50 px-3 py-1.5 text-sm font-semibold text-gray-800 md:hidden"
                 onClick={() => setMobileOpen((open) => !open)}
                 aria-expanded={mobileOpen}
                 aria-controls="inventory-filters-panel"

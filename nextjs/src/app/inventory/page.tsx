@@ -66,9 +66,11 @@ async function InventoryHero() {
             <div className="relative z-[10020]">
                 <SiteNavbar />
             </div>
-            <div className="relative mx-auto flex h-[55px] max-w-7xl items-end px-4 pb-2 opacity-90 md:h-[55px] md:pb-3">
-                <div>
-                    <p className="text-xl font-bold text-white md:text-2xl"></p>
+            <div className="relative mx-auto flex h-[55px] max-w-7xl items-center px-4 opacity-90 md:items-end md:pb-3">
+                <div className="md:hidden">
+                    <p className="text-xl font-bold text-white">
+                        {t("title")}
+                    </p>
                 </div>
             </div>
         </section>
@@ -182,7 +184,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
         <div className="min-h-screen bg-white">
             <InventoryHero />
 
-            <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 md:flex-row md:gap-8">
+            <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 md:flex-row md:gap-8 md:py-8">
                 <Suspense fallback={<aside className="w-full md:w-64 md:shrink-0"><div className="h-[300px] animate-pulse rounded border bg-gray-100" /></aside>}>
                     <InventoryFilters
                         brands={brands}
@@ -213,11 +215,11 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
 
                 {/* Main content */}
                 <main className="min-w-0 flex-1">
-                    <h1 className="text-2xl font-bold text-gray-900 md:text-3xl">
+                    <h1 className="hidden text-2xl font-bold text-gray-900 md:block md:text-3xl">
                         {t("title")}
                     </h1>
 
-                    <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="mt-1 flex flex-col gap-2 sm:mt-4 sm:flex-row sm:items-center sm:justify-between">
                         <Suspense fallback={<div className="h-10 max-w-xs flex-1 animate-pulse rounded border bg-gray-100" />}>
                             <InventorySearchInput initialValue={searchQuery ?? ""} />
                         </Suspense>
