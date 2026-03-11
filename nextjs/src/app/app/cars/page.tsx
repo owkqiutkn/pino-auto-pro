@@ -166,15 +166,13 @@ export default function CarsListPage({ searchParams }: CarsListPageProps) {
                             <td className="p-3">{car.km.toLocaleString()}</td>
                             <td className="p-3 capitalize">{car.status}</td>
                             <td className="p-3">
-                                <Link href={`/app/cars/${car.id}/edit`} className="text-primary-600 hover:text-primary-700 inline-flex items-center">
-                                    <Pencil className="w-4 h-4 mr-1" />
-                                    Edit
+                                <Link href={`/app/cars/${car.id}/edit`} title="Edit" className="text-primary-600 hover:text-primary-700 inline-flex items-center">
+                                    <Pencil className="w-4 h-4" />
                                 </Link>
                             </td>
                             <td className="p-3">
-                                <button onClick={() => handleDelete(car.id)} className="text-red-600 hover:text-red-700 inline-flex items-center">
-                                    <Trash2 className="w-4 h-4 mr-1" />
-                                    Delete
+                                <button onClick={() => handleDelete(car.id)} title="Delete" className="text-red-600 hover:text-red-700 inline-flex items-center">
+                                    <Trash2 className="w-4 h-4" />
                                 </button>
                             </td>
                         </tr>
