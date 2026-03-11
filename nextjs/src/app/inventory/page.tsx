@@ -291,19 +291,19 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                             PAP
                                         </div>
                                     </div>
-                                    <div className="flex h-[300px] flex-col p-4">
+                                    <div className="flex h-[260px] flex-col p-4">
                                         <h2 className="text-base font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
                                             {car.year} {car.brand} {car.model}
                                         </h2>
                                         <p className="mt-0.5 text-sm text-gray-600">
                                             {getCategoryDisplay(car.category, categories, locale) ?? t("card.fallbackBodyStyle")} {car.model} {car.km.toLocaleString()} km
                                         </p>
-                                        <p className="mt-3 text-xs text-gray-600">
+                                        <p className="mt-3 min-h-[1rem] text-xs text-gray-600">
                                             {[car.engine && getEngineDisplay(car.engine, engines, locale), car.fuel && getFuelDisplay(car.fuel, fuels, locale), car.transmission && getTransmissionDisplay(car.transmission, transmissions, locale)]
                                                 .filter(Boolean)
                                                 .join(" • ")}
                                         </p>
-                                        <div className="mt-3">
+                                        <div className="mt-auto pt-3">
                                             <p className="text-[10px] text-gray-500">{t("card.dealerPriceLabel")}</p>
                                             {car.discounted_price != null ? (
                                                 <p>
@@ -323,7 +323,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                                 {t("card.taxNote")}
                                             </p>
                                         </div>
-                                        <div className="mt-3 flex items-center gap-2 text-xs text-gray-600">
+                                        <div className="mt-3 mb-2 flex items-center gap-2 text-xs text-gray-600">
                                             <span className="rounded bg-emerald-100 px-2 py-0.5 text-emerald-700">
                                                 {t("card.fairDeal")}
                                             </span>
@@ -331,7 +331,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                         </div>
                                         <button
                                             type="button"
-                                            className="mt-auto w-full rounded bg-[#0c1320] py-2 text-sm font-bold text-white hover:bg-gray-800"
+                                            className="mt-3 w-full rounded bg-[#0c1320] py-2 text-sm font-bold text-white hover:bg-gray-800"
                                         >
                                             {t("card.viewDetails")}
                                         </button>
