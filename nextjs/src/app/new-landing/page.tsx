@@ -385,7 +385,11 @@ export default async function NewLandingPage() {
                     </div>
                     <div>
                         <h4 className="mb-3 font-bold uppercase text-white">Hours</h4>
-                        <p className="text-white/60">Mon-Fri: 9am-7pm</p>
+                        <p className="text-white/60">Mon: 9am-7pm</p>
+                        <p className="text-white/60">Tue: 9am-7pm</p>
+                        <p className="text-white/60">Wed: 9am-7pm</p>
+                        <p className="text-white/60">Thu: 9am-7pm</p>
+                        <p className="text-white/60">Fri: 9am-7pm</p>
                         <p className="text-white/60">Sat: 10am-5pm</p>
                         <p className="text-white/60">Sun: Closed</p>
                     </div>
