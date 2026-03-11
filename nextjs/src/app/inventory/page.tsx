@@ -7,7 +7,11 @@ import SiteNavbar from "@/components/SiteNavbar";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import { createSSRSassClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/types";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { getLocalizedCategoryName } from "@/lib/i18n/categories";
+import { getLocalizedEngineName } from "@/lib/i18n/engines";
+import { getLocalizedFuelName } from "@/lib/i18n/fuels";
+import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
@@ -39,6 +43,34 @@ interface InventoryPageProps {
 }
 
 const INVENTORY_HERO_IMAGE = "/new-landing/hero.jpg";
+
+function getEngineDisplay(engineValue: string | null | undefined, engines: Engine[], locale: string): string | null {
+    if (!engineValue) return null;
+    const engine = engines.find((e) => (e.name_en ?? e.name) === engineValue || e.name === engineValue);
+    return engine ? getLocalizedEngineName(engine, locale) : engineValue;
+}
+
+function getFuelDisplay(fuelValue: string | null | undefined, fuels: Fuel[], locale: string): string | null {
+    if (!fuelValue) return null;
+    const fuel = fuels.find((f) => (f.name_en ?? f.name) === fuelValue || f.name === fuelValue);
+    return fuel ? getLocalizedFuelName(fuel, locale) : fuelValue;
+}
+
+function getCategoryDisplay(categoryValue: string | null | undefined, categories: Category[], locale: string): string | null {
+    if (!categoryValue) return null;
+    const category = categories.find(
+        (c) => c.name_en === categoryValue || c.name_fr === categoryValue || c.name === categoryValue
+    );
+    return category ? getLocalizedCategoryName(category, locale) : categoryValue;
+}
+
+function getTransmissionDisplay(transmissionValue: string | null | undefined, transmissions: Transmission[], locale: string): string | null {
+    if (!transmissionValue) return null;
+    const transmission = transmissions.find(
+        (tr) => (tr.name_en ?? tr.name) === transmissionValue || tr.name_fr === transmissionValue || tr.name === transmissionValue
+    );
+    return transmission ? getLocalizedTransmissionName(transmission, locale) : transmissionValue;
+}
 
 function toNumber(value?: string) {
     if (!value) return undefined;
@@ -97,6 +129,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
 
     const client = await createSSRSassClient();
     const t = await getTranslations("Inventory.page");
+    const locale = await getLocale();
     const landingT = await getTranslations("NewLanding");
     const [
         { data: cars, error },
@@ -263,12 +296,12 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                             {car.year} {car.brand} {car.model}
                                         </h2>
                                         <p className="mt-0.5 text-sm text-gray-600">
-                                            {(car.category ?? t("card.fallbackBodyStyle"))} {car.model} {car.km.toLocaleString()} km
+                                            {getCategoryDisplay(car.category, categories, locale) ?? t("card.fallbackBodyStyle")} {car.model} {car.km.toLocaleString()} km
                                         </p>
                                         <ul className="mt-3 space-y-0.5 text-xs text-gray-600">
-                                            {car.engine && <li>{car.engine}</li>}
-                                            {car.fuel && <li>{car.fuel}</li>}
-                                            {car.transmission && <li>{car.transmission}</li>}
+                                            {car.engine && <li>{getEngineDisplay(car.engine, engines, locale)}</li>}
+                                            {car.fuel && <li>{getFuelDisplay(car.fuel, fuels, locale)}</li>}
+                                            {car.transmission && <li>{getTransmissionDisplay(car.transmission, transmissions, locale)}</li>}
                                         </ul>
                                         <div className="mt-3">
                                             <p className="text-[10px] text-gray-500">{t("card.dealerPriceLabel")}</p>

@@ -1,11 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useLocale } from "next-intl";
+import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 
 type OptionItem = {
     id: string;
     name: string;
 };
+
+type CategoryItem = OptionItem & { name_en?: string | null; name_fr?: string | null };
 
 type BrandModelItem = {
     id: string;
@@ -14,12 +18,13 @@ type BrandModelItem = {
 };
 
 interface HomeSearchFormProps {
-    categories: OptionItem[];
+    categories: CategoryItem[];
     brands: OptionItem[];
     brandModels: BrandModelItem[];
 }
 
 export default function HomeSearchForm({ categories, brands, brandModels }: HomeSearchFormProps) {
+    const locale = useLocale();
     const [brand, setBrand] = useState("");
     const [model, setModel] = useState("");
 
@@ -59,8 +64,8 @@ export default function HomeSearchForm({ categories, brands, brandModels }: Home
             >
                 <option value="">All Categories</option>
                 {categories.map((item) => (
-                    <option key={item.id} value={item.name}>
-                        {item.name}
+                    <option key={item.id} value={item.name_en ?? item.name}>
+                        {getLocalizedCategoryName(item as never, locale)}
                     </option>
                 ))}
             </select>

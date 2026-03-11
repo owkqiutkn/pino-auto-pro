@@ -257,14 +257,23 @@ export class SassClient {
     async getCategories() {
         return this.client
             .from('categories')
-            .select('*')
+            .select('id, created_at, name, name_en, name_fr')
             .order('name', { ascending: true });
     }
 
-    async createCategory(name: string) {
+    async createCategory(name_en: string, name_fr: string) {
         return this.client
             .from('categories')
-            .insert({ name })
+            .insert({ name: name_en, name_en, name_fr })
+            .select('*')
+            .single();
+    }
+
+    async updateCategory(id: string, name_en: string, name_fr: string) {
+        return this.client
+            .from('categories')
+            .update({ name_en, name_fr })
+            .eq('id', id)
             .select('*')
             .single();
     }
@@ -310,14 +319,23 @@ export class SassClient {
     async getEngines() {
         return this.client
             .from('engines')
-            .select('*')
-            .order('name', { ascending: true });
+            .select('id, created_at, name, name_en, name_fr')
+            .order('name_en', { ascending: true });
     }
 
-    async createEngine(name: string) {
+    async createEngine(name_en: string, name_fr: string) {
         return this.client
             .from('engines')
-            .insert({ name })
+            .insert({ name: name_en, name_en, name_fr })
+            .select('*')
+            .single();
+    }
+
+    async updateEngine(id: string, name_en: string, name_fr: string) {
+        return this.client
+            .from('engines')
+            .update({ name_en, name_fr })
+            .eq('id', id)
             .select('*')
             .single();
     }
@@ -332,14 +350,23 @@ export class SassClient {
     async getFuels() {
         return this.client
             .from('fuels')
-            .select('*')
-            .order('name', { ascending: true });
+            .select('id, created_at, name, name_en, name_fr')
+            .order('name_en', { ascending: true });
     }
 
-    async createFuel(name: string) {
+    async createFuel(name_en: string, name_fr: string) {
         return this.client
             .from('fuels')
-            .insert({ name })
+            .insert({ name: name_en, name_en, name_fr })
+            .select('*')
+            .single();
+    }
+
+    async updateFuel(id: string, name_en: string, name_fr: string) {
+        return this.client
+            .from('fuels')
+            .update({ name_en, name_fr })
+            .eq('id', id)
             .select('*')
             .single();
     }
@@ -354,14 +381,23 @@ export class SassClient {
     async getTransmissions() {
         return this.client
             .from('transmissions')
-            .select('*')
-            .order('name', { ascending: true });
+            .select('id, created_at, name, name_en, name_fr')
+            .order('name_en', { ascending: true });
     }
 
-    async createTransmission(name: string) {
+    async createTransmission(name_en: string, name_fr: string) {
         return this.client
             .from('transmissions')
-            .insert({ name })
+            .insert({ name: name_en, name_en, name_fr })
+            .select('*')
+            .single();
+    }
+
+    async updateTransmission(id: string, name_en: string, name_fr: string) {
+        return this.client
+            .from('transmissions')
+            .update({ name_en, name_fr })
+            .eq('id', id)
             .select('*')
             .single();
     }

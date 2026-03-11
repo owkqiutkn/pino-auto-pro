@@ -5,22 +5,28 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { getLocalizedExteriorColorName } from "@/lib/i18n/colors";
+import { getLocalizedCategoryName } from "@/lib/i18n/categories";
+import { getLocalizedEngineName } from "@/lib/i18n/engines";
+import { getLocalizedFuelName } from "@/lib/i18n/fuels";
+import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
 
 const DEBOUNCE_MS = 350;
 
 type Brand = { id: string; name: string };
-type Category = { id: string; name: string };
+type Category = { id: string; name: string; name_en?: string | null; name_fr?: string | null };
 type ExteriorColor = { id: string; name: string; name_en: string; name_fr: string };
-type OptionItem = { id: string; name: string };
+type Transmission = { id: string; name: string; name_en?: string | null; name_fr?: string | null };
+type Engine = { id: string; name: string; name_en?: string | null; name_fr?: string | null };
+type Fuel = { id: string; name: string; name_en?: string; name_fr?: string };
 
 interface InventoryFiltersProps {
     brands: Brand[];
     categories: Category[];
     models: string[];
     exteriorColors: ExteriorColor[];
-    transmissions: OptionItem[];
-    engines: OptionItem[];
-    fuels: OptionItem[];
+    transmissions: Transmission[];
+    engines: Engine[];
+    fuels: Fuel[];
     currentYear: number;
     filters: {
         category?: string;
@@ -158,8 +164,8 @@ export default function InventoryFilters({
                     >
                         <option value="">{t("anyBodyType")}</option>
                         {categories.map((c) => (
-                            <option key={c.id} value={c.name}>
-                                {c.name}
+                            <option key={c.id} value={c.name_en ?? c.name}>
+                                {getLocalizedCategoryName(c as never, locale)}
                             </option>
                         ))}
                     </select>
@@ -307,8 +313,8 @@ export default function InventoryFilters({
                     >
                         <option value="">{t("anyTransmission")}</option>
                         {transmissions.map((transmission) => (
-                            <option key={transmission.id} value={transmission.name}>
-                                {transmission.name}
+                            <option key={transmission.id} value={transmission.name_en ?? transmission.name}>
+                                {getLocalizedTransmissionName(transmission as never, locale)}
                             </option>
                         ))}
                     </select>
@@ -326,8 +332,8 @@ export default function InventoryFilters({
                     >
                         <option value="">{t("anyEngine")}</option>
                         {engines.map((engine) => (
-                            <option key={engine.id} value={engine.name}>
-                                {engine.name}
+                            <option key={engine.id} value={engine.name_en ?? engine.name}>
+                                {getLocalizedEngineName(engine, locale)}
                             </option>
                         ))}
                     </select>
@@ -345,8 +351,8 @@ export default function InventoryFilters({
                     >
                         <option value="">{t("anyFuel")}</option>
                         {fuels.map((fuel) => (
-                            <option key={fuel.id} value={fuel.name}>
-                                {fuel.name}
+                            <option key={fuel.id} value={fuel.name_en ?? fuel.name}>
+                                {getLocalizedFuelName(fuel as never, locale)}
                             </option>
                         ))}
                     </select>

@@ -68,16 +68,22 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          name_en: string | null
+          name_fr: string | null
         }
         Insert: {
           created_at?: string
           id?: string
-          name: string
+          name?: string
+          name_en: string
+          name_fr: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
+          name_en?: string
+          name_fr?: string
         }
         Relationships: []
       }
@@ -86,16 +92,22 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          name_en: string
+          name_fr: string
         }
         Insert: {
           created_at?: string
           id?: string
-          name: string
+          name?: string
+          name_en: string
+          name_fr: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
+          name_en?: string
+          name_fr?: string
         }
         Relationships: []
       }
@@ -104,16 +116,22 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          name_en: string | null
+          name_fr: string | null
         }
         Insert: {
           created_at?: string
           id?: string
-          name: string
+          name?: string
+          name_en: string
+          name_fr: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
+          name_en?: string
+          name_fr?: string
         }
         Relationships: []
       }
@@ -122,16 +140,22 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          name_en: string | null
+          name_fr: string | null
         }
         Insert: {
           created_at?: string
           id?: string
-          name: string
+          name?: string
+          name_en: string
+          name_fr: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
+          name_en?: string
+          name_fr?: string
         }
         Relationships: []
       }

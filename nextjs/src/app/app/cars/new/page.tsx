@@ -7,6 +7,10 @@ import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/s
 import { slugifyCar } from "@/lib/cars";
 import { Database } from "@/lib/types";
 import { getLocalizedExteriorColorName } from "@/lib/i18n/colors";
+import { getLocalizedCategoryName } from "@/lib/i18n/categories";
+import { getLocalizedEngineName } from "@/lib/i18n/engines";
+import { getLocalizedFuelName } from "@/lib/i18n/fuels";
+import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
 import { useLocale } from "next-intl";
 
 type CarStatus = "available" | "sold" | "hidden";
@@ -337,8 +341,8 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                     <select value={category} onChange={(e) => setCategory(e.target.value)} className="border rounded-md px-3 py-2">
                         <option value="">Select category (optional)</option>
                         {categories.map((item) => (
-                            <option key={item.id} value={item.name}>
-                                {item.name}
+                            <option key={item.id} value={item.name_en ?? item.name}>
+                                {getLocalizedCategoryName(item, locale)}
                             </option>
                         ))}
                     </select>
@@ -367,16 +371,16 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                     <select value={engine} onChange={(e) => setEngine(e.target.value)} className="border rounded-md px-3 py-2">
                         <option value="">Engine (optional)</option>
                         {engines.map((item) => (
-                            <option key={item.id} value={item.name}>
-                                {item.name}
+                            <option key={item.id} value={item.name_en ?? item.name}>
+                                {getLocalizedEngineName(item, locale)}
                             </option>
                         ))}
                     </select>
                     <select value={fuel} onChange={(e) => setFuel(e.target.value)} className="border rounded-md px-3 py-2">
                         <option value="">Fuel (optional)</option>
                         {fuels.map((item) => (
-                            <option key={item.id} value={item.name}>
-                                {item.name}
+                            <option key={item.id} value={item.name_en ?? item.name}>
+                                {getLocalizedFuelName(item, locale)}
                             </option>
                         ))}
                     </select>
@@ -387,8 +391,8 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                     >
                         <option value="">Transmission (optional)</option>
                         {transmissions.map((item) => (
-                            <option key={item.id} value={item.name}>
-                                {item.name}
+                            <option key={item.id} value={item.name_en ?? item.name}>
+                                {getLocalizedTransmissionName(item as never, locale)}
                             </option>
                         ))}
                     </select>
