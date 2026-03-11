@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import InventoryFilters from "@/components/InventoryFilters";
 import InventorySearchInput from "@/components/InventorySearchInput";
 import InventorySortSelect from "@/components/InventorySortSelect";
-import SiteNavbar from "@/components/SiteNavbar";
 import { createSSRSassClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/types";
 
@@ -56,10 +55,67 @@ function InventoryHero() {
     return (
         <section
             className="relative overflow-hidden"
-            style={{ backgroundImage: `url(${INVENTORY_HERO_IMAGE})`, backgroundPosition: "center 34%", backgroundSize: "cover" }}
+            style={{ backgroundImage: `url(${INVENTORY_HERO_IMAGE})`, backgroundPosition: "center 10%", backgroundSize: "cover" }}
             aria-label="Inventory hero section"
         >
             <div className="absolute inset-0 bg-black/70" />
+            <div className="absolute inset-x-0 top-0 h-10 md:h-12 bg-[#0a0a0d]/90" />
+            <div className="relative z-10 mx-auto max-w-6xl px-4">
+                <header className="flex items-center justify-between py-1 md:py-2 text-[11px]">
+                    <div className="flex items-center gap-3">
+                        <div className="text-sm font-black tracking-wider text-white">Pino Auto Pro</div>
+                    </div>
+                    <nav className="hidden md:flex items-center gap-5 font-semibold uppercase tracking-wide text-white/85">
+                        <a href="/inventory" className="hover:text-[#1d4ed8]">Inventory</a>
+                        <a href="#about" className="hover:text-[#1d4ed8]">About</a>
+                        <a href="#contact" className="hover:text-[#1d4ed8]">Contact</a>
+                        <div className="flex items-center gap-2 text-white/80">
+                            <a
+                                href="https://facebook.com"
+                                aria-label="Visit us on Facebook"
+                                className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20 hover:bg-white/10 hover:ring-[#1877f2]/60"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src="https://img.icons8.com/?id=118466&format=png&size=32"
+                                    alt="Facebook"
+                                    className="h-3.5 w-3.5 brightness-0 invert"
+                                />
+                            </a>
+                            <a
+                                href="https://instagram.com"
+                                aria-label="Visit us on Instagram"
+                                className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20 hover:bg-white/10 hover:ring-[#e1306c]/60"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src="https://img.icons8.com/?id=32292&format=png&size=32"
+                                    alt="Instagram"
+                                    className="h-3.5 w-3.5 brightness-0 invert"
+                                />
+                            </a>
+                            <a
+                                href="https://x.com"
+                                aria-label="Visit us on X"
+                                className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20 hover:bg-white/10 hover:ring-white/70"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src="https://img.icons8.com/?id=01GWmP9aUoPj&format=png&size=32"
+                                    alt="X (Twitter)"
+                                    className="h-3.5 w-3.5 brightness-0 invert"
+                                />
+                            </a>
+                        </div>
+                    </nav>
+                </header>
+            </div>
             <div className="relative mx-auto flex h-[55px] max-w-7xl items-end px-4 pb-2 opacity-90 md:h-[55px] md:pb-3">
                 <div>
                     <p className="text-xl font-bold text-white md:text-2xl"></p>
@@ -123,7 +179,6 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
     if (error) {
         return (
             <div className="min-h-screen bg-white">
-                <SiteNavbar variant="standalone" />
                 <InventoryHero />
                 <div className="max-w-5xl mx-auto px-4 py-16">
                     <h1 className="text-3xl font-bold text-gray-900">Inventory</h1>
@@ -173,7 +228,6 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
 
     return (
         <div className="min-h-screen bg-white">
-            <SiteNavbar variant="standalone" />
             <InventoryHero />
 
             <div className="mx-auto flex max-w-7xl gap-8 px-4 py-8">

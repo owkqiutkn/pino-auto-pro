@@ -17,10 +17,12 @@ export default function SiteNavbar({ variant = "hero" }: SiteNavbarProps) {
     return (
         <header className={`${bgClass} text-white`}>
             <div className="mx-auto max-w-6xl px-4">
-                <div className="flex items-center justify-between py-2 md:py-3 text-[11px]">
-                    <Link href="/new-landing" className="text-sm font-black tracking-wider hover:text-white">
-                        Pino Auto Pro
-                    </Link>
+                <div className="flex items-center justify-between py-1 md:py-2 text-[11px]">
+                    <div className="flex items-center gap-3">
+                        <Link href="/new-landing" className="text-sm font-black tracking-wider">
+                            Pino Auto Pro
+                        </Link>
+                    </div>
                     <nav className="hidden md:flex items-center gap-5 font-semibold uppercase tracking-wide text-white/85">
                         {navLinks.map((link) => (
                             <Link key={link.href} href={link.href} className="hover:text-[#1d4ed8]">
