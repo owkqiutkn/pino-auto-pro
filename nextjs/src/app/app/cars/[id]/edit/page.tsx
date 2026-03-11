@@ -7,6 +7,8 @@ import { ArrowDown, ArrowUp, Star, Trash2 } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/types";
 import { storagePathFromPublicUrl } from "@/lib/cars";
+import { getLocalizedExteriorColorName } from "@/lib/i18n/colors";
+import { useLocale } from "next-intl";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
@@ -22,6 +24,7 @@ type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 export default function EditCarPage() {
     const params = useParams<{ id: string }>();
     const id = params.id;
+    const locale = useLocale();
 
     const [car, setCar] = useState<Car | null>(null);
     const [images, setImages] = useState<CarImage[]>([]);
@@ -390,8 +393,8 @@ export default function EditCarPage() {
                     >
                         <option value="">Exterior color (optional)</option>
                         {exteriorColors.map((item) => (
-                            <option key={item.id} value={item.name}>
-                                {item.name}
+                            <option key={item.id} value={item.name_en ?? item.name}>
+                                {getLocalizedExteriorColorName(item as never, locale)}
                             </option>
                         ))}
                     </select>

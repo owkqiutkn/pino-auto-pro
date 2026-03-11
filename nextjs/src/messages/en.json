@@ -262,6 +262,23 @@
         "edit": "Edit",
         "delete": "Delete"
       }
+    },
+    "ExteriorColors": {
+      "title": "Exterior Colors",
+      "nameEnLabel": "Name (English)",
+      "nameFrLabel": "Name (French)",
+      "nameEnPlaceholder": "Exterior color in English",
+      "nameFrPlaceholder": "Exterior color in French",
+      "add": "Add",
+      "tableNameEn": "Name (EN)",
+      "tableNameFr": "Name (FR)",
+      "tableCreated": "Created",
+      "tableDelete": "Delete",
+      "empty": "No exterior colors yet.",
+      "loadError": "Failed to load exterior colors.",
+      "createError": "Failed to create exterior color.",
+      "deleteError": "Failed to delete exterior color.",
+      "deleteConfirm": "Delete this exterior color?"
     }
   }
 }

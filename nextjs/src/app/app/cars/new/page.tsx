@@ -6,6 +6,8 @@ import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { slugifyCar } from "@/lib/cars";
 import { Database } from "@/lib/types";
+import { getLocalizedExteriorColorName } from "@/lib/i18n/colors";
+import { useLocale } from "next-intl";
 
 type CarStatus = "available" | "sold" | "hidden";
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
@@ -40,6 +42,7 @@ function getErrorMessage(err: unknown) {
 
 export default function NewCarPage() {
     const router = useRouter();
+    const locale = useLocale();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [title, setTitle] = useState("");
@@ -354,8 +357,8 @@ export default function NewCarPage() {
                     >
                         <option value="">Exterior color (optional)</option>
                         {exteriorColors.map((item) => (
-                            <option key={item.id} value={item.name}>
-                                {item.name}
+                            <option key={item.id} value={item.name_en ?? item.name}>
+                                {getLocalizedExteriorColorName(item as never, locale)}
                             </option>
                         ))}
                     </select>

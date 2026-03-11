@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { getLocalizedExteriorColorName } from "@/lib/i18n/colors";
 
 const DEBOUNCE_MS = 350;
 
 type Brand = { id: string; name: string };
 type Category = { id: string; name: string };
-type ExteriorColor = { id: string; name: string };
+type ExteriorColor = { id: string; name: string; name_en: string; name_fr: string };
 type OptionItem = { id: string; name: string };
 
 interface InventoryFiltersProps {
@@ -58,6 +59,7 @@ export default function InventoryFilters({
     const router = useRouter();
     const searchParams = useSearchParams();
     const t = useTranslations("Inventory.filters");
+    const locale = useLocale();
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const [priceMin, setPriceMin] = useState<number | "">(toNum(filters.priceMin));
@@ -286,8 +288,8 @@ export default function InventoryFilters({
                     >
                         <option value="">{t("anyExteriorColor")}</option>
                         {exteriorColors.map((color) => (
-                            <option key={color.id} value={color.name}>
-                                {color.name}
+                            <option key={color.id} value={color.name_en ?? color.name}>
+                                {getLocalizedExteriorColorName(color as never, locale)}
                             </option>
                         ))}
                     </select>

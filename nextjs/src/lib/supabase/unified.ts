@@ -283,10 +283,10 @@ export class SassClient {
             .order('name', { ascending: true });
     }
 
-    async createExteriorColor(name: string) {
+    async createExteriorColor(name_en: string, name_fr: string) {
         return this.client
             .from('exterior_colors')
-            .insert({ name })
+            .insert({ name: name_en })
             .select('*')
             .single();
     }
