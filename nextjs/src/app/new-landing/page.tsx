@@ -2,6 +2,7 @@ import Link from "next/link";
 import ContactMap from "@/components/ContactMap";
 import InventoryLineup from "@/components/InventoryLineup";
 import SiteNavbar from "@/components/SiteNavbar";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import { createSSRSassClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/types";
 import { getTranslations } from "next-intl/server";
@@ -438,6 +439,7 @@ export default async function NewLandingPage() {
                     <div>{t("footer.copyright")}</div>
                 </div>
             </footer>
+            <ScrollToTopButton />
         </div>
     );
 }

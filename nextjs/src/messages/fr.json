@@ -227,6 +227,9 @@
       "yearAsc": "Année : plus ancien d'abord"
     }
   },
+  "Common": {
+    "scrollTop": "Retour en haut"
+  },
   "App": {
     "Dashboard": {
       "welcome": "Bienvenue, {name} ! 👋",

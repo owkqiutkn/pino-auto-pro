@@ -227,6 +227,9 @@
       "yearAsc": "Year: Oldest First"
     }
   },
+  "Common": {
+    "scrollTop": "Back to top"
+  },
   "App": {
     "Dashboard": {
       "welcome": "Welcome, {name}! 👋",

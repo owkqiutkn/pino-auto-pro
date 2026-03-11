@@ -4,6 +4,7 @@ import InventoryFilters from "@/components/InventoryFilters";
 import InventorySearchInput from "@/components/InventorySearchInput";
 import InventorySortSelect from "@/components/InventorySortSelect";
 import SiteNavbar from "@/components/SiteNavbar";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import { createSSRSassClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/types";
 import { getTranslations } from "next-intl/server";
@@ -311,6 +312,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                     )}
                 </main>
             </div>
+            <ScrollToTopButton />
         </div>
     );
 }
