@@ -298,11 +298,11 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                         <p className="mt-0.5 text-sm text-gray-600">
                                             {getCategoryDisplay(car.category, categories, locale) ?? t("card.fallbackBodyStyle")} {car.model} {car.km.toLocaleString()} km
                                         </p>
-                                        <ul className="mt-3 space-y-0.5 text-xs text-gray-600">
-                                            {car.engine && <li>{getEngineDisplay(car.engine, engines, locale)}</li>}
-                                            {car.fuel && <li>{getFuelDisplay(car.fuel, fuels, locale)}</li>}
-                                            {car.transmission && <li>{getTransmissionDisplay(car.transmission, transmissions, locale)}</li>}
-                                        </ul>
+                                        <p className="mt-3 text-xs text-gray-600">
+                                            {[car.engine && getEngineDisplay(car.engine, engines, locale), car.fuel && getFuelDisplay(car.fuel, fuels, locale), car.transmission && getTransmissionDisplay(car.transmission, transmissions, locale)]
+                                                .filter(Boolean)
+                                                .join(" • ")}
+                                        </p>
                                         <div className="mt-3">
                                             <p className="text-[10px] text-gray-500">{t("card.dealerPriceLabel")}</p>
                                             {car.discounted_price != null ? (
