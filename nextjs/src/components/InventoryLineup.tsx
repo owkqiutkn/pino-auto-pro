@@ -2,7 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { getLocalizedCategoryName } from "@/lib/i18n/categories";
+import { getLocalizedEngineName } from "@/lib/i18n/engines";
+import { getLocalizedFuelName } from "@/lib/i18n/fuels";
+import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
+import type { Database } from "@/lib/types";
+
+type Category = Database["public"]["Tables"]["categories"]["Row"];
+type Engine = Database["public"]["Tables"]["engines"]["Row"];
+type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
+type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 
 type Segment = "featured" | "new-arrivals";
 
@@ -10,10 +20,23 @@ type Car = {
     id: string;
     slug: string;
     title: string;
+    brand: string;
+    model: string;
     year: number;
     km: number;
     price: number;
     discounted_price: number | null;
+    category: string | null;
+    engine: string | null;
+    fuel: string | null;
+    transmission: string | null;
+};
+
+type LookupProps = {
+    categories: Category[];
+    engines: Engine[];
+    fuels: Fuel[];
+    transmissions: Transmission[];
 };
 
 const ITEMS_PER_PAGE = 8;
@@ -26,8 +49,37 @@ function formatPrice(value: number) {
     }).format(value);
 }
 
-export default function InventoryLineup() {
+function getEngineDisplay(engineValue: string | null, engines: Engine[], locale: string): string | null {
+    if (!engineValue) return null;
+    const engine = engines.find((e) => (e.name_en ?? e.name) === engineValue || e.name === engineValue);
+    return engine ? getLocalizedEngineName(engine, locale) : engineValue;
+}
+
+function getFuelDisplay(fuelValue: string | null, fuels: Fuel[], locale: string): string | null {
+    if (!fuelValue) return null;
+    const fuel = fuels.find((f) => (f.name_en ?? f.name) === fuelValue || f.name === fuelValue);
+    return fuel ? getLocalizedFuelName(fuel, locale) : fuelValue;
+}
+
+function getCategoryDisplay(categoryValue: string | null, categories: Category[], locale: string): string | null {
+    if (!categoryValue) return null;
+    const category = categories.find(
+        (c) => c.name_en === categoryValue || c.name_fr === categoryValue || c.name === categoryValue
+    );
+    return category ? getLocalizedCategoryName(category, locale) : categoryValue;
+}
+
+function getTransmissionDisplay(transmissionValue: string | null, transmissions: Transmission[], locale: string): string | null {
+    if (!transmissionValue) return null;
+    const transmission = transmissions.find(
+        (tr) => (tr.name_en ?? tr.name) === transmissionValue || tr.name_fr === transmissionValue || tr.name === transmissionValue
+    );
+    return transmission ? getLocalizedTransmissionName(transmission, locale) : transmissionValue;
+}
+
+export default function InventoryLineup({ categories, engines, fuels, transmissions }: LookupProps) {
     const t = useTranslations("NewLanding.inventorySection");
+    const locale = useLocale();
     const [segment, setSegment] = useState<Segment>("featured");
     const [page, setPage] = useState(1);
     const [cars, setCars] = useState<Car[]>([]);
@@ -157,11 +209,21 @@ export default function InventoryLineup() {
                                 </div>
                                 <div className="p-3 text-[11px]">
                                     <h3 className="text-xs font-bold uppercase">
-                                        {car.title}
+                                        {car.year} {car.brand} {car.model}
                                     </h3>
-                                    <p className="mt-1 text-[10px] text-gray-600">
-                                        {car.year} •{" "}
-                                        {car.km.toLocaleString()} km
+                                    <p
+                                        className="mt-1 text-[10px] text-gray-600"
+                                        data-inspector="DOM Path: div.bg-[#0c1320] text-white > section#inventory > div.mx-auto.max-w-6xl.px-4 > div.grid > a > div.p-3 > p.mt-1 • Position: top=135px, left=284px, width=213px, height=15px • React Component: LinkComponent"
+                                    >
+                                        {[
+                                            getCategoryDisplay(car.category, categories, locale) ?? "—",
+                                            `${car.km.toLocaleString()} km`,
+                                            car.engine && getEngineDisplay(car.engine, engines, locale),
+                                            car.fuel && getFuelDisplay(car.fuel, fuels, locale),
+                                            car.transmission && getTransmissionDisplay(car.transmission, transmissions, locale),
+                                        ]
+                                            .filter((x): x is string => !!x)
+                                            .join(" • ")}
                                     </p>
                                     <p className="mt-2 text-sm font-black text-[#1d4ed8]">
                                         {car.discounted_price != null

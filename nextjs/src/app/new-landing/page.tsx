@@ -8,6 +8,10 @@ import { Database } from "@/lib/types";
 import { getTranslations } from "next-intl/server";
 
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
+type Category = Database["public"]["Tables"]["categories"]["Row"];
+type Engine = Database["public"]["Tables"]["engines"]["Row"];
+type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
+type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 
 const heroImage = "/new-landing/hero.jpg";
 const financingImage = "/new-landing/financing.jpg";
@@ -45,8 +49,24 @@ const featureCards = [
 
 export default async function NewLandingPage() {
     const client = await createSSRSassClient();
-    const { data: brandsData } = await client.getBrands();
+    const [
+        { data: brandsData },
+        { data: categoriesData },
+        { data: enginesData },
+        { data: fuelsData },
+        { data: transmissionsData },
+    ] = await Promise.all([
+        client.getBrands(),
+        client.getCategories(),
+        client.getEngines(),
+        client.getFuels(),
+        client.getTransmissions(),
+    ]);
     const brands = (brandsData ?? []) as Brand[];
+    const categories = (categoriesData ?? []) as Category[];
+    const engines = (enginesData ?? []) as Engine[];
+    const fuels = (fuelsData ?? []) as Fuel[];
+    const transmissions = (transmissionsData ?? []) as Transmission[];
     const t = await getTranslations("NewLanding");
 
     return (
@@ -157,7 +177,12 @@ export default async function NewLandingPage() {
                 </div>
             </section>
 
-            <InventoryLineup />
+            <InventoryLineup
+                categories={categories}
+                engines={engines}
+                fuels={fuels}
+                transmissions={transmissions}
+            />
 
             <section id="financing" className="relative overflow-hidden py-16">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
