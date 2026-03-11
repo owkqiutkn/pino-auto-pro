@@ -177,10 +177,10 @@ export default function BrandModelsPage({ searchParams }: BrandModelsPageProps) 
                                 <td className="p-3">
                                     <button
                                         onClick={() => handleDelete(model.id)}
+                                        title="Delete"
                                         className="text-red-600 hover:text-red-700 inline-flex items-center"
                                     >
-                                        <Trash2 className="w-4 h-4 mr-1" />
-                                        Delete
+                                        <Trash2 className="w-4 h-4" />
                                     </button>
                                 </td>
                             </tr>
