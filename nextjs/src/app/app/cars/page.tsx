@@ -145,8 +145,7 @@ export default function CarsListPage({ searchParams }: CarsListPageProps) {
                         <th className="text-left p-3">Year</th>
                         <th className="text-left p-3">KM</th>
                         <th className="text-left p-3">Status</th>
-                        <th className="text-left p-3">Edit</th>
-                        <th className="text-left p-3">Delete</th>
+                        <th className="text-left p-3">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -166,14 +165,14 @@ export default function CarsListPage({ searchParams }: CarsListPageProps) {
                             <td className="p-3">{car.km.toLocaleString()}</td>
                             <td className="p-3 capitalize">{car.status}</td>
                             <td className="p-3">
-                                <Link href={`/app/cars/${car.id}/edit`} title="Edit" className="text-primary-600 hover:text-primary-700 inline-flex items-center">
-                                    <Pencil className="w-4 h-4" />
-                                </Link>
-                            </td>
-                            <td className="p-3">
-                                <button onClick={() => handleDelete(car.id)} title="Delete" className="text-red-600 hover:text-red-700 inline-flex items-center">
-                                    <Trash2 className="w-4 h-4" />
-                                </button>
+                                <div className="inline-flex items-center gap-2">
+                                    <Link href={`/app/cars/${car.id}/edit`} title="Edit" className="text-primary-600 hover:text-primary-700 inline-flex items-center">
+                                        <Pencil className="w-4 h-4" />
+                                    </Link>
+                                    <button onClick={() => handleDelete(car.id)} title="Delete" className="text-red-600 hover:text-red-700 inline-flex items-center">
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     ))}
