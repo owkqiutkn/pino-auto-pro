@@ -52,13 +52,6 @@ export default async function NewLandingPage() {
 
     return (
         <div className="bg-[#0c1320] text-white">
-            <div className="fixed right-4 top-[150px] z-[9999] hidden flex-col gap-2 lg:flex" aria-label="Quick actions">
-                {["Get Approved", "Book Test Drive", "Value Trade"].map((item) => (
-                    <a key={item} href="#financing" className="rounded-sm bg-[#1d4ed8] px-3 py-2 text-[10px] font-bold uppercase">
-                        {item}
-                    </a>
-                ))}
-            </div>
             <section className="relative min-h-[440px] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={heroImage} alt="ML Autos hero" className="absolute inset-0 h-full w-full object-cover" />
