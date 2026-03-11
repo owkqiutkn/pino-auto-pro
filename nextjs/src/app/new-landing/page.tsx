@@ -195,14 +195,12 @@ export default async function NewLandingPage() {
                 <div className="absolute inset-0 bg-black/90" />
                 <div className="relative mx-auto max-w-3xl px-4 text-center">
                     <h2 className="text-3xl font-black">Apply For Financing</h2>
-                    <p className="mt-2 text-xs text-white/90">What Type of Vehicle Do You Want?</p>
-                    <form className="mt-8 grid grid-cols-2 gap-3 rounded border border-white/30 bg-black/20 p-4 text-left md:grid-cols-4">
-                        <label className="text-[10px] uppercase"><span className="mb-1 block">Year</span><input className="h-8 w-full rounded-sm bg-white px-2 text-black" /></label>
-                        <label className="text-[10px] uppercase"><span className="mb-1 block">Make</span><input className="h-8 w-full rounded-sm bg-white px-2 text-black" /></label>
-                        <label className="text-[10px] uppercase"><span className="mb-1 block">Model</span><input className="h-8 w-full rounded-sm bg-white px-2 text-black" /></label>
-                        <label className="text-[10px] uppercase"><span className="mb-1 block">Budget</span><input className="h-8 w-full rounded-sm bg-white px-2 text-black" /></label>
-                        <button className="col-span-2 mt-2 h-9 rounded-sm bg-[#1d3f73] text-xs font-bold uppercase md:col-span-4">Submit</button>
-                    </form>
+                    <p className="mt-6 max-w-xl mx-auto text-sm text-white/90">
+                        We offer financing options to help you get behind the wheel. Just ask our team will walk you through your options and find a plan that works for you.
+                    </p>
+                    <a href="#contact" className="mt-6 inline-block rounded-sm bg-[#1d4ed8] px-6 py-3 text-sm font-bold uppercase tracking-wide hover:bg-[#1e40af]">
+                        Get in touch
+                    </a>
                 </div>
             </section>
 
@@ -266,9 +264,6 @@ export default async function NewLandingPage() {
                             Choose Pino Auto Pro for quality vehicles, honest service, and a smooth buying experience in Mississauga and beyond.
                         </p>
                         <div className="mt-5 flex flex-wrap gap-3 text-xs font-bold">
-                            <a href="#about" className="rounded bg-white px-4 py-2 text-black uppercase tracking-wide">
-                                About
-                            </a>
                             <a href="#contact" className="rounded bg-[#1d4ed8] px-4 py-2 text-white uppercase tracking-wide">
                                 Contact Us
                             </a>
