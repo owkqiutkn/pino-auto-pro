@@ -328,9 +328,14 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
             {error && <p className="text-red-600">{error}</p>}
 
             <form onSubmit={handleSubmit} className="bg-white border rounded-lg p-5 space-y-4">
-                <input value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="Title" className="w-full border rounded-md px-3 py-2" />
+                <div>
+                    <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                    <input id="title" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="Title" className="w-full border rounded-md px-3 py-2" />
+                </div>
                 <div className="grid sm:grid-cols-3 gap-3">
-                    <select value={brand} onChange={(e) => setBrand(e.target.value)} required className="border rounded-md px-3 py-2">
+                    <div>
+                        <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
+                        <select id="brand" value={brand} onChange={(e) => setBrand(e.target.value)} required className="w-full border rounded-md px-3 py-2">
                         <option value="">Select brand</option>
                         {brands.map((item) => (
                             <option key={item.id} value={item.name}>
@@ -338,7 +343,10 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                             </option>
                         ))}
                     </select>
-                    <select value={category} onChange={(e) => setCategory(e.target.value)} className="border rounded-md px-3 py-2">
+                    </div>
+                    <div>
+                        <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <select id="category" value={category} onChange={(e) => setCategory(e.target.value)} className="w-full border rounded-md px-3 py-2">
                         <option value="">Select category (optional)</option>
                         {categories.map((item) => (
                             <option key={item.id} value={item.name_en ?? item.name}>
@@ -346,7 +354,10 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                             </option>
                         ))}
                     </select>
-                    <select value={model} onChange={(e) => setModel(e.target.value)} required disabled={!brand} className="border rounded-md px-3 py-2 disabled:bg-gray-100">
+                    </div>
+                    <div>
+                        <label htmlFor="model" className="block text-sm font-medium text-gray-700 mb-1">Model</label>
+                        <select id="model" value={model} onChange={(e) => setModel(e.target.value)} required disabled={!brand} className="w-full border rounded-md px-3 py-2 disabled:bg-gray-100">
                         <option value="">{brand ? "Select model" : "Select brand first"}</option>
                         {brandModels.map((item) => (
                             <option key={item.id} value={item.name}>
@@ -354,13 +365,17 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                             </option>
                         ))}
                     </select>
+                    </div>
                 </div>
                 <div className="grid sm:grid-cols-4 gap-3">
-                    <select
-                        value={exteriorColor}
-                        onChange={(e) => setExteriorColor(e.target.value)}
-                        className="border rounded-md px-3 py-2"
-                    >
+                    <div>
+                        <label htmlFor="exteriorColor" className="block text-sm font-medium text-gray-700 mb-1">Exterior color</label>
+                        <select
+                            id="exteriorColor"
+                            value={exteriorColor}
+                            onChange={(e) => setExteriorColor(e.target.value)}
+                            className="w-full border rounded-md px-3 py-2"
+                        >
                         <option value="">Exterior color (optional)</option>
                         {exteriorColors.map((item) => (
                             <option key={item.id} value={item.name_en ?? item.name}>
@@ -368,7 +383,10 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                             </option>
                         ))}
                     </select>
-                    <select value={engine} onChange={(e) => setEngine(e.target.value)} className="border rounded-md px-3 py-2">
+                    </div>
+                    <div>
+                        <label htmlFor="engine" className="block text-sm font-medium text-gray-700 mb-1">Engine</label>
+                        <select id="engine" value={engine} onChange={(e) => setEngine(e.target.value)} className="w-full border rounded-md px-3 py-2">
                         <option value="">Engine (optional)</option>
                         {engines.map((item) => (
                             <option key={item.id} value={item.name_en ?? item.name}>
@@ -376,7 +394,10 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                             </option>
                         ))}
                     </select>
-                    <select value={fuel} onChange={(e) => setFuel(e.target.value)} className="border rounded-md px-3 py-2">
+                    </div>
+                    <div>
+                        <label htmlFor="fuel" className="block text-sm font-medium text-gray-700 mb-1">Fuel</label>
+                        <select id="fuel" value={fuel} onChange={(e) => setFuel(e.target.value)} className="w-full border rounded-md px-3 py-2">
                         <option value="">Fuel (optional)</option>
                         {fuels.map((item) => (
                             <option key={item.id} value={item.name_en ?? item.name}>
@@ -384,11 +405,15 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                             </option>
                         ))}
                     </select>
-                    <select
-                        value={transmission}
-                        onChange={(e) => setTransmission(e.target.value)}
-                        className="border rounded-md px-3 py-2"
-                    >
+                    </div>
+                    <div>
+                        <label htmlFor="transmission" className="block text-sm font-medium text-gray-700 mb-1">Transmission</label>
+                        <select
+                            id="transmission"
+                            value={transmission}
+                            onChange={(e) => setTransmission(e.target.value)}
+                            className="w-full border rounded-md px-3 py-2"
+                        >
                         <option value="">Transmission (optional)</option>
                         {transmissions.map((item) => (
                             <option key={item.id} value={item.name_en ?? item.name}>
@@ -396,9 +421,12 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                             </option>
                         ))}
                     </select>
+                    </div>
                 </div>
                 <div className="grid sm:grid-cols-3 gap-3">
-                    <select value={year === "" ? "" : String(year)} onChange={(e) => setYear(e.target.value ? Number(e.target.value) : "")} required className="border rounded-md px-3 py-2">
+                    <div>
+                        <label htmlFor="year" className="block text-sm font-medium text-gray-700 mb-1">Year</label>
+                        <select id="year" value={year === "" ? "" : String(year)} onChange={(e) => setYear(e.target.value ? Number(e.target.value) : "")} required className="w-full border rounded-md px-3 py-2">
                         <option value="">Select year</option>
                         {yearOptions.map((optionYear) => (
                             <option key={optionYear} value={optionYear}>
@@ -406,24 +434,41 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                             </option>
                         ))}
                     </select>
-                    <input value={km} onChange={(e) => setKm(Number(e.target.value))} type="number" required placeholder="KM" className="border rounded-md px-3 py-2" />
-                    <input value={price} onChange={(e) => setPrice(Number(e.target.value))} type="number" required placeholder="Price" className="border rounded-md px-3 py-2" />
+                    </div>
+                    <div>
+                        <label htmlFor="km" className="block text-sm font-medium text-gray-700 mb-1">Kilometers (KM)</label>
+                        <input id="km" value={km} onChange={(e) => setKm(Number(e.target.value))} type="number" required placeholder="KM" className="w-full border rounded-md px-3 py-2" />
+                    </div>
+                    <div>
+                        <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Price</label>
+                        <input id="price" value={price} onChange={(e) => setPrice(Number(e.target.value))} type="number" required placeholder="Price" className="w-full border rounded-md px-3 py-2" />
+                    </div>
                 </div>
-                <input
-                    value={discountedPrice}
-                    onChange={(e) => setDiscountedPrice(e.target.value ? Number(e.target.value) : "")}
-                    type="number"
-                    min={0}
-                    max={price === "" ? undefined : Number(price)}
-                    placeholder="Discounted price (optional)"
-                    className="w-full border rounded-md px-3 py-2"
-                />
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={5} placeholder="Description" className="w-full border rounded-md px-3 py-2" />
-                <select value={status} onChange={(e) => setStatus(e.target.value as CarStatus)} className="border rounded-md px-3 py-2">
+                <div>
+                    <label htmlFor="discountedPrice" className="block text-sm font-medium text-gray-700 mb-1">Discounted price (optional)</label>
+                    <input
+                        id="discountedPrice"
+                        value={discountedPrice}
+                        onChange={(e) => setDiscountedPrice(e.target.value ? Number(e.target.value) : "")}
+                        type="number"
+                        min={0}
+                        max={price === "" ? undefined : Number(price)}
+                        placeholder="Discounted price (optional)"
+                        className="w-full border rounded-md px-3 py-2"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} rows={5} placeholder="Description" className="w-full border rounded-md px-3 py-2" />
+                </div>
+                <div>
+                    <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select id="status" value={status} onChange={(e) => setStatus(e.target.value as CarStatus)} className="border rounded-md px-3 py-2">
                     <option value="available">available</option>
                     <option value="sold">sold</option>
                     <option value="hidden">hidden</option>
                 </select>
+                </div>
                 <label className="flex items-center gap-2 cursor-pointer">
                     <input
                         type="checkbox"

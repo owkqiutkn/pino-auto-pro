@@ -518,7 +518,7 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                         />
                         <span className="text-sm font-medium">Featured</span>
                     </label>
-                    <button type="button" onClick={handleMarkSold} className="px-3 py-2 rounded-md border hover:bg-gray-50">
+                    <button type="button" onClick={handleMarkSold} className="px-3 py-2 rounded-md bg-green-600 text-white hover:bg-green-700 font-medium">
                         Mark sold
                     </button>
                 </div>
