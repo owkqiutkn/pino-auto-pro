@@ -393,18 +393,6 @@ export default async function NewLandingPage() {
             <footer className="bg-[#171717] py-10 text-xs text-white/80">
                 <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 md:grid-cols-3">
                     <div>
-                        <h4 className="mb-3 font-bold uppercase text-white">Inventory</h4>
-                        <p className="text-white/60">Sedan</p>
-                        <p className="text-white/60">SUV</p>
-                        <p className="text-white/60">Coupe</p>
-                    </div>
-                    <div>
-                        <h4 className="mb-3 font-bold uppercase text-white">Hours</h4>
-                        <p className="text-white/60">Mon-Fri: 9am-7pm</p>
-                        <p className="text-white/60">Sat: 10am-5pm</p>
-                        <p className="text-white/60">Sun: Closed</p>
-                    </div>
-                    <div>
                         <h4 className="mb-3 font-bold uppercase text-white">Contact</h4>
                         <p className="text-white/60">1230 Automotive Blvd</p>
                         <p className="text-white/60">Sales: (555) 123-4567</p>
@@ -453,6 +441,18 @@ export default async function NewLandingPage() {
                                 />
                             </a>
                         </div>
+                    </div>
+                    <div>
+                        <h4 className="mb-3 font-bold uppercase text-white">Hours</h4>
+                        <p className="text-white/60">Mon-Fri: 9am-7pm</p>
+                        <p className="text-white/60">Sat: 10am-5pm</p>
+                        <p className="text-white/60">Sun: Closed</p>
+                    </div>
+                    <div>
+                        <h4 className="mb-3 font-bold uppercase text-white">Inventory</h4>
+                        <p className="text-white/60">Sedan</p>
+                        <p className="text-white/60">SUV</p>
+                        <p className="text-white/60">Coupe</p>
                     </div>
                 </div>
                 <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60">
