@@ -36,7 +36,7 @@ interface InventoryPageProps {
     }>;
 }
 
-const INVENTORY_HERO_IMAGE = "https://images.pexels.com/photos/17632052/pexels-photo-17632052.jpeg";
+const INVENTORY_HERO_IMAGE = "/new-landing/hero.jpg";
 
 function toNumber(value?: string) {
     if (!value) return undefined;
@@ -56,7 +56,7 @@ function InventoryHero() {
     return (
         <section
             className="relative overflow-hidden"
-            style={{ backgroundImage: `url(${INVENTORY_HERO_IMAGE})`, backgroundPosition: "center", backgroundSize: "cover" }}
+            style={{ backgroundImage: `url(${INVENTORY_HERO_IMAGE})`, backgroundPosition: "center 34%", backgroundSize: "cover" }}
             aria-label="Inventory hero section"
         >
             <div className="absolute inset-0 bg-black/70" />

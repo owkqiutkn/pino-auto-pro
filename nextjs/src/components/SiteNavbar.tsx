@@ -7,7 +7,6 @@ interface SiteNavbarProps {
 
 const navLinks = [
     { href: "/inventory", label: "Inventory" },
-    { href: "/new-landing#financing", label: "Finance" },
     { href: "/new-landing#about", label: "About" },
     { href: "/new-landing#contact", label: "Contact" },
 ];

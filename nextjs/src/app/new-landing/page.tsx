@@ -71,7 +71,6 @@ export default async function NewLandingPage() {
                         </div>
                         <nav className="hidden md:flex items-center gap-5 font-semibold uppercase tracking-wide text-white/85">
                             <a href="/inventory" className="hover:text-[#1d4ed8]">Inventory</a>
-                            <a href="#financing" className="hover:text-[#1d4ed8]">Finance</a>
                             <a href="#about" className="hover:text-[#1d4ed8]">About</a>
                             <a href="#contact" className="hover:text-[#1d4ed8]">Contact</a>
                             <div className="flex items-center gap-2 text-white/80">
@@ -392,18 +391,12 @@ export default async function NewLandingPage() {
             </section>
 
             <footer className="bg-[#171717] py-10 text-xs text-white/80">
-                <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 md:grid-cols-4">
+                <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 md:grid-cols-3">
                     <div>
                         <h4 className="mb-3 font-bold uppercase text-white">Inventory</h4>
                         <p className="text-white/60">Sedan</p>
                         <p className="text-white/60">SUV</p>
                         <p className="text-white/60">Coupe</p>
-                    </div>
-                    <div>
-                        <h4 className="mb-3 font-bold uppercase text-white">Financing</h4>
-                        <p className="text-white/60">Apply Online</p>
-                        <p className="text-white/60">Trade In</p>
-                        <p className="text-white/60">Credit Help</p>
                     </div>
                     <div>
                         <h4 className="mb-3 font-bold uppercase text-white">Hours</h4>
