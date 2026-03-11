@@ -74,18 +74,18 @@ export default function InventoryLineup() {
     return (
         <section id="inventory" className="bg-[#f2f2f3] py-10 text-black">
             <div className="mx-auto max-w-6xl px-4">
-                <div className="mb-6 flex items-center justify-between">
+                <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                     <h2 className="text-lg font-black uppercase">
                         Inventory Lineup
                     </h2>
-                    <div className="flex gap-2 text-[10px] font-bold uppercase">
+                    <div className="flex w-full flex-col gap-2 text-[10px] font-bold uppercase md:w-auto md:flex-row">
                         <button
                             type="button"
                             onClick={() => setSegment("featured")}
                             className={
                                 segment === "featured"
-                                    ? "rounded-sm bg-[#1d4ed8] px-2 py-1 text-white"
-                                    : "rounded-sm bg-[#1f1f25] px-2 py-1 text-white hover:bg-[#2d2d35]"
+                                    ? "w-full rounded-sm bg-[#1d4ed8] px-2 py-1 text-center text-white md:w-auto"
+                                    : "w-full rounded-sm bg-[#1f1f25] px-2 py-1 text-center text-white hover:bg-[#2d2d35] md:w-auto"
                             }
                         >
                             Featured
@@ -95,15 +95,15 @@ export default function InventoryLineup() {
                             onClick={() => setSegment("new-arrivals")}
                             className={
                                 segment === "new-arrivals"
-                                    ? "rounded-sm bg-[#1d4ed8] px-2 py-1 text-white"
-                                    : "rounded-sm bg-[#1f1f25] px-2 py-1 text-white hover:bg-[#2d2d35]"
+                                    ? "w-full rounded-sm bg-[#1d4ed8] px-2 py-1 text-center text-white md:w-auto"
+                                    : "w-full rounded-sm bg-[#1f1f25] px-2 py-1 text-center text-white hover:bg-[#2d2d35] md:w-auto"
                             }
                         >
                             New Arrivals
                         </button>
                         <Link
                             href="/inventory"
-                            className="rounded-sm border border-[#1d4ed8] px-2 py-1 text-[#1d4ed8] hover:bg-[#1d4ed8]/5"
+                            className="w-full rounded-sm border border-[#1d4ed8] px-2 py-1 text-center text-[#1d4ed8] hover:bg-[#1d4ed8]/5 md:w-auto"
                         >
                             View All
                         </Link>

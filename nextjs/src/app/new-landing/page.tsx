@@ -255,7 +255,7 @@ export default async function NewLandingPage() {
                         <p className="mt-4 text-xs text-gray-700">
                             We are committed to exceeding expectations, building long-term relationships, and setting a new standard in automotive care and customer service.
                         </p>
-                        <div className="mt-6 grid grid-cols-2 gap-3">
+                        <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2">
                             <Link href="/inventory" className="rounded bg-[#1d4ed8] px-3 py-2 text-center text-xs font-bold text-white">View Inventory</Link>
                             <a href="#contact" className="rounded bg-[#1d4ed8] px-3 py-2 text-center text-xs font-bold text-white">Contact Us</a>
                         </div>
@@ -300,7 +300,7 @@ export default async function NewLandingPage() {
 
             <section className="bg-[#17181f] pt-3 pb-10 text-white">
                 <div className="mx-auto max-w-6xl px-4">
-                    <div className="mb-4 flex items-center justify-between">
+                    <div className="mb-4 flex flex-col items-start gap-1 md:flex-row md:items-center md:justify-between">
                         <h3 className="text-lg font-black uppercase tracking-wide">Browse by Category</h3>
                         <span className="text-[10px] uppercase text-white/60">Sedan • SUV • Coupe • Truck</span>
                     </div>
