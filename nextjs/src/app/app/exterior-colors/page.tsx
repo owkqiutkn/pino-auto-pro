@@ -1,7 +1,7 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useState } from "react";
-import { Loader2, Plus, Trash2 } from "lucide-react";
+import { FormEvent, useCallback, useEffect, useState, use } from "react";
+import { Loader2, Plus, Trash2, Pencil } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/types";
 import { useTranslations } from "next-intl";
@@ -23,11 +23,17 @@ function getErrorMessage(error: unknown, fallback: string) {
   return fallback;
 }
 
-export default function ExteriorColorsPage() {
+type ExteriorColorsPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default function ExteriorColorsPage({ searchParams }: ExteriorColorsPageProps) {
+  use(searchParams ?? Promise.resolve({})); // Unwrap to satisfy Next.js 15 async dynamic APIs
   const t = useTranslations("App.ExteriorColors");
   const [colors, setColors] = useState<ExteriorColor[]>([]);
   const [nameEn, setNameEn] = useState("");
   const [nameFr, setNameFr] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -75,6 +81,37 @@ export default function ExteriorColorsPage() {
     }
   };
 
+  const handleStartEdit = (color: ExteriorColor) => {
+    setEditingId(color.id);
+    setNameEn(color.name_en ?? color.name ?? "");
+    setNameFr(color.name_fr ?? color.name ?? "");
+  };
+
+  const handleUpdate = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!editingId || !nameEn.trim() || !nameFr.trim()) return;
+    try {
+      setSaving(true);
+      setError("");
+      const client = await createSPASassClient();
+      const { error: updateError } = await client.updateExteriorColor(
+        editingId,
+        nameEn.trim(),
+        nameFr.trim()
+      );
+      if (updateError) throw updateError;
+      setEditingId(null);
+      setNameEn("");
+      setNameFr("");
+      await loadColors();
+    } catch (err) {
+      console.error(err);
+      setError(getErrorMessage(err, t("updateError")));
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleDelete = async (id: string) => {
     if (!window.confirm(t("deleteConfirm"))) return;
     try {
@@ -102,7 +139,7 @@ export default function ExteriorColorsPage() {
       <h1 className="text-2xl font-semibold">{t("title")}</h1>
 
       <form
-        onSubmit={handleCreate}
+        onSubmit={editingId ? handleUpdate : handleCreate}
         className="flex flex-col gap-3 rounded-lg border bg-white p-4 sm:flex-row"
       >
         <input
@@ -124,8 +161,17 @@ export default function ExteriorColorsPage() {
           type="submit"
           className="inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-white hover:bg-primary-700 disabled:opacity-60"
         >
-          <Plus className="mr-2 h-4 w-4" />
-          {t("add")}
+          {editingId ? (
+            <>
+              <Pencil className="mr-2 h-4 w-4" />
+              {t("save")}
+            </>
+          ) : (
+            <>
+              <Plus className="mr-2 h-4 w-4" />
+              {t("add")}
+            </>
+          )}
         </button>
       </form>
 
@@ -138,7 +184,7 @@ export default function ExteriorColorsPage() {
               <th className="p-3 text-left">{t("tableNameEn")}</th>
               <th className="p-3 text-left">{t("tableNameFr")}</th>
               <th className="p-3 text-left">{t("tableCreated")}</th>
-              <th className="p-3 text-left">{t("tableDelete")}</th>
+              <th className="p-3 text-left">{t("tableActions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -149,13 +195,22 @@ export default function ExteriorColorsPage() {
                 <td className="p-3">
                   {new Date(color.created_at).toLocaleDateString()}
                 </td>
-                <td className="p-3">
+                <td className="flex gap-2 p-3">
                   <button
+                    type="button"
+                    onClick={() => handleStartEdit(color)}
+                    title={t("tableEdit")}
+                    className="inline-flex items-center text-blue-600 hover:text-blue-700"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
                     onClick={() => handleDelete(color.id)}
+                    title={t("tableDelete")}
                     className="inline-flex items-center text-red-600 hover:text-red-700"
                   >
-                    <Trash2 className="mr-1 h-4 w-4" />
-                    {t("tableDelete")}
+                    <Trash2 className="h-4 w-4" />
                   </button>
                 </td>
               </tr>

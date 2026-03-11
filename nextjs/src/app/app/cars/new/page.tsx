@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState, use } from "react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { slugifyCar } from "@/lib/cars";
 import { Database } from "@/lib/types";
@@ -40,7 +40,9 @@ function getErrorMessage(err: unknown) {
     return "Failed to create car.";
 }
 
-export default function NewCarPage() {
+type NewCarPageProps = { searchParams?: Promise<Record<string, string | string[] | undefined>> };
+export default function NewCarPage({ searchParams }: NewCarPageProps) {
+    use(searchParams ?? Promise.resolve({}));
     const router = useRouter();
     const locale = useLocale();
     const [loading, setLoading] = useState(false);

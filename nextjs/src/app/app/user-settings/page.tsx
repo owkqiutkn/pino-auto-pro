@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, use } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useGlobal } from '@/lib/context/GlobalContext';
@@ -7,7 +7,9 @@ import { createSPASassClientAuthenticated as createSPASassClient } from '@/lib/s
 import { Key, User, CheckCircle } from 'lucide-react';
 import { MFASetup } from '@/components/MFASetup';
 
-export default function UserSettingsPage() {
+type UserSettingsPageProps = { searchParams?: Promise<Record<string, string | string[] | undefined>> };
+export default function UserSettingsPage({ searchParams }: UserSettingsPageProps) {
+    use(searchParams ?? Promise.resolve({}));
     const { user } = useGlobal();
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');

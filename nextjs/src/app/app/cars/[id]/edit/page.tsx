@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState, use } from "react";
 import { ArrowDown, ArrowUp, Star, Trash2 } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/types";
@@ -21,9 +21,10 @@ type Engine = Database["public"]["Tables"]["engines"]["Row"];
 type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
 type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 
-export default function EditCarPage() {
-    const params = useParams<{ id: string }>();
-    const id = params.id;
+type EditCarPageProps = { searchParams?: Promise<Record<string, string | string[] | undefined>> };
+export default function EditCarPage({ searchParams }: EditCarPageProps) {
+    use(searchParams ?? Promise.resolve({}));
+    const { id } = useParams<{ id: string }>();
     const locale = useLocale();
 
     const [car, setCar] = useState<Car | null>(null);

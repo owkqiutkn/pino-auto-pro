@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { Loader2, Pencil, Plus, Trash2 } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/types";
@@ -52,7 +52,9 @@ function getErrorMessage(err: unknown, fallback: string) {
     return fallback;
 }
 
-export default function CarsListPage() {
+type CarsListPageProps = { searchParams?: Promise<Record<string, string | string[] | undefined>> };
+export default function CarsListPage({ searchParams }: CarsListPageProps) {
+    use(searchParams ?? Promise.resolve({}));
     const [cars, setCars] = useState<Car[]>([]);
     const [coverByCar, setCoverByCar] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState(true);

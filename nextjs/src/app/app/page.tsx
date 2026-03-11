@@ -1,11 +1,13 @@
 "use client";
-import React from 'react';
+import React, { use } from 'react';
 import { useGlobal } from '@/lib/context/GlobalContext';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { CalendarDays, Settings } from 'lucide-react';
 import Link from 'next/link';
 
-export default function DashboardContent() {
+type DashboardContentProps = { searchParams?: Promise<Record<string, string | string[] | undefined>> };
+export default function DashboardContent({ searchParams }: DashboardContentProps) {
+    use(searchParams ?? Promise.resolve({}));
     const { loading, user } = useGlobal();
 
     const getDaysSinceRegistration = () => {

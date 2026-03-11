@@ -270,13 +270,17 @@
       "nameEnPlaceholder": "Exterior color in English",
       "nameFrPlaceholder": "Exterior color in French",
       "add": "Add",
+      "save": "Save",
       "tableNameEn": "Name (EN)",
       "tableNameFr": "Name (FR)",
       "tableCreated": "Created",
+      "tableActions": "Actions",
+      "tableEdit": "Edit",
       "tableDelete": "Delete",
       "empty": "No exterior colors yet.",
       "loadError": "Failed to load exterior colors.",
       "createError": "Failed to create exterior color.",
+      "updateError": "Failed to update exterior color.",
       "deleteError": "Failed to delete exterior color.",
       "deleteConfirm": "Delete this exterior color?"
     }

@@ -279,14 +279,23 @@ export class SassClient {
     async getExteriorColors() {
         return this.client
             .from('exterior_colors')
-            .select('*')
-            .order('name', { ascending: true });
+            .select('id, created_at, name, name_en, name_fr')
+            .order('name_en', { ascending: true });
     }
 
     async createExteriorColor(name_en: string, name_fr: string) {
         return this.client
             .from('exterior_colors')
-            .insert({ name: name_en })
+            .insert({ name: name_en, name_en, name_fr })
+            .select('*')
+            .single();
+    }
+
+    async updateExteriorColor(id: string, name_en: string, name_fr: string) {
+        return this.client
+            .from('exterior_colors')
+            .update({ name_en, name_fr })
+            .eq('id', id)
             .select('*')
             .single();
     }

@@ -270,13 +270,17 @@
       "nameEnPlaceholder": "Couleur extérieure en anglais",
       "nameFrPlaceholder": "Couleur extérieure en français",
       "add": "Ajouter",
+       "save": "Enregistrer",
       "tableNameEn": "Nom (EN)",
       "tableNameFr": "Nom (FR)",
       "tableCreated": "Créée le",
+      "tableActions": "Actions",
+      "tableEdit": "Modifier",
       "tableDelete": "Supprimer",
       "empty": "Aucune couleur extérieure pour l'instant.",
       "loadError": "Échec du chargement des couleurs extérieures.",
       "createError": "Échec de la création de la couleur extérieure.",
+      "updateError": "Échec de la mise à jour de la couleur extérieure.",
       "deleteError": "Échec de la suppression de la couleur extérieure.",
       "deleteConfirm": "Supprimer cette couleur extérieure ?"
     }

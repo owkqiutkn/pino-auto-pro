@@ -1,0 +1,28 @@
+---
+description: Conventions for creating and applying Supabase SQL migrations in this project
+alwaysApply: false
+globs: supabase/migrations/**/*.sql
+---
+
+# Supabase migration workflow
+
+- **Never assume remote DB changes**: The agent must only modify migration files and run `supabase db push`; it must not assume a migration is applied until the CLI confirms success.
+- **Prefer migrations over ad‑hoc SQL**: Any schema change (tables, columns, constraints, indexes, seeds) must go through a versioned SQL migration under `supabase/migrations/`.
+- **Follow existing naming pattern**: Use UTC‑like numeric prefixes (e.g. `20260312010000_add_exterior_colors_i18n.sql`) and a short, descriptive suffix.
+- **Idempotent column adds**: When adding columns, always use `ADD COLUMN IF NOT EXISTS` to keep local/remote/dev DBs in sync without failures.
+- **Backfill carefully**: When introducing new non‑nullable columns on existing tables, always:
+  - Add as nullable.
+  - Backfill from existing data (`UPDATE ... SET new_col = COALESCE(new_col, existing_col)`).
+  - Then set `SET NOT NULL` in the same migration.
+- **Respect existing data**: Avoid destructive operations (dropping columns/tables) unless the user explicitly approves; prefer deprecating columns and cleaning them in a follow‑up migration.
+
+# CLI usage in this repo
+
+- **Workdir**: Assume Supabase CLI commands are run from `supabase/` with `--workdir` already configured via `config.toml`.
+- **Applying migrations**:
+  - Use `supabase db push` (via the local CLI binary in `node_modules/supabase/bin/supabase.exe` when needed).
+  - Let the user confirm any interactive prompts if the CLI doesn’t support non‑interactive flags.
+- **Local vs remote**:
+  - Treat `supabase db push` as targeting the project's configured remote DB unless the user explicitly asks to work only against local Docker.
+  - Do not fabricate connection info or credentials; rely on the user’s existing Supabase CLI configuration.
+

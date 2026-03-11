@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState, use } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/types";
@@ -17,7 +17,9 @@ function getErrorMessage(error: unknown, fallback: string) {
     return fallback;
 }
 
-export default function BrandsPage() {
+type BrandsPageProps = { searchParams?: Promise<Record<string, string | string[] | undefined>> };
+export default function BrandsPage({ searchParams }: BrandsPageProps) {
+    use(searchParams ?? Promise.resolve({}));
     const [brands, setBrands] = useState<Brand[]>([]);
     const [name, setName] = useState("");
     const [loading, setLoading] = useState(true);

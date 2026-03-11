@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState, use } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/types";
@@ -17,7 +17,9 @@ function getErrorMessage(error: unknown, fallback: string) {
     return fallback;
 }
 
-export default function FuelsPage() {
+type FuelsPageProps = { searchParams?: Promise<Record<string, string | string[] | undefined>> };
+export default function FuelsPage({ searchParams }: FuelsPageProps) {
+    use(searchParams ?? Promise.resolve({}));
     const [fuels, setFuels] = useState<Fuel[]>([]);
     const [name, setName] = useState("");
     const [loading, setLoading] = useState(true);

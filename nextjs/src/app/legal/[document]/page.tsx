@@ -2,7 +2,7 @@
 
 import React from 'react';
 import LegalDocument from '@/components/LegalDocument';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 
 const legalDocuments = {
     'privacy': {
@@ -21,23 +21,17 @@ const legalDocuments = {
 
 type LegalDocument = keyof typeof legalDocuments;
 
-interface LegalPageProps {
-    document: LegalDocument;
-    lng: string;
-}
+type RouteDocument = 'terms' | 'privacy' | 'cookies';
 
-interface LegalPageParams {
-    params: Promise<LegalPageProps>
-}
+export default function LegalPage() {
+    const { document: rawDocument } = useParams<{ document: RouteDocument | string[] }>();
+    const document = Array.isArray(rawDocument) ? rawDocument[0] : rawDocument;
 
-export default function LegalPage({ params }: LegalPageParams) {
-    const {document} = React.use<LegalPageProps>(params);
-
-    if (!legalDocuments[document]) {
+    if (!legalDocuments[document as LegalDocument]) {
         notFound();
     }
 
-    const { title, path } = legalDocuments[document];
+    const { title, path } = legalDocuments[document as LegalDocument];
 
     return (
         <div className="container mx-auto px-4 py-8">
