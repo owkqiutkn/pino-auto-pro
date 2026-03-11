@@ -48,7 +48,7 @@ export default function ContactMap() {
         <div className="relative h-96 w-full md:h-[420px]">
             <div ref={mapContainerRef} className="relative h-full w-full">
                 <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
-                    <div className="pointer-events-auto flex w-full max-w-5xl items-center justify-center px-4">
+                    <div className="pointer-events-auto flex h-full w-full max-w-none items-center justify-center px-4">
                         <div className="w-full max-w-xs rounded-2xl bg-white p-5 text-gray-900 shadow-[0_22px_55px_rgba(0,0,0,0.7)] md:max-w-sm md:p-6">
                             <form className="space-y-4 w-full">
                                 <div>
