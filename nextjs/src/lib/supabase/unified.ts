@@ -91,6 +91,10 @@ export class SassClient {
         brand?: string;
         category?: string;
         model?: string;
+        exteriorColor?: string;
+        transmission?: string;
+        engine?: string;
+        fuel?: string;
         year?: number;
         yearMin?: number;
         yearMax?: number;
@@ -113,6 +117,18 @@ export class SassClient {
         }
         if (filters?.model) {
             query = query.eq('model', filters.model);
+        }
+        if (filters?.exteriorColor) {
+            query = query.eq('exterior_color', filters.exteriorColor);
+        }
+        if (filters?.transmission) {
+            query = query.eq('transmission', filters.transmission);
+        }
+        if (filters?.engine) {
+            query = query.eq('engine', filters.engine);
+        }
+        if (filters?.fuel) {
+            query = query.eq('fuel', filters.fuel);
         }
         if (typeof filters?.year === 'number') {
             query = query.eq('year', filters.year);

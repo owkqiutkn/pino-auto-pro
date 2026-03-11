@@ -11,12 +11,20 @@ type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
 type Category = Database["public"]["Tables"]["categories"]["Row"];
+type ExteriorColor = Database["public"]["Tables"]["exterior_colors"]["Row"];
+type Engine = Database["public"]["Tables"]["engines"]["Row"];
+type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
+type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 
 interface InventoryPageProps {
     searchParams: Promise<{
         brand?: string;
         category?: string;
         model?: string;
+        exteriorColor?: string;
+        transmission?: string;
+        engine?: string;
+        fuel?: string;
         search?: string;
         yearMin?: string;
         yearMax?: string;
@@ -47,6 +55,10 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
     const brand = params.brand?.trim() || undefined;
     const category = params.category?.trim() || undefined;
     const model = params.model?.trim() || undefined;
+    const exteriorColor = params.exteriorColor?.trim() || undefined;
+    const transmission = params.transmission?.trim() || undefined;
+    const engine = params.engine?.trim() || undefined;
+    const fuel = params.fuel?.trim() || undefined;
     const searchQuery = params.search?.trim() || undefined;
     const yearMin = toNumber(params.yearMin);
     const yearMax = toNumber(params.yearMax);
@@ -61,11 +73,19 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
         { data: cars, error },
         { data: brandsData },
         { data: categoriesData },
+        { data: exteriorColorsData },
+        { data: transmissionsData },
+        { data: enginesData },
+        { data: fuelsData },
     ] = await Promise.all([
         client.getAvailableCars({
             brand,
             category: category || undefined,
             model,
+            exteriorColor,
+            transmission,
+            engine,
+            fuel,
             yearMin,
             yearMax,
             kmMin,
@@ -75,6 +95,10 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
         }),
         client.getBrands(),
         client.getCategories(),
+        client.getExteriorColors(),
+        client.getTransmissions(),
+        client.getEngines(),
+        client.getFuels(),
     ]);
 
     if (error) {
@@ -109,6 +133,10 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
 
     const brands = (brandsData ?? []) as Brand[];
     const categories = (categoriesData ?? []) as Category[];
+    const exteriorColors = (exteriorColorsData ?? []) as ExteriorColor[];
+    const transmissions = (transmissionsData ?? []) as Transmission[];
+    const engines = (enginesData ?? []) as Engine[];
+    const fuels = (fuelsData ?? []) as Fuel[];
     const models = Array.from(new Set(carsList.map((c) => c.model).filter(Boolean))).sort();
 
     const carIds = carsList.map((c) => c.id);
@@ -133,11 +161,19 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                         brands={brands}
                         categories={categories}
                         models={models}
+                        exteriorColors={exteriorColors}
+                        transmissions={transmissions}
+                        engines={engines}
+                        fuels={fuels}
                         currentYear={currentYear}
                         filters={{
                             category,
                             brand,
                             model,
+                            exteriorColor,
+                            transmission,
+                            engine,
+                            fuel,
                             priceMin: priceMin ?? "",
                             priceMax: priceMax ?? "",
                             kmMin: kmMin ?? "",

@@ -8,16 +8,26 @@ const DEBOUNCE_MS = 350;
 
 type Brand = { id: string; name: string };
 type Category = { id: string; name: string };
+type ExteriorColor = { id: string; name: string };
+type OptionItem = { id: string; name: string };
 
 interface InventoryFiltersProps {
     brands: Brand[];
     categories: Category[];
     models: string[];
+    exteriorColors: ExteriorColor[];
+    transmissions: OptionItem[];
+    engines: OptionItem[];
+    fuels: OptionItem[];
     currentYear: number;
     filters: {
         category?: string;
         brand?: string;
         model?: string;
+        exteriorColor?: string;
+        transmission?: string;
+        engine?: string;
+        fuel?: string;
         priceMin?: number | "";
         priceMax?: number | "";
         kmMin?: number | "";
@@ -37,6 +47,10 @@ export default function InventoryFilters({
     brands,
     categories,
     models,
+    exteriorColors,
+    transmissions,
+    engines,
+    fuels,
     currentYear,
     filters,
 }: InventoryFiltersProps) {
@@ -242,17 +256,75 @@ export default function InventoryFilters({
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
                         Exterior Colour
                     </label>
-                    <select className="w-full rounded border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-500" disabled>
-                        <option>Any</option>
+                    <select
+                        name="exteriorColor"
+                        value={filters.exteriorColor ?? ""}
+                        onChange={handleSelectChange("exteriorColor")}
+                        className={selectClass}
+                    >
+                        <option value="">Any</option>
+                        {exteriorColors.map((color) => (
+                            <option key={color.id} value={color.name}>
+                                {color.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
 
                 <div>
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
-                        Driveline
+                        Transmission
                     </label>
-                    <select className="w-full rounded border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-500" disabled>
-                        <option>Any</option>
+                    <select
+                        name="transmission"
+                        value={filters.transmission ?? ""}
+                        onChange={handleSelectChange("transmission")}
+                        className={selectClass}
+                    >
+                        <option value="">Any</option>
+                        {transmissions.map((transmission) => (
+                            <option key={transmission.id} value={transmission.name}>
+                                {transmission.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div>
+                    <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
+                        Engine
+                    </label>
+                    <select
+                        name="engine"
+                        value={filters.engine ?? ""}
+                        onChange={handleSelectChange("engine")}
+                        className={selectClass}
+                    >
+                        <option value="">Any</option>
+                        {engines.map((engine) => (
+                            <option key={engine.id} value={engine.name}>
+                                {engine.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div>
+                    <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
+                        Fuel
+                    </label>
+                    <select
+                        name="fuel"
+                        value={filters.fuel ?? ""}
+                        onChange={handleSelectChange("fuel")}
+                        className={selectClass}
+                    >
+                        <option value="">Any</option>
+                        {fuels.map((fuel) => (
+                            <option key={fuel.id} value={fuel.name}>
+                                {fuel.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
 
