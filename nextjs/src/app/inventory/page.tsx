@@ -36,6 +36,8 @@ interface InventoryPageProps {
     }>;
 }
 
+const INVENTORY_HERO_IMAGE = "https://images.pexels.com/photos/17632052/pexels-photo-17632052.jpeg";
+
 function toNumber(value?: string) {
     if (!value) return undefined;
     const parsed = Number(value);
@@ -48,6 +50,23 @@ function formatPrice(value: number) {
         currency: "CAD",
         maximumFractionDigits: 0,
     }).format(value);
+}
+
+function InventoryHero() {
+    return (
+        <section
+            className="relative overflow-hidden"
+            style={{ backgroundImage: `url(${INVENTORY_HERO_IMAGE})`, backgroundPosition: "center", backgroundSize: "cover" }}
+            aria-label="Inventory hero section"
+        >
+            <div className="absolute inset-0 bg-black/70" />
+            <div className="relative mx-auto flex h-[55px] max-w-7xl items-end px-4 pb-2 opacity-90 md:h-[55px] md:pb-3">
+                <div>
+                    <p className="text-xl font-bold text-white md:text-2xl"></p>
+                </div>
+            </div>
+        </section>
+    );
 }
 
 export default async function InventoryPage({ searchParams }: InventoryPageProps) {
@@ -105,6 +124,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
         return (
             <div className="min-h-screen bg-white">
                 <SiteNavbar variant="standalone" />
+                <InventoryHero />
                 <div className="max-w-5xl mx-auto px-4 py-16">
                     <h1 className="text-3xl font-bold text-gray-900">Inventory</h1>
                     <p className="mt-6 text-red-600">Failed to load vehicles.</p>
@@ -154,6 +174,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
     return (
         <div className="min-h-screen bg-white">
             <SiteNavbar variant="standalone" />
+            <InventoryHero />
 
             <div className="mx-auto flex max-w-7xl gap-8 px-4 py-8">
                 <Suspense fallback={<aside className="w-64 shrink-0"><div className="h-[500px] animate-pulse rounded border bg-gray-100" /></aside>}>

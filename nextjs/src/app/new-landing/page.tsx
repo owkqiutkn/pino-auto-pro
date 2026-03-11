@@ -70,7 +70,7 @@ export default async function NewLandingPage() {
                             <div className="text-sm font-black tracking-wider">Pino Auto Pro</div>
                         </div>
                         <nav className="hidden md:flex items-center gap-5 font-semibold uppercase tracking-wide text-white/85">
-                            <a href="#inventory" className="hover:text-[#1d4ed8]">Inventory</a>
+                            <a href="/inventory" className="hover:text-[#1d4ed8]">Inventory</a>
                             <a href="#financing" className="hover:text-[#1d4ed8]">Finance</a>
                             <a href="#about" className="hover:text-[#1d4ed8]">About</a>
                             <a href="#contact" className="hover:text-[#1d4ed8]">Contact</a>
@@ -187,6 +187,14 @@ export default async function NewLandingPage() {
                                     <a key={item.title} href="#contact" className="block">
                                         {cardContent}
                                     </a>
+                                );
+                            }
+
+                            if (item.title === "View Inventory") {
+                                return (
+                                    <Link key={item.title} href="/inventory" className="block">
+                                        {cardContent}
+                                    </Link>
                                 );
                             }
 
