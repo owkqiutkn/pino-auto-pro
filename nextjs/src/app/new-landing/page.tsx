@@ -50,7 +50,7 @@ export default async function NewLandingPage() {
     const brands = (brandsData ?? []) as Brand[];
 
     return (
-        <div className="bg-[#0f0f12] text-white">
+        <div className="bg-[#0c1320] text-white">
             <div className="fixed right-4 top-[150px] z-[9999] hidden flex-col gap-2 lg:flex" aria-label="Quick actions">
                 {["Get Approved", "Book Test Drive", "Value Trade"].map((item) => (
                     <a key={item} href="#financing" className="rounded-sm bg-[#1d4ed8] px-3 py-2 text-[10px] font-bold uppercase">
@@ -150,13 +150,13 @@ export default async function NewLandingPage() {
                 </div>
             </section>
 
-            <section className="relative z-20 bg-[#020617] pt-10 pb-10 md:pt-12 md:pb-14">
+            <section className="relative z-20 bg-[#071d38] pt-10 pb-10 md:pt-12 md:pb-14">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-3 -mt-20 md:-mt-28">
                         {featureCards.map((item) => (
                             <div
                                 key={item.title}
-                                className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-blue-400/30 bg-[#020617] shadow-[0_22px_55px_rgba(0,0,0,0.7)] transition-transform duration-300 ease-out hover:-translate-y-2"
+                                className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-blue-400/30 bg-[#071d38] shadow-[0_22px_55px_rgba(0,0,0,0.7)] transition-transform duration-300 ease-out hover:-translate-y-2"
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
@@ -164,7 +164,7 @@ export default async function NewLandingPage() {
                                     alt={item.title}
                                     className="absolute inset-0 h-full w-full object-cover scale-110 opacity-60"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/90 to-black/95 mix-blend-multiply" />
+                                <div className="absolute inset-0 bg-gradient-to-br from-blue-950/70 via-blue-950/85 to-blue-950/95 mix-blend-multiply" />
                                 <div className="relative z-10 flex h-full w-full flex-col justify-center p-5">
                                     <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-[11px] font-black text-blue-600">
                                         {"iconImage" in item && item.iconImage ? (
