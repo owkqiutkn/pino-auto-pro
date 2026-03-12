@@ -634,9 +634,11 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                         Mark sold
                     </button>
                 </div>
-                <button disabled={saving} type="submit" className="px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-60">
-                    {saving ? "Saving..." : "Save changes"}
-                </button>
+                <div className="sticky bottom-4 z-10 flex justify-end pt-4 pb-1 -mx-1 px-1 bg-white">
+                    <button disabled={saving} type="submit" className="px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-60 shadow-lg">
+                        {saving ? "Saving..." : "Save changes"}
+                    </button>
+                </div>
             </form>
 
             <section className="bg-white border rounded-lg p-5 space-y-4">

@@ -268,59 +268,28 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                             </p>
                         </div>
 
-                        {/* Vehicle Features intro */}
-                        <div>
-                            <h2 className="text-lg font-bold text-gray-900">{t("vehicleFeaturesTitle")}</h2>
-                            <p className="mt-2 text-sm text-gray-600">
-                                {t("vehicleFeaturesIntro")}
-                            </p>
-                        </div>
-
-                        {/* Accordions - vehicle features by category */}
-                        <div className="space-y-0">
-                            {carFeaturesByCategory.length > 0 ? (
-                                carFeaturesByCategory.map((group) => (
-                                    <CarDetailAccordion key={group.categoryId} title={group.categoryName}>
-                                        <ul className="list-disc list-inside space-y-1 text-gray-600">
-                                            {group.features.map((name, i) => (
-                                                <li key={`${group.categoryName}-${i}`}>{name}</li>
-                                            ))}
-                                        </ul>
-                                    </CarDetailAccordion>
-                                ))
-                            ) : (
-                                <>
-                                    <CarDetailAccordion title={t("keyFeatures")}>
-                                        <p className="text-gray-600">
-                                            {(locale.startsWith("fr")
-                                                ? car.description_fr ?? car.description_en ?? car.description
-                                                : car.description_en ?? car.description_fr ?? car.description)
-                                                ?.slice(0, 200) || t("na")}
-                                        </p>
-                                    </CarDetailAccordion>
-                                    <CarDetailAccordion title={t("safeties")}>
-                                        <p className="text-gray-600">Contact us for safety feature details.</p>
-                                    </CarDetailAccordion>
-                                    <CarDetailAccordion title={t("exterior")}>
-                                        <p className="text-gray-600">Exterior color: {car.exterior_color ?? t("na")}</p>
-                                    </CarDetailAccordion>
-                                    <CarDetailAccordion title={t("interior")}>
-                                        <p className="text-gray-600">{t("na")}</p>
-                                    </CarDetailAccordion>
-                                    <CarDetailAccordion title={t("enginePowertrain")}>
-                                        <p className="text-gray-600">{car.engine ?? t("na")}</p>
-                                    </CarDetailAccordion>
-                                    <CarDetailAccordion title={t("convenience")}>
-                                        <p className="text-gray-600">
-                                            {(locale.startsWith("fr")
-                                                ? car.description_fr ?? car.description_en ?? car.description
-                                                : car.description_en ?? car.description_fr ?? car.description)
-                                                ?.slice(0, 150) || t("na")}
-                                        </p>
-                                    </CarDetailAccordion>
-                                </>
-                            )}
-                        </div>
+                        {/* Vehicle Features - only show categories that have at least one checked feature */}
+                        {carFeaturesByCategory.length > 0 && (
+                            <>
+                                <div>
+                                    <h2 className="text-lg font-bold text-gray-900">{t("vehicleFeaturesTitle")}</h2>
+                                    <p className="mt-2 text-sm text-gray-600">
+                                        {t("vehicleFeaturesIntro")}
+                                    </p>
+                                </div>
+                                <div className="space-y-0">
+                                    {carFeaturesByCategory.map((group) => (
+                                        <CarDetailAccordion key={group.categoryId} title={group.categoryName}>
+                                            <ul className="list-disc list-inside space-y-1 text-gray-600">
+                                                {group.features.map((name, i) => (
+                                                    <li key={`${group.categoryId}-${i}`}>{name}</li>
+                                                ))}
+                                            </ul>
+                                        </CarDetailAccordion>
+                                    ))}
+                                </div>
+                            </>
+                        )}
 
                         {/* Request Information form */}
                         <div id="car-detail-form" className="rounded-lg border border-gray-200 scroll-mt-4">
