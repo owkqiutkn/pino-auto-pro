@@ -285,13 +285,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                                 </div>
                                 <div className="space-y-0">
                                     {carFeaturesByCategory.map((group) => (
-                                        <CarDetailAccordion key={group.categoryId} title={group.categoryName}>
-                                            <ul className="list-disc list-inside space-y-1 text-gray-600">
-                                                {group.features.map((name, i) => (
-                                                    <li key={`${group.categoryId}-${i}`}>{name}</li>
-                                                ))}
-                                            </ul>
-                                        </CarDetailAccordion>
+                                        <CarDetailAccordion key={group.categoryId} title={group.categoryName} features={group.features} />
                                     ))}
                                 </div>
                             </>
