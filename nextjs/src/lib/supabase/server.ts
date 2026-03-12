@@ -1,7 +1,18 @@
-import {createServerClient} from '@supabase/ssr'
-import {cookies} from 'next/headers'
-import {ClientType, SassClient} from "@/lib/supabase/unified";
-import {Database} from "@/lib/types";
+import { createClient } from "@supabase/supabase-js";
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
+import { ClientType, SassClient } from "@/lib/supabase/unified";
+import { Database } from "@/lib/types";
+
+/** Anonymous client for cacheable public data (no cookies). Safe inside unstable_cache. */
+export function createAnonymousSassClient() {
+    const client = createClient<Database, "public", Database["public"]>(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return new SassClient(client as any, ClientType.SERVER);
+}
 
 export async function createSSRClient() {
     const cookieStore = await cookies()

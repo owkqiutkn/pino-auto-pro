@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import { createSSRSassClient } from "@/lib/supabase/server";
+import {
+    getCachedCategories,
+    getCachedEngines,
+    getCachedFuels,
+    getCachedTransmissions,
+} from "@/lib/supabase/cached";
 import { Database } from "@/lib/types";
 import { getTranslations, getLocale } from "next-intl/server";
 import { getLocalizedCategoryName } from "@/lib/i18n/categories";
@@ -15,7 +22,6 @@ import SimilarVehiclesCarousel from "@/components/SimilarVehiclesCarousel";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
-type Category = Database["public"]["Tables"]["categories"]["Row"];
 
 interface CarPageProps {
     params: Promise<{ slug: string }>;
@@ -29,7 +35,7 @@ function formatPrice(value: number) {
     }).format(value);
 }
 
-async function getAvailableCarWithImages(slug: string) {
+const getAvailableCarWithImages = cache(async (slug: string) => {
     const client = await createSSRSassClient();
     const { data: car, error } = await client.getAvailableCarBySlug(slug);
     if (error || !car) {
@@ -37,7 +43,7 @@ async function getAvailableCarWithImages(slug: string) {
     }
     const { data: images = [] } = await client.getCarImages(car.id);
     return { car: car as Car, images: images as CarImage[] };
-}
+});
 
 export async function generateMetadata({ params }: CarPageProps): Promise<Metadata> {
     const { slug } = await params;
@@ -73,41 +79,44 @@ export async function generateMetadata({ params }: CarPageProps): Promise<Metada
 
 export default async function CarDetailPage({ params }: CarPageProps) {
     const { slug } = await params;
-    const client = await createSSRSassClient();
-    const { car, images } = await getAvailableCarWithImages(slug);
+
+    const [carResult, categories, enginesData, fuelsData, transmissionsData] =
+        await Promise.all([
+            getAvailableCarWithImages(slug),
+            getCachedCategories(),
+            getCachedEngines(),
+            getCachedFuels(),
+            getCachedTransmissions(),
+        ]);
+
+    const { car, images } = carResult;
     if (!car) {
         notFound();
     }
 
-    const t = await getTranslations("Inventory.carDetail");
-    const locale = await getLocale();
-
-    const [
-        { data: categoriesData },
-        { data: enginesData },
-        { data: fuelsData },
-        { data: transmissionsData },
-        { data: similarCars = [] },
-    ] = await Promise.all([
-        client.getCategories(),
-        client.getEngines(),
-        client.getFuels(),
-        client.getTransmissions(),
+    const client = await createSSRSassClient();
+    const [t, locale, similarResult] = await Promise.all([
+        getTranslations("Inventory.carDetail"),
+        getLocale(),
         client.getSimilarCars(car.id, car.brand, 6),
     ]);
+    const similarCars = (similarResult.data ?? []) as Car[];
 
-    const categories = (categoriesData ?? []) as Category[];
-    const categoryRow = categories.find((c) => c.name_en === car.category || c.name_fr === car.category || c.name === car.category);
-    const bodyStyleDisplay = categoryRow ? getLocalizedCategoryName(categoryRow, locale) : car.category ?? t("na");
+    const similarCarIds = similarCars.map((c) => c.id);
+    const { data: similarImages = [] } =
+        similarCarIds.length > 0
+            ? await client.getCarImagesForCars(similarCarIds)
+            : { data: [] };
 
-    const similarCarIds = (similarCars as Car[]).map((c) => c.id);
-    const { data: similarImages = [] } = similarCarIds.length > 0 ? await client.getCarImagesForCars(similarCarIds) : { data: [] };
     const imagesByCar = new Map<string, CarImage[]>();
     for (const img of similarImages as CarImage[]) {
         const bucket = imagesByCar.get(img.car_id) || [];
         bucket.push(img);
         imagesByCar.set(img.car_id, bucket);
     }
+
+    const categoryRow = categories.find((c) => c.name_en === car.category || c.name_fr === car.category || c.name === car.category);
+    const bodyStyleDisplay = categoryRow ? getLocalizedCategoryName(categoryRow, locale) : car.category ?? t("na");
 
     const price = car.discounted_price ?? car.price;
 
@@ -210,9 +219,9 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                         <CarDetailSpecs
                             car={car}
                             categories={categories}
-                            engines={(enginesData ?? []) as Database["public"]["Tables"]["engines"]["Row"]}
-                            fuels={(fuelsData ?? []) as Database["public"]["Tables"]["fuels"]["Row"]}
-                            transmissions={(transmissionsData ?? []) as Database["public"]["Tables"]["transmissions"]["Row"]}
+                            engines={enginesData as Database["public"]["Tables"]["engines"]["Row"][]}
+                            fuels={fuelsData as Database["public"]["Tables"]["fuels"]["Row"][]}
+                            transmissions={transmissionsData as Database["public"]["Tables"]["transmissions"]["Row"][]}
                         />
 
                         {/* Car Description */}
