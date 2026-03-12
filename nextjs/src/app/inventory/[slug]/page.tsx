@@ -125,7 +125,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
         <div className="min-h-screen bg-white">
             <InventoryHero title={`${car.year} ${car.brand} ${car.model}`} />
 
-            <div className="mx-auto max-w-7xl px-4 pt-8 pb-1">
+            <div className="mx-auto max-w-6xl px-4 pt-8 pb-1">
                 {/* Two-column layout */}
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
                     {/* Left: Gallery (larger) */}
