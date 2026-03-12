@@ -152,24 +152,24 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                                 <p className="text-sm text-white/80 line-through">{formatPrice(car.price)}</p>
                             )}
                             <div className="mt-4 space-y-2">
-                                <button
-                                    type="button"
-                                    className="flex w-full items-center justify-center gap-2 rounded bg-white/20 py-2.5 text-sm font-bold hover:bg-white/30"
+                                <a
+                                    href="#car-detail-form"
+                                    className="flex w-full items-center justify-center gap-2 rounded bg-white/20 py-2.5 text-sm font-bold text-white hover:bg-white/30"
                                 >
                                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                     </svg>
                                     {t("requestEprice")}
-                                </button>
-                                <button
-                                    type="button"
-                                    className="flex w-full items-center justify-center gap-2 rounded bg-white/20 py-2.5 text-sm font-bold hover:bg-white/30"
+                                </a>
+                                <a
+                                    href="#car-detail-form"
+                                    className="flex w-full items-center justify-center gap-2 rounded bg-white/20 py-2.5 text-sm font-bold text-white hover:bg-white/30"
                                 >
                                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     {t("bookTestDrive")}
-                                </button>
+                                </a>
                             </div>
                         </div>
 
@@ -181,15 +181,17 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                                 </svg>
                                 FAIR DEAL
                             </span>
-                            {car.warranty && (
-                                <span className="inline-flex items-center gap-1.5 rounded bg-blue-100 px-2.5 py-1 text-sm font-semibold text-blue-800">
-                                    <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                    </svg>
-                                    WARRANTY
-                                </span>
-                            )}
-                            {car.carfax_url ? (
+                            <span
+                                className={`inline-flex items-center gap-1.5 rounded px-2.5 py-1 text-sm font-semibold ${
+                                    car.warranty ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-500"
+                                }`}
+                            >
+                                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                </svg>
+                                WARRANTY
+                            </span>
+                            {car.carfax_url && (
                                 <a
                                     href={car.carfax_url}
                                     target="_blank"
@@ -198,10 +200,6 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                                 >
                                     {t("viewCarfax")}
                                 </a>
-                            ) : (
-                                <span className="rounded border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-400 cursor-not-allowed">
-                                    {t("viewCarfax")}
-                                </span>
                             )}
                             {car.cargurus_url && (
                                 <a
@@ -280,7 +278,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                         </div>
 
                         {/* Request Information form */}
-                        <div className="rounded-lg border border-gray-200">
+                        <div id="car-detail-form" className="rounded-lg border border-gray-200 scroll-mt-4">
                             <div className="rounded-t-lg bg-[#1d4ed8] px-4 py-3">
                                 <h2 className="font-bold text-white">{t("requestInfo")}</h2>
                             </div>

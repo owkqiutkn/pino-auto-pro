@@ -17,22 +17,13 @@ export default function CarDetailRequestForm() {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-                <input
-                    type="text"
-                    name="firstName"
-                    placeholder={t("firstName")}
-                    className="rounded border border-gray-300 px-3 py-2 text-sm"
-                    required
-                />
-                <input
-                    type="text"
-                    name="lastName"
-                    placeholder={t("lastName")}
-                    className="rounded border border-gray-300 px-3 py-2 text-sm"
-                    required
-                />
-            </div>
+            <input
+                type="text"
+                name="name"
+                placeholder={t("namePlaceholder")}
+                className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                required
+            />
             <input
                 type="email"
                 name="email"

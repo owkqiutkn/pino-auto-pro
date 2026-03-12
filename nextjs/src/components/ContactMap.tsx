@@ -91,6 +91,17 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                                     />
                                 </div>
                                 <div>
+                                    <label htmlFor="contact-phone" className="block text-xs font-semibold uppercase tracking-wide text-gray-600">
+                                        {t("phoneLabel")}
+                                    </label>
+                                    <input
+                                        id="contact-phone"
+                                        type="tel"
+                                        placeholder={t("phonePlaceholder")}
+                                        className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:border-[#1d4ed8] focus:ring-2 focus:ring-[#1d4ed8]/40"
+                                    />
+                                </div>
+                                <div>
                                     <label htmlFor="contact-message" className="block text-xs font-semibold uppercase tracking-wide text-gray-600">
                                         {t("messageLabel")}
                                     </label>
