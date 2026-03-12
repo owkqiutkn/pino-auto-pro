@@ -86,7 +86,6 @@ We are no longer able to modify auth schema. I modified original migrations to r
     - Privacy Policy template
     - Terms of Service template
     - Refund Policy template
-    - GDPR-ready cookie consent
 
 ## 🛠️ Tech Stack
 

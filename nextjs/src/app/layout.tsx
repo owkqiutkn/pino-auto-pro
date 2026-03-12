@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from '@vercel/analytics/next';
-import CookieConsent from "@/components/Cookies";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { getCachedSiteSettings } from "@/lib/supabase/cached";
+import { CookieManagerProvider } from "@/components/CookieManagerProvider";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getCachedSiteSettings();
@@ -33,10 +33,11 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={theme}>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
+          <CookieManagerProvider>
+            {children}
+          </CookieManagerProvider>
         </NextIntlClientProvider>
         <Analytics />
-        <CookieConsent />
         {gaID && <GoogleAnalytics gaId={gaID} />}
       </body>
     </html>

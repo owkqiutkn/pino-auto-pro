@@ -74,7 +74,6 @@ https://play.google.com/store/books/details?id=5UWBEQAAQBAJ - 9月1日起上线
     - 隐私政策模板
     - 服务条款模板
     - 退款政策模板
-    - GDPR 就绪的 Cookie 同意
 
 ## 🛠️ 技术栈
 

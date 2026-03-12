@@ -4,7 +4,7 @@
 
 - **Framework & Runtime**
   - **Next.js App Router** application in `src/app`, using **server components by default** and client components where interactivity is needed.
-  - Global `layout.tsx` wraps the app with theming, global styles, analytics, cookie consent, and optional Google Analytics.
+  - Global `layout.tsx` wraps the app with theming, global styles, analytics, and optional Google Analytics.
 
 - **App Structure**
   - **Public marketing & inventory**
@@ -73,7 +73,6 @@
 
 - **Data & Backend**
   - `@supabase/supabase-js`, `@supabase/ssr` for data, auth, and storage.
-  - `cookies-next` for cookie management in browser contexts.
 
 - **Billing**
   - `@paddle/paddle-js`, `@paddle/paddle-node-sdk` for client- and server-side Paddle integration.
