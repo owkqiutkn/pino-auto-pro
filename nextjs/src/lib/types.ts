@@ -361,6 +361,101 @@ export type Database = {
         }
         Relationships: []
       }
+      feature_categories: {
+        Row: {
+          id: string
+          name: string | null
+          name_en: string
+          name_fr: string
+          sort_order: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name?: string | null
+          name_en: string
+          name_fr: string
+          sort_order?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string | null
+          name_en?: string
+          name_fr?: string
+          sort_order?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
+      features: {
+        Row: {
+          id: string
+          feature_category_id: string
+          name: string | null
+          name_en: string
+          name_fr: string
+          sort_order: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          feature_category_id: string
+          name?: string | null
+          name_en: string
+          name_fr: string
+          sort_order?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          feature_category_id?: string
+          name?: string | null
+          name_en?: string
+          name_fr?: string
+          sort_order?: number
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "features_feature_category_id_fkey"
+            columns: ["feature_category_id"]
+            isOneToOne: false
+            referencedRelation: "feature_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      car_features: {
+        Row: {
+          car_id: string
+          feature_id: string
+        }
+        Insert: {
+          car_id: string
+          feature_id: string
+        }
+        Update: {
+          car_id?: string
+          feature_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "car_features_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "car_features_feature_id_fkey"
+            columns: ["feature_id"]
+            isOneToOne: false
+            referencedRelation: "features"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       site_settings: {
         Row: {
           id: string

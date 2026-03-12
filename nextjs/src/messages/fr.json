@@ -427,6 +427,47 @@
       "updateError": "Échec de la mise à jour de la couleur extérieure.",
       "deleteError": "Échec de la suppression de la couleur extérieure.",
       "deleteConfirm": "Supprimer cette couleur extérieure ?"
+    },
+    "FeatureCategories": {
+      "title": "Catégories de fonctionnalités",
+      "nameEnPlaceholder": "Catégorie en anglais",
+      "nameFrPlaceholder": "Catégorie en français",
+      "add": "Ajouter",
+      "save": "Enregistrer",
+      "tableNameEn": "Nom (EN)",
+      "tableNameFr": "Nom (FR)",
+      "tableCreated": "Créée le",
+      "tableActions": "Actions",
+      "tableEdit": "Modifier",
+      "tableDelete": "Supprimer",
+      "empty": "Aucune catégorie de fonctionnalités pour l'instant.",
+      "loadError": "Échec du chargement des catégories de fonctionnalités.",
+      "createError": "Échec de la création de la catégorie.",
+      "updateError": "Échec de la mise à jour de la catégorie.",
+      "deleteError": "Échec de la suppression de la catégorie.",
+      "deleteConfirm": "Supprimer cette catégorie ?"
+    },
+    "Features": {
+      "title": "Fonctionnalités",
+      "loadError": "Échec du chargement des fonctionnalités.",
+      "filterByCategory": "Filtrer par catégorie",
+      "allCategories": "Toutes les catégories",
+      "nameEnPlaceholder": "Fonctionnalité en anglais",
+      "nameFrPlaceholder": "Fonctionnalité en français",
+      "selectCategory": "Sélectionner une catégorie",
+      "add": "Ajouter",
+      "save": "Enregistrer",
+      "tableNameEn": "Nom (EN)",
+      "tableNameFr": "Nom (FR)",
+      "tableCategory": "Catégorie",
+      "tableActions": "Actions",
+      "tableEdit": "Modifier",
+      "tableDelete": "Supprimer",
+      "empty": "Aucune fonctionnalité pour l'instant.",
+      "createError": "Échec de la création de la fonctionnalité.",
+      "updateError": "Échec de la mise à jour de la fonctionnalité.",
+      "deleteError": "Échec de la suppression de la fonctionnalité.",
+      "deleteConfirm": "Supprimer cette fonctionnalité ?"
     }
   }
 }

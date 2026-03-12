@@ -18,6 +18,8 @@ import {
     Gauge,
     Fuel,
     Cog,
+    Layers,
+    Zap,
     Settings,
 } from 'lucide-react';
 import { useGlobal } from "@/lib/context/GlobalContext";
@@ -56,6 +58,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     const navigation = [
         { name: 'Homepage', href: '/app', icon: Home },
         { name: 'Settings', href: '/app/settings', icon: Settings },
+        { name: 'Features', href: '/app/features', icon: Zap },
+        { name: 'Feature Categories', href: '/app/feature-categories', icon: Layers },
         { name: 'Cars', href: '/app/cars', icon: CarFront },
         { name: 'Brands', href: '/app/brands', icon: Tags },
         { name: 'Categories', href: '/app/categories', icon: Shapes },

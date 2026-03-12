@@ -96,10 +96,11 @@ export default async function CarDetailPage({ params }: CarPageProps) {
     }
 
     const client = await createSSRSassClient();
-    const [t, locale, similarResult] = await Promise.all([
+    const [t, locale, similarResult, carFeaturesResult] = await Promise.all([
         getTranslations("Inventory.carDetail"),
         getLocale(),
         client.getSimilarCars(car.id, car.brand, 6),
+        client.getCarFeatures(car.id),
     ]);
     const similarCars = (similarResult.data ?? []) as Car[];
 
@@ -120,6 +121,26 @@ export default async function CarDetailPage({ params }: CarPageProps) {
     const bodyStyleDisplay = categoryRow ? getLocalizedCategoryName(categoryRow, locale) : car.category ?? t("na");
 
     const price = car.discounted_price ?? car.price;
+
+    const carFeaturesByCategory = (() => {
+        const data = carFeaturesResult.data ?? [];
+        const byCat = new Map<string, { categoryId: string; categoryName: string; features: { name_en: string; name_fr: string }[] }>();
+        for (const item of data) {
+            const catId = item.feature_category.id;
+            const catName = locale.startsWith("fr") ? item.feature_category.name_fr : item.feature_category.name_en;
+            const entry = byCat.get(catId);
+            if (entry) {
+                entry.features.push({ name_en: item.feature.name_en, name_fr: item.feature.name_fr });
+            } else {
+                byCat.set(catId, { categoryId: catId, categoryName: catName, features: [{ name_en: item.feature.name_en, name_fr: item.feature.name_fr }] });
+            }
+        }
+        return Array.from(byCat.values()).map((v) => ({
+            categoryId: v.categoryId,
+            categoryName: v.categoryName,
+            features: v.features.map((f) => (locale.startsWith("fr") ? f.name_fr : f.name_en)),
+        }));
+    })();
 
     return (
         <div className="min-h-screen bg-white">
@@ -255,36 +276,50 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                             </p>
                         </div>
 
-                        {/* Accordions */}
+                        {/* Accordions - vehicle features by category */}
                         <div className="space-y-0">
-                            <CarDetailAccordion title={t("keyFeatures")}>
-                                <p className="text-gray-600">
-                                    {(locale.startsWith("fr")
-                                        ? car.description_fr ?? car.description_en ?? car.description
-                                        : car.description_en ?? car.description_fr ?? car.description)
-                                        ?.slice(0, 200) || t("na")}
-                                </p>
-                            </CarDetailAccordion>
-                            <CarDetailAccordion title={t("safeties")}>
-                                <p className="text-gray-600">Contact us for safety feature details.</p>
-                            </CarDetailAccordion>
-                            <CarDetailAccordion title={t("exterior")}>
-                                <p className="text-gray-600">Exterior color: {car.exterior_color ?? t("na")}</p>
-                            </CarDetailAccordion>
-                            <CarDetailAccordion title={t("interior")}>
-                                <p className="text-gray-600">{t("na")}</p>
-                            </CarDetailAccordion>
-                            <CarDetailAccordion title={t("enginePowertrain")}>
-                                <p className="text-gray-600">{car.engine ?? t("na")}</p>
-                            </CarDetailAccordion>
-                            <CarDetailAccordion title={t("convenience")}>
-                                <p className="text-gray-600">
-                                    {(locale.startsWith("fr")
-                                        ? car.description_fr ?? car.description_en ?? car.description
-                                        : car.description_en ?? car.description_fr ?? car.description)
-                                        ?.slice(0, 150) || t("na")}
-                                </p>
-                            </CarDetailAccordion>
+                            {carFeaturesByCategory.length > 0 ? (
+                                carFeaturesByCategory.map((group) => (
+                                    <CarDetailAccordion key={group.categoryId} title={group.categoryName}>
+                                        <ul className="list-disc list-inside space-y-1 text-gray-600">
+                                            {group.features.map((name, i) => (
+                                                <li key={`${group.categoryName}-${i}`}>{name}</li>
+                                            ))}
+                                        </ul>
+                                    </CarDetailAccordion>
+                                ))
+                            ) : (
+                                <>
+                                    <CarDetailAccordion title={t("keyFeatures")}>
+                                        <p className="text-gray-600">
+                                            {(locale.startsWith("fr")
+                                                ? car.description_fr ?? car.description_en ?? car.description
+                                                : car.description_en ?? car.description_fr ?? car.description)
+                                                ?.slice(0, 200) || t("na")}
+                                        </p>
+                                    </CarDetailAccordion>
+                                    <CarDetailAccordion title={t("safeties")}>
+                                        <p className="text-gray-600">Contact us for safety feature details.</p>
+                                    </CarDetailAccordion>
+                                    <CarDetailAccordion title={t("exterior")}>
+                                        <p className="text-gray-600">Exterior color: {car.exterior_color ?? t("na")}</p>
+                                    </CarDetailAccordion>
+                                    <CarDetailAccordion title={t("interior")}>
+                                        <p className="text-gray-600">{t("na")}</p>
+                                    </CarDetailAccordion>
+                                    <CarDetailAccordion title={t("enginePowertrain")}>
+                                        <p className="text-gray-600">{car.engine ?? t("na")}</p>
+                                    </CarDetailAccordion>
+                                    <CarDetailAccordion title={t("convenience")}>
+                                        <p className="text-gray-600">
+                                            {(locale.startsWith("fr")
+                                                ? car.description_fr ?? car.description_en ?? car.description
+                                                : car.description_en ?? car.description_fr ?? car.description)
+                                                ?.slice(0, 150) || t("na")}
+                                        </p>
+                                    </CarDetailAccordion>
+                                </>
+                            )}
                         </div>
 
                         {/* Request Information form */}

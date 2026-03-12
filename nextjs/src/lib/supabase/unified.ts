@@ -587,6 +587,125 @@ export class SassClient {
         return this.client;
     }
 
+    async getFeatureCategories() {
+        return this.client
+            .from('feature_categories')
+            .select('id, name, name_en, name_fr, sort_order, created_at')
+            .order('sort_order', { ascending: true })
+            .order('name_en', { ascending: true });
+    }
+
+    async getFeatures(categoryId?: string) {
+        let query = this.client
+            .from('features')
+            .select('id, feature_category_id, name, name_en, name_fr, sort_order, created_at')
+            .order('sort_order', { ascending: true })
+            .order('name_en', { ascending: true });
+        if (categoryId) {
+            query = query.eq('feature_category_id', categoryId);
+        }
+        return query;
+    }
+
+    /** Get features for a car with category and feature names. */
+    async getCarFeatures(carId: string) {
+        const { data: carFeatures, error: cfError } = await this.client
+            .from('car_features')
+            .select('feature_id')
+            .eq('car_id', carId);
+        if (cfError || !carFeatures?.length) {
+            return { data: [] as { feature_id: string; feature: { id: string; name_en: string; name_fr: string; feature_category_id: string }; feature_category: { id: string; name_en: string; name_fr: string } }[], error: cfError };
+        }
+        const featureIds = carFeatures.map((cf) => cf.feature_id);
+        const { data: features, error: fError } = await this.client
+            .from('features')
+            .select('id, name_en, name_fr, feature_category_id')
+            .in('id', featureIds);
+        if (fError || !features?.length) {
+            return { data: [], error: fError };
+        }
+        const categoryIds = [...new Set(features.map((f) => f.feature_category_id))];
+        const { data: categories, error: cError } = await this.client
+            .from('feature_categories')
+            .select('id, name_en, name_fr')
+            .in('id', categoryIds);
+        if (cError) {
+            return { data: [], error: cError };
+        }
+        const catMap = new Map((categories || []).map((c) => [c.id, c]));
+        const result = features.map((f) => ({
+            feature_id: f.id,
+            feature: f,
+            feature_category: catMap.get(f.feature_category_id) ?? { id: f.feature_category_id, name_en: '', name_fr: '' },
+        }));
+        return { data: result, error: null };
+    }
+
+    /** Replace a car's features with the given feature IDs. */
+    async setCarFeatures(carId: string, featureIds: string[]) {
+        const { error: delError } = await this.client
+            .from('car_features')
+            .delete()
+            .eq('car_id', carId);
+        if (delError) return { error: delError };
+        if (featureIds.length === 0) return { error: null };
+        const rows = featureIds.map((feature_id) => ({ car_id: carId, feature_id }));
+        const { error: insError } = await this.client.from('car_features').insert(rows);
+        return { error: insError };
+    }
+
+    async createFeatureCategory(name_en: string, name_fr: string, sort_order?: number) {
+        return this.client
+            .from('feature_categories')
+            .insert({ name: name_en, name_en, name_fr, sort_order: sort_order ?? 0 })
+            .select('*')
+            .single();
+    }
+
+    async updateFeatureCategory(id: string, name_en: string, name_fr: string, sort_order?: number) {
+        const updates: { name_en: string; name_fr: string; sort_order?: number } = { name_en, name_fr };
+        if (sort_order !== undefined) updates.sort_order = sort_order;
+        return this.client
+            .from('feature_categories')
+            .update(updates)
+            .eq('id', id)
+            .select('*')
+            .single();
+    }
+
+    async deleteFeatureCategory(id: string) {
+        return this.client
+            .from('feature_categories')
+            .delete()
+            .eq('id', id);
+    }
+
+    async createFeature(categoryId: string, name_en: string, name_fr: string, sort_order?: number) {
+        return this.client
+            .from('features')
+            .insert({ feature_category_id: categoryId, name: name_en, name_en, name_fr, sort_order: sort_order ?? 0 })
+            .select('*')
+            .single();
+    }
+
+    async updateFeature(id: string, name_en: string, name_fr: string, sort_order?: number) {
+        const updates: { name_en: string; name_fr: string; sort_order?: number } = { name_en, name_fr };
+        if (sort_order !== undefined) updates.sort_order = sort_order;
+        return this.client
+            .from('features')
+            .update(updates)
+            .eq('id', id)
+            .select('*')
+            .single();
+    }
+
+    async deleteFeature(id: string) {
+        return this.client
+            .from('features')
+            .delete()
+            .eq('id', id);
+    }
+
     /** Get the singleton site settings row. */
     async getSiteSettings() {
         return this.client

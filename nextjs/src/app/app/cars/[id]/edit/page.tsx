@@ -24,6 +24,8 @@ type ExteriorColor = Database["public"]["Tables"]["exterior_colors"]["Row"];
 type Engine = Database["public"]["Tables"]["engines"]["Row"];
 type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
 type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
+type FeatureCategory = Database["public"]["Tables"]["feature_categories"]["Row"];
+type Feature = Database["public"]["Tables"]["features"]["Row"];
 
 type EditCarPageProps = {
     params?: Promise<Record<string, string | string[]>>;
@@ -68,6 +70,9 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
     const [carfaxUrl, setCarfaxUrl] = useState("");
     const [cargurusUrl, setCargurusUrl] = useState("");
     const [warranty, setWarranty] = useState(false);
+    const [featureCategories, setFeatureCategories] = useState<FeatureCategory[]>([]);
+    const [allFeatures, setAllFeatures] = useState<Feature[]>([]);
+    const [selectedFeatureIds, setSelectedFeatureIds] = useState<Set<string>>(new Set());
 
     const currentYear = new Date().getFullYear();
     const yearOptions = useMemo(
@@ -86,6 +91,25 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
         () => orderedImages.filter((image) => !image.is_cover),
         [orderedImages]
     );
+    const featuresByCategory = useMemo(() => {
+        const byCat = new Map<string, Feature[]>();
+        for (const f of allFeatures) {
+            const list = byCat.get(f.feature_category_id) ?? [];
+            list.push(f);
+            byCat.set(f.feature_category_id, list);
+        }
+        return featureCategories
+            .filter((cat) => byCat.has(cat.id))
+            .map((cat) => ({ category: cat, features: byCat.get(cat.id) ?? [] }));
+    }, [featureCategories, allFeatures]);
+    const toggleFeature = (featureId: string) => {
+        setSelectedFeatureIds((prev) => {
+            const next = new Set(prev);
+            if (next.has(featureId)) next.delete(featureId);
+            else next.add(featureId);
+            return next;
+        });
+    };
 
     const loadData = useCallback(async () => {
         try {
@@ -118,6 +142,10 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
             setCarfaxUrl(carData.carfax_url ?? "");
             setCargurusUrl(carData.cargurus_url ?? "");
             setWarranty(carData.warranty ?? false);
+            const { data: carFeaturesData } = await client.getCarFeatures(id);
+            setSelectedFeatureIds(
+                new Set((carFeaturesData || []).map((cf) => cf.feature_id))
+            );
             setError("");
         } catch (err) {
             console.error(err);
@@ -154,21 +182,33 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
     const loadAttributes = useCallback(async () => {
         try {
             const client = await createSPASassClient();
-            const [{ data: exteriorColorData, error: exteriorError }, { data: engineData, error: engineError }, { data: fuelData, error: fuelError }, { data: transmissionData, error: transmissionError }] =
-                await Promise.all([
-                    client.getExteriorColors(),
-                    client.getEngines(),
-                    client.getFuels(),
-                    client.getTransmissions(),
-                ]);
+            const [
+                { data: exteriorColorData, error: exteriorError },
+                { data: engineData, error: engineError },
+                { data: fuelData, error: fuelError },
+                { data: transmissionData, error: transmissionError },
+                { data: categoryData, error: categoryError },
+                { data: featureData, error: featureError },
+            ] = await Promise.all([
+                client.getExteriorColors(),
+                client.getEngines(),
+                client.getFuels(),
+                client.getTransmissions(),
+                client.getFeatureCategories(),
+                client.getFeatures(),
+            ]);
             if (exteriorError) throw exteriorError;
             if (engineError) throw engineError;
             if (fuelError) throw fuelError;
             if (transmissionError) throw transmissionError;
+            if (categoryError) throw categoryError;
+            if (featureError) throw featureError;
             setExteriorColors(exteriorColorData || []);
             setEngines(engineData || []);
             setFuels(fuelData || []);
             setTransmissions(transmissionData || []);
+            setFeatureCategories(categoryData || []);
+            setAllFeatures(featureData || []);
         } catch (err) {
             console.error(err);
             setError("Failed to load car attributes.");
@@ -251,6 +291,11 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                 featured,
             });
             if (updateError) throw updateError;
+            const { error: featuresError } = await client.setCarFeatures(
+                id,
+                Array.from(selectedFeatureIds)
+            );
+            if (featuresError) throw featuresError;
             await loadData();
         } catch (err) {
             console.error(err);
@@ -688,6 +733,49 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                             </div>
                         )}
                     </section>
+                </div>
+            </section>
+
+            <section className="bg-white border rounded-lg p-5 space-y-4">
+                <h2 className="text-lg font-semibold">Features</h2>
+                <p className="text-sm text-gray-600">
+                    Select the features this vehicle has. Grouped by category.
+                </p>
+                <div className="space-y-4">
+                    {featuresByCategory.map(({ category, features }) => (
+                        <div key={category.id} className="border rounded-lg p-4">
+                            <h3 className="font-medium text-gray-900 mb-2">
+                                {locale.startsWith("fr")
+                                    ? category.name_fr
+                                    : category.name_en}
+                            </h3>
+                            <div className="flex flex-wrap gap-x-4 gap-y-2">
+                                {features.map((f) => (
+                                    <label
+                                        key={f.id}
+                                        className="flex items-center gap-2 cursor-pointer"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedFeatureIds.has(f.id)}
+                                            onChange={() => toggleFeature(f.id)}
+                                            className="rounded border-gray-300"
+                                        />
+                                        <span className="text-sm">
+                                            {locale.startsWith("fr")
+                                                ? f.name_fr
+                                                : f.name_en}
+                                        </span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                    {featuresByCategory.length === 0 && (
+                        <p className="text-sm text-gray-500">
+                            No features defined yet. Add feature categories and features in the Features menu.
+                        </p>
+                    )}
                 </div>
             </section>
         </div>

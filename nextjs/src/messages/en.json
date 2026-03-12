@@ -427,6 +427,47 @@
       "updateError": "Failed to update exterior color.",
       "deleteError": "Failed to delete exterior color.",
       "deleteConfirm": "Delete this exterior color?"
+    },
+    "FeatureCategories": {
+      "title": "Feature Categories",
+      "nameEnPlaceholder": "Category in English",
+      "nameFrPlaceholder": "Category in French",
+      "add": "Add",
+      "save": "Save",
+      "tableNameEn": "Name (EN)",
+      "tableNameFr": "Name (FR)",
+      "tableCreated": "Created",
+      "tableActions": "Actions",
+      "tableEdit": "Edit",
+      "tableDelete": "Delete",
+      "empty": "No feature categories yet.",
+      "loadError": "Failed to load feature categories.",
+      "createError": "Failed to create category.",
+      "updateError": "Failed to update category.",
+      "deleteError": "Failed to delete category.",
+      "deleteConfirm": "Delete this category?"
+    },
+    "Features": {
+      "title": "Features",
+      "loadError": "Failed to load features.",
+      "filterByCategory": "Filter by category",
+      "allCategories": "All categories",
+      "nameEnPlaceholder": "Feature in English",
+      "nameFrPlaceholder": "Feature in French",
+      "selectCategory": "Select category",
+      "add": "Add",
+      "save": "Save",
+      "tableNameEn": "Name (EN)",
+      "tableNameFr": "Name (FR)",
+      "tableCategory": "Category",
+      "tableActions": "Actions",
+      "tableEdit": "Edit",
+      "tableDelete": "Delete",
+      "empty": "No features yet.",
+      "createError": "Failed to create feature.",
+      "updateError": "Failed to update feature.",
+      "deleteError": "Failed to delete feature.",
+      "deleteConfirm": "Delete this feature?"
     }
   }
 }

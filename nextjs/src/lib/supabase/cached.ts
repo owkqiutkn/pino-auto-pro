@@ -9,6 +9,8 @@ type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
 type BrandModel = Database["public"]["Tables"]["brand_models"]["Row"];
 type ExteriorColor = Database["public"]["Tables"]["exterior_colors"]["Row"];
+type FeatureCategory = Database["public"]["Tables"]["feature_categories"]["Row"];
+type Feature = Database["public"]["Tables"]["features"]["Row"];
 type SiteSettings = Database["public"]["Tables"]["site_settings"]["Row"];
 
 const CACHE_REVALIDATE = 3600; // 1 hour for lookup tables
@@ -53,6 +55,18 @@ async function fetchExteriorColors(): Promise<ExteriorColor[]> {
     const client = createAnonymousSassClient();
     const { data } = await client.getExteriorColors();
     return (data ?? []) as ExteriorColor[];
+}
+
+async function fetchFeatureCategories(): Promise<FeatureCategory[]> {
+    const client = createAnonymousSassClient();
+    const { data } = await client.getFeatureCategories();
+    return (data ?? []) as FeatureCategory[];
+}
+
+async function fetchFeatures(): Promise<Feature[]> {
+    const client = createAnonymousSassClient();
+    const { data } = await client.getFeatures();
+    return (data ?? []) as Feature[];
 }
 
 async function fetchSiteSettings(): Promise<SiteSettings | null> {
@@ -100,6 +114,18 @@ export const getCachedBrandModels = unstable_cache(
 export const getCachedExteriorColors = unstable_cache(
     fetchExteriorColors,
     ["inventory-lookup-exterior-colors"],
+    { revalidate: CACHE_REVALIDATE }
+);
+
+export const getCachedFeatureCategories = unstable_cache(
+    fetchFeatureCategories,
+    ["inventory-lookup-feature-categories"],
+    { revalidate: CACHE_REVALIDATE }
+);
+
+export const getCachedFeatures = unstable_cache(
+    fetchFeatures,
+    ["inventory-lookup-features"],
     { revalidate: CACHE_REVALIDATE }
 );
 
