@@ -224,7 +224,11 @@
       "comments": "Comments",
       "submit": "Submit",
       "similarVehicles": "Similar Vehicles",
-      "similarVehiclesIntro": "Here are some vehicles that are similar to your current choice.",
+      "similarVehiclesIntro": "Browse other listings that are similar to this vehicle.",
+      "noSimilarVehicles": "No similar vehicles at this time.",
+      "seeAllVehicles": "See All Vehicles",
+      "makeItYours": "Make It Yours",
+      "hstAndLicensing": "+ HST and Licensing",
       "viewDetails": "View Details",
       "noImage": "No image",
       "na": "N/A"

@@ -224,7 +224,11 @@
       "comments": "Commentaires",
       "submit": "Soumettre",
       "similarVehicles": "Véhicules similaires",
-      "similarVehiclesIntro": "Voici des véhicules similaires à votre choix actuel.",
+      "similarVehiclesIntro": "Parcourez d'autres annonces similaires à ce véhicule.",
+      "noSimilarVehicles": "Aucun véhicule similaire pour le moment.",
+      "seeAllVehicles": "Voir tous les véhicules",
+      "makeItYours": "Réservez-le",
+      "hstAndLicensing": "+ TVH et immatriculation",
       "viewDetails": "Voir les détails",
       "noImage": "Aucune image",
       "na": "N/D"

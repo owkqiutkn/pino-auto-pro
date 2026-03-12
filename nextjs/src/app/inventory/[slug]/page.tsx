@@ -108,7 +108,11 @@ export default async function CarDetailPage({ params }: CarPageProps) {
         client.getSimilarCars(car.id, car.brand, 6),
         client.getCarFeatures(car.id),
     ]);
-    const similarCars = (similarResult.data ?? []) as Car[];
+    let similarCars = (similarResult.data ?? []) as Car[];
+    if (similarCars.length === 0) {
+        const fallback = await client.getOtherAvailableCars(car.id, 6);
+        similarCars = (fallback.data ?? []) as Car[];
+    }
 
     const similarCarIds = similarCars.map((c) => c.id);
     const { data: similarImages = [] } =
@@ -152,7 +156,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
         <div className="min-h-screen bg-white">
             <InventoryHero title={`${car.year} ${car.brand} ${car.model}`} />
 
-            <div className="mx-auto max-w-6xl px-4 pt-8 pb-1">
+            <div className="mx-auto max-w-6xl px-4 pt-8 pb-16">
                 {/* Two-column layout */}
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
                     {/* Left: Gallery (larger) */}
@@ -304,11 +308,12 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                 </div>
 
                 {/* Similar Vehicles */}
-                <div className="mt-16">
+                <div className="mt-8">
                     <SimilarVehiclesCarousel
                         cars={similarCars as Car[]}
                         imagesByCar={imagesByCar}
                         currentSlug={slug}
+                        businessName={siteSettings?.business_name ?? "Pino Auto Pro"}
                     />
                 </div>
             </div>

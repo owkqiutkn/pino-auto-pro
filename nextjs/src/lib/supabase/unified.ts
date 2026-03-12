@@ -205,6 +205,17 @@ export class SassClient {
             .limit(limit);
     }
 
+    /** Get other available cars when no same-brand matches (fallback for Similar Vehicles). */
+    async getOtherAvailableCars(carId: string, limit: number = 6) {
+        return this.client
+            .from('cars')
+            .select('*')
+            .eq('status', 'available')
+            .neq('id', carId)
+            .order('created_at', { ascending: false })
+            .limit(limit);
+    }
+
     async getAllCars() {
         return this.client
             .from('cars')
