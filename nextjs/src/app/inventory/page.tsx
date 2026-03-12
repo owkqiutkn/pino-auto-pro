@@ -7,6 +7,14 @@ import InventoryHero from "@/components/InventoryHero";
 import SiteFooter from "@/components/SiteFooter";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import { createSSRSassClient } from "@/lib/supabase/server";
+import {
+    getCachedBrands,
+    getCachedCategories,
+    getCachedEngines,
+    getCachedExteriorColors,
+    getCachedFuels,
+    getCachedTransmissions,
+} from "@/lib/supabase/cached";
 import { Database } from "@/lib/types";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getLocalizedCategoryName } from "@/lib/i18n/categories";
@@ -104,16 +112,16 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
     const sort = params.sort?.trim() || undefined;
 
     const client = await createSSRSassClient();
-    const t = await getTranslations("Inventory.page");
-    const locale = await getLocale();
     const [
         { data: cars, error },
-        { data: brandsData },
-        { data: categoriesData },
-        { data: exteriorColorsData },
-        { data: transmissionsData },
-        { data: enginesData },
-        { data: fuelsData },
+        brandsData,
+        categoriesData,
+        exteriorColorsData,
+        transmissionsData,
+        enginesData,
+        fuelsData,
+        t,
+        locale,
     ] = await Promise.all([
         client.getAvailableCars({
             brand,
@@ -130,12 +138,14 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
             priceMin,
             priceMax,
         }),
-        client.getBrands(),
-        client.getCategories(),
-        client.getExteriorColors(),
-        client.getTransmissions(),
-        client.getEngines(),
-        client.getFuels(),
+        getCachedBrands(),
+        getCachedCategories(),
+        getCachedExteriorColors(),
+        getCachedTransmissions(),
+        getCachedEngines(),
+        getCachedFuels(),
+        getTranslations("Inventory.page"),
+        getLocale(),
     ]);
 
     if (error) {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createSSRSassClient } from "@/lib/supabase/server";
+import { getCachedBrandModels, getCachedBrands, getCachedCategories } from "@/lib/supabase/cached";
 import { Database } from "@/lib/types";
 import HomeSearchForm from "@/components/HomeSearchForm";
 
@@ -35,14 +36,17 @@ export default async function Home() {
     const productName = process.env.NEXT_PUBLIC_PRODUCTNAME || "ML Autos";
     const client = await createSSRSassClient();
 
-    const { data: cars } = await client.getAvailableCars();
-    const { data: categories } = await client.getCategories();
-    const { data: brands } = await client.getBrands();
-    const { data: brandModels } = await client.getBrandModels();
+    const [{ data: cars }, categoriesList, brandsList, brandModelsList] = await Promise.all([
+        client.getAvailableCars(),
+        getCachedCategories(),
+        getCachedBrands(),
+        getCachedBrandModels(),
+    ]);
     const featuredCars = ((cars ?? []) as Car[]).slice(0, 6);
-    const categoriesList = (categories ?? []) as Category[];
-    const brandsList = (brands ?? []) as Brand[];
-    const brandModelsList = (brandModels ?? []) as BrandModel[];
+    const categoriesTyped = (categoriesList ?? []) as Category[];
+    const brandsTyped = (brandsList ?? []) as Brand[];
+    const brandModelsTyped = (brandModelsList ?? []) as BrandModel[];
+
     const { data: images } = await client.getCarImagesForCars(featuredCars.map((car) => car.id));
     const imagesList = (images ?? []) as CarImage[];
 
@@ -152,9 +156,9 @@ export default async function Home() {
                         Find Your Perfect Match
                     </h2>
                     <HomeSearchForm
-                        categories={categoriesList}
-                        brands={brandsList}
-                        brandModels={brandModelsList}
+                        categories={categoriesTyped}
+                        brands={brandsTyped}
+                        brandModels={brandModelsTyped}
                     />
                 </div>
             </section>

@@ -10,9 +10,11 @@ const defaultCenter = {lat: 45.5019, lng: -73.5674};
 interface ContactMapProps {
     /** When false, only the map is shown (no contact form overlay). Default: true */
     showForm?: boolean;
+    /** When "large", map height is bigger (for new-landing only). Default: "default" */
+    variant?: "default" | "large";
 }
 
-export default function ContactMap({ showForm = true }: ContactMapProps) {
+export default function ContactMap({ showForm = true, variant = "default" }: ContactMapProps) {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const t = useTranslations("NewLanding.contactForm");
 
@@ -52,7 +54,13 @@ export default function ContactMap({ showForm = true }: ContactMapProps) {
     }, []);
 
     return (
-        <div className="relative h-72 w-full md:h-[315px]">
+        <div
+            className={
+                variant === "large"
+                    ? "relative h-[400px] w-full md:h-[460px]"
+                    : "relative h-72 w-full md:h-[315px]"
+            }
+        >
             <div ref={mapContainerRef} className="absolute inset-0 h-full w-full" />
             <div className="pointer-events-auto absolute inset-0 z-10" aria-hidden />
             {showForm && (

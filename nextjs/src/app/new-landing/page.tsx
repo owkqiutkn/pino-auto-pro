@@ -3,7 +3,13 @@ import ContactMap from "@/components/ContactMap";
 import InventoryLineup from "@/components/InventoryLineup";
 import SiteNavbar from "@/components/SiteNavbar";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
-import { createSSRSassClient } from "@/lib/supabase/server";
+import {
+    getCachedCategories,
+    getCachedEngines,
+    getCachedFuels,
+    getCachedTransmissions,
+    getCachedBrands,
+} from "@/lib/supabase/cached";
 import { Database } from "@/lib/types";
 import { getTranslations } from "next-intl/server";
 
@@ -23,7 +29,6 @@ const CATEGORY_PLACEHOLDER =
 const heroImage = "/new-landing/hero.jpg";
 const financingImage = "/new-landing/financing.jpg";
 const missionImage = "/new-landing/mission.jpg";
-const aboutImage = "/new-landing/about.jpg";
 const aboutBackgroundImage = "https://images.pexels.com/photos/33271364/pexels-photo-33271364.jpeg";
 
 
@@ -49,26 +54,19 @@ const featureCards = [
 ];
 
 export default async function NewLandingPage() {
-    const client = await createSSRSassClient();
-    const [
-        { data: brandsData },
-        { data: categoriesData },
-        { data: enginesData },
-        { data: fuelsData },
-        { data: transmissionsData },
-    ] = await Promise.all([
-        client.getBrands(),
-        client.getCategories(),
-        client.getEngines(),
-        client.getFuels(),
-        client.getTransmissions(),
+    const [brands, categories, engines, fuels, transmissions, t] = await Promise.all([
+        getCachedBrands(),
+        getCachedCategories(),
+        getCachedEngines(),
+        getCachedFuels(),
+        getCachedTransmissions(),
+        getTranslations("NewLanding"),
     ]);
-    const brands = (brandsData ?? []) as Brand[];
-    const categories = (categoriesData ?? []) as Category[];
-    const engines = (enginesData ?? []) as Engine[];
-    const fuels = (fuelsData ?? []) as Fuel[];
-    const transmissions = (transmissionsData ?? []) as Transmission[];
-    const t = await getTranslations("NewLanding");
+    const brandsTyped = (brands ?? []) as Brand[];
+    const categoriesTyped = (categories ?? []) as Category[];
+    const enginesTyped = (engines ?? []) as Engine[];
+    const fuelsTyped = (fuels ?? []) as Fuel[];
+    const transmissionsTyped = (transmissions ?? []) as Transmission[];
 
     return (
         <div className="bg-[#0c1320] text-white">
@@ -101,7 +99,7 @@ export default async function NewLandingPage() {
                                 <option value="" disabled>
                                     {t("hero.filters.brand")}
                                 </option>
-                                {brands.map((b) => (
+                                {brandsTyped.map((b) => (
                                     <option key={b.id} value={b.name}>{b.name}</option>
                                 ))}
                             </select>
@@ -179,10 +177,10 @@ export default async function NewLandingPage() {
             </section>
 
             <InventoryLineup
-                categories={categories}
-                engines={engines}
-                fuels={fuels}
-                transmissions={transmissions}
+                categories={categoriesTyped}
+                engines={enginesTyped}
+                fuels={fuelsTyped}
+                transmissions={transmissionsTyped}
             />
 
             <section id="financing" className="relative overflow-hidden py-16">
@@ -285,7 +283,7 @@ export default async function NewLandingPage() {
                         <h3 className="text-lg font-black uppercase tracking-wide">{t("categories.title")}</h3>
                     </div>
                     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                        {categories.slice(0, 8).map((cat) => {
+                        {categoriesTyped.slice(0, 8).map((cat) => {
                             const displayName = cat.name_en ?? cat.name;
                             const imageSrc = cat.image_url ?? CATEGORY_PLACEHOLDER;
                             return (
@@ -384,7 +382,7 @@ export default async function NewLandingPage() {
             </section>
 
             <section id="contact" className="bg-[#0c1320] pt-0 pb-0 text-white">
-                <ContactMap />
+                <ContactMap variant="large" />
             </section>
 
             <footer className="bg-[#171717] py-10 text-xs text-white/80">
