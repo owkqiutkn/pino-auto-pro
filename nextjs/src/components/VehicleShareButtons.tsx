@@ -40,7 +40,7 @@ export default function VehicleShareButtons({ shareUrl, vehicleTitle, label }: V
 
     return (
         <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="text-sm font-medium text-gray-600">{label}</span>
+            <span className="text-base font-medium text-gray-600">{label}</span>
             <div className="flex items-center gap-2">
                 <a
                     href={facebookShareUrl}

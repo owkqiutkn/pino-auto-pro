@@ -135,7 +135,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
 
                     {/* Right: Details (smaller) */}
                     <div className="space-y-6 lg:col-span-2">
-                        <div className="space-y-2">
+                        <div className="space-y-4">
                             {/* Share this vehicle */}
                             <VehicleShareButtons
                                 shareUrl={`${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/inventory/${car.slug}`}
