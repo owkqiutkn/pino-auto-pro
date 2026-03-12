@@ -18,6 +18,7 @@ import {
     Gauge,
     Fuel,
     Cog,
+    Settings,
 } from 'lucide-react';
 import { useGlobal } from "@/lib/context/GlobalContext";
 import { createSPASassClient } from "@/lib/supabase/client";
@@ -62,6 +63,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         { name: 'Engines', href: '/app/engines', icon: Gauge },
         { name: 'Fuels', href: '/app/fuels', icon: Fuel },
         { name: 'Transmissions', href: '/app/transmissions', icon: Cog },
+        { name: 'Settings', href: '/app/settings', icon: Settings },
         { name: 'User Settings', href: '/app/user-settings', icon: User },
     ];
 

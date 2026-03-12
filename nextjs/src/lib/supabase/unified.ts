@@ -315,6 +315,24 @@ export class SassClient {
         return this.client.storage.from('category-images').remove([storagePath]);
     }
 
+    /** Upload a site logo (light or dark variant). Returns public URL. */
+    async uploadSiteLogo(variant: 'light' | 'dark', file: File) {
+        const cleaned = file.name.replace(/[^0-9a-zA-Z!\-_.*'()]/g, '_');
+        const ext = cleaned.slice(cleaned.lastIndexOf('.')) || '.png';
+        const storagePath = `logos/${variant}_${Date.now()}${ext}`;
+        const uploadResponse = await this.client.storage.from('site-logos').upload(storagePath, file, {
+            upsert: true,
+        });
+        if (uploadResponse.error) {
+            return { data: null, error: uploadResponse.error };
+        }
+        const publicUrlResponse = this.client.storage.from('site-logos').getPublicUrl(storagePath);
+        return {
+            data: { path: storagePath, publicUrl: publicUrlResponse.data.publicUrl },
+            error: null,
+        };
+    }
+
     async deleteCategory(id: string) {
         return this.client
             .from('categories')
@@ -569,5 +587,22 @@ export class SassClient {
         return this.client;
     }
 
+    /** Get the singleton site settings row. */
+    async getSiteSettings() {
+        return this.client
+            .from("site_settings")
+            .select("*")
+            .eq("id", "default")
+            .maybeSingle();
+    }
 
+    /** Update the singleton site settings row. */
+    async updateSiteSettings(row: Database["public"]["Tables"]["site_settings"]["Update"]) {
+        return this.client
+            .from("site_settings")
+            .update({ ...row, updated_at: new Date().toISOString() })
+            .eq("id", "default")
+            .select("*")
+            .single();
+    }
 }

@@ -361,6 +361,36 @@ export type Database = {
         }
         Relationships: []
       }
+      site_settings: {
+        Row: {
+          id: string
+          logo_light: string | null
+          logo_dark: string | null
+          instagram_url: string | null
+          facebook_url: string | null
+          twitter_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          logo_light?: string | null
+          logo_dark?: string | null
+          instagram_url?: string | null
+          facebook_url?: string | null
+          twitter_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          logo_light?: string | null
+          logo_dark?: string | null
+          instagram_url?: string | null
+          facebook_url?: string | null
+          twitter_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

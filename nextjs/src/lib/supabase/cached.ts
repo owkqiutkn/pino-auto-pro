@@ -9,6 +9,7 @@ type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
 type BrandModel = Database["public"]["Tables"]["brand_models"]["Row"];
 type ExteriorColor = Database["public"]["Tables"]["exterior_colors"]["Row"];
+type SiteSettings = Database["public"]["Tables"]["site_settings"]["Row"];
 
 const CACHE_REVALIDATE = 3600; // 1 hour for lookup tables
 
@@ -54,6 +55,12 @@ async function fetchExteriorColors(): Promise<ExteriorColor[]> {
     return (data ?? []) as ExteriorColor[];
 }
 
+async function fetchSiteSettings(): Promise<SiteSettings | null> {
+    const client = createAnonymousSassClient();
+    const { data } = await client.getSiteSettings();
+    return data as SiteSettings | null;
+}
+
 export const getCachedCategories = unstable_cache(
     fetchCategories,
     ["inventory-lookup-categories"],
@@ -94,4 +101,10 @@ export const getCachedExteriorColors = unstable_cache(
     fetchExteriorColors,
     ["inventory-lookup-exterior-colors"],
     { revalidate: CACHE_REVALIDATE }
+);
+
+export const getCachedSiteSettings = unstable_cache(
+    fetchSiteSettings,
+    ["site-settings"],
+    { revalidate: CACHE_REVALIDATE, tags: ["site-settings"] }
 );

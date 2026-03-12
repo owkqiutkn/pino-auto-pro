@@ -1,8 +1,19 @@
 import { getTranslations } from "next-intl/server";
 import ContactMap from "@/components/ContactMap";
+import { getCachedSiteSettings } from "@/lib/supabase/cached";
+
+const DEFAULT_FACEBOOK = "https://facebook.com";
+const DEFAULT_INSTAGRAM = "https://instagram.com";
+const DEFAULT_TWITTER = "https://x.com";
 
 export default async function SiteFooter() {
-    const landingT = await getTranslations("NewLanding");
+    const [landingT, siteSettings] = await Promise.all([
+        getTranslations("NewLanding"),
+        getCachedSiteSettings(),
+    ]);
+    const facebookUrl = siteSettings?.facebook_url || DEFAULT_FACEBOOK;
+    const instagramUrl = siteSettings?.instagram_url || DEFAULT_INSTAGRAM;
+    const twitterUrl = siteSettings?.twitter_url || DEFAULT_TWITTER;
 
     return (
         <>
@@ -20,7 +31,7 @@ export default async function SiteFooter() {
                     <p className="text-white/60">{landingT("footer.email")}</p>
                     <div className="mt-4 flex items-center gap-3">
                         <a
-                            href="https://facebook.com"
+                            href={facebookUrl}
                             aria-label="Visit us on Facebook"
                             className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-[#1877f2]/60"
                             target="_blank"
@@ -34,7 +45,7 @@ export default async function SiteFooter() {
                             />
                         </a>
                         <a
-                            href="https://instagram.com"
+                            href={instagramUrl}
                             aria-label="Visit us on Instagram"
                             className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-[#e1306c]/60"
                             target="_blank"
@@ -48,7 +59,7 @@ export default async function SiteFooter() {
                             />
                         </a>
                         <a
-                            href="https://x.com"
+                            href={twitterUrl}
                             aria-label="Visit us on X"
                             className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-white/70"
                             target="_blank"

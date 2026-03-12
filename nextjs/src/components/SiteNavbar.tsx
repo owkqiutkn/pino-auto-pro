@@ -5,10 +5,24 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useState, useMemo } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
+type SiteSettingsRow = {
+    logo_light: string | null;
+    logo_dark: string | null;
+    instagram_url: string | null;
+    facebook_url: string | null;
+    twitter_url: string | null;
+};
+
 interface SiteNavbarProps {
     /** Use "standalone" for pages with white/light background (e.g. inventory) */
     variant?: "hero" | "standalone";
+    /** Site settings (logo, social URLs). When provided, logos/links use these values. */
+    siteSettings?: SiteSettingsRow | null;
 }
+
+const DEFAULT_FACEBOOK = "https://facebook.com";
+const DEFAULT_INSTAGRAM = "https://instagram.com";
+const DEFAULT_TWITTER = "https://x.com";
 
 const navLinks = [
     { href: "/inventory", labelKey: "links.inventory" },
@@ -16,10 +30,15 @@ const navLinks = [
     { href: "/new-landing#contact", labelKey: "links.contact" },
 ];
 
-export default function SiteNavbar({ variant = "hero" }: SiteNavbarProps) {
+export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavbarProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const bgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/90";
     const mobileDrawerBgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/95";
+
+    const logoUrl = siteSettings?.logo_light ?? null;
+    const facebookUrl = siteSettings?.facebook_url || DEFAULT_FACEBOOK;
+    const instagramUrl = siteSettings?.instagram_url || DEFAULT_INSTAGRAM;
+    const twitterUrl = siteSettings?.twitter_url || DEFAULT_TWITTER;
 
     const t = useTranslations("Navbar");
     const locale = useLocale();
@@ -39,8 +58,13 @@ export default function SiteNavbar({ variant = "hero" }: SiteNavbarProps) {
             <div className="mx-auto max-w-6xl px-4">
                 <div className="flex items-center justify-between py-1 md:py-2 text-[11px]">
                     <div className="flex items-center gap-3">
-                        <Link href="/new-landing" className="text-sm font-black tracking-wider">
-                            {t("brand")}
+                        <Link href="/new-landing" className="flex items-center">
+                            {logoUrl ? (
+                                /* eslint-disable-next-line @next/next/no-img-element */
+                                <img src={logoUrl} alt={t("brand")} className="h-8 max-w-[140px] object-contain object-left" />
+                            ) : (
+                                <span className="text-sm font-black tracking-wider">{t("brand")}</span>
+                            )}
                         </Link>
                     </div>
                     <nav className="hidden md:flex items-center gap-5 font-semibold uppercase tracking-wide text-white/85">
@@ -73,7 +97,7 @@ export default function SiteNavbar({ variant = "hero" }: SiteNavbarProps) {
                             </div>
                             <div className="flex items-center gap-2">
                                 <a
-                                    href="https://facebook.com"
+                                    href={facebookUrl}
                                     aria-label="Visit us on Facebook"
                                     className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20 hover:bg-white/10 hover:ring-[#1877f2]/60"
                                     target="_blank"
@@ -87,7 +111,7 @@ export default function SiteNavbar({ variant = "hero" }: SiteNavbarProps) {
                                     />
                                 </a>
                                 <a
-                                    href="https://instagram.com"
+                                    href={instagramUrl}
                                     aria-label="Visit us on Instagram"
                                     className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20 hover:bg-white/10 hover:ring-[#e1306c]/60"
                                     target="_blank"
@@ -101,7 +125,7 @@ export default function SiteNavbar({ variant = "hero" }: SiteNavbarProps) {
                                     />
                                 </a>
                                 <a
-                                    href="https://x.com"
+                                    href={twitterUrl}
                                     aria-label="Visit us on X"
                                     className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20 hover:bg-white/10 hover:ring-white/70"
                                     target="_blank"
@@ -201,7 +225,7 @@ export default function SiteNavbar({ variant = "hero" }: SiteNavbarProps) {
                         </div>
                         <div className="mt-1 flex items-center gap-2 text-white/80">
                             <a
-                                href="https://facebook.com"
+                                href={facebookUrl}
                                 aria-label="Visit us on Facebook"
                                 className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20 hover:bg-white/10 hover:ring-[#1877f2]/60"
                                 target="_blank"
@@ -215,7 +239,7 @@ export default function SiteNavbar({ variant = "hero" }: SiteNavbarProps) {
                                 />
                             </a>
                             <a
-                                href="https://instagram.com"
+                                href={instagramUrl}
                                 aria-label="Visit us on Instagram"
                                 className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20 hover:bg-white/10 hover:ring-[#e1306c]/60"
                                 target="_blank"
@@ -229,7 +253,7 @@ export default function SiteNavbar({ variant = "hero" }: SiteNavbarProps) {
                                 />
                             </a>
                             <a
-                                href="https://x.com"
+                                href={twitterUrl}
                                 aria-label="Visit us on X"
                                 className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20 hover:bg-white/10 hover:ring-white/70"
                                 target="_blank"

@@ -9,6 +9,7 @@ import {
     getCachedFuels,
     getCachedTransmissions,
     getCachedBrands,
+    getCachedSiteSettings,
 } from "@/lib/supabase/cached";
 import { Database } from "@/lib/types";
 import { getTranslations } from "next-intl/server";
@@ -53,13 +54,18 @@ const featureCards = [
     },
 ];
 
+const DEFAULT_FACEBOOK = "https://facebook.com";
+const DEFAULT_INSTAGRAM = "https://instagram.com";
+const DEFAULT_TWITTER = "https://x.com";
+
 export default async function NewLandingPage() {
-    const [brands, categories, engines, fuels, transmissions, t] = await Promise.all([
+    const [brands, categories, engines, fuels, transmissions, siteSettings, t] = await Promise.all([
         getCachedBrands(),
         getCachedCategories(),
         getCachedEngines(),
         getCachedFuels(),
         getCachedTransmissions(),
+        getCachedSiteSettings(),
         getTranslations("NewLanding"),
     ]);
     const brandsTyped = (brands ?? []) as Brand[];
@@ -75,7 +81,7 @@ export default async function NewLandingPage() {
                 <img src={heroImage} alt="ML Autos hero" className="absolute inset-0 h-full w-full object-cover" />
                 <div className="absolute inset-0 bg-black/70" />
                 <div className="relative z-[10020]">
-                    <SiteNavbar />
+                    <SiteNavbar siteSettings={siteSettings ?? undefined} />
                 </div>
 
                 <div className="relative z-10 mx-auto max-w-6xl px-4">
@@ -397,7 +403,7 @@ export default async function NewLandingPage() {
                         <p className="text-white/60">{t("footer.email")}</p>
                         <div className="mt-4 flex items-center gap-3">
                             <a
-                                href="https://facebook.com"
+                                href={siteSettings?.facebook_url || DEFAULT_FACEBOOK}
                                 aria-label="Visit us on Facebook"
                                 className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-[#1877f2]/60"
                                 target="_blank"
@@ -411,7 +417,7 @@ export default async function NewLandingPage() {
                                 />
                             </a>
                             <a
-                                href="https://instagram.com"
+                                href={siteSettings?.instagram_url || DEFAULT_INSTAGRAM}
                                 aria-label="Visit us on Instagram"
                                 className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-[#e1306c]/60"
                                 target="_blank"
@@ -425,7 +431,7 @@ export default async function NewLandingPage() {
                                 />
                             </a>
                             <a
-                                href="https://x.com"
+                                href={siteSettings?.twitter_url || DEFAULT_TWITTER}
                                 aria-label="Visit us on X"
                                 className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-white/70"
                                 target="_blank"

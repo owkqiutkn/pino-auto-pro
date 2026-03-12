@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import SiteNavbar from "@/components/SiteNavbar";
+import { getCachedSiteSettings } from "@/lib/supabase/cached";
 
 const INVENTORY_HERO_IMAGE = "/new-landing/hero.jpg";
 
@@ -9,7 +10,10 @@ interface InventoryHeroProps {
 }
 
 export default async function InventoryHero({ title }: InventoryHeroProps) {
-    const t = await getTranslations("Inventory.page");
+    const [t, siteSettings] = await Promise.all([
+        getTranslations("Inventory.page"),
+        getCachedSiteSettings(),
+    ]);
     const displayTitle = title ?? t("title");
     return (
         <section
@@ -19,7 +23,7 @@ export default async function InventoryHero({ title }: InventoryHeroProps) {
         >
             <div className="absolute inset-0 bg-black/70" />
             <div className="relative z-[10020]">
-                <SiteNavbar />
+                <SiteNavbar siteSettings={siteSettings ?? undefined} />
             </div>
             <div className="relative mx-auto flex h-[55px] max-w-7xl items-center px-4 opacity-90 lg:items-end lg:pb-3">
                 <div className="lg:hidden">
