@@ -25,7 +25,7 @@ import {
 import { useGlobal } from "@/lib/context/GlobalContext";
 import { createSPASassClient } from "@/lib/supabase/client";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default function AppLayout({ children, businessName }: { children: React.ReactNode; businessName?: string | null }) {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
     const pathname = usePathname();
@@ -53,7 +53,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             : parts[0].slice(0, 2).toUpperCase();
     };
 
-    const productName = process.env.NEXT_PUBLIC_PRODUCTNAME;
+    const productName = businessName ?? process.env.NEXT_PUBLIC_PRODUCTNAME;
 
     const navigation = [
         { name: 'Homepage', href: '/app', icon: Home },

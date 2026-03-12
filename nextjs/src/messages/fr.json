@@ -44,7 +44,7 @@
     },
     "mission": {
       "title": "Notre mission",
-      "intro": "Chez Pino Auto Pro, notre mission est de redéfinir le service automobile autour de cinq principes clés.",
+      "intro": "Chez {businessName}, notre mission est de redéfinir le service automobile autour de cinq principes clés.",
       "points": {
         "customerCare": {
           "title": "Service axé sur le client :",
@@ -134,8 +134,8 @@
         "suv": "VUS",
         "coupe": "Coupé"
       },
-      "poweredBy": "Propulsé par Pino Auto Pro.",
-      "copyright": "Copyright 2026 Pino Auto Pro."
+      "poweredBy": "Propulsé par {businessName}.",
+      "copyright": "Copyright 2026 {businessName}."
     },
     "contactForm": {
       "nameLabel": "Votre nom",

@@ -44,7 +44,7 @@
     },
     "mission": {
       "title": "Our Mission",
-      "intro": "At Pino Auto Pro, our mission is to redefine automotive service around five core principles.",
+      "intro": "At {businessName}, our mission is to redefine automotive service around five core principles.",
       "points": {
         "customerCare": {
           "title": "Customer-Centric Care:",
@@ -74,10 +74,10 @@
       }
     },
     "about": {
-      "title": "About Pino Auto Pro",
-      "paragraph1": "Pino Auto Pro is your trusted pre-owned vehicle destination in Mississauga, making every step of buying a car clear, simple, and stress-free. We offer a carefully selected lineup of quality used cars, trucks, and SUVs, each thoroughly inspected for reliability and real value.",
+      "title": "About {businessName}",
+      "paragraph1": "{businessName} is your trusted pre-owned vehicle destination in Mississauga, making every step of buying a car clear, simple, and stress-free. We offer a carefully selected lineup of quality used cars, trucks, and SUVs, each thoroughly inspected for reliability and real value.",
       "paragraph2": "Our friendly team helps you choose the right vehicle, explains your options in plain language, and works with you on flexible financing that fits your budget. With fair trade-in values, transparent deals, and a genuine focus on satisfaction, we want you to drive away confident in your decision.",
-      "paragraph3": "Choose Pino Auto Pro for quality vehicles, honest service, and a smooth buying experience in Mississauga and beyond.",
+      "paragraph3": "Choose {businessName} for quality vehicles, honest service, and a smooth buying experience in Mississauga and beyond.",
       "cta": "Contact Us"
     },
     "categories": {
@@ -134,8 +134,8 @@
         "suv": "SUV",
         "coupe": "Coupe"
       },
-      "poweredBy": "Powered by Pino Auto Pro.",
-      "copyright": "Copyright 2026 Pino Auto Pro."
+      "poweredBy": "Powered by {businessName}.",
+      "copyright": "Copyright 2026 {businessName}."
     },
     "contactForm": {
       "nameLabel": "Your Name",

@@ -68,6 +68,7 @@ export default async function NewLandingPage() {
         getCachedSiteSettings(),
         getTranslations("NewLanding"),
     ]);
+    const businessName = siteSettings?.business_name || "Pino Auto Pro";
     const brandsTyped = (brands ?? []) as Brand[];
     const categoriesTyped = (categories ?? []) as Category[];
     const enginesTyped = (engines ?? []) as Engine[];
@@ -213,7 +214,7 @@ export default async function NewLandingPage() {
                     <div className="rounded-sm border p-6">
                         <h3 className="text-xl font-black">{t("mission.title")}</h3>
                         <p className="mt-3 text-sm text-gray-700">
-                            {t("mission.intro")}
+                            {t("mission.intro", { businessName })}
                         </p>
                         <ul className="mt-4 list-disc space-y-2 pl-5 text-xs text-gray-700">
                             <li>
@@ -258,15 +259,15 @@ export default async function NewLandingPage() {
                 <div className="absolute inset-0 bg-black/70" />
                 <div className="relative mx-auto max-w-6xl px-4">
                     <div className="max-w-xl bg-black/60 p-6 md:p-7">
-                        <h3 className="text-3xl font-black">{t("about.title")}</h3>
+                        <h3 className="text-3xl font-black">{t("about.title", { businessName })}</h3>
                         <p className="mt-3 text-sm text-white/85">
-                            {t("about.paragraph1")}
+                            {t("about.paragraph1", { businessName })}
                         </p>
                         <p className="mt-3 text-sm text-white/80">
                             {t("about.paragraph2")}
                         </p>
                         <p className="mt-3 text-sm text-white/80">
-                            {t("about.paragraph3")}
+                            {t("about.paragraph3", { businessName })}
                         </p>
                         <div className="mt-5 flex flex-wrap gap-3 text-xs font-bold">
                             <a href="#contact" className="rounded bg-[#1d4ed8] px-4 py-2 text-white uppercase tracking-wide">
@@ -468,8 +469,8 @@ export default async function NewLandingPage() {
                     </div>
                 </div>
                 <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60">
-                    <div>{t("footer.poweredBy")}</div>
-                    <div>{t("footer.copyright")}</div>
+                    <div>{t("footer.poweredBy", { businessName })}</div>
+                    <div>{t("footer.copyright", { businessName })}</div>
                 </div>
             </footer>
             <ScrollToTopButton />

@@ -12,9 +12,10 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { logo_light, logo_dark, instagram_url, facebook_url, twitter_url } = body;
+        const { business_name, logo_light, logo_dark, instagram_url, facebook_url, twitter_url } = body;
 
         const updates: Record<string, string | null> = {};
+        if (business_name !== undefined) updates.business_name = business_name ?? null;
         if (logo_light !== undefined) updates.logo_light = logo_light ?? null;
         if (logo_dark !== undefined) updates.logo_dark = logo_dark ?? null;
         if (instagram_url !== undefined) updates.instagram_url = instagram_url ?? null;

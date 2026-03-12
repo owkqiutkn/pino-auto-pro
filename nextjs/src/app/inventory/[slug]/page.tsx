@@ -7,6 +7,7 @@ import {
     getCachedEngines,
     getCachedFuels,
     getCachedTransmissions,
+    getCachedSiteSettings,
 } from "@/lib/supabase/cached";
 import { Database } from "@/lib/types";
 import { getTranslations, getLocale } from "next-intl/server";
@@ -48,7 +49,10 @@ const getAvailableCarWithImages = cache(async (slug: string) => {
 
 export async function generateMetadata({ params }: CarPageProps): Promise<Metadata> {
     const { slug } = await params;
-    const { car, images } = await getAvailableCarWithImages(slug);
+    const [{ car, images }, siteSettings] = await Promise.all([
+        getAvailableCarWithImages(slug),
+        getCachedSiteSettings(),
+    ]);
     if (!car) {
         return {
             title: "Vehicle Not Found",
@@ -56,9 +60,10 @@ export async function generateMetadata({ params }: CarPageProps): Promise<Metada
         };
     }
 
+    const businessName = siteSettings?.business_name || "Pino Auto Pro";
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
     const cover = images.find((img) => img.is_cover) || images[0];
-    const title = `${car.year} ${car.brand} ${car.model} | Pino Auto Pro`;
+    const title = `${car.year} ${car.brand} ${car.model} | ${businessName}`;
     const description =
         `Used ${car.year} ${car.brand} ${car.model} with ${car.km.toLocaleString()} km available now.`;
     const canonicalUrl = `${siteUrl}/inventory/${car.slug}`;
@@ -81,13 +86,14 @@ export async function generateMetadata({ params }: CarPageProps): Promise<Metada
 export default async function CarDetailPage({ params }: CarPageProps) {
     const { slug } = await params;
 
-    const [carResult, categories, enginesData, fuelsData, transmissionsData] =
+    const [carResult, categories, enginesData, fuelsData, transmissionsData, siteSettings] =
         await Promise.all([
             getAvailableCarWithImages(slug),
             getCachedCategories(),
             getCachedEngines(),
             getCachedFuels(),
             getCachedTransmissions(),
+            getCachedSiteSettings(),
         ]);
 
     const { car, images } = carResult;
@@ -151,7 +157,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
                     {/* Left: Gallery (larger) */}
                     <div className="lg:col-span-3">
-                        <CarDetailGallery images={images} title={car.title} />
+                        <CarDetailGallery images={images} title={car.title} businessName={siteSettings?.business_name ?? "Pino Auto Pro"} />
                     </div>
 
                     {/* Right: Details (smaller) */}

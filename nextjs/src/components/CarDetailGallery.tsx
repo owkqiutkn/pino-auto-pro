@@ -8,6 +8,7 @@ type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
 interface CarDetailGalleryProps {
     images: CarImage[];
     title: string;
+    businessName?: string | null;
 }
 
 function NavButton({ direction, onClick, stopPropagation }: { direction: "prev" | "next"; onClick: () => void; stopPropagation?: boolean }) {
@@ -36,7 +37,7 @@ function NavButton({ direction, onClick, stopPropagation }: { direction: "prev" 
     );
 }
 
-export default function CarDetailGallery({ images, title }: CarDetailGalleryProps) {
+export default function CarDetailGallery({ images, title, businessName = "Pino Auto Pro" }: CarDetailGalleryProps) {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const sortedImages = [...images].sort((a, b) => a.sort_order - b.sort_order);
@@ -94,10 +95,10 @@ export default function CarDetailGallery({ images, title }: CarDetailGalleryProp
                     <div className="flex h-full w-full items-center justify-center text-gray-400">No image</div>
                 )}
 
-                {/* Pino Auto Pro watermark overlay */}
+                {/* Business name watermark overlay */}
                 <div className="absolute left-3 top-3 z-[2] pointer-events-none">
                     <span className="text-sm font-black tracking-wider text-white drop-shadow-lg">
-                        Pino Auto Pro
+                        {businessName}
                     </span>
                     <div className="h-0.5 w-full bg-[#1d4ed8]" />
                 </div>

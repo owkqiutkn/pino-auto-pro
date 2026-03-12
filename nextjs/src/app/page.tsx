@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createSSRSassClient } from "@/lib/supabase/server";
-import { getCachedBrandModels, getCachedBrands, getCachedCategories } from "@/lib/supabase/cached";
+import { getCachedBrandModels, getCachedBrands, getCachedCategories, getCachedSiteSettings } from "@/lib/supabase/cached";
 import { Database } from "@/lib/types";
 import HomeSearchForm from "@/components/HomeSearchForm";
 
@@ -33,15 +33,16 @@ function PriceDisplay({ car }: { car: Car }) {
 }
 
 export default async function Home() {
-    const productName = process.env.NEXT_PUBLIC_PRODUCTNAME || "ML Autos";
     const client = await createSSRSassClient();
 
-    const [{ data: cars }, categoriesList, brandsList, brandModelsList] = await Promise.all([
+    const [{ data: cars }, categoriesList, brandsList, brandModelsList, siteSettings] = await Promise.all([
         client.getAvailableCars(),
         getCachedCategories(),
         getCachedBrands(),
         getCachedBrandModels(),
+        getCachedSiteSettings(),
     ]);
+    const productName = siteSettings?.business_name || process.env.NEXT_PUBLIC_PRODUCTNAME || "ML Autos";
     const featuredCars = ((cars ?? []) as Car[]).slice(0, 6);
     const categoriesTyped = (categoriesList ?? []) as Category[];
     const brandsTyped = (brandsList ?? []) as Brand[];

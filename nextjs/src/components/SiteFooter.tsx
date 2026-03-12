@@ -11,6 +11,7 @@ export default async function SiteFooter() {
         getTranslations("NewLanding"),
         getCachedSiteSettings(),
     ]);
+    const businessName = siteSettings?.business_name || "Pino Auto Pro";
     const facebookUrl = siteSettings?.facebook_url || DEFAULT_FACEBOOK;
     const instagramUrl = siteSettings?.instagram_url || DEFAULT_INSTAGRAM;
     const twitterUrl = siteSettings?.twitter_url || DEFAULT_TWITTER;
@@ -96,8 +97,8 @@ export default async function SiteFooter() {
                 </div>
             </div>
             <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60">
-                <div>{landingT("footer.poweredBy")}</div>
-                <div>{landingT("footer.copyright")}</div>
+                <div>{landingT("footer.poweredBy", { businessName })}</div>
+                <div>{landingT("footer.copyright", { businessName })}</div>
             </div>
         </footer>
         </>

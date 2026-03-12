@@ -5,11 +5,16 @@ import CookieConsent from "@/components/Cookies";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import { getCachedSiteSettings } from "@/lib/supabase/cached";
 
-export const metadata: Metadata = {
-  title: process.env.NEXT_PUBLIC_PRODUCTNAME,
-  description: "The best way to build your SaaS product.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getCachedSiteSettings();
+  const title = settings?.business_name || process.env.NEXT_PUBLIC_PRODUCTNAME || "Auto Dealership";
+  return {
+    title,
+    description: "The best way to build your SaaS product.",
+  };
+}
 
 export default async function RootLayout({
   children,

@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import { getCachedSiteSettings } from "@/lib/supabase/cached";
 
-export default function AuthLayout({
+export default async function AuthLayout({
                                        children,
                                    }: {
     children: React.ReactNode;
 }) {
-    const productName = process.env.NEXT_PUBLIC_PRODUCTNAME;
+    const siteSettings = await getCachedSiteSettings();
+    const productName = siteSettings?.business_name || process.env.NEXT_PUBLIC_PRODUCTNAME;
     const testimonials = [
         {
             quote: "This template helped us launch our SaaS product in just two weeks. The authentication and multi-tenancy features are rock solid.",

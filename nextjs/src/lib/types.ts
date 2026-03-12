@@ -459,6 +459,7 @@ export type Database = {
       site_settings: {
         Row: {
           id: string
+          business_name: string | null
           logo_light: string | null
           logo_dark: string | null
           instagram_url: string | null
@@ -468,6 +469,7 @@ export type Database = {
         }
         Insert: {
           id?: string
+          business_name?: string | null
           logo_light?: string | null
           logo_dark?: string | null
           instagram_url?: string | null
@@ -477,6 +479,7 @@ export type Database = {
         }
         Update: {
           id?: string
+          business_name?: string | null
           logo_light?: string | null
           logo_dark?: string | null
           instagram_url?: string | null

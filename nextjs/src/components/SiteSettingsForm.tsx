@@ -14,6 +14,7 @@ interface SiteSettingsFormProps {
 }
 
 export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormProps) {
+    const [businessName, setBusinessName] = useState("");
     const [logoLight, setLogoLight] = useState("");
     const [logoDark, setLogoDark] = useState("");
     const [logoLightFile, setLogoLightFile] = useState<File | null>(null);
@@ -29,6 +30,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
 
     useEffect(() => {
         if (initialSettings) {
+            setBusinessName(initialSettings.business_name ?? "");
             setLogoLight(initialSettings.logo_light ?? "");
             setLogoDark(initialSettings.logo_dark ?? "");
             setInstagramUrl(initialSettings.instagram_url ?? "");
@@ -67,6 +69,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
+                    business_name: businessName.trim() || null,
                     logo_light: finalLogoLight || null,
                     logo_dark: finalLogoDark || null,
                     instagram_url: instagramUrl || null,
@@ -196,7 +199,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Settings className="h-5 w-5" />
-                        Logo &amp; Social Links
+                        Business Name, Logo &amp; Social Links
                     </CardTitle>
                     <CardDescription>
                         Upload logos and enter social media links. These appear in the navbar and footer.
@@ -204,6 +207,20 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        <div>
+                            <label htmlFor="business-name" className="block text-sm font-medium text-gray-700">
+                                Business Name
+                            </label>
+                            <input
+                                type="text"
+                                id="business-name"
+                                value={businessName}
+                                onChange={(e) => setBusinessName(e.target.value)}
+                                placeholder="e.g. Pino Auto Pro"
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
+                            />
+                            <p className="mt-0.5 text-xs text-gray-500">Used in the navbar, page titles, and metadata</p>
+                        </div>
                         <LogoUploadField
                             label="Logo Light"
                             hint="Used on dark backgrounds (e.g. navbar). Upload a light/white logo."

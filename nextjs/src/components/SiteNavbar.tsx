@@ -6,6 +6,7 @@ import { useState, useMemo } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 type SiteSettingsRow = {
+    business_name: string | null;
     logo_light: string | null;
     logo_dark: string | null;
     instagram_url: string | null;
@@ -35,6 +36,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
     const bgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/90";
     const mobileDrawerBgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/95";
 
+    const businessName = siteSettings?.business_name ?? null;
     const logoUrl = siteSettings?.logo_light ?? null;
     const facebookUrl = siteSettings?.facebook_url || DEFAULT_FACEBOOK;
     const instagramUrl = siteSettings?.instagram_url || DEFAULT_INSTAGRAM;
@@ -61,9 +63,9 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                         <Link href="/new-landing" className="flex items-center">
                             {logoUrl ? (
                                 /* eslint-disable-next-line @next/next/no-img-element */
-                                <img src={logoUrl} alt={t("brand")} className="h-8 max-w-[140px] object-contain object-left" />
+                                <img src={logoUrl} alt={businessName ?? t("brand")} className="h-8 max-w-[140px] object-contain object-left" />
                             ) : (
-                                <span className="text-sm font-black tracking-wider">{t("brand")}</span>
+                                <span className="text-sm font-black tracking-wider">{businessName ?? t("brand")}</span>
                             )}
                         </Link>
                     </div>
