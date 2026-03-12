@@ -272,15 +272,15 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                 <Link
                                     key={car.id}
                                     href={`/inventory/${car.slug}`}
-                                    className="overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md"
+                                    className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg"
                                 >
-                                    <div className="relative aspect-[4/3] bg-gray-100">
+                                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                                         {cover ? (
                                             /* eslint-disable-next-line @next/next/no-img-element */
                                             <img
                                                 src={cover.image_url}
                                                 alt={car.title}
-                                                className="h-full w-full object-cover"
+                                                className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
                                             />
                                         ) : (
                                             <div className="flex h-full w-full items-center justify-center text-gray-400">

@@ -72,17 +72,16 @@ export default function InventoryFilters({
     const [priceMax, setPriceMax] = useState<number | "">(toNum(filters.priceMax));
     const [kmMin, setKmMin] = useState<number | "">(toNum(filters.kmMin));
     const [kmMax, setKmMax] = useState<number | "">(toNum(filters.kmMax));
-    const [yearMin, setYearMin] = useState<number | "">(toNum(filters.yearMin));
-    const [yearMax, setYearMax] = useState<number | "">(toNum(filters.yearMax));
+    const yearValue = toNum(filters.yearMin ?? filters.yearMax);
+    const [year, setYear] = useState<number | "">(yearValue);
 
     useEffect(() => {
         setPriceMin(toNum(filters.priceMin));
         setPriceMax(toNum(filters.priceMax));
         setKmMin(toNum(filters.kmMin));
         setKmMax(toNum(filters.kmMax));
-        setYearMin(toNum(filters.yearMin));
-        setYearMax(toNum(filters.yearMax));
-    }, [filters.priceMin, filters.priceMax, filters.kmMin, filters.kmMax, filters.yearMin, filters.yearMax]);
+        setYear(yearValue);
+    }, [filters.priceMin, filters.priceMax, filters.kmMin, filters.kmMax, filters.yearMin, filters.yearMax, yearValue]);
 
     const navigate = useCallback(
         (updates: Record<string, string | number | undefined>) => {
@@ -119,8 +118,18 @@ export default function InventoryFilters({
     useDebouncedNavigate("priceMax", priceMax, toNum(filters.priceMax));
     useDebouncedNavigate("kmMin", kmMin, toNum(filters.kmMin));
     useDebouncedNavigate("kmMax", kmMax, toNum(filters.kmMax));
-    useDebouncedNavigate("yearMin", yearMin, toNum(filters.yearMin));
-    useDebouncedNavigate("yearMax", yearMax, toNum(filters.yearMax));
+    useEffect(() => {
+        const prev = yearValue;
+        if (year === prev) return;
+        const timer = setTimeout(() => {
+            if (year === "") {
+                navigate({ yearMin: undefined, yearMax: undefined });
+            } else {
+                navigate({ yearMin: year, yearMax: year });
+            }
+        }, DEBOUNCE_MS);
+        return () => clearTimeout(timer);
+    }, [year, yearValue, navigate]);
 
     const selectClass = "w-full rounded border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900";
     const inputClass = "w-full rounded border border-gray-300 bg-gray-50 px-2 py-1.5 text-sm";
@@ -260,26 +269,21 @@ export default function InventoryFilters({
                     <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
                         {t("year")}
                     </label>
-                    <div className="flex gap-2">
-                        <input
-                            type="number"
-                            placeholder={t("yearPlaceholder")}
-                            min={1990}
-                            max={currentYear}
-                            value={yearMin}
-                            onChange={(e) => setYearMin(toNum(e.target.value))}
-                            className={inputClass}
-                        />
-                        <input
-                            type="number"
-                            placeholder={t("yearPlaceholder")}
-                            min={1990}
-                            max={currentYear}
-                            value={yearMax}
-                            onChange={(e) => setYearMax(toNum(e.target.value))}
-                            className={inputClass}
-                        />
-                    </div>
+                    <select
+                        name="year"
+                        value={year}
+                        onChange={(e) => setYear(toNum(e.target.value))}
+                        className={selectClass}
+                    >
+                        <option value="">{t("anyYear")}</option>
+                        {Array.from({ length: currentYear - 1990 + 2 }, (_, i) => 1990 + i)
+                            .reverse()
+                            .map((y) => (
+                                <option key={y} value={y}>
+                                    {y}
+                                </option>
+                            ))}
+                    </select>
                 </div>
 
                 <div>

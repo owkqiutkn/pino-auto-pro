@@ -206,6 +206,7 @@
       "mileagePlaceholder": "KM",
       "year": "Year",
       "yearPlaceholder": "YYYY",
+      "anyYear": "Any Year",
       "exteriorColor": "Exterior Colour",
       "anyExteriorColor": "Any",
       "transmission": "Transmission",

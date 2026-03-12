@@ -89,7 +89,7 @@ export default async function NewLandingPage() {
                             {t("hero.subtitle")}
                         </p>
                         <form action="/inventory" method="get" className="mt-6 grid max-w-5xl mx-auto grid-cols-1 gap-2 md:grid-cols-4">
-                            <select name="year" className="h-10 rounded-sm bg-white px-3 text-xs text-black outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]" defaultValue="">
+                            <select name="yearMin" className="h-10 rounded-sm bg-white px-3 text-xs text-black outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]" defaultValue="">
                                 <option value="" disabled>
                                     {t("hero.filters.year")}
                                 </option>
@@ -106,7 +106,7 @@ export default async function NewLandingPage() {
                                 ))}
                             </select>
                             <input
-                                name="price"
+                                name="priceMax"
                                 placeholder={t("hero.filters.maxPrice")}
                                 className="h-10 rounded-sm bg-white px-3 text-xs text-black placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]"
                             />
