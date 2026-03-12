@@ -3,7 +3,8 @@ import { Suspense } from "react";
 import InventoryFilters from "@/components/InventoryFilters";
 import InventorySearchInput from "@/components/InventorySearchInput";
 import InventorySortSelect from "@/components/InventorySortSelect";
-import SiteNavbar from "@/components/SiteNavbar";
+import InventoryHero from "@/components/InventoryHero";
+import SiteFooter from "@/components/SiteFooter";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import { createSSRSassClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/types";
@@ -41,8 +42,6 @@ interface InventoryPageProps {
         sort?: string;
     }>;
 }
-
-const INVENTORY_HERO_IMAGE = "/new-landing/hero.jpg";
 
 function getEngineDisplay(engineValue: string | null | undefined, engines: Engine[], locale: string): string | null {
     if (!engineValue) return null;
@@ -86,29 +85,6 @@ function formatPrice(value: number) {
     }).format(value);
 }
 
-async function InventoryHero() {
-    const t = await getTranslations("Inventory.page");
-    return (
-        <section
-            className="relative overflow-hidden"
-            style={{ backgroundImage: `url(${INVENTORY_HERO_IMAGE})`, backgroundPosition: "center 10%", backgroundSize: "cover" }}
-            aria-label={t("heroAria")}
-        >
-            <div className="absolute inset-0 bg-black/70" />
-            <div className="relative z-[10020]">
-                <SiteNavbar />
-            </div>
-            <div className="relative mx-auto flex h-[55px] max-w-7xl items-center px-4 opacity-90 md:items-end md:pb-3">
-                <div className="md:hidden">
-                    <p className="text-xl font-bold text-white">
-                        {t("title")}
-                    </p>
-                </div>
-            </div>
-        </section>
-    );
-}
-
 export default async function InventoryPage({ searchParams }: InventoryPageProps) {
     const params = await searchParams;
     const brand = params.brand?.trim() || undefined;
@@ -130,7 +106,6 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
     const client = await createSSRSassClient();
     const t = await getTranslations("Inventory.page");
     const locale = await getLocale();
-    const landingT = await getTranslations("NewLanding");
     const [
         { data: cars, error },
         { data: brandsData },
@@ -169,7 +144,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                 <InventoryHero />
                 <div className="max-w-5xl mx-auto px-4 py-16">
                     <h1 className="text-3xl font-bold text-gray-900">{t("errorTitle")}</h1>
-                    <p className="mt-6 text-red-600">{t("errorMessage")}</p>
+                    <p className="mt-6 text-[#1d4ed8]">{t("errorMessage")}</p>
                 </div>
             </div>
         );
@@ -272,7 +247,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                 <Link
                                     key={car.id}
                                     href={`/inventory/${car.slug}`}
-                                    className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg"
+                                    className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#1d4ed8] hover:shadow-lg"
                                 >
                                     <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                                         {cover ? (
@@ -310,12 +285,12 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                                     <span className="text-sm text-gray-500 line-through">
                                                         {formatPrice(car.price)}
                                                     </span>
-                                                    <span className="ml-2 text-lg font-bold text-red-600">
+                                                    <span className="ml-2 text-lg font-bold text-[#1d4ed8]">
                                                         {formatPrice(car.discounted_price)}
                                                     </span>
                                                 </p>
                                             ) : (
-                                                <p className="text-lg font-bold text-red-600">
+                                                <p className="text-lg font-bold text-[#1d4ed8]">
                                                     {formatPrice(car.price)}
                                                 </p>
                                             )}
@@ -349,86 +324,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                 </main>
             </div>
 
-            <footer className="bg-[#171717] py-10 text-xs text-white/80">
-                <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 md:grid-cols-3">
-                    <div>
-                        <h4 className="mb-3 font-bold uppercase text-white">
-                            {landingT("footer.contactTitle")}
-                        </h4>
-                        <p className="text-white/60">{landingT("footer.addressLine1")}</p>
-                        <p className="text-white/60">{landingT("footer.phone")}</p>
-                        <p className="text-white/60">{landingT("footer.email")}</p>
-                        <div className="mt-4 flex items-center gap-3">
-                            <a
-                                href="https://facebook.com"
-                                aria-label="Visit us on Facebook"
-                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-[#1877f2]/60"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src="https://img.icons8.com/?id=118466&format=png&size=32"
-                                    alt="Facebook"
-                                    className="h-4 w-4 brightness-0 invert"
-                                />
-                            </a>
-                            <a
-                                href="https://instagram.com"
-                                aria-label="Visit us on Instagram"
-                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-[#e1306c]/60"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src="https://img.icons8.com/?id=32292&format=png&size=32"
-                                    alt="Instagram"
-                                    className="h-4 w-4 brightness-0 invert"
-                                />
-                            </a>
-                            <a
-                                href="https://x.com"
-                                aria-label="Visit us on X"
-                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-white/70"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src="https://img.icons8.com/?id=01GWmP9aUoPj&format=png&size=32"
-                                    alt="X (Twitter)"
-                                    className="h-4 w-4 brightness-0 invert"
-                                />
-                            </a>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 className="mb-3 font-bold uppercase text-white">
-                            {landingT("footer.hoursTitle")}
-                        </h4>
-                        <p className="text-white/60">{landingT("footer.hours.mon")}</p>
-                        <p className="text-white/60">{landingT("footer.hours.tue")}</p>
-                        <p className="text-white/60">{landingT("footer.hours.wed")}</p>
-                        <p className="text-white/60">{landingT("footer.hours.thu")}</p>
-                        <p className="text-white/60">{landingT("footer.hours.fri")}</p>
-                        <p className="text-white/60">{landingT("footer.hours.sat")}</p>
-                        <p className="text-white/60">{landingT("footer.hours.sun")}</p>
-                    </div>
-                    <div className="hidden md:block">
-                        <h4 className="mb-3 font-bold uppercase text-white">
-                            {landingT("footer.inventoryTitle")}
-                        </h4>
-                        <p className="text-white/60">{landingT("footer.inventoryItems.sedan")}</p>
-                        <p className="text-white/60">{landingT("footer.inventoryItems.suv")}</p>
-                        <p className="text-white/60">{landingT("footer.inventoryItems.coupe")}</p>
-                    </div>
-                </div>
-                <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60">
-                    <div>{landingT("footer.poweredBy")}</div>
-                    <div>{landingT("footer.copyright")}</div>
-                </div>
-            </footer>
+            <SiteFooter />
 
             <ScrollToTopButton />
         </div>

@@ -193,6 +193,18 @@ export class SassClient {
             .maybeSingle();
     }
 
+    /** Get similar cars by brand, excluding the current car. */
+    async getSimilarCars(carId: string, brand: string, limit: number = 6) {
+        return this.client
+            .from('cars')
+            .select('*')
+            .eq('status', 'available')
+            .neq('id', carId)
+            .eq('brand', brand)
+            .order('created_at', { ascending: false })
+            .limit(limit);
+    }
+
     async getAllCars() {
         return this.client
             .from('cars')

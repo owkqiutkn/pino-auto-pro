@@ -7,7 +7,12 @@ import {useTranslations} from "next-intl";
 
 const defaultCenter = {lat: 45.5019, lng: -73.5674};
 
-export default function ContactMap() {
+interface ContactMapProps {
+    /** When false, only the map is shown (no contact form overlay). Default: true */
+    showForm?: boolean;
+}
+
+export default function ContactMap({ showForm = true }: ContactMapProps) {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const t = useTranslations("NewLanding.contactForm");
 
@@ -47,8 +52,10 @@ export default function ContactMap() {
     }, []);
 
     return (
-        <div className="relative h-96 w-full md:h-[420px]">
-            <div ref={mapContainerRef} className="relative h-full w-full">
+        <div className="relative h-72 w-full md:h-[315px]">
+            <div ref={mapContainerRef} className="absolute inset-0 h-full w-full" />
+            <div className="pointer-events-auto absolute inset-0 z-10" aria-hidden />
+            {showForm && (
                 <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
                     <div className="pointer-events-auto flex h-full w-full max-w-none items-center justify-center px-4">
                         <div className="w-full max-w-xs rounded-2xl bg-white p-5 text-gray-900 shadow-[0_22px_55px_rgba(0,0,0,0.7)] md:max-w-sm md:p-6">
@@ -96,7 +103,7 @@ export default function ContactMap() {
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }

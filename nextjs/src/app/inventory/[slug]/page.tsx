@@ -2,32 +2,31 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createSSRSassClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/types";
+import { getTranslations, getLocale } from "next-intl/server";
+import { getLocalizedCategoryName } from "@/lib/i18n/categories";
+import InventoryHero from "@/components/InventoryHero";
+import SiteFooter from "@/components/SiteFooter";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
+import CarDetailGallery from "@/components/CarDetailGallery";
+import CarDetailSpecs from "@/components/CarDetailSpecs";
+import CarDetailRequestForm from "@/components/CarDetailRequestForm";
+import CarDetailAccordion from "@/components/CarDetailAccordion";
+import SimilarVehiclesCarousel from "@/components/SimilarVehiclesCarousel";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
+type Category = Database["public"]["Tables"]["categories"]["Row"];
 
 interface CarPageProps {
     params: Promise<{ slug: string }>;
 }
 
 function formatPrice(value: number) {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("en-CA", {
         style: "currency",
-        currency: "USD",
+        currency: "CAD",
         maximumFractionDigits: 0,
     }).format(value);
-}
-
-function PriceDisplay({ car }: { car: Car }) {
-    if (car.discounted_price !== null) {
-        return (
-            <p className="mt-2 text-2xl font-semibold">
-                <span className="text-primary-700">{formatPrice(car.discounted_price)}</span>{" "}
-                <span className="text-lg text-gray-500 line-through">{formatPrice(car.price)}</span>
-            </p>
-        );
-    }
-    return <p className="mt-2 text-primary-700 text-2xl font-semibold">{formatPrice(car.price)}</p>;
 }
 
 async function getAvailableCarWithImages(slug: string) {
@@ -52,7 +51,7 @@ export async function generateMetadata({ params }: CarPageProps): Promise<Metada
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
     const cover = images.find((img) => img.is_cover) || images[0];
-    const title = `${car.year} ${car.brand} ${car.model} | Dealer Name`;
+    const title = `${car.year} ${car.brand} ${car.model} | Pino Auto Pro`;
     const description =
         `Used ${car.year} ${car.brand} ${car.model} with ${car.km.toLocaleString()} km available now.`;
     const canonicalUrl = `${siteUrl}/inventory/${car.slug}`;
@@ -74,62 +73,186 @@ export async function generateMetadata({ params }: CarPageProps): Promise<Metada
 
 export default async function CarDetailPage({ params }: CarPageProps) {
     const { slug } = await params;
+    const client = await createSSRSassClient();
     const { car, images } = await getAvailableCarWithImages(slug);
     if (!car) {
         notFound();
     }
 
-    const cover = images.find((img) => img.is_cover) || images[0];
+    const t = await getTranslations("Inventory.carDetail");
+    const locale = await getLocale();
+
+    const [
+        { data: categoriesData },
+        { data: enginesData },
+        { data: fuelsData },
+        { data: transmissionsData },
+        { data: similarCars = [] },
+    ] = await Promise.all([
+        client.getCategories(),
+        client.getEngines(),
+        client.getFuels(),
+        client.getTransmissions(),
+        client.getSimilarCars(car.id, car.brand, 6),
+    ]);
+
+    const categories = (categoriesData ?? []) as Category[];
+    const categoryRow = categories.find((c) => c.name_en === car.category || c.name_fr === car.category || c.name === car.category);
+    const bodyStyleDisplay = categoryRow ? getLocalizedCategoryName(categoryRow, locale) : car.category ?? t("na");
+
+    const similarCarIds = (similarCars as Car[]).map((c) => c.id);
+    const { data: similarImages = [] } = similarCarIds.length > 0 ? await client.getCarImagesForCars(similarCarIds) : { data: [] };
+    const imagesByCar = new Map<string, CarImage[]>();
+    for (const img of similarImages as CarImage[]) {
+        const bucket = imagesByCar.get(img.car_id) || [];
+        bucket.push(img);
+        imagesByCar.set(img.car_id, bucket);
+    }
+
+    const price = car.discounted_price ?? car.price;
+    const stockDisplay = car.slug.toUpperCase().replace(/-/g, "").slice(0, 8) || car.id.slice(0, 8);
 
     return (
-        <div className="max-w-5xl mx-auto px-4 py-10">
-            <h1 className="text-3xl font-bold">{car.title}</h1>
-            <PriceDisplay car={car} />
+        <div className="min-h-screen bg-white">
+            <InventoryHero />
 
-            <div className="mt-6 grid md:grid-cols-2 gap-4">
-                <div className="border rounded-lg overflow-hidden bg-gray-100 aspect-[4/3]">
-                    {cover ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={cover.image_url} alt={car.title} className="w-full h-full object-cover" />
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                            No image
+            <div className="mx-auto max-w-7xl px-4 pt-8 pb-1">
+                {/* Two-column layout */}
+                <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
+                    {/* Left: Gallery */}
+                    <div className="lg:col-span-2">
+                        <CarDetailGallery images={images} title={car.title} />
+                    </div>
+
+                    {/* Right: Details */}
+                    <div className="space-y-6 lg:col-span-3">
+                        {/* Red banner */}
+                        <div className="min-h-[75vw] lg:min-h-[18rem] rounded-lg bg-[#1d4ed8] px-6 py-5 text-white">
+                            <h1 className="text-2xl font-bold md:text-3xl">
+                                {car.year} {car.brand} {car.model}
+                            </h1>
+                            <p className="mt-1 text-sm text-white/90">
+                                {t("stockNumber")}: {stockDisplay}
+                            </p>
+                            <p className="text-sm text-white/90">
+                                {t("doorBodyStyle")}: {bodyStyleDisplay}
+                            </p>
+                            <p className="mt-3 text-2xl font-bold">{formatPrice(price)}</p>
+                            {car.discounted_price != null && (
+                                <p className="text-sm text-white/80 line-through">{formatPrice(car.price)}</p>
+                            )}
+                            <div className="mt-4 space-y-2">
+                                <button
+                                    type="button"
+                                    className="flex w-full items-center justify-center gap-2 rounded bg-white/20 py-2.5 text-sm font-bold hover:bg-white/30"
+                                >
+                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                    {t("requestEprice")}
+                                </button>
+                                <button
+                                    type="button"
+                                    className="flex w-full items-center justify-center gap-2 rounded bg-white/20 py-2.5 text-sm font-bold hover:bg-white/30"
+                                >
+                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    {t("bookTestDrive")}
+                                </button>
+                            </div>
                         </div>
-                    )}
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                    {images.filter((img) => img.id !== cover?.id).map((img) => (
-                        <div key={img.id} className="border rounded-lg overflow-hidden bg-gray-100 aspect-[4/3]">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={img.image_url} alt={car.title} className="w-full h-full object-cover" />
+
+                        {/* Fair Deal + Carfax */}
+                        <div className="flex flex-wrap items-center gap-3">
+                            <span className="inline-flex items-center gap-1.5 rounded bg-emerald-100 px-2.5 py-1 text-sm font-semibold text-emerald-800">
+                                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                                FAIR DEAL
+                            </span>
+                            <button
+                                type="button"
+                                className="rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                            >
+                                {t("viewCarfax")}
+                            </button>
                         </div>
-                    ))}
+
+                        {/* Key Specs */}
+                        <CarDetailSpecs
+                            car={car}
+                            categories={categories}
+                            engines={(enginesData ?? []) as Database["public"]["Tables"]["engines"]["Row"]}
+                            fuels={(fuelsData ?? []) as Database["public"]["Tables"]["fuels"]["Row"]}
+                            transmissions={(transmissionsData ?? []) as Database["public"]["Tables"]["transmissions"]["Row"]}
+                        />
+
+                        {/* Car Description */}
+                        <div>
+                            <h2 className="text-lg font-bold text-gray-900">
+                                {t("carDescription")}
+                            </h2>
+                            <p className="mt-2 text-gray-700 whitespace-pre-wrap">{car.description || "No description provided."}</p>
+                            <p className="mt-3 text-xs text-gray-500">
+                                Information is subject to verification. Contact us for the most current details.
+                            </p>
+                        </div>
+
+                        {/* Vehicle Features intro */}
+                        <div>
+                            <h2 className="text-lg font-bold text-gray-900">{t("vehicleFeaturesTitle")}</h2>
+                            <p className="mt-2 text-sm text-gray-600">
+                                {t("vehicleFeaturesIntro")}
+                            </p>
+                        </div>
+
+                        {/* Accordions */}
+                        <div className="space-y-0">
+                            <CarDetailAccordion title={t("keyFeatures")}>
+                                <p className="text-gray-600">{car.description?.slice(0, 200) || t("na")}</p>
+                            </CarDetailAccordion>
+                            <CarDetailAccordion title={t("safeties")}>
+                                <p className="text-gray-600">Contact us for safety feature details.</p>
+                            </CarDetailAccordion>
+                            <CarDetailAccordion title={t("exterior")}>
+                                <p className="text-gray-600">Exterior color: {car.exterior_color ?? t("na")}</p>
+                            </CarDetailAccordion>
+                            <CarDetailAccordion title={t("interior")}>
+                                <p className="text-gray-600">{t("na")}</p>
+                            </CarDetailAccordion>
+                            <CarDetailAccordion title={t("enginePowertrain")}>
+                                <p className="text-gray-600">{car.engine ?? t("na")}</p>
+                            </CarDetailAccordion>
+                            <CarDetailAccordion title={t("convenience")}>
+                                <p className="text-gray-600">{car.description?.slice(0, 150) || t("na")}</p>
+                            </CarDetailAccordion>
+                        </div>
+
+                        {/* Request Information form */}
+                        <div className="rounded-lg border border-gray-200">
+                            <div className="rounded-t-lg bg-[#1d4ed8] px-4 py-3">
+                                <h2 className="font-bold text-white">{t("requestInfo")}</h2>
+                            </div>
+                            <div className="p-4">
+                                <CarDetailRequestForm />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Similar Vehicles */}
+                <div className="mt-16">
+                    <SimilarVehiclesCarousel
+                        cars={similarCars as Car[]}
+                        imagesByCar={imagesByCar}
+                        currentSlug={slug}
+                    />
                 </div>
             </div>
 
-            <div className="mt-8 grid sm:grid-cols-2 gap-4">
-                <div className="p-4 border rounded-lg bg-white">
-                    <p className="text-sm text-gray-500">Brand</p>
-                    <p className="font-medium">{car.brand}</p>
-                </div>
-                <div className="p-4 border rounded-lg bg-white">
-                    <p className="text-sm text-gray-500">Model</p>
-                    <p className="font-medium">{car.model}</p>
-                </div>
-                <div className="p-4 border rounded-lg bg-white">
-                    <p className="text-sm text-gray-500">Year</p>
-                    <p className="font-medium">{car.year}</p>
-                </div>
-                <div className="p-4 border rounded-lg bg-white">
-                    <p className="text-sm text-gray-500">Mileage</p>
-                    <p className="font-medium">{car.km.toLocaleString()} km</p>
-                </div>
-            </div>
-
-            <div className="mt-8">
-                <h2 className="text-xl font-semibold">Description</h2>
-                <p className="mt-2 text-gray-700 whitespace-pre-wrap">{car.description || "No description provided."}</p>
-            </div>
+            <SiteFooter />
+            <ScrollToTopButton />
         </div>
     );
 }
