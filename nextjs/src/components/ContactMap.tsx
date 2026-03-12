@@ -57,7 +57,7 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
         <div
             className={
                 variant === "large"
-                    ? "relative h-[400px] w-full md:h-[460px]"
+                    ? "relative h-[460px] w-full md:h-[540px]"
                     : "relative h-72 w-full md:h-[315px]"
             }
         >
