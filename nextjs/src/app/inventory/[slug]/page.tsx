@@ -313,7 +313,11 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                         cars={similarCars as Car[]}
                         imagesByCar={imagesByCar}
                         currentSlug={slug}
-                        businessName={siteSettings?.business_name ?? "Pino Auto Pro"}
+                        categories={categories as Database["public"]["Tables"]["categories"]["Row"][]}
+                        engines={enginesData as Database["public"]["Tables"]["engines"]["Row"][]}
+                        fuels={fuelsData as Database["public"]["Tables"]["fuels"]["Row"][]}
+                        transmissions={transmissionsData as Database["public"]["Tables"]["transmissions"]["Row"][]}
+                        locale={locale}
                     />
                 </div>
             </div>

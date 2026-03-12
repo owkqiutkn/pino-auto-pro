@@ -30,27 +30,26 @@ const CATEGORY_PLACEHOLDER =
 const heroImage = "/new-landing/hero.jpg";
 const financingImage = "/new-landing/financing.jpg";
 const missionImage = "/new-landing/mission.jpg";
-const aboutBackgroundImage = "https://images.pexels.com/photos/33271364/pexels-photo-33271364.jpeg";
-
+const aboutBackgroundImage = "/new-landing/about-bg.jpeg";
 
 const featureCards = [
     {
         id: "viewInventory" as const,
         image: "/new-landing/feature-certified.jpg",
         icon: "✓",
-        iconImage: "https://img.icons8.com/?id=12666&format=png&size=36",
+        iconImage: "/new-landing/icons/icon-certified.png",
     },
     {
         id: "applyFinancing" as const,
         image: "/new-landing/feature-finance.jpg",
         icon: "$",
-        iconImage: "https://img.icons8.com/?id=123072&format=png&size=36",
+        iconImage: "/new-landing/icons/icon-finance.png",
     },
     {
         id: "contactUs" as const,
         image: "/new-landing/feature-tradein.jpg",
         icon: "✉",
-        iconImage: "https://img.icons8.com/?id=63598&format=png&size=36",
+        iconImage: "/new-landing/icons/icon-contact.png",
     },
 ];
 
@@ -413,7 +412,7 @@ export default async function NewLandingPage() {
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
-                                    src="https://img.icons8.com/?id=118466&format=png&size=32"
+                                    src="/new-landing/icons/icon-facebook.png"
                                     alt="Facebook"
                                     className="h-4 w-4 brightness-0 invert"
                                 />
@@ -427,7 +426,7 @@ export default async function NewLandingPage() {
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
-                                    src="https://img.icons8.com/?id=32292&format=png&size=32"
+                                    src="/new-landing/icons/icon-instagram.png"
                                     alt="Instagram"
                                     className="h-4 w-4 brightness-0 invert"
                                 />
@@ -441,7 +440,7 @@ export default async function NewLandingPage() {
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
-                                    src="https://img.icons8.com/?id=01GWmP9aUoPj&format=png&size=32"
+                                    src="/new-landing/icons/icon-x-twitter.png"
                                     alt="X (Twitter)"
                                     className="h-4 w-4 brightness-0 invert"
                                 />
