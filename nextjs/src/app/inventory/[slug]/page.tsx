@@ -19,6 +19,7 @@ import CarDetailSpecs from "@/components/CarDetailSpecs";
 import CarDetailRequestForm from "@/components/CarDetailRequestForm";
 import CarDetailAccordion from "@/components/CarDetailAccordion";
 import SimilarVehiclesCarousel from "@/components/SimilarVehiclesCarousel";
+import VehicleShareButtons from "@/components/VehicleShareButtons";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
@@ -127,14 +128,22 @@ export default async function CarDetailPage({ params }: CarPageProps) {
             <div className="mx-auto max-w-7xl px-4 pt-8 pb-1">
                 {/* Two-column layout */}
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
-                    {/* Left: Gallery */}
-                    <div className="lg:col-span-2">
+                    {/* Left: Gallery (larger) */}
+                    <div className="lg:col-span-3">
                         <CarDetailGallery images={images} title={car.title} />
                     </div>
 
-                    {/* Right: Details */}
-                    <div className="space-y-6 lg:col-span-3">
-                        {/* Red banner */}
+                    {/* Right: Details (smaller) */}
+                    <div className="space-y-6 lg:col-span-2">
+                        <div className="space-y-2">
+                            {/* Share this vehicle */}
+                            <VehicleShareButtons
+                                shareUrl={`${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/inventory/${car.slug}`}
+                                vehicleTitle={`${car.year} ${car.brand} ${car.model}`}
+                                label={t("shareThisVehicle")}
+                            />
+
+                            {/* Red banner */}
                         <div className="min-h-[75vw] lg:min-h-[18rem] overflow-hidden rounded-xl border border-blue-400/30 bg-[#071d38] px-6 py-5 text-white shadow-[0_12px_30px_rgba(0,0,0,0.45)] transition-transform duration-300 ease-out hover:-translate-y-2">
                             <h1 className="text-2xl font-bold md:text-3xl">
                                 {car.year} {car.brand} {car.model}
@@ -171,6 +180,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                                     {t("bookTestDrive")}
                                 </a>
                             </div>
+                        </div>
                         </div>
 
                         {/* Fair Deal + Warranty + Carfax + CarGurus */}
