@@ -110,7 +110,6 @@ export default async function CarDetailPage({ params }: CarPageProps) {
     }
 
     const price = car.discounted_price ?? car.price;
-    const stockDisplay = car.slug.toUpperCase().replace(/-/g, "").slice(0, 8) || car.id.slice(0, 8);
 
     return (
         <div className="min-h-screen bg-white">
@@ -131,9 +130,6 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                             <h1 className="text-2xl font-bold md:text-3xl">
                                 {car.year} {car.brand} {car.model}
                             </h1>
-                            <p className="mt-1 text-sm text-white/90">
-                                {t("stockNumber")}: {stockDisplay}
-                            </p>
                             {car.vin && (
                                 <p className="text-sm text-white/90">
                                     {t("vin")}: {car.vin}

@@ -244,74 +244,104 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                             const images = imagesByCar.get(car.id) || [];
                             const cover = images.find((i) => i.is_cover) || images[0];
                             return (
-                                <Link
+                                <div
                                     key={car.id}
-                                    href={`/inventory/${car.slug}`}
                                     className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#1d4ed8] hover:shadow-lg"
                                 >
-                                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
-                                        {cover ? (
-                                            /* eslint-disable-next-line @next/next/no-img-element */
-                                            <img
-                                                src={cover.image_url}
-                                                alt={car.title}
-                                                className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
-                                            />
-                                        ) : (
-                                            <div className="flex h-full w-full items-center justify-center text-gray-400">
-                                                {t("card.noImage")}
-                                            </div>
-                                        )}
-                                        <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#0c1320] text-[8px] font-bold text-white">
-                                            PAP
-                                        </div>
-                                    </div>
-                                    <div className="flex h-[260px] flex-col p-4">
-                                        <h2 className="text-base font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
-                                            {car.year} {car.brand} {car.model}
-                                        </h2>
-                                        <p className="mt-0.5 text-sm text-gray-600">
-                                            {getCategoryDisplay(car.category, categories, locale) ?? t("card.fallbackBodyStyle")} {car.model} {car.km.toLocaleString()} km
-                                        </p>
-                                        <p className="mt-3 min-h-[1rem] text-xs text-gray-600">
-                                            {[car.engine && getEngineDisplay(car.engine, engines, locale), car.fuel && getFuelDisplay(car.fuel, fuels, locale), car.transmission && getTransmissionDisplay(car.transmission, transmissions, locale)]
-                                                .filter(Boolean)
-                                                .join(" • ")}
-                                        </p>
-                                        <div className="mt-auto pt-3">
-                                            <p className="text-[10px] text-gray-500">{t("card.dealerPriceLabel")}</p>
-                                            {car.discounted_price != null ? (
-                                                <p>
-                                                    <span className="text-sm text-gray-500 line-through">
-                                                        {formatPrice(car.price)}
-                                                    </span>
-                                                    <span className="ml-2 text-lg font-bold text-[#1d4ed8]">
-                                                        {formatPrice(car.discounted_price)}
-                                                    </span>
-                                                </p>
+                                    <Link href={`/inventory/${car.slug}`} className="block">
+                                        <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                                            {cover ? (
+                                                /* eslint-disable-next-line @next/next/no-img-element */
+                                                <img
+                                                    src={cover.image_url}
+                                                    alt={car.title}
+                                                    className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                                                />
                                             ) : (
-                                                <p className="text-lg font-bold text-[#1d4ed8]">
+                                                <div className="flex h-full w-full items-center justify-center text-gray-400">
+                                                    {t("card.noImage")}
+                                                </div>
+                                            )}
+                                            <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#0c1320] text-[8px] font-bold text-white">
+                                                PAP
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col p-4">
+                                            <h2 className="text-base font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
+                                                {car.year} {car.brand} {car.model}
+                                            </h2>
+                                            <p className="mt-0.5 text-sm text-gray-600">
+                                                {getCategoryDisplay(car.category, categories, locale) ?? t("card.fallbackBodyStyle")} {car.model} {car.km.toLocaleString()} km
+                                            </p>
+                                            <p className="mt-3 min-h-[1rem] text-xs text-gray-600">
+                                                {[car.engine && getEngineDisplay(car.engine, engines, locale), car.fuel && getFuelDisplay(car.fuel, fuels, locale), car.transmission && getTransmissionDisplay(car.transmission, transmissions, locale)]
+                                                    .filter(Boolean)
+                                                    .join(" • ")}
+                                            </p>
+                                            <div className="mt-2">
+                                                <p className="text-xs font-semibold text-gray-600">{t("card.dealerPriceLabel")}</p>
+                                                {car.discounted_price != null ? (
+                                                    <p>
+                                                        <span className="text-sm text-gray-500 line-through">
+                                                            {formatPrice(car.price)}
+                                                        </span>
+                                                        <span className="ml-2 text-xl font-bold text-[#1d4ed8]">
+                                                            {formatPrice(car.discounted_price)}
+                                                        </span>
+                                                    </p>
+                                                ) : (
+<p className="text-xl font-bold text-[#1d4ed8]">
                                                     {formatPrice(car.price)}
                                                 </p>
+                                                )}
+                                                <p className="mt-0.5 text-[10px] text-gray-500">
+                                                    {t("card.taxNote")}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                    <div className="mx-4 mt-0 mb-2 space-y-2">
+                                        <span className="block rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700 w-fit">
+                                            {t("card.fairDeal")}
+                                        </span>
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            {car.carfax_url ? (
+                                                <a
+                                                    href={car.carfax_url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                                >
+                                                    {t("card.carfax")}
+                                                </a>
+                                            ) : (
+                                                <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
+                                                    {t("card.carfax")}
+                                                </span>
                                             )}
-                                            <p className="mt-0.5 text-[10px] text-gray-500">
-                                                {t("card.taxNote")}
-                                            </p>
+                                            {car.cargurus_url ? (
+                                                <a
+                                                    href={car.cargurus_url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                                >
+                                                    {t("card.cargurus")}
+                                                </a>
+                                            ) : (
+                                                <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
+                                                    {t("card.cargurus")}
+                                                </span>
+                                            )}
                                         </div>
-                                        <div className="mt-3 mb-2 flex items-center gap-2 text-xs text-gray-600">
-                                            <span className="rounded bg-emerald-100 px-2 py-0.5 text-emerald-700">
-                                                {t("card.fairDeal")}
-                                            </span>
-                                            <span className="text-[10px]">{t("card.fairDealSource")}</span>
-                                        </div>
-                                        <button
-                                            type="button"
-                                            className="mt-3 w-full rounded bg-[#0c1320] py-2 text-sm font-bold text-white hover:bg-gray-800"
-                                        >
-                                            {t("card.viewDetails")}
-                                        </button>
                                     </div>
-                                </Link>
+                                    <Link
+                                        href={`/inventory/${car.slug}`}
+                                        className="mx-4 mb-4 mt-3 block rounded bg-[#0c1320] py-2 text-center text-sm font-bold text-white hover:bg-gray-800"
+                                    >
+                                        {t("card.viewDetails")}
+                                    </Link>
+                                </div>
                             );
                         })}
                     </div>

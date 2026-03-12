@@ -56,7 +56,6 @@ export default async function CarDetailSpecs({
         { id: "transmission", label: t("transmission"), value: transmissionDisplay ?? t("na") },
         { id: "fuelType", label: t("fuelType"), value: fuelDisplay ?? t("na") },
         { id: "engine", label: t("engine"), value: engineDisplay ?? t("na") },
-        { id: "drivetrain", label: t("drivetrain"), value: categoryDisplay ?? car.category ?? t("na") },
     ];
 
     return (

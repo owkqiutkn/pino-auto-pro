@@ -178,8 +178,8 @@
       "requestEprice": "Request for e-Price",
       "bookTestDrive": "Book a Test Drive",
       "applyFinancing": "Apply for Financing",
-      "viewCarfax": "View Carfax",
-      "drive": "Drive",
+      "viewCarfax": "Carfax",
+      "drive": "Body Style",
       "mileage": "Mileage",
       "exteriorColor": "Exterior Color",
       "interiorColor": "Interior Color",
@@ -239,6 +239,8 @@
         "taxNote": "+ HST and Licensing",
         "fairDeal": "▲ FAIR DEAL",
         "fairDealSource": "CarGurus",
+        "carfax": "Carfax",
+        "cargurus": "CarGurus",
         "viewDetails": "View Details"
       },
       "emptyFiltered": "No vehicles match your filters."

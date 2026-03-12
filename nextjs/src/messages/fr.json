@@ -178,8 +178,8 @@
       "requestEprice": "Demander le prix par courriel",
       "bookTestDrive": "Réserver un essai routier",
       "applyFinancing": "Demander un financement",
-      "viewCarfax": "Voir Carfax",
-      "drive": "Traction",
+      "viewCarfax": "Carfax",
+      "drive": "Style de carrosserie",
       "mileage": "Kilométrage",
       "exteriorColor": "Couleur extérieure",
       "interiorColor": "Couleur intérieure",
@@ -239,6 +239,8 @@
         "taxNote": "+ TVH et immatriculation",
         "fairDeal": "▲ BON PRIX",
         "fairDealSource": "CarGurus",
+        "carfax": "Carfax",
+        "cargurus": "CarGurus",
         "viewDetails": "Voir les détails"
       },
       "emptyFiltered": "Aucun véhicule ne correspond à vos filtres."
