@@ -59,7 +59,8 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
     const [km, setKm] = useState<number | "">("");
     const [price, setPrice] = useState<number | "">("");
     const [discountedPrice, setDiscountedPrice] = useState<number | "">("");
-    const [description, setDescription] = useState("");
+    const [descriptionEn, setDescriptionEn] = useState("");
+    const [descriptionFr, setDescriptionFr] = useState("");
     const [status, setStatus] = useState<CarStatus>("available");
     const [featured, setFeatured] = useState(false);
     const [mainImageFile, setMainImageFile] = useState<File | null>(null);
@@ -75,6 +76,10 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
     const [engine, setEngine] = useState("");
     const [fuel, setFuel] = useState("");
     const [transmission, setTransmission] = useState("");
+    const [vin, setVin] = useState("");
+    const [carfaxUrl, setCarfaxUrl] = useState("");
+    const [cargurusUrl, setCargurusUrl] = useState("");
+    const [warranty, setWarranty] = useState(false);
 
     const currentYear = new Date().getFullYear();
     const yearOptions = useMemo(
@@ -248,11 +253,16 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                     engine: engine || null,
                     fuel: fuel || null,
                     transmission: transmission || null,
+                    vin: vin || null,
+                    carfax_url: carfaxUrl || null,
+                    cargurus_url: cargurusUrl || null,
+                    warranty: warranty,
                     year: Number(year),
                     km: Number(km),
                     price: parsedPrice,
                     discounted_price: parsedDiscountedPrice,
-                    description: description || null,
+                    description_en: descriptionEn || null,
+                    description_fr: descriptionFr || null,
                     status,
                     featured,
                 });
@@ -444,6 +454,54 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                         <input id="price" value={price} onChange={(e) => setPrice(Number(e.target.value))} type="number" required placeholder="Price" className="w-full border rounded-md px-3 py-2" />
                     </div>
                 </div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                    <div>
+                        <label htmlFor="vin" className="block text-sm font-medium text-gray-700 mb-1">VIN (optional)</label>
+                        <input
+                            id="vin"
+                            value={vin}
+                            onChange={(e) => setVin(e.target.value)}
+                            placeholder="e.g. 1HGBH41JXMN109186"
+                            className="w-full border rounded-md px-3 py-2"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="warranty" className="block text-sm font-medium text-gray-700 mb-1">Warranty</label>
+                        <select
+                            id="warranty"
+                            value={warranty ? "yes" : "no"}
+                            onChange={(e) => setWarranty(e.target.value === "yes")}
+                            className="w-full border rounded-md px-3 py-2"
+                        >
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                    <div>
+                        <label htmlFor="carfaxUrl" className="block text-sm font-medium text-gray-700 mb-1">Carfax URL (optional)</label>
+                        <input
+                            id="carfaxUrl"
+                            type="url"
+                            value={carfaxUrl}
+                            onChange={(e) => setCarfaxUrl(e.target.value)}
+                            placeholder="https://..."
+                            className="w-full border rounded-md px-3 py-2"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="cargurusUrl" className="block text-sm font-medium text-gray-700 mb-1">CarGurus URL (optional)</label>
+                        <input
+                            id="cargurusUrl"
+                            type="url"
+                            value={cargurusUrl}
+                            onChange={(e) => setCargurusUrl(e.target.value)}
+                            placeholder="https://..."
+                            className="w-full border rounded-md px-3 py-2"
+                        />
+                    </div>
+                </div>
                 <div>
                     <label htmlFor="discountedPrice" className="block text-sm font-medium text-gray-700 mb-1">Discounted price (optional)</label>
                     <input
@@ -458,8 +516,12 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                     />
                 </div>
                 <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                    <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} rows={5} placeholder="Description" className="w-full border rounded-md px-3 py-2" />
+                    <label htmlFor="descriptionEn" className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1">Description (English)<img src="/icons/ai.png" alt="AI" className="w-4 h-4" /></label>
+                    <textarea id="descriptionEn" value={descriptionEn} onChange={(e) => setDescriptionEn(e.target.value)} rows={5} placeholder="Vehicle description, features, condition..." className="w-full border rounded-md px-3 py-2" />
+                </div>
+                <div>
+                    <label htmlFor="descriptionFr" className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1">Description (French)<img src="/icons/ai.png" alt="AI" className="w-4 h-4" /></label>
+                    <textarea id="descriptionFr" value={descriptionFr} onChange={(e) => setDescriptionFr(e.target.value)} rows={5} placeholder="Description du véhicule, équipements, état..." className="w-full border rounded-md px-3 py-2" />
                 </div>
                 <div>
                     <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">Status</label>

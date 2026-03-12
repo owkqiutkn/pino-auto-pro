@@ -247,12 +247,16 @@ export type Database = {
       cars: {
         Row: {
           brand: string
+          carfax_url: string | null
+          cargurus_url: string | null
           category: string | null
           exterior_color: string | null
           engine: string | null
           fuel: string | null
           created_at: string
           description: string | null
+          description_en: string | null
+          description_fr: string | null
           discounted_price: number | null
           featured: boolean
           id: string
@@ -264,16 +268,22 @@ export type Database = {
           transmission: string | null
           title: string
           updated_at: string
+          vin: string | null
+          warranty: boolean | null
           year: number
         }
         Insert: {
           brand: string
+          carfax_url?: string | null
+          cargurus_url?: string | null
           category?: string | null
           exterior_color?: string | null
           engine?: string | null
           fuel?: string | null
           created_at?: string
           description?: string | null
+          description_en?: string | null
+          description_fr?: string | null
           discounted_price?: number | null
           featured?: boolean
           id?: string
@@ -285,16 +295,22 @@ export type Database = {
           transmission?: string | null
           title: string
           updated_at?: string
+          vin?: string | null
+          warranty?: boolean | null
           year: number
         }
         Update: {
           brand?: string
+          carfax_url?: string | null
+          cargurus_url?: string | null
           category?: string | null
           exterior_color?: string | null
           engine?: string | null
           fuel?: string | null
           created_at?: string
           description?: string | null
+          description_en?: string | null
+          description_fr?: string | null
           discounted_price?: number | null
           featured?: boolean
           id?: string
@@ -306,6 +322,8 @@ export type Database = {
           transmission?: string | null
           title?: string
           updated_at?: string
+          vin?: string | null
+          warranty?: boolean | null
           year?: number
         }
         Relationships: []

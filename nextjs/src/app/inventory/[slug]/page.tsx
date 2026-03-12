@@ -134,6 +134,11 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                             <p className="mt-1 text-sm text-white/90">
                                 {t("stockNumber")}: {stockDisplay}
                             </p>
+                            {car.vin && (
+                                <p className="text-sm text-white/90">
+                                    {t("vin")}: {car.vin}
+                                </p>
+                            )}
                             <p className="text-sm text-white/90">
                                 {t("doorBodyStyle")}: {bodyStyleDisplay}
                             </p>
@@ -163,7 +168,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                             </div>
                         </div>
 
-                        {/* Fair Deal + Carfax */}
+                        {/* Fair Deal + Warranty + Carfax + CarGurus */}
                         <div className="flex flex-wrap items-center gap-3">
                             <span className="inline-flex items-center gap-1.5 rounded bg-emerald-100 px-2.5 py-1 text-sm font-semibold text-emerald-800">
                                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
@@ -171,12 +176,38 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                                 </svg>
                                 FAIR DEAL
                             </span>
-                            <button
-                                type="button"
-                                className="rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                            >
-                                {t("viewCarfax")}
-                            </button>
+                            {car.warranty && (
+                                <span className="inline-flex items-center gap-1.5 rounded bg-blue-100 px-2.5 py-1 text-sm font-semibold text-blue-800">
+                                    <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                    </svg>
+                                    WARRANTY
+                                </span>
+                            )}
+                            {car.carfax_url ? (
+                                <a
+                                    href={car.carfax_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                                >
+                                    {t("viewCarfax")}
+                                </a>
+                            ) : (
+                                <span className="rounded border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-400 cursor-not-allowed">
+                                    {t("viewCarfax")}
+                                </span>
+                            )}
+                            {car.cargurus_url && (
+                                <a
+                                    href={car.cargurus_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                                >
+                                    CarGurus
+                                </a>
+                            )}
                         </div>
 
                         {/* Key Specs */}
@@ -193,7 +224,11 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                             <h2 className="text-lg font-bold text-gray-900">
                                 {t("carDescription")}
                             </h2>
-                            <p className="mt-2 text-gray-700 whitespace-pre-wrap">{car.description || "No description provided."}</p>
+                            <p className="mt-2 text-gray-700 whitespace-pre-wrap">
+                                {locale.startsWith("fr")
+                                    ? (car.description_fr ?? car.description_en ?? car.description) || "No description provided."
+                                    : (car.description_en ?? car.description_fr ?? car.description) || "No description provided."}
+                            </p>
                             <p className="mt-3 text-xs text-gray-500">
                                 Information is subject to verification. Contact us for the most current details.
                             </p>
@@ -210,7 +245,12 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                         {/* Accordions */}
                         <div className="space-y-0">
                             <CarDetailAccordion title={t("keyFeatures")}>
-                                <p className="text-gray-600">{car.description?.slice(0, 200) || t("na")}</p>
+                                <p className="text-gray-600">
+                                    {(locale.startsWith("fr")
+                                        ? car.description_fr ?? car.description_en ?? car.description
+                                        : car.description_en ?? car.description_fr ?? car.description)
+                                        ?.slice(0, 200) || t("na")}
+                                </p>
                             </CarDetailAccordion>
                             <CarDetailAccordion title={t("safeties")}>
                                 <p className="text-gray-600">Contact us for safety feature details.</p>
@@ -225,7 +265,12 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                                 <p className="text-gray-600">{car.engine ?? t("na")}</p>
                             </CarDetailAccordion>
                             <CarDetailAccordion title={t("convenience")}>
-                                <p className="text-gray-600">{car.description?.slice(0, 150) || t("na")}</p>
+                                <p className="text-gray-600">
+                                    {(locale.startsWith("fr")
+                                        ? car.description_fr ?? car.description_en ?? car.description
+                                        : car.description_en ?? car.description_fr ?? car.description)
+                                        ?.slice(0, 150) || t("na")}
+                                </p>
                             </CarDetailAccordion>
                         </div>
 

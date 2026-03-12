@@ -172,6 +172,7 @@
   "Inventory": {
     "carDetail": {
       "stockNumber": "Numéro de stock",
+      "vin": "VIN",
       "doorBodyStyle": "Portes / style de carrosserie",
       "dealerPrice": "Prix du concessionnaire",
       "requestEprice": "Demander le prix par courriel",

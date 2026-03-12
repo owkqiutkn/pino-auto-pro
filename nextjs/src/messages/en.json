@@ -172,6 +172,7 @@
   "Inventory": {
     "carDetail": {
       "stockNumber": "Stock Number",
+      "vin": "VIN",
       "doorBodyStyle": "Door / Body Style",
       "dealerPrice": "Dealer Price",
       "requestEprice": "Request for e-Price",

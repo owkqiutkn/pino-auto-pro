@@ -49,7 +49,8 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
     const [km, setKm] = useState<number | "">("");
     const [price, setPrice] = useState<number | "">("");
     const [discountedPrice, setDiscountedPrice] = useState<number | "">("");
-    const [description, setDescription] = useState("");
+    const [descriptionEn, setDescriptionEn] = useState("");
+    const [descriptionFr, setDescriptionFr] = useState("");
     const [status, setStatus] = useState<CarStatus>("available");
     const [featured, setFeatured] = useState(false);
     const [brands, setBrands] = useState<Brand[]>([]);
@@ -63,6 +64,10 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
     const [engine, setEngine] = useState("");
     const [fuel, setFuel] = useState("");
     const [transmission, setTransmission] = useState("");
+    const [vin, setVin] = useState("");
+    const [carfaxUrl, setCarfaxUrl] = useState("");
+    const [cargurusUrl, setCargurusUrl] = useState("");
+    const [warranty, setWarranty] = useState(false);
 
     const currentYear = new Date().getFullYear();
     const yearOptions = useMemo(
@@ -101,13 +106,18 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
             setKm(carData.km);
             setPrice(carData.price);
             setDiscountedPrice(carData.discounted_price ?? "");
-            setDescription(carData.description || "");
+            setDescriptionEn(carData.description_en ?? carData.description ?? "");
+            setDescriptionFr(carData.description_fr ?? "");
             setStatus(carData.status as CarStatus);
             setFeatured(carData.featured ?? false);
             setExteriorColor(carData.exterior_color ?? "");
             setEngine(carData.engine ?? "");
             setFuel(carData.fuel ?? "");
             setTransmission(carData.transmission ?? "");
+            setVin(carData.vin ?? "");
+            setCarfaxUrl(carData.carfax_url ?? "");
+            setCargurusUrl(carData.cargurus_url ?? "");
+            setWarranty(carData.warranty ?? false);
             setError("");
         } catch (err) {
             console.error(err);
@@ -227,11 +237,16 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                 engine: engine || null,
                 fuel: fuel || null,
                 transmission: transmission || null,
+                vin: vin || null,
+                carfax_url: carfaxUrl || null,
+                cargurus_url: cargurusUrl || null,
+                warranty: warranty,
                 year: Number(year),
                 km: Number(km),
                 price: parsedPrice,
                 discounted_price: parsedDiscountedPrice,
-                description: description || null,
+                description_en: descriptionEn || null,
+                description_fr: descriptionFr || null,
                 status,
                 featured,
             });
@@ -483,6 +498,54 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                         <input id="edit-price" value={price} onChange={(e) => setPrice(Number(e.target.value))} type="number" required placeholder="e.g. 25000" className="border rounded-md px-3 py-2 w-full" />
                     </div>
                 </div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                    <div>
+                        <label htmlFor="edit-vin" className="block text-sm font-medium text-gray-700 mb-1">VIN (optional)</label>
+                        <input
+                            id="edit-vin"
+                            value={vin}
+                            onChange={(e) => setVin(e.target.value)}
+                            placeholder="e.g. 1HGBH41JXMN109186"
+                            className="w-full border rounded-md px-3 py-2"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="edit-warranty" className="block text-sm font-medium text-gray-700 mb-1">Warranty</label>
+                        <select
+                            id="edit-warranty"
+                            value={warranty ? "yes" : "no"}
+                            onChange={(e) => setWarranty(e.target.value === "yes")}
+                            className="w-full border rounded-md px-3 py-2"
+                        >
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                    <div>
+                        <label htmlFor="edit-carfax-url" className="block text-sm font-medium text-gray-700 mb-1">Carfax URL (optional)</label>
+                        <input
+                            id="edit-carfax-url"
+                            type="url"
+                            value={carfaxUrl}
+                            onChange={(e) => setCarfaxUrl(e.target.value)}
+                            placeholder="https://..."
+                            className="w-full border rounded-md px-3 py-2"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="edit-cargurus-url" className="block text-sm font-medium text-gray-700 mb-1">CarGurus URL (optional)</label>
+                        <input
+                            id="edit-cargurus-url"
+                            type="url"
+                            value={cargurusUrl}
+                            onChange={(e) => setCargurusUrl(e.target.value)}
+                            placeholder="https://..."
+                            className="w-full border rounded-md px-3 py-2"
+                        />
+                    </div>
+                </div>
                 <div>
                     <label htmlFor="edit-discounted-price" className="block text-sm font-medium text-gray-700 mb-1">Discounted Price (optional)</label>
                     <input
@@ -497,8 +560,12 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                     />
                 </div>
                 <div>
-                    <label htmlFor="edit-description" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                    <textarea id="edit-description" value={description} onChange={(e) => setDescription(e.target.value)} rows={5} placeholder="Vehicle description, features, condition..." className="w-full border rounded-md px-3 py-2" />
+                    <label htmlFor="edit-description-en" className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1">Description (English)<img src="/icons/ai.png" alt="AI" className="w-4 h-4" /></label>
+                    <textarea id="edit-description-en" value={descriptionEn} onChange={(e) => setDescriptionEn(e.target.value)} rows={5} placeholder="Vehicle description, features, condition..." className="w-full border rounded-md px-3 py-2" />
+                </div>
+                <div>
+                    <label htmlFor="edit-description-fr" className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1">Description (French)<img src="/icons/ai.png" alt="AI" className="w-4 h-4" /></label>
+                    <textarea id="edit-description-fr" value={descriptionFr} onChange={(e) => setDescriptionFr(e.target.value)} rows={5} placeholder="Description du véhicule, équipements, état..." className="w-full border rounded-md px-3 py-2" />
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
                     <div>
