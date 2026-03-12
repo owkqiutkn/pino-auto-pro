@@ -75,9 +75,11 @@ export default function CarDetailGallery({ images, title }: CarDetailGalleryProp
     return (
         <div className="space-y-3">
             {/* Main image */}
-            <button
-                type="button"
+            <div
+                role="button"
+                tabIndex={0}
                 onClick={() => currentImage && setLightboxOpen(true)}
+                onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && currentImage) { e.preventDefault(); setLightboxOpen(true); } }}
                 className="relative block w-full aspect-[4/3] overflow-hidden rounded-lg bg-gray-100 cursor-pointer text-left"
                 aria-label="View image full screen"
             >
@@ -107,7 +109,7 @@ export default function CarDetailGallery({ images, title }: CarDetailGalleryProp
                         <NavButton direction="next" onClick={goNext} stopPropagation />
                     </>
                 )}
-            </button>
+            </div>
 
             {/* Lightbox modal */}
             {lightboxOpen && currentImage && (
