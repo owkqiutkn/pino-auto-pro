@@ -296,6 +296,7 @@ export default async function NewLandingPage() {
                                     <img
                                         src={imageSrc}
                                         alt={displayName}
+                                        loading="eager"
                                         className="h-20 w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                     />
                                     <div className="border-t border-white/5 bg-gradient-to-r from-[#1d283a] via-[#111827] to-[#1d283a] p-3 text-center">

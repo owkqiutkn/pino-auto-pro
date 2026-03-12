@@ -94,10 +94,10 @@ export default function CarDetailGallery({ images, title }: CarDetailGalleryProp
                     <div className="flex h-full w-full items-center justify-center text-gray-400">No image</div>
                 )}
 
-                {/* ML AUTOS watermark overlay */}
+                {/* Pino Auto Pro watermark overlay */}
                 <div className="absolute left-3 top-3 z-[2] pointer-events-none">
                     <span className="text-sm font-black tracking-wider text-white drop-shadow-lg">
-                        ML AUTOS
+                        Pino Auto Pro
                     </span>
                     <div className="h-0.5 w-full bg-[#1d4ed8]" />
                 </div>
