@@ -142,6 +142,7 @@ export type Database = {
           name: string
           name_en: string | null
           name_fr: string | null
+          image_url: string | null
         }
         Insert: {
           created_at?: string
@@ -149,6 +150,7 @@ export type Database = {
           name?: string
           name_en: string
           name_fr: string
+          image_url?: string | null
         }
         Update: {
           created_at?: string
@@ -156,6 +158,7 @@ export type Database = {
           name?: string
           name_en?: string
           name_fr?: string
+          image_url?: string | null
         }
         Relationships: []
       }

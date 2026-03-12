@@ -257,25 +257,50 @@ export class SassClient {
     async getCategories() {
         return this.client
             .from('categories')
-            .select('id, created_at, name, name_en, name_fr')
+            .select('id, created_at, name, name_en, name_fr, image_url')
             .order('name', { ascending: true });
     }
 
-    async createCategory(name_en: string, name_fr: string) {
+    async createCategory(name_en: string, name_fr: string, image_url?: string | null) {
         return this.client
             .from('categories')
-            .insert({ name: name_en, name_en, name_fr })
+            .insert({ name: name_en, name_en, name_fr, image_url: image_url ?? null })
             .select('*')
             .single();
     }
 
-    async updateCategory(id: string, name_en: string, name_fr: string) {
+    async updateCategory(id: string, name_en: string, name_fr: string, image_url?: string | null) {
+        const updates: { name_en: string; name_fr: string; image_url?: string | null } = { name_en, name_fr };
+        if (image_url !== undefined) updates.image_url = image_url;
         return this.client
             .from('categories')
-            .update({ name_en, name_fr })
+            .update(updates)
             .eq('id', id)
             .select('*')
             .single();
+    }
+
+    async uploadCategoryImage(categoryId: string, filename: string, file: File) {
+        const cleaned = filename.replace(/[^0-9a-zA-Z!\-_.*'()]/g, '_');
+        const storagePath = `categories/${categoryId}/${Date.now()}_${cleaned}`;
+        const uploadResponse = await this.client.storage.from('category-images').upload(storagePath, file, {
+            upsert: false,
+        });
+        if (uploadResponse.error) {
+            return uploadResponse;
+        }
+        const publicUrlResponse = this.client.storage.from('category-images').getPublicUrl(storagePath);
+        return {
+            data: {
+                path: storagePath,
+                publicUrl: publicUrlResponse.data.publicUrl,
+            },
+            error: null,
+        };
+    }
+
+    async deleteCategoryImageFromStorage(storagePath: string) {
+        return this.client.storage.from('category-images').remove([storagePath]);
     }
 
     async deleteCategory(id: string) {

@@ -13,18 +13,19 @@ type Engine = Database["public"]["Tables"]["engines"]["Row"];
 type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
 type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 
+// Placeholder for categories without an attached image
+const CATEGORY_PLACEHOLDER =
+    "data:image/svg+xml," +
+    encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="120" viewBox="0 0 200 120"><rect fill="%23334155" width="200" height="120"/><text fill="%2394a3b8" font-family="sans-serif" font-size="14" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle">No image</text></svg>'
+    );
+
 const heroImage = "/new-landing/hero.jpg";
 const financingImage = "/new-landing/financing.jpg";
 const missionImage = "/new-landing/mission.jpg";
 const aboutImage = "/new-landing/about.jpg";
 const aboutBackgroundImage = "https://images.pexels.com/photos/33271364/pexels-photo-33271364.jpeg";
 
-const categoryCards = [
-    { id: "sedan" as const, image: "/new-landing/category-sedan.jpg" },
-    { id: "suv" as const, image: "/new-landing/category-suv.jpg" },
-    { id: "coupe" as const, image: "/new-landing/category-coupe.jpg" },
-    { id: "truck" as const, image: "/new-landing/category-truck.jpg" },
-];
 
 const featureCards = [
     {
@@ -280,34 +281,36 @@ export default async function NewLandingPage() {
 
             <section className="bg-[#17181f] pt-3 pb-10 text-white">
                 <div className="mx-auto max-w-6xl px-4">
-                    <div className="mb-4 flex flex-col items-start gap-1 md:flex-row md:items-center md:justify-between">
+                    <div className="mb-4">
                         <h3 className="text-lg font-black uppercase tracking-wide">{t("categories.title")}</h3>
-                        <span className="text-[10px] uppercase text-white/60">
-                            {t("categories.subtitle")}
-                        </span>
                     </div>
                     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                        {categoryCards.map((item) => (
-                            <div
-                                key={item.id}
-                                className="group overflow-hidden rounded-sm border border-white/10 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)]"
-                            >
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src={item.image}
-                                    alt={t(`categories.items.${item.id}`)}
-                                    className="h-20 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                />
-                                <div className="border-t border-white/5 bg-gradient-to-r from-[#1d283a] via-[#111827] to-[#1d283a] p-3 text-center">
-                                    <div className="text-xs font-bold uppercase tracking-wide">
-                                        {t(`categories.items.${item.id}`)}
+                        {categories.slice(0, 8).map((cat) => {
+                            const displayName = cat.name_en ?? cat.name;
+                            const imageSrc = cat.image_url ?? CATEGORY_PLACEHOLDER;
+                            return (
+                                <Link
+                                    key={cat.id}
+                                    href={`/inventory?category=${encodeURIComponent(displayName)}`}
+                                    className="group block overflow-hidden rounded-sm border border-white/10 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)]"
+                                >
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={imageSrc}
+                                        alt={displayName}
+                                        className="h-20 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    />
+                                    <div className="border-t border-white/5 bg-gradient-to-r from-[#1d283a] via-[#111827] to-[#1d283a] p-3 text-center">
+                                        <div className="text-xs font-bold uppercase tracking-wide">
+                                            {displayName}
+                                        </div>
+                                        <span className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#1d4ed8] px-3 py-1 text-[10px] font-bold uppercase tracking-wide group-hover:bg-[#1e40af]">
+                                            {t("categories.viewListings")}
+                                        </span>
                                     </div>
-                                    <button className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#1d4ed8] px-3 py-1 text-[10px] font-bold uppercase tracking-wide hover:bg-[#1e40af]">
-                                        {t("categories.viewListings")}
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
+                                </Link>
+                            );
+                        })}
                     </div>
                 </div>
             </section>
