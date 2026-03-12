@@ -1,14 +1,22 @@
+import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import ContactMap from "@/components/ContactMap";
 import { getCachedSiteSettings } from "@/lib/supabase/cached";
+
+const navLinks = [
+    { href: "/inventory", labelKey: "links.inventory" },
+    { href: "/new-landing#about", labelKey: "links.about" },
+    { href: "/new-landing#contact", labelKey: "links.contact" },
+];
 
 const DEFAULT_FACEBOOK = "https://facebook.com";
 const DEFAULT_INSTAGRAM = "https://instagram.com";
 const DEFAULT_TWITTER = "https://x.com";
 
 export default async function SiteFooter() {
-    const [landingT, siteSettings] = await Promise.all([
+    const [landingT, navT, siteSettings] = await Promise.all([
         getTranslations("NewLanding"),
+        getTranslations("Navbar"),
         getCachedSiteSettings(),
     ]);
     const businessName = siteSettings?.business_name || "Pino Auto Pro";
@@ -89,11 +97,19 @@ export default async function SiteFooter() {
                 </div>
                 <div className="hidden md:block">
                     <h4 className="mb-3 font-bold uppercase text-white">
-                        {landingT("footer.inventoryTitle")}
+                        {landingT("footer.navTitle")}
                     </h4>
-                    <p className="text-white/60">{landingT("footer.inventoryItems.sedan")}</p>
-                    <p className="text-white/60">{landingT("footer.inventoryItems.suv")}</p>
-                    <p className="text-white/60">{landingT("footer.inventoryItems.coupe")}</p>
+                    <nav className="flex flex-col gap-1">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className="text-white/60 hover:text-white"
+                            >
+                                {navT(link.labelKey)}
+                            </Link>
+                        ))}
+                    </nav>
                 </div>
             </div>
             <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60">

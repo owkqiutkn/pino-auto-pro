@@ -129,6 +129,7 @@
         "sun": "Sun: Closed"
       },
       "inventoryTitle": "Inventory",
+      "navTitle": "Links",
       "inventoryItems": {
         "sedan": "Sedan",
         "suv": "SUV",

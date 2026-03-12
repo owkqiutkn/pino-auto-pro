@@ -129,6 +129,7 @@
         "sun": "Dim : Fermé"
       },
       "inventoryTitle": "Inventaire",
+      "navTitle": "Liens",
       "inventoryItems": {
         "sedan": "Berline",
         "suv": "VUS",

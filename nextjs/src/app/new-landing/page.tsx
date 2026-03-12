@@ -59,7 +59,7 @@ const DEFAULT_INSTAGRAM = "https://instagram.com";
 const DEFAULT_TWITTER = "https://x.com";
 
 export default async function NewLandingPage() {
-    const [brands, categories, engines, fuels, transmissions, siteSettings, t] = await Promise.all([
+    const [brands, categories, engines, fuels, transmissions, siteSettings, t, navT] = await Promise.all([
         getCachedBrands(),
         getCachedCategories(),
         getCachedEngines(),
@@ -67,6 +67,7 @@ export default async function NewLandingPage() {
         getCachedTransmissions(),
         getCachedSiteSettings(),
         getTranslations("NewLanding"),
+        getTranslations("Navbar"),
     ]);
     const businessName = siteSettings?.business_name || "Pino Auto Pro";
     const brandsTyped = (brands ?? []) as Brand[];
@@ -461,11 +462,19 @@ export default async function NewLandingPage() {
                     </div>
                     <div className="hidden md:block">
                         <h4 className="mb-3 font-bold uppercase text-white">
-                            {t("footer.inventoryTitle")}
+                            {t("footer.navTitle")}
                         </h4>
-                        <p className="text-white/60">{t("footer.inventoryItems.sedan")}</p>
-                        <p className="text-white/60">{t("footer.inventoryItems.suv")}</p>
-                        <p className="text-white/60">{t("footer.inventoryItems.coupe")}</p>
+                        <nav className="flex flex-col gap-1">
+                            <Link href="/inventory" className="text-white/60 hover:text-white">
+                                {navT("links.inventory")}
+                            </Link>
+                            <Link href="/new-landing#about" className="text-white/60 hover:text-white">
+                                {navT("links.about")}
+                            </Link>
+                            <Link href="/new-landing#contact" className="text-white/60 hover:text-white">
+                                {navT("links.contact")}
+                            </Link>
+                        </nav>
                     </div>
                 </div>
                 <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60">
