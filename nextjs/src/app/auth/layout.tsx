@@ -10,8 +10,9 @@ export default async function AuthLayout({
                                    }: {
     children: React.ReactNode;
 }) {
-    const [siteSettings, t] = await Promise.all([
+    const [siteSettings, authT, reviewsT] = await Promise.all([
         getCachedSiteSettings(),
+        getTranslations("Auth"),
         getTranslations("NewLanding.reviews"),
     ]);
     const productName = siteSettings?.business_name || process.env.NEXT_PUBLIC_PRODUCTNAME;
@@ -24,7 +25,7 @@ export default async function AuthLayout({
                     className="absolute left-8 top-8 flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
                 >
                     <ArrowLeft className="w-4 h-4 mr-2" />
-                    Back to Homepage
+                    {authT("backToHomepage")}
                 </Link>
 
                 <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -42,7 +43,7 @@ export default async function AuthLayout({
                 <div className="w-full flex items-center justify-center p-12">
                     <div className="space-y-6 max-w-lg">
                         <h3 className="text-white text-2xl font-bold mb-8">
-                            {t("title")}
+                            {reviewsT("title")}
                         </h3>
                         {REVIEW_KEYS.map((key) => (
                             <div
@@ -52,19 +53,19 @@ export default async function AuthLayout({
                                 <div className="flex items-start space-x-4">
                                     <div className="flex-shrink-0">
                                         <div className="w-10 h-10 rounded-full bg-primary-400/30 flex items-center justify-center text-white font-semibold">
-                                            {t(`items.${key}.name`).charAt(0)}
+                                            {reviewsT(`items.${key}.name`).charAt(0)}
                                         </div>
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <p className="text-sm text-white/90 mb-2 font-light leading-relaxed">
-                                            &#34;{t(`items.${key}.text`)}&#34;
+                                            &#34;{reviewsT(`items.${key}.text`)}&#34;
                                         </p>
                                         <div className="mt-3">
                                             <p className="text-sm font-medium text-white">
-                                                {t(`items.${key}.name`)}
+                                                {reviewsT(`items.${key}.name`)}
                                             </p>
                                             <p className="text-sm text-primary-200">
-                                                {t(`items.${key}.role`)}
+                                                {reviewsT(`items.${key}.role`)}
                                             </p>
                                         </div>
                                     </div>
@@ -73,7 +74,7 @@ export default async function AuthLayout({
                         ))}
                         <div className="mt-8 text-center">
                             <p className="text-primary-100 text-sm">
-                                {t("summary")}
+                                {reviewsT("summary")}
                             </p>
                         </div>
                     </div>

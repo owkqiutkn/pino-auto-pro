@@ -417,7 +417,7 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
     }
 
     return (
-        <div className="max-w-4xl space-y-6">
+        <div className="max-w-4xl space-y-6 pb-24">
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-semibold">Edit Car</h1>
                 <Link href="/app/cars" className="text-primary-600 hover:text-primary-700">
@@ -426,7 +426,7 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
             </div>
             {error && <p className="text-red-600">{error}</p>}
 
-            <form onSubmit={handleSave} className="bg-white border rounded-lg p-5 space-y-4">
+            <form id="edit-car-form" onSubmit={handleSave} className="bg-white border rounded-lg p-5 space-y-4">
                 <div>
                     <label htmlFor="edit-title" className="block text-sm font-medium text-gray-700 mb-1">Title</label>
                     <input id="edit-title" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="e.g. BMW 320i 2020" className="w-full border rounded-md px-3 py-2" />
@@ -634,12 +634,12 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                         Mark sold
                     </button>
                 </div>
-                <div className="sticky bottom-4 z-10 flex justify-end pt-4 pb-1 -mx-1 px-1 bg-white">
-                    <button disabled={saving} type="submit" className="px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-60 shadow-lg">
-                        {saving ? "Saving..." : "Save changes"}
-                    </button>
-                </div>
             </form>
+            <div className="fixed bottom-6 right-6 z-50">
+                <button form="edit-car-form" disabled={saving} type="submit" className="px-5 py-2.5 rounded-md bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-60 shadow-lg font-medium">
+                    {saving ? "Saving..." : "Save changes"}
+                </button>
+            </div>
 
             <section className="bg-white border rounded-lg p-5 space-y-4">
                 <h2 className="text-lg font-semibold">Images</h2>

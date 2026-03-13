@@ -2,11 +2,13 @@
 'use client';
 
 import { createSPASassClient } from '@/lib/supabase/client';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export default function LoginPage() {
+    const t = useTranslations('Auth');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -67,7 +69,7 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                        Email address
+                        {t('emailLabel')}
                     </label>
                     <div className="mt-1">
                         <input
@@ -85,7 +87,7 @@ export default function LoginPage() {
 
                 <div>
                     <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                        Password
+                        {t('passwordLabel')}
                     </label>
                     <div className="mt-1">
                         <input
@@ -104,7 +106,7 @@ export default function LoginPage() {
                 <div className="flex items-center justify-between">
                     <div className="text-sm">
                         <Link href="/auth/forgot-password" className="font-medium text-primary-600 hover:text-primary-500">
-                            Forgot your password?
+                            {t('forgotPassword')}
                         </Link>
                     </div>
                 </div>
@@ -115,7 +117,7 @@ export default function LoginPage() {
                         disabled={loading}
                         className="flex w-full justify-center rounded-md border border-transparent bg-primary-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50"
                     >
-                        {loading ? 'Signing in...' : 'Sign in'}
+                        {loading ? t('signingIn') : t('signIn')}
                     </button>
                 </div>
             </form>

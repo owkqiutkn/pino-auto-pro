@@ -6,6 +6,12 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+/** Per-day opening hours: { open: "09:00", close: "17:00" } or { closed: true } */
+export type DayHours = { open: string; close: string } | { closed: true }
+
+/** Opening hours keyed by day (monday..sunday) */
+export type OpeningHoursJson = Record<string, DayHours | null>
+
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
@@ -465,6 +471,7 @@ export type Database = {
           instagram_url: string | null
           facebook_url: string | null
           twitter_url: string | null
+          opening_hours: OpeningHoursJson | null
           updated_at: string
         }
         Insert: {
@@ -475,6 +482,7 @@ export type Database = {
           instagram_url?: string | null
           facebook_url?: string | null
           twitter_url?: string | null
+          opening_hours?: OpeningHoursJson | null
           updated_at?: string
         }
         Update: {
@@ -485,6 +493,7 @@ export type Database = {
           instagram_url?: string | null
           facebook_url?: string | null
           twitter_url?: string | null
+          opening_hours?: OpeningHoursJson | null
           updated_at?: string
         }
         Relationships: []

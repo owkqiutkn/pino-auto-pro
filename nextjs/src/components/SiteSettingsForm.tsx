@@ -3,11 +3,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Settings, CheckCircle, Upload, X } from "lucide-react";
+import { Settings, CheckCircle, Upload, X, Clock } from "lucide-react";
 import { createSPASassClientAuthenticated } from "@/lib/supabase/client";
-import type { Database } from "@/lib/types";
+import type { Database, OpeningHoursJson } from "@/lib/types";
 
 type SiteSettingsRow = Database["public"]["Tables"]["site_settings"]["Row"];
+
+const DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
 
 interface SiteSettingsFormProps {
     initialSettings: SiteSettingsRow | null;
@@ -22,6 +24,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
     const [instagramUrl, setInstagramUrl] = useState("");
     const [facebookUrl, setFacebookUrl] = useState("");
     const [twitterUrl, setTwitterUrl] = useState("");
+    const [openingHours, setOpeningHours] = useState<OpeningHoursJson>({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -36,6 +39,14 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
             setInstagramUrl(initialSettings.instagram_url ?? "");
             setFacebookUrl(initialSettings.facebook_url ?? "");
             setTwitterUrl(initialSettings.twitter_url ?? "");
+            const hours = (initialSettings.opening_hours as OpeningHoursJson) ?? {};
+            if (Object.keys(hours).length === 0) {
+                const defaults: OpeningHoursJson = {};
+                DAYS.forEach((d) => { defaults[d] = { open: "09:00", close: "17:00" }; });
+                setOpeningHours(defaults);
+            } else {
+                setOpeningHours(hours);
+            }
         }
     }, [initialSettings]);
 
@@ -75,6 +86,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                     instagram_url: instagramUrl || null,
                     facebook_url: facebookUrl || null,
                     twitter_url: twitterUrl || null,
+                    opening_hours: Object.keys(openingHours).length ? openingHours : null,
                 }),
             });
 
@@ -288,6 +300,90 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
                             />
                         </div>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+                        >
+                            {loading ? "Saving..." : "Save Settings"}
+                        </button>
+                    </form>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <Clock className="h-5 w-5" />
+                        Opening Hours
+                    </CardTitle>
+                    <CardDescription>
+                        Set your business hours for each day. Leave closed for days you are not open.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={handleSubmit} className="space-y-3">
+                        {DAYS.map((day) => {
+                            const dayData = openingHours[day];
+                            const closed = dayData && "closed" in dayData && dayData.closed;
+                            const open = !closed && dayData && "open" in dayData ? dayData.open : "09:00";
+                            const close = !closed && dayData && "close" in dayData ? dayData.close : "17:00";
+                            const dayLabel = day.charAt(0).toUpperCase() + day.slice(1);
+                            return (
+                                <div key={day} className="flex flex-wrap items-center gap-3 rounded-md border border-gray-200 p-3">
+                                    <span className="w-24 text-sm font-medium text-gray-700">{dayLabel}</span>
+                                    <label className="flex items-center gap-2">
+                                        <input
+                                            type="checkbox"
+                                            checked={!!closed}
+                                            onChange={(e) => {
+                                                setOpeningHours((prev) => ({
+                                                    ...prev,
+                                                    [day]: e.target.checked ? { closed: true } : { open: "09:00", close: "17:00" },
+                                                }));
+                                            }}
+                                            className="h-4 w-4 rounded border-gray-300"
+                                        />
+                                        <span className="text-sm text-gray-600">Closed</span>
+                                    </label>
+                                    {!closed && (
+                                        <>
+                                            <div className="flex items-center gap-1">
+                                                <label htmlFor={`${day}-open`} className="sr-only">Open</label>
+                                                <input
+                                                    type="time"
+                                                    id={`${day}-open`}
+                                                    value={open}
+                                                    onChange={(e) =>
+                                                        setOpeningHours((prev) => ({
+                                                            ...prev,
+                                                            [day]: { open: e.target.value, close: close },
+                                                        }))
+                                                    }
+                                                    className="rounded-md border border-gray-300 px-2 py-1.5 text-sm"
+                                                />
+                                            </div>
+                                            <span className="text-gray-400">–</span>
+                                            <div className="flex items-center gap-1">
+                                                <label htmlFor={`${day}-close`} className="sr-only">Close</label>
+                                                <input
+                                                    type="time"
+                                                    id={`${day}-close`}
+                                                    value={close}
+                                                    onChange={(e) =>
+                                                        setOpeningHours((prev) => ({
+                                                            ...prev,
+                                                            [day]: { open: open, close: e.target.value },
+                                                        }))
+                                                    }
+                                                    className="rounded-md border border-gray-300 px-2 py-1.5 text-sm"
+                                                />
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            );
+                        })}
                         <button
                             type="submit"
                             disabled={loading}

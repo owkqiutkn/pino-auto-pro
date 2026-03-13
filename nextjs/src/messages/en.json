@@ -1,4 +1,12 @@
 {
+  "Auth": {
+    "backToHomepage": "Back to Homepage",
+    "emailLabel": "Email address",
+    "passwordLabel": "Password",
+    "forgotPassword": "Forgot your password?",
+    "signIn": "Sign in",
+    "signingIn": "Signing in..."
+  },
   "Navbar": {
     "brand": "Pino Auto Pro",
     "links": {
