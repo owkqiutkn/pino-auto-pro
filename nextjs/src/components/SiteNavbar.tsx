@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useLocale, useTranslations } from "next-intl";
+
+const LOCALES = ["fr", "en", "es"] as const;
 
 type SiteSettingsRow = {
     business_name: string | null;
@@ -33,6 +35,18 @@ const navLinks = [
 
 export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavbarProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+    const langDropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (langDropdownRef.current && !langDropdownRef.current.contains(e.target as Node)) {
+                setIsLangDropdownOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
     const bgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/90";
     const mobileDrawerBgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/95";
 
@@ -76,26 +90,48 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                             </Link>
                         ))}
                         <div className="flex items-center gap-3 text-white/80">
-                            <div
-                                className="flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5 text-[10px] ring-1 ring-white/20"
-                                aria-label={t("language.label")}
-                            >
-                                <a
-                                    href={localeSwitchHref("en")}
-                                    className={`px-1.5 py-0.5 rounded-full transition-colors ${
-                                        locale === "en" ? "bg-white text-[#0a0a0d]" : "text-white/70 hover:text-white"
-                                    }`}
+                            <div ref={langDropdownRef} className="relative">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsLangDropdownOpen((o) => !o)}
+                                    aria-label={t("language.label")}
+                                    aria-expanded={isLangDropdownOpen}
+                                    aria-haspopup="listbox"
+                                    className="flex items-center gap-1 rounded-full bg-white/5 px-2.5 py-1 text-[10px] ring-1 ring-white/20 hover:bg-white/10 transition-colors"
                                 >
-                                    {t("language.en")}
-                                </a>
-                                <a
-                                    href={localeSwitchHref("fr")}
-                                    className={`px-1.5 py-0.5 rounded-full transition-colors ${
-                                        locale === "fr" ? "bg-white text-[#0a0a0d]" : "text-white/70 hover:text-white"
-                                    }`}
-                                >
-                                    {t("language.fr")}
-                                </a>
+                                    <span className="uppercase font-semibold">{locale}</span>
+                                    <svg
+                                        className={`h-3 w-3 transition-transform ${isLangDropdownOpen ? "rotate-180" : ""}`}
+                                        viewBox="0 0 12 12"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                    >
+                                        <path d="M3 4.5L6 7.5L9 4.5" />
+                                    </svg>
+                                </button>
+                                {isLangDropdownOpen && (
+                                    <div
+                                        role="listbox"
+                                        className="absolute right-0 top-full mt-1 min-w-[100%] rounded-lg bg-[#0a0a0d] py-1 shadow-lg ring-1 ring-white/20 z-50"
+                                    >
+                                        {LOCALES.map((loc) => (
+                                            <a
+                                                key={loc}
+                                                href={localeSwitchHref(loc)}
+                                                role="option"
+                                                aria-selected={locale === loc}
+                                                className={`block px-3 py-1.5 text-[10px] uppercase tracking-wide transition-colors ${
+                                                    locale === loc
+                                                        ? "bg-white/20 text-white font-semibold"
+                                                        : "text-white/80 hover:bg-white/10 hover:text-white"
+                                                }`}
+                                            >
+                                                {t(`language.${loc}`)}
+                                            </a>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                             <div className="flex items-center gap-2">
                                 <a
@@ -165,7 +201,10 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                     className={`fixed inset-0 z-[10000] bg-black/40 transition-opacity duration-300 md:hidden ${
                         isMobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
                     }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        setIsLangDropdownOpen(false);
+                    }}
                     aria-hidden="true"
                 />
                 <div
@@ -180,7 +219,10 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                         type="button"
                         aria-label="Close mobile menu"
                         className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-white ring-1 ring-white/40"
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        onClick={() => {
+                            setIsMobileMenuOpen(false);
+                            setIsLangDropdownOpen(false);
+                        }}
                     >
                         <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
                             <path
@@ -197,7 +239,10 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                                 key={link.href}
                                 href={link.href}
                                 className="py-1 hover:text-[#1d4ed8]"
-                                onClick={() => setIsMobileMenuOpen(false)}
+                                onClick={() => {
+                            setIsMobileMenuOpen(false);
+                            setIsLangDropdownOpen(false);
+                        }}
                             >
                                 {t(link.labelKey)}
                             </Link>
@@ -206,23 +251,42 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                             <span className="text-[10px] uppercase tracking-[0.16em] text-white/60">
                                 {t("language.label")}
                             </span>
-                            <div className="flex items-center gap-1 rounded-full bg-white/5 px-1.5 py-0.5 text-[10px] ring-1 ring-white/20">
-                                <a
-                                    href={localeSwitchHref("en")}
-                                    className={`px-1.5 py-0.5 rounded-full transition-colors ${
-                                        locale === "en" ? "bg-white text-[#0a0a0d]" : "text-white/70 hover:text-white"
-                                    }`}
+                            <div className="relative">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsLangDropdownOpen((o) => !o)}
+                                    aria-label={t("language.label")}
+                                    aria-expanded={isLangDropdownOpen}
+                                    className="flex items-center gap-1 rounded-full bg-white/5 px-2.5 py-1 text-[10px] ring-1 ring-white/20"
                                 >
-                                    {t("language.en")}
-                                </a>
-                                <a
-                                    href={localeSwitchHref("fr")}
-                                    className={`px-1.5 py-0.5 rounded-full transition-colors ${
-                                        locale === "fr" ? "bg-white text-[#0a0a0d]" : "text-white/70 hover:text-white"
-                                    }`}
-                                >
-                                    {t("language.fr")}
-                                </a>
+                                    <span className="uppercase font-semibold">{locale}</span>
+                                    <svg
+                                        className={`h-3 w-3 transition-transform ${isLangDropdownOpen ? "rotate-180" : ""}`}
+                                        viewBox="0 0 12 12"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                    >
+                                        <path d="M3 4.5L6 7.5L9 4.5" />
+                                    </svg>
+                                </button>
+                                {isLangDropdownOpen && (
+                                    <div className="absolute right-0 top-full mt-1 min-w-[120px] rounded-lg bg-[#0a0a0d] py-1 shadow-lg ring-1 ring-white/20 z-[10020]">
+                                        {LOCALES.map((loc) => (
+                                            <a
+                                                key={loc}
+                                                href={localeSwitchHref(loc)}
+                                                className={`block px-3 py-1.5 text-[10px] uppercase tracking-wide ${
+                                                    locale === loc
+                                                        ? "bg-white/20 text-white font-semibold"
+                                                        : "text-white/80 hover:bg-white/10 hover:text-white"
+                                                }`}
+                                            >
+                                                {t(`language.${loc}`)}
+                                            </a>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="mt-1 flex items-center gap-2 text-white/80">

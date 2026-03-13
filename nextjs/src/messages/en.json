@@ -9,12 +9,13 @@
     "language": {
       "label": "Language",
       "en": "English",
-      "fr": "Français"
+      "fr": "Français",
+      "es": "Español"
     }
   },
   "NewLanding": {
     "hero": {
-      "title": "Luxury and Performance Vehicles, Ready to Drive.",
+      "title": "Quality Pre-Owned Vehicles, Ready to Drive.",
       "subtitle": "Find your perfect match from our curated inventory and get approved fast.",
       "filters": {
         "year": "Year",

@@ -1,6 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
+function useIsMobile() {
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const mq = window.matchMedia("(max-width: 767px)");
+        setIsMobile(mq.matches);
+        const handler = () => setIsMobile(mq.matches);
+        mq.addEventListener("change", handler);
+        return () => mq.removeEventListener("change", handler);
+    }, []);
+    return isMobile;
+}
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { getLocalizedCategoryName } from "@/lib/i18n/categories";
@@ -30,6 +42,8 @@ type Car = {
     engine: string | null;
     fuel: string | null;
     transmission: string | null;
+    carfax_url?: string | null;
+    cargurus_url?: string | null;
 };
 
 type LookupProps = {
@@ -39,7 +53,8 @@ type LookupProps = {
     transmissions: Transmission[];
 };
 
-const ITEMS_PER_PAGE = 8;
+const DESKTOP_ITEMS_PER_PAGE = 8;
+const MOBILE_ITEMS_PER_PAGE = 4;
 
 function formatPrice(value: number) {
     return new Intl.NumberFormat("en-US", {
@@ -79,7 +94,9 @@ function getTransmissionDisplay(transmissionValue: string | null, transmissions:
 
 export default function InventoryLineup({ categories, engines, fuels, transmissions }: LookupProps) {
     const t = useTranslations("NewLanding.inventorySection");
+    const tCard = useTranslations("Inventory.page");
     const locale = useLocale();
+    const isMobile = useIsMobile();
     const [segment, setSegment] = useState<Segment>("featured");
     const [page, setPage] = useState(1);
     const [cars, setCars] = useState<Car[]>([]);
@@ -88,10 +105,11 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
     >({});
     const [loading, setLoading] = useState(true);
 
-    const totalPages = Math.ceil(cars.length / ITEMS_PER_PAGE);
+    const itemsPerPage = isMobile ? MOBILE_ITEMS_PER_PAGE : DESKTOP_ITEMS_PER_PAGE;
+    const totalPages = Math.ceil(cars.length / itemsPerPage);
     const paginatedCars = cars.slice(
-        (page - 1) * ITEMS_PER_PAGE,
-        page * ITEMS_PER_PAGE
+        (page - 1) * itemsPerPage,
+        page * itemsPerPage
     );
 
     useEffect(() => {
@@ -124,6 +142,10 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
     useEffect(() => {
         setPage(1);
     }, [segment]);
+
+    useEffect(() => {
+        setPage(1);
+    }, [itemsPerPage]);
 
     return (
         <section id="inventory" className="bg-[#f2f2f3] py-10 text-black">
@@ -164,17 +186,18 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                     </div>
                 </div>
                 {loading ? (
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-                        {[1, 2, 3, 4].map((i) => (
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        {Array.from({ length: itemsPerPage }, (_, i) => i + 1).map((i) => (
                             <div
                                 key={i}
-                                className="overflow-hidden rounded-sm border bg-white shadow-sm"
+                                className="overflow-hidden rounded border border-gray-200 bg-white shadow-sm"
                             >
-                                <div className="h-32 w-full animate-pulse bg-gray-200" />
-                                <div className="p-3">
-                                    <div className="h-3 w-3/4 animate-pulse rounded bg-gray-200" />
+                                <div className="aspect-[4/3] w-full animate-pulse bg-gray-200" />
+                                <div className="p-4">
+                                    <div className="h-4 w-3/4 animate-pulse rounded bg-gray-200" />
                                     <div className="mt-2 h-3 w-1/2 animate-pulse rounded bg-gray-200" />
-                                    <div className="mt-2 h-4 w-1/3 animate-pulse rounded bg-gray-200" />
+                                    <div className="mt-3 h-3 w-full animate-pulse rounded bg-gray-200" />
+                                    <div className="mt-2 h-6 w-1/3 animate-pulse rounded bg-gray-200" />
                                 </div>
                             </div>
                         ))}
@@ -185,66 +208,110 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                     </p>
                 ) : (
                     <>
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                         {paginatedCars.map((car) => (
-                            <Link
+                            <div
                                 key={car.id}
-                                href={`/inventory/${car.slug}`}
-                                className="overflow-hidden rounded-sm border bg-white shadow-sm transition-shadow hover:shadow-md"
+                                className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#1d4ed8] hover:shadow-lg"
                             >
-                                <div className="h-32 w-full bg-gray-100">
-                                    {coverImageByCarId[car.id] ? (
-                                        /* eslint-disable-next-line @next/next/no-img-element */
-                                        <img
-                                            src={coverImageByCarId[car.id]}
-                                            alt={car.title}
-                                            className="h-32 w-full object-cover"
-                                        />
-                                    ) : (
-                                        <div className="flex h-32 w-full items-center justify-center text-gray-400 text-xs">
-                                            {/* Intentionally left as plain text; can be localized if you expose it often */}
-                                            No image
+                                <Link href={`/inventory/${car.slug}`} className="block">
+                                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                                        {coverImageByCarId[car.id] ? (
+                                            /* eslint-disable-next-line @next/next/no-img-element */
+                                            <img
+                                                src={coverImageByCarId[car.id]}
+                                                alt={car.title}
+                                                className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                                            />
+                                        ) : (
+                                            <div className="flex h-full w-full items-center justify-center text-gray-400">
+                                                {tCard("card.noImage")}
+                                            </div>
+                                        )}
+                                        <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#0c1320] text-[8px] font-bold text-white">
+                                            PAP
                                         </div>
-                                    )}
-                                </div>
-                                <div className="p-3 text-[11px]">
-                                    <h3 className="text-xs font-bold uppercase">
-                                        {car.year} {car.brand} {car.model}
-                                    </h3>
-                                    <p
-                                        className="mt-1 text-[10px] text-gray-600"
-                                        data-inspector="DOM Path: div.bg-[#0c1320] text-white > section#inventory > div.mx-auto.max-w-6xl.px-4 > div.grid > a > div.p-3 > p.mt-1 • Position: top=135px, left=284px, width=213px, height=15px • React Component: LinkComponent"
-                                    >
-                                        {[
-                                            getCategoryDisplay(car.category, categories, locale) ?? "—",
-                                            `${car.km.toLocaleString()} km`,
-                                            car.engine && getEngineDisplay(car.engine, engines, locale),
-                                            car.fuel && getFuelDisplay(car.fuel, fuels, locale),
-                                            car.transmission && getTransmissionDisplay(car.transmission, transmissions, locale),
-                                        ]
-                                            .filter((x): x is string => !!x)
-                                            .join(" • ")}
-                                    </p>
-                                    <p className="mt-2 text-sm font-black text-[#1d4ed8]">
-                                        {car.discounted_price != null
-                                            ? formatPrice(car.discounted_price)
-                                            : formatPrice(car.price)}
-                                        {car.discounted_price != null && (
-                                            <span className="ml-1 text-xs font-normal text-gray-500 line-through">
-                                                {formatPrice(car.price)}
+                                    </div>
+                                    <div className="flex flex-col p-4">
+                                        <h2 className="text-base font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
+                                            {car.year} {car.brand} {car.model}
+                                        </h2>
+                                        <p className="mt-0.5 text-sm text-gray-600">
+                                            {getCategoryDisplay(car.category, categories, locale) ?? tCard("card.fallbackBodyStyle")} {car.model} {car.km.toLocaleString()} km
+                                        </p>
+                                        <p className="mt-3 min-h-[1rem] text-xs text-gray-600">
+                                            {[
+                                                car.engine && getEngineDisplay(car.engine, engines, locale),
+                                                car.fuel && getFuelDisplay(car.fuel, fuels, locale),
+                                                car.transmission && getTransmissionDisplay(car.transmission, transmissions, locale),
+                                            ]
+                                                .filter(Boolean)
+                                                .join(" • ")}
+                                        </p>
+                                        <div className="mt-2">
+                                            <p className="text-xs font-semibold text-gray-600">{tCard("card.dealerPriceLabel")}</p>
+                                            {car.discounted_price != null ? (
+                                                <p>
+                                                    <span className="text-sm text-gray-500 line-through">
+                                                        {formatPrice(car.price)}
+                                                    </span>
+                                                    <span className="ml-2 text-xl font-bold text-[#1d4ed8]">
+                                                        {formatPrice(car.discounted_price)}
+                                                    </span>
+                                                </p>
+                                            ) : (
+                                                <p className="text-xl font-bold text-[#1d4ed8]">
+                                                    {formatPrice(car.price)}
+                                                </p>
+                                            )}
+                                            <p className="mt-0.5 text-[10px] text-gray-500">
+                                                {tCard("card.taxNote")}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </Link>
+                                <div className="mx-4 mt-0 mb-2 space-y-2">
+                                    <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
+                                        {tCard("card.fairDeal")}
+                                    </span>
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        {car.carfax_url ? (
+                                            <a
+                                                href={car.carfax_url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                            >
+                                                {tCard("card.carfax")}
+                                            </a>
+                                        ) : (
+                                            <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
+                                                {tCard("card.carfax")}
                                             </span>
                                         )}
-                                    </p>
-                                    <div className="mt-2 flex items-center justify-between text-[10px]">
-                                        <span className="rounded bg-gray-100 px-2 py-1">
-                                            {t("badges.certified")}
-                                        </span>
-                                        <span className="font-bold text-[#1f1f25]">
-                                            {t("badges.viewDetails")}
-                                        </span>
+                                        {car.cargurus_url ? (
+                                            <a
+                                                href={car.cargurus_url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                            >
+                                                {tCard("card.cargurus")}
+                                            </a>
+                                        ) : (
+                                            <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
+                                                {tCard("card.cargurus")}
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
-                            </Link>
+                                <Link
+                                    href={`/inventory/${car.slug}`}
+                                    className="mx-4 mb-4 mt-3 block rounded bg-[#0c1320] py-2 text-center text-sm font-bold text-white hover:bg-gray-800"
+                                >
+                                    {tCard("card.viewDetails")}
+                                </Link>
+                            </div>
                         ))}
                     </div>
                     {totalPages > 1 && (

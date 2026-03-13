@@ -1,0 +1,479 @@
+{
+  "Navbar": {
+    "brand": "Pino Auto Pro",
+    "links": {
+      "inventory": "Inventario",
+      "about": "Nosotros",
+      "contact": "Contacto"
+    },
+    "language": {
+      "label": "Idioma",
+      "en": "Inglés",
+      "fr": "Francés",
+      "es": "Español"
+    }
+  },
+  "NewLanding": {
+    "hero": {
+      "title": "Vehículos de ocasión de calidad, listos para conducir.",
+      "subtitle": "Encuentra tu vehículo ideal en nuestro inventario seleccionado y obtén aprobación rápida.",
+      "filters": {
+        "year": "Año",
+        "brand": "Marca",
+        "maxPrice": "Precio máx.",
+        "search": "Buscar en inventario"
+      }
+    },
+    "features": {
+      "viewInventory": {
+        "title": "Ver inventario",
+        "description": "Explora nuestra selección de coches, camiones y SUV de ocasión."
+      },
+      "applyFinancing": {
+        "title": "Solicitar financiación",
+        "description": "Confía en nuestro equipo de finanzas para ahorros sin complicaciones."
+      },
+      "contactUs": {
+        "title": "Contáctanos",
+        "description": "Llama o escribe a nuestro equipo para más información."
+      }
+    },
+    "financing": {
+      "title": "Solicitar financiación",
+      "body": "Ofrecemos opciones de financiación para ayudarte a ponerte al volante. Nuestro equipo te guiará por tus opciones y encontrará un plan que se adapte a tu presupuesto.",
+      "cta": "Contáctanos"
+    },
+    "mission": {
+      "title": "Nuestra misión",
+      "intro": "En {businessName}, nuestra misión es redefinir el servicio automotriz en torno a cinco principios fundamentales.",
+      "points": {
+        "customerCare": {
+          "title": "Atención centrada en el cliente:",
+          "body": "Tu satisfacción es el foco desde la primera visita hasta la entrega de llaves."
+        },
+        "serviceExcellence": {
+          "title": "Excelencia en el servicio:",
+          "body": "Técnicos cualificados ofrecen soluciones automotrices fiables y de alta calidad."
+        },
+        "transparency": {
+          "title": "Transparencia y confianza:",
+          "body": "Explicaciones claras, precios transparentes y recomendaciones honestas."
+        },
+        "innovation": {
+          "title": "Innovación y experiencia:",
+          "body": "Actualizados con la última tecnología automotriz para resultados eficientes."
+        },
+        "community": {
+          "title": "Compromiso comunitario:",
+          "body": "Apoyando iniciativas locales y contribuyendo positivamente a nuestra comunidad."
+        }
+      },
+      "outro": "Estamos comprometidos a superar expectativas, construir relaciones a largo plazo y establecer un nuevo estándar en atención automotriz y servicio al cliente.",
+      "buttons": {
+        "viewInventory": "Ver inventario",
+        "contactUs": "Contáctanos"
+      }
+    },
+    "about": {
+      "title": "Sobre {businessName}",
+      "paragraph1": "{businessName} es tu destino de confianza para vehículos de ocasión en Mississauga, haciendo cada paso de la compra claro, simple y sin estrés. Ofrecemos una selección cuidada de coches, camiones y SUV de ocasión, cada uno inspeccionado a fondo para fiabilidad y valor real.",
+      "paragraph2": "Nuestro equipo amable te ayuda a elegir el vehículo adecuado, explica tus opciones en lenguaje claro y trabaja contigo en financiación flexible que se adapte a tu presupuesto. Con valores de permuta justos, acuerdos transparentes y un enfoque genuino en tu satisfacción, queremos que te marches con confianza en tu decisión.",
+      "paragraph3": "Elige {businessName} por vehículos de calidad, servicio honesto y una experiencia de compra fluida en Mississauga y más allá.",
+      "cta": "Contáctanos"
+    },
+    "categories": {
+      "title": "Explorar por categoría",
+      "subtitle": "Sedán • SUV • Coupé • Camión",
+      "items": {
+        "sedan": "Sedán",
+        "suv": "SUV",
+        "coupe": "Coupé",
+        "truck": "Camión"
+      },
+      "viewListings": "Ver anuncios"
+    },
+    "reviews": {
+      "label": "Opiniones de clientes",
+      "title": "Lo que dicen nuestros clientes",
+      "summary": "4,9/5 de más de 500 opiniones",
+      "items": {
+        "james": {
+          "name": "James M.",
+          "role": "Comprador",
+          "text": "Proceso de compra fluido y precios muy justos. El equipo fue receptivo y transparente desde el primer día."
+        },
+        "sarah": {
+          "name": "Sarah K.",
+          "role": "Compradora",
+          "text": "Aprobación rápida y excelente apoyo. El coche era exactamente como se describía y en gran estado."
+        },
+        "mike": {
+          "name": "Mike T.",
+          "role": "Vendedor",
+          "text": "Gran apoyo postventa y documentación clara. Recomiendo este concesionario a mis amigos."
+        }
+      }
+    },
+    "footer": {
+      "contactTitle": "Contacto",
+      "addressLine1": "1230 Automotive Blvd",
+      "phone": "Ventas: (555) 123-4567",
+      "email": "info@pinoautopro.com",
+      "hoursTitle": "Horario",
+      "hours": {
+        "mon": "Lun: 9:00-19:00",
+        "tue": "Mar: 9:00-19:00",
+        "wed": "Mié: 9:00-19:00",
+        "thu": "Jue: 9:00-19:00",
+        "fri": "Vie: 9:00-19:00",
+        "sat": "Sáb: 10:00-17:00",
+        "sun": "Dom: Cerrado"
+      },
+      "inventoryTitle": "Inventario",
+      "navTitle": "Enlaces",
+      "inventoryItems": {
+        "sedan": "Sedán",
+        "suv": "SUV",
+        "coupe": "Coupé"
+      },
+      "poweredBy": "Desarrollado por {businessName}.",
+      "copyright": "Copyright 2026 {businessName}."
+    },
+    "contactForm": {
+      "nameLabel": "Tu nombre",
+      "namePlaceholder": "Introduce tu nombre completo",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "Introduce tu correo",
+      "phoneLabel": "Teléfono (opcional)",
+      "phonePlaceholder": "Introduce tu teléfono",
+      "messageLabel": "Escribe tu mensaje",
+      "messagePlaceholder": "Escribe aquí tu pregunta...",
+      "submit": "Enviar mensaje"
+    },
+    "inventorySection": {
+      "title": "Línea de inventario",
+      "segments": {
+        "featured": "Destacados",
+        "newArrivals": "Nuevos ingresos"
+      },
+      "cta": {
+        "viewAll": "Ver todo"
+      },
+      "emptyState": {
+        "message": "No hay vehículos en esta sección en este momento."
+      },
+      "badges": {
+        "certified": "Certificado",
+        "viewDetails": "Ver detalles"
+      },
+      "pagination": {
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "pageOf": "Página {page} de {totalPages}"
+      }
+    }
+  },
+  "Inventory": {
+    "carDetail": {
+      "stockNumber": "Número de stock",
+      "vin": "VIN",
+      "doorBodyStyle": "Puertas / Estilo de carrocería",
+      "dealerPrice": "Precio del concesionario",
+      "shareThisVehicle": "Compartir este vehículo",
+      "requestEprice": "Solicitar más información",
+      "bookTestDrive": "Reservar prueba de conducción",
+      "applyFinancing": "Solicitar financiación",
+      "viewCarfax": "Carfax",
+      "drive": "Estilo de carrocería",
+      "mileage": "Kilometraje",
+      "exteriorColor": "Color exterior",
+      "interiorColor": "Color interior",
+      "transmission": "Transmisión",
+      "fuelType": "Tipo de combustible",
+      "engine": "Motor",
+      "drivetrain": "Transmisión",
+      "features": "Equipamiento",
+      "carDescription": "Descripción del vehículo",
+      "conditionReport": "Informe de estado",
+      "conditionReportText": "Este vehículo ha pasado una inspección mecánica completa y reacondicionamiento para garantizar que cumple nuestros estándares de calidad.",
+      "reconditioningLink": "Haz clic aquí para ver nuestro proceso de reacondicionamiento",
+      "service111": "Servicio 111",
+      "service111Text": "Paquete de servicio pre-entrega completo incluido.",
+      "vehicleFeaturesTitle": "Características del vehículo",
+      "vehicleFeaturesIntro": "Consulta abajo la lista completa de características. Puedes hacer clic en cada categoría para ver el desglose. Si tienes preguntas, llama o escribe a nuestro equipo.",
+      "keyFeatures": "Características principales",
+      "safeties": "Seguridad",
+      "exterior": "Exterior",
+      "interior": "Interior",
+      "enginePowertrain": "Motor / Tren motriz",
+      "warranty": "Garantía",
+      "dimensions": "Dimensiones",
+      "towing": "Remolque",
+      "seating": "Asientos",
+      "convenience": "Confort",
+      "additionalFeatures": "Características adicionales",
+      "applyForFinance": "Solicitar financiación online",
+      "applyForFinanceText": "Obtén preaprobación de forma rápida, segura y sin complicaciones, desde la comodidad de tu hogar.",
+      "calculatePayments": "Calcular tus pagos",
+      "requestInfo": "Solicitar información",
+      "fairDealBadge": "BUEN PRECIO",
+      "warrantyBadge": "GARANTÍA",
+      "namePlaceholder": "Tu nombre",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "tradeIn": "Permuta (Año, Marca, Modelo, KM)",
+      "comments": "Comentarios",
+      "submit": "Enviar",
+      "similarVehicles": "Vehículos similares",
+      "similarVehiclesIntro": "Explora otros anuncios similares a este vehículo.",
+      "noSimilarVehicles": "No hay vehículos similares en este momento.",
+      "seeAllVehicles": "Ver todos los vehículos",
+      "makeItYours": "Resérvalo",
+      "hstAndLicensing": "+ IVA y matriculación",
+      "viewDetails": "Ver detalles",
+      "noImage": "Sin imagen",
+      "na": "N/D"
+    },
+    "page": {
+      "heroAria": "Sección hero del inventario",
+      "errorTitle": "Inventario",
+      "errorMessage": "Error al cargar los vehículos.",
+      "title": "Vehículos en stock",
+      "count": "Mostrando {shown} de {total} vehículos",
+      "card": {
+        "noImage": "Sin imagen",
+        "fallbackBodyStyle": "4P",
+        "stockPrefix": "Stock #",
+        "transmission": "Manual / Estándar",
+        "dealerPriceLabel": "Precio del concesionario",
+        "taxNote": "+ IVA y matriculación",
+        "fairDeal": "▲ BUEN PRECIO",
+        "fairDealSource": "CarGurus",
+        "carfax": "Carfax",
+        "cargurus": "CarGurus",
+        "viewDetails": "Ver detalles"
+      },
+      "emptyFiltered": "Ningún vehículo coincide con tus filtros."
+    },
+    "filters": {
+      "heading": "Filtrar resultados",
+      "bodyTypes": "Tipos de carrocería",
+      "anyBodyType": "Cualquiera",
+      "make": "Marca",
+      "allMakes": "Todas las marcas",
+      "model": "Modelo",
+      "modelsPlaceholder": "Modelos",
+      "price": "Precio",
+      "noMinMax": "Sin mínimo ni máximo",
+      "setRange": "Define el rango abajo",
+      "priceMin": "Mín",
+      "priceMax": "Máx",
+      "mileage": "Kilometraje",
+      "mileagePlaceholder": "KM",
+      "year": "Año",
+      "yearPlaceholder": "AAAA",
+      "anyYear": "Cualquier año",
+      "exteriorColor": "Color exterior",
+      "anyExteriorColor": "Cualquiera",
+      "transmission": "Transmisión",
+      "anyTransmission": "Cualquiera",
+      "engine": "Motor",
+      "anyEngine": "Cualquiera",
+      "fuel": "Combustible",
+      "anyFuel": "Cualquiera",
+      "reset": "Restablecer filtros"
+    },
+    "search": {
+      "placeholder": "Buscar por marca y modelo..."
+    },
+    "sort": {
+      "default": "Ordenar por",
+      "priceAsc": "Precio: de menor a mayor",
+      "priceDesc": "Precio: de mayor a menor",
+      "yearDesc": "Año: más reciente primero",
+      "yearAsc": "Año: más antiguo primero"
+    }
+  },
+  "Common": {
+    "scrollTop": "Volver arriba"
+  },
+  "App": {
+    "Dashboard": {
+      "welcome": "¡Bienvenido, {name}! 👋",
+      "memberForDays": "Miembro desde hace {days} días",
+      "quickActionsTitle": "Acciones rápidas",
+      "quickActionsDescription": "Funciones de uso frecuente",
+      "userSettingsTitle": "Configuración de usuario",
+      "userSettingsDescription": "Gestiona las preferencias de tu cuenta"
+    },
+    "Cars": {
+      "title": "Vehículos",
+      "addCar": "Añadir vehículo",
+      "loadError": "Error al cargar los vehículos.",
+      "missingTable": "La tabla de vehículos no existe. Ejecuta las migraciones de Supabase y recarga.",
+      "deleteConfirm": "¿Eliminar este vehículo?",
+      "deleteError": "Error al eliminar el vehículo.",
+      "emptyTitle": "Aún no hay vehículos",
+      "emptyDescription": "Añade tu primer vehículo para empezar a gestionar el inventario.",
+      "table": {
+        "image": "Imagen",
+        "title": "Título",
+        "price": "Precio",
+        "year": "Año",
+        "km": "KM",
+        "status": "Estado",
+        "edit": "Editar",
+        "delete": "Eliminar"
+      },
+      "actions": {
+        "edit": "Editar",
+        "delete": "Eliminar"
+      }
+    },
+    "Engines": {
+      "title": "Motores",
+      "nameEnLabel": "Nombre (inglés)",
+      "nameFrLabel": "Nombre (francés)",
+      "nameEnPlaceholder": "Motor en inglés",
+      "nameFrPlaceholder": "Motor en francés",
+      "add": "Añadir",
+      "save": "Guardar",
+      "tableNameEn": "Nombre (EN)",
+      "tableNameFr": "Nombre (FR)",
+      "tableCreated": "Creado",
+      "tableActions": "Acciones",
+      "tableEdit": "Editar",
+      "tableDelete": "Eliminar",
+      "empty": "Aún no hay motores.",
+      "loadError": "Error al cargar los motores.",
+      "createError": "Error al crear el motor.",
+      "updateError": "Error al actualizar el motor.",
+      "deleteError": "Error al eliminar el motor.",
+      "deleteConfirm": "¿Eliminar este motor?"
+    },
+    "Categories": {
+      "title": "Categorías",
+      "nameEnPlaceholder": "Categoría en inglés",
+      "nameFrPlaceholder": "Categoría en francés",
+      "imageLabel": "Imagen",
+      "imagePlaceholder": "Adjuntar imagen",
+      "removeImage": "Quitar imagen",
+      "add": "Añadir",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "tableNameEn": "Nombre (EN)",
+      "tableNameFr": "Nombre (FR)",
+      "tableImage": "Imagen",
+      "tableCreated": "Creado",
+      "tableActions": "Acciones",
+      "tableEdit": "Editar",
+      "tableDelete": "Eliminar",
+      "empty": "Aún no hay categorías.",
+      "loadError": "Error al cargar las categorías.",
+      "createError": "Error al crear la categoría.",
+      "updateError": "Error al actualizar la categoría.",
+      "deleteError": "Error al eliminar la categoría.",
+      "deleteConfirm": "¿Eliminar esta categoría?"
+    },
+    "Fuels": {
+      "title": "Combustibles",
+      "nameEnPlaceholder": "Combustible en inglés",
+      "nameFrPlaceholder": "Combustible en francés",
+      "add": "Añadir",
+      "save": "Guardar",
+      "tableNameEn": "Nombre (EN)",
+      "tableNameFr": "Nombre (FR)",
+      "tableCreated": "Creado",
+      "tableActions": "Acciones",
+      "tableEdit": "Editar",
+      "tableDelete": "Eliminar",
+      "empty": "Aún no hay combustibles.",
+      "loadError": "Error al cargar los combustibles.",
+      "createError": "Error al crear el combustible.",
+      "updateError": "Error al actualizar el combustible.",
+      "deleteError": "Error al eliminar el combustible.",
+      "deleteConfirm": "¿Eliminar este combustible?"
+    },
+    "Transmissions": {
+      "title": "Transmisiones",
+      "nameEnPlaceholder": "Transmisión en inglés",
+      "nameFrPlaceholder": "Transmisión en francés",
+      "add": "Añadir",
+      "save": "Guardar",
+      "tableNameEn": "Nombre (EN)",
+      "tableNameFr": "Nombre (FR)",
+      "tableCreated": "Creado",
+      "tableActions": "Acciones",
+      "tableEdit": "Editar",
+      "tableDelete": "Eliminar",
+      "empty": "Aún no hay transmisiones.",
+      "loadError": "Error al cargar las transmisiones.",
+      "createError": "Error al crear la transmisión.",
+      "updateError": "Error al actualizar la transmisión.",
+      "deleteError": "Error al eliminar la transmisión.",
+      "deleteConfirm": "¿Eliminar esta transmisión?"
+    },
+    "ExteriorColors": {
+      "title": "Colores exteriores",
+      "nameEnLabel": "Nombre (inglés)",
+      "nameFrLabel": "Nombre (francés)",
+      "nameEnPlaceholder": "Color exterior en inglés",
+      "nameFrPlaceholder": "Color exterior en francés",
+      "add": "Añadir",
+      "save": "Guardar",
+      "tableNameEn": "Nombre (EN)",
+      "tableNameFr": "Nombre (FR)",
+      "tableCreated": "Creado",
+      "tableActions": "Acciones",
+      "tableEdit": "Editar",
+      "tableDelete": "Eliminar",
+      "empty": "Aún no hay colores exteriores.",
+      "loadError": "Error al cargar los colores exteriores.",
+      "createError": "Error al crear el color exterior.",
+      "updateError": "Error al actualizar el color exterior.",
+      "deleteError": "Error al eliminar el color exterior.",
+      "deleteConfirm": "¿Eliminar este color exterior?"
+    },
+    "FeatureCategories": {
+      "title": "Categorías de características",
+      "nameEnPlaceholder": "Categoría en inglés",
+      "nameFrPlaceholder": "Categoría en francés",
+      "add": "Añadir",
+      "save": "Guardar",
+      "tableNameEn": "Nombre (EN)",
+      "tableNameFr": "Nombre (FR)",
+      "tableCreated": "Creado",
+      "tableActions": "Acciones",
+      "tableEdit": "Editar",
+      "tableDelete": "Eliminar",
+      "empty": "Aún no hay categorías de características.",
+      "loadError": "Error al cargar las categorías de características.",
+      "createError": "Error al crear la categoría.",
+      "updateError": "Error al actualizar la categoría.",
+      "deleteError": "Error al eliminar la categoría.",
+      "deleteConfirm": "¿Eliminar esta categoría?"
+    },
+    "Features": {
+      "title": "Características",
+      "loadError": "Error al cargar las características.",
+      "filterByCategory": "Filtrar por categoría",
+      "allCategories": "Todas las categorías",
+      "nameEnPlaceholder": "Característica en inglés",
+      "nameFrPlaceholder": "Característica en francés",
+      "selectCategory": "Seleccionar categoría",
+      "add": "Añadir",
+      "save": "Guardar",
+      "tableNameEn": "Nombre (EN)",
+      "tableNameFr": "Nombre (FR)",
+      "tableCategory": "Categoría",
+      "tableActions": "Acciones",
+      "tableEdit": "Editar",
+      "tableDelete": "Eliminar",
+      "empty": "Aún no hay características.",
+      "createError": "Error al crear la característica.",
+      "updateError": "Error al actualizar la característica.",
+      "deleteError": "Error al eliminar la característica.",
+      "deleteConfirm": "¿Eliminar esta característica?"
+    }
+  }
+}

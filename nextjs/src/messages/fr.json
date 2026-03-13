@@ -9,12 +9,13 @@
     "language": {
       "label": "Langue",
       "en": "Anglais",
-      "fr": "Français"
+      "fr": "Français",
+      "es": "Espagnol"
     }
   },
   "NewLanding": {
     "hero": {
-      "title": "Véhicules de luxe et de performance, prêts à prendre la route.",
+      "title": "Véhicules d'occasion de qualité, prêts à prendre la route.",
       "subtitle": "Trouvez le véhicule idéal dans notre inventaire sélectionné et obtenez une approbation rapide.",
       "filters": {
         "year": "Année",

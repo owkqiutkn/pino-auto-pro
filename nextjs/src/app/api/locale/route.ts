@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from 'next/server';
 
-const SUPPORTED_LOCALES = new Set(['en', 'fr']);
+const SUPPORTED_LOCALES = new Set(['en', 'fr', 'es']);
 
 export async function GET(request: NextRequest) {
   const {searchParams} = new URL(request.url);
