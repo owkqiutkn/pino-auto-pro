@@ -447,17 +447,28 @@ export default async function NewLandingPage() {
                             </a>
                         </div>
                     </div>
-                    <div>
-                        <h4 className="mb-3 font-bold uppercase text-white">
+                    <div className="w-fit min-w-[10rem] max-w-full">
+                        <h4 className="mb-2 font-bold uppercase tracking-wide text-white text-[11px]">
                             {t("footer.hoursTitle")}
                         </h4>
-                        <p className="text-white/60">{t("footer.hours.mon")}</p>
-                        <p className="text-white/60">{t("footer.hours.tue")}</p>
-                        <p className="text-white/60">{t("footer.hours.wed")}</p>
-                        <p className="text-white/60">{t("footer.hours.thu")}</p>
-                        <p className="text-white/60">{t("footer.hours.fri")}</p>
-                        <p className="text-white/60">{t("footer.hours.sat")}</p>
-                        <p className="text-white/60">{t("footer.hours.sun")}</p>
+                        <dl className="flex flex-col gap-0.5 text-[11px] text-white/60">
+                            {(["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const).map((key) => {
+                                const raw = t(`footer.hours.${key}`);
+                                const colonIdx = raw.indexOf(":");
+                                const day = colonIdx >= 0 ? raw.slice(0, colonIdx).trim() : raw;
+                                const hours = colonIdx >= 0 ? raw.slice(colonIdx + 1).trim() : "";
+                                const isWeekend = key === "sat";
+                                return (
+                                    <div
+                                        key={key}
+                                        className={`flex justify-between gap-4 ${isWeekend ? "border-t border-white/10 pt-1 mt-0.5" : ""}`}
+                                    >
+                                        <dt className="w-10 shrink-0 text-white/50">{day}</dt>
+                                        <dd className="text-right tabular-nums">{hours}</dd>
+                                    </div>
+                                );
+                            })}
+                        </dl>
                     </div>
                     <div className="hidden md:block">
                         <h4 className="mb-3 font-bold uppercase text-white">

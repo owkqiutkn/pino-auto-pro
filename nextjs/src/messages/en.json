@@ -95,7 +95,7 @@
     "reviews": {
       "label": "Customer Reviews",
       "title": "What Our Customers Say",
-      "summary": "4.9/5 from 500+ customer reviews",
+      "summary": "4.9/5 from 150 reviews",
       "items": {
         "james": {
           "name": "James M.",

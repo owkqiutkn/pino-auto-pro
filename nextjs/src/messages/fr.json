@@ -95,7 +95,7 @@
     "reviews": {
       "label": "Avis des clients",
       "title": "Ce que disent nos clients",
-      "summary": "4,9/5 selon plus de 500 avis",
+      "summary": "4,9/5 selon 150 avis",
       "items": {
         "james": {
           "name": "James M.",
