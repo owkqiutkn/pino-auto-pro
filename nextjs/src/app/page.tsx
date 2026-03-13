@@ -1,403 +1,498 @@
 import Link from "next/link";
-import { createSSRSassClient } from "@/lib/supabase/server";
-import { getCachedBrandModels, getCachedBrands, getCachedCategories, getCachedSiteSettings } from "@/lib/supabase/cached";
+import ContactMap from "@/components/ContactMap";
+import InventoryLineup from "@/components/InventoryLineup";
+import SiteNavbar from "@/components/SiteNavbar";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
+import {
+    getCachedCategories,
+    getCachedEngines,
+    getCachedFuels,
+    getCachedTransmissions,
+    getCachedBrands,
+    getCachedSiteSettings,
+} from "@/lib/supabase/cached";
 import { Database } from "@/lib/types";
-import HomeSearchForm from "@/components/HomeSearchForm";
+import { getTranslations } from "next-intl/server";
 
-type Car = Database["public"]["Tables"]["cars"]["Row"];
-type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
-type Category = Database["public"]["Tables"]["categories"]["Row"];
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
-type BrandModel = Database["public"]["Tables"]["brand_models"]["Row"];
+type Category = Database["public"]["Tables"]["categories"]["Row"];
+type Engine = Database["public"]["Tables"]["engines"]["Row"];
+type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
+type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 
-function formatPrice(value: number) {
-    return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 0,
-    }).format(value);
-}
+// Placeholder for categories without an attached image
+const CATEGORY_PLACEHOLDER =
+    "data:image/svg+xml," +
+    encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="120" viewBox="0 0 200 120"><rect fill="%23334155" width="200" height="120"/><text fill="%2394a3b8" font-family="sans-serif" font-size="14" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle">No image</text></svg>'
+    );
 
-function PriceDisplay({ car }: { car: Car }) {
-    if (car.discounted_price !== null) {
-        return (
-            <p className="text-sm">
-                <span className="text-2xl font-black text-[#f20d0d]">
-                    {formatPrice(car.discounted_price)}
-                </span>{" "}
-                <span className="text-slate-500 line-through">{formatPrice(car.price)}</span>
-            </p>
-        );
-    }
-    return <p className="text-2xl font-black text-[#f20d0d]">{formatPrice(car.price)}</p>;
-}
+const heroImage = "/new-landing/hero.jpg";
+const financingImage = "/new-landing/financing.jpg";
+const missionImage = "/new-landing/mission.jpg";
+const aboutBackgroundImage = "/new-landing/about-bg.jpeg";
+
+const featureCards = [
+    {
+        id: "viewInventory" as const,
+        image: "/new-landing/feature-certified.jpg",
+        icon: "✓",
+        iconImage: "/new-landing/icons/icon-certified.png",
+    },
+    {
+        id: "applyFinancing" as const,
+        image: "/new-landing/feature-finance.jpg",
+        icon: "$",
+        iconImage: "/new-landing/icons/icon-finance.png",
+    },
+    {
+        id: "contactUs" as const,
+        image: "/new-landing/feature-tradein.jpg",
+        icon: "✉",
+        iconImage: "/new-landing/icons/icon-contact.png",
+    },
+];
+
+const DEFAULT_FACEBOOK = "https://facebook.com";
+const DEFAULT_INSTAGRAM = "https://instagram.com";
+const DEFAULT_TWITTER = "https://x.com";
 
 export default async function Home() {
-    const client = await createSSRSassClient();
-
-    const [{ data: cars }, categoriesList, brandsList, brandModelsList, siteSettings] = await Promise.all([
-        client.getAvailableCars(),
-        getCachedCategories(),
+    const [brands, categories, engines, fuels, transmissions, siteSettings, t, navT] = await Promise.all([
         getCachedBrands(),
-        getCachedBrandModels(),
+        getCachedCategories(),
+        getCachedEngines(),
+        getCachedFuels(),
+        getCachedTransmissions(),
         getCachedSiteSettings(),
+        getTranslations("NewLanding"),
+        getTranslations("Navbar"),
     ]);
-    const productName = siteSettings?.business_name || process.env.NEXT_PUBLIC_PRODUCTNAME || "ML Autos";
-    const featuredCars = ((cars ?? []) as Car[]).slice(0, 6);
-    const categoriesTyped = (categoriesList ?? []) as Category[];
-    const brandsTyped = (brandsList ?? []) as Brand[];
-    const brandModelsTyped = (brandModelsList ?? []) as BrandModel[];
-
-    const { data: images } = await client.getCarImagesForCars(featuredCars.map((car) => car.id));
-    const imagesList = (images ?? []) as CarImage[];
-
-    const imageByCar = new Map<string, CarImage>();
-    for (const image of imagesList) {
-        if (!imageByCar.has(image.car_id) || image.is_cover) {
-            imageByCar.set(image.car_id, image);
-        }
-    }
+    const businessName = siteSettings?.business_name || "Pino Auto Pro";
+    const brandsTyped = (brands ?? []) as Brand[];
+    const categoriesTyped = (categories ?? []) as Category[];
+    const enginesTyped = (engines ?? []) as Engine[];
+    const fuelsTyped = (fuels ?? []) as Fuel[];
+    const transmissionsTyped = (transmissions ?? []) as Transmission[];
 
     return (
-        <div className="min-h-screen bg-[#f8f5f5] text-slate-900">
-            <header className="sticky top-0 z-50 bg-[#f8f5f5]/90 backdrop-blur-md border-b border-[#f20d0d]/10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-20">
-                        <div className="flex items-center gap-3">
-                            <span className="text-3xl text-[#f20d0d]" aria-hidden="true">🚗</span>
-                            <span className="text-2xl font-black tracking-tighter uppercase">{productName}</span>
-                        </div>
-                        <nav className="hidden md:flex items-center gap-8">
-                            <Link className="text-sm font-semibold hover:text-[#f20d0d] transition-colors" href="/inventory">
-                                Inventory
-                            </Link>
-                            <a className="text-sm font-semibold hover:text-[#f20d0d] transition-colors" href="#financing">
-                                Financing
-                            </a>
-                            <a className="text-sm font-semibold hover:text-[#f20d0d] transition-colors" href="#trade">
-                                Sell Your Car
-                            </a>
-                            <a className="text-sm font-semibold hover:text-[#f20d0d] transition-colors" href="#about">
-                                About
-                            </a>
-                            <a className="text-sm font-semibold hover:text-[#f20d0d] transition-colors" href="#contact">
-                                Contact
-                            </a>
-                        </nav>
-                        <Link
-                            href="/inventory"
-                            className="bg-[#f20d0d] text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-[#f20d0d]/20"
-                        >
-                            Browse Inventory
-                        </Link>
+        <div className="bg-[#0c1320] text-white">
+            <section className="relative min-h-[440px] overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={heroImage} alt="ML Autos hero" className="absolute inset-0 h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-black/70" />
+                <div className="relative z-[10020]">
+                    <SiteNavbar siteSettings={siteSettings ?? undefined} />
+                </div>
+
+                <div className="relative z-10 mx-auto max-w-6xl px-4">
+                    <div className="pt-14 pb-16 text-center">
+                        <h1 className="max-w-3xl mx-auto text-3xl md:text-5xl font-black leading-tight">
+                            {t("hero.title")}
+                        </h1>
+                        <p className="mt-3 max-w-2xl mx-auto text-sm text-white/80">
+                            {t("hero.subtitle")}
+                        </p>
+                        <form action="/inventory" method="get" className="mt-6 grid max-w-5xl mx-auto grid-cols-1 gap-2 md:grid-cols-4">
+                            <select name="yearMin" className="h-10 rounded-sm bg-white px-3 text-xs text-black outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]" defaultValue="">
+                                <option value="" disabled>
+                                    {t("hero.filters.year")}
+                                </option>
+                                {Array.from({ length: new Date().getFullYear() - 1990 + 2 }, (_, i) => 1990 + i).reverse().map((y) => (
+                                    <option key={y} value={y}>{y}</option>
+                                ))}
+                            </select>
+                            <select name="brand" className="h-10 rounded-sm bg-white px-3 text-xs text-black outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]" defaultValue="">
+                                <option value="" disabled>
+                                    {t("hero.filters.brand")}
+                                </option>
+                                {brandsTyped.map((b) => (
+                                    <option key={b.id} value={b.name}>{b.name}</option>
+                                ))}
+                            </select>
+                            <input
+                                name="priceMax"
+                                placeholder={t("hero.filters.maxPrice")}
+                                className="h-10 rounded-sm bg-white px-3 text-xs text-black placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]"
+                            />
+                            <button className="h-10 rounded-sm bg-[#1d4ed8] text-xs font-bold uppercase tracking-wide hover:bg-[#1e40af]">
+                                {t("hero.filters.search")}
+                            </button>
+                        </form>
                     </div>
                 </div>
-            </header>
+            </section>
 
-            <section className="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-24">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
-                        <div className="flex flex-col gap-8">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f20d0d]/10 text-[#f20d0d] text-xs font-bold uppercase tracking-wider w-fit">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#f20d0d] opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#f20d0d]"></span>
-                                </span>
-                                New Arrivals Daily
-                            </div>
-                            <h1 className="text-5xl lg:text-7xl font-black leading-tight tracking-tight">
-                                Your Trusted Partner in <span className="text-[#f20d0d]">Quality</span> Pre-Owned Vehicles
-                            </h1>
-                            <p className="text-lg text-slate-600 max-w-xl">
-                                Experience the new standard of excellence in automotive sales with our curated collection of premium pre-owned vehicles.
-                            </p>
-                            <div className="flex flex-wrap gap-4">
-                                <Link
-                                    href="/inventory"
-                                    className="bg-[#f20d0d] text-white px-8 py-4 rounded-xl font-bold text-lg hover:opacity-90 transition-all shadow-xl shadow-[#f20d0d]/20"
-                                >
-                                    Browse Inventory
-                                </Link>
-                                <a
-                                    href="#financing"
-                                    className="bg-white border border-slate-200 px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all"
-                                >
-                                    Get Pre-Approved
-                                </a>
-                            </div>
-                        </div>
-
-                        <div className="relative">
-                            <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    alt="Luxury car showcase"
-                                    className="w-full h-full object-cover"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpQefR0Svtp_4kWlyXpjzs6N5-Pvv8DK6aD-t65miVj8CJOXxDsJqBYH5ngvyu4WVGCGERBzlWazlrfIakTJs2JOu3aOsgle4Tn0yol-MP-HWvagrMB400ZAnCV_NnIAFEF61C0WbNlKmqnVcXxNGF1yQSi4BCPXc6UM4ZiAV3QgBUtyr6hVcds1z3BHPs6AjMiydZJC87odNMVOxVlEhXGZFrbZNT02X32ff5BZ9-_a0hyu7yXg059WsnuyD8gfia1TokMkAZ4pDL"
-                                />
-                            </div>
-                            <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl border border-slate-100 hidden sm:block">
-                                <div className="flex items-center gap-4">
-                                    <div className="bg-[#f20d0d]/10 p-3 rounded-xl text-[#f20d0d]">✓</div>
-                                    <div>
-                                        <p className="text-2xl font-black">250+</p>
-                                        <p className="text-xs text-slate-500 font-bold uppercase">Certified Vehicles</p>
+            <section className="relative z-20 bg-[#071d38] pt-10 pb-10 md:pt-12 md:pb-14">
+                <div className="mx-auto max-w-6xl px-4">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-3 -mt-20 md:-mt-28">
+                        {featureCards.map((item) => {
+                            const title = t(`features.${item.id}.title`);
+                            const description = t(`features.${item.id}.description`);
+                            const cardContent = (
+                                <div className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-blue-400/30 bg-[#071d38] shadow-[0_22px_55px_rgba(0,0,0,0.7)] transition-transform duration-300 ease-out hover:-translate-y-2">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={item.image}
+                                        alt={title}
+                                        className="absolute inset-0 h-full w-full object-cover scale-110 opacity-60"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-950/70 via-blue-950/85 to-blue-950/95 mix-blend-multiply" />
+                                    <div className="relative z-10 flex h-full w-full flex-col justify-center p-5">
+                                        <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-[11px] font-black text-blue-600">
+                                            {"iconImage" in item && item.iconImage ? (
+                                                /* eslint-disable-next-line @next/next/no-img-element */
+                                                <img src={item.iconImage} alt="" className="h-5 w-5 scale-110 [filter:brightness(0)_saturate(100%)_invert(27%)_sepia(51%)_saturate(2878%)_hue-rotate(217deg)_contrast(1.15)]" aria-hidden />
+                                            ) : (
+                                                item.icon
+                                            )}
+                                        </div>
+                                        <div className="text-sm md:text-base font-bold tracking-wide">
+                                            {title}
+                                        </div>
+                                        <p className="mt-1 text-[11px] md:text-xs leading-snug text-white/90">
+                                            {description}
+                                        </p>
                                     </div>
                                 </div>
-                            </div>
+                            );
+
+                            if (item.id === "contactUs") {
+                                return (
+                                    <a key={item.id} href="#contact" className="block">
+                                        {cardContent}
+                                    </a>
+                                );
+                            }
+
+                            if (item.id === "viewInventory") {
+                                return (
+                                    <Link key={item.id} href="/inventory" className="block">
+                                        {cardContent}
+                                    </Link>
+                                );
+                            }
+
+                            return (
+                                <div key={item.id}>
+                                    {cardContent}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </section>
+
+            <InventoryLineup
+                categories={categoriesTyped}
+                engines={enginesTyped}
+                fuels={fuelsTyped}
+                transmissions={transmissionsTyped}
+            />
+
+            <section id="financing" className="relative overflow-hidden py-16">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={financingImage} alt="Financing background" className="absolute inset-0 h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-black/90" />
+                <div className="relative mx-auto max-w-3xl px-4 text-center">
+                    <h2 className="text-3xl font-black">{t("financing.title")}</h2>
+                    <p className="mt-6 max-w-xl mx-auto text-sm text-white/90">
+                        {t("financing.body")}
+                    </p>
+                    <a href="#contact" className="mt-6 inline-block rounded-sm bg-[#1d4ed8] px-6 py-3 text-sm font-bold uppercase tracking-wide hover:bg-[#1e40af]">
+                        {t("financing.cta")}
+                    </a>
+                </div>
+            </section>
+
+            <section className="bg-white py-12 text-black">
+                <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2">
+                    <div>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={missionImage} alt="Cars on road" className="h-72 w-full rounded-sm object-cover" />
+                    </div>
+                    <div className="rounded-sm border p-6">
+                        <h3 className="text-xl font-black">{t("mission.title")}</h3>
+                        <p className="mt-3 text-sm text-gray-700">
+                            {t("mission.intro", { businessName })}
+                        </p>
+                        <ul className="mt-4 list-disc space-y-2 pl-5 text-xs text-gray-700">
+                            <li>
+                                <span className="font-semibold">{t("mission.points.customerCare.title")}</span>{" "}
+                                {t("mission.points.customerCare.body")}
+                            </li>
+                            <li>
+                                <span className="font-semibold">{t("mission.points.serviceExcellence.title")}</span>{" "}
+                                {t("mission.points.serviceExcellence.body")}
+                            </li>
+                            <li>
+                                <span className="font-semibold">{t("mission.points.transparency.title")}</span>{" "}
+                                {t("mission.points.transparency.body")}
+                            </li>
+                            <li>
+                                <span className="font-semibold">{t("mission.points.innovation.title")}</span>{" "}
+                                {t("mission.points.innovation.body")}
+                            </li>
+                            <li>
+                                <span className="font-semibold">{t("mission.points.community.title")}</span>{" "}
+                                {t("mission.points.community.body")}
+                            </li>
+                        </ul>
+                        <p className="mt-4 text-xs text-gray-700">
+                            {t("mission.outro")}
+                        </p>
+                        <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2">
+                            <Link href="/inventory" className="rounded bg-[#1d4ed8] px-3 py-2 text-center text-xs font-bold text-white">
+                                {t("mission.buttons.viewInventory")}
+                            </Link>
+                            <a href="#contact" className="rounded bg-[#1d4ed8] px-3 py-2 text-center text-xs font-bold text-white">
+                                {t("mission.buttons.contactUs")}
+                            </a>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section className="max-w-7xl mx-auto px-4 -mt-8 md:-mt-12 relative z-10">
-                <div className="bg-white p-4 lg:p-8 rounded-2xl shadow-2xl border border-slate-100">
-                    <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                        <span className="text-[#f20d0d]">⌕</span>
-                        Find Your Perfect Match
-                    </h2>
-                    <HomeSearchForm
-                        categories={categoriesTyped}
-                        brands={brandsTyped}
-                        brandModels={brandModelsTyped}
-                    />
+            <section id="about" className="relative py-16">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={aboutBackgroundImage} alt="About background" className="absolute inset-0 h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-black/70" />
+                <div className="relative mx-auto max-w-6xl px-4">
+                    <div className="max-w-xl bg-black/60 p-6 md:p-7">
+                        <h3 className="text-3xl font-black">{t("about.title", { businessName })}</h3>
+                        <p className="mt-3 text-sm text-white/85">
+                            {t("about.paragraph1", { businessName })}
+                        </p>
+                        <p className="mt-3 text-sm text-white/80">
+                            {t("about.paragraph2")}
+                        </p>
+                        <p className="mt-3 text-sm text-white/80">
+                            {t("about.paragraph3", { businessName })}
+                        </p>
+                        <div className="mt-5 flex flex-wrap gap-3 text-xs font-bold">
+                            <a href="#contact" className="rounded bg-[#1d4ed8] px-4 py-2 text-white uppercase tracking-wide">
+                                {t("about.cta")}
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-end mb-12 gap-4">
-                    <div>
-                        <h2 className="text-4xl font-black mb-4">
-                            Featured <span className="text-[#f20d0d]">Inventory</span>
-                        </h2>
-                        <p className="text-slate-600">Live inventory from your backend.</p>
-                    </div>
-                    <Link href="/inventory" className="hidden md:flex items-center gap-2 text-[#f20d0d] font-bold hover:underline">
-                        View All Vehicles
-                        <span aria-hidden="true">→</span>
-                    </Link>
+            <section className="flex flex-col justify-end bg-gradient-to-b from-[#0c1320] via-[#15161d] to-[#17181f] py-6 min-h-[80px]">
+                <div className="mx-auto max-w-6xl px-4 w-full">
+                    <div className="mx-auto h-px max-w-xs bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-80" />
                 </div>
+            </section>
 
-                {featuredCars.length === 0 ? (
-                    <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center text-slate-600">
-                        No featured vehicles found right now.
+            <section className="bg-[#17181f] pt-3 pb-10 text-white">
+                <div className="mx-auto max-w-6xl px-4">
+                    <div className="mb-4">
+                        <h3 className="text-lg font-black uppercase tracking-wide">{t("categories.title")}</h3>
                     </div>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {featuredCars.map((car) => {
-                            const cover = imageByCar.get(car.id);
+                    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                        {categoriesTyped.slice(0, 8).map((cat) => {
+                            const displayName = cat.name_en ?? cat.name;
+                            const imageSrc = cat.image_url ?? CATEGORY_PLACEHOLDER;
                             return (
                                 <Link
-                                    key={car.id}
-                                    href={`/inventory/${car.slug}`}
-                                    className="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100 group"
+                                    key={cat.id}
+                                    href={`/inventory?category=${encodeURIComponent(displayName)}`}
+                                    className="group block overflow-hidden rounded-sm border border-white/10 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)]"
                                 >
-                                    <div className="relative h-64 overflow-hidden bg-slate-100">
-                                        <div className="absolute top-4 left-4 z-10 bg-[#f20d0d] text-white text-[10px] font-black uppercase px-2 py-1 rounded">
-                                            Featured
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={imageSrc}
+                                        alt={displayName}
+                                        loading="eager"
+                                        className="h-20 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    />
+                                    <div className="border-t border-white/5 bg-gradient-to-r from-[#1d283a] via-[#111827] to-[#1d283a] p-3 text-center">
+                                        <div className="text-xs font-bold uppercase tracking-wide">
+                                            {displayName}
                                         </div>
-                                        {cover ? (
-                                            // eslint-disable-next-line @next/next/no-img-element
-                                            <img
-                                                src={cover.image_url}
-                                                alt={car.title}
-                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center text-slate-400">
-                                                No image available
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="p-6">
-                                        <div className="flex justify-between items-start gap-2 mb-2">
-                                            <h3 className="text-xl font-bold line-clamp-1">{car.title}</h3>
-                                        </div>
-                                        <PriceDisplay car={car} />
-                                        <p className="text-slate-500 text-sm mt-3">
-                                            {car.year} • {car.km.toLocaleString()} km
-                                        </p>
-                                        <div className="flex gap-2 mt-3">
-                                            <span className="text-xs bg-[#f8f5f5] px-3 py-1 rounded-full font-semibold">
-                                                Pre-Owned
-                                            </span>
-                                            <span className="text-xs bg-[#f8f5f5] px-3 py-1 rounded-full font-semibold">
-                                                Inspected
-                                            </span>
-                                        </div>
-                                        <div className="mt-6">
-                                            <span className="w-full inline-flex justify-center border-2 border-[#f20d0d] text-[#f20d0d] font-bold py-3 rounded-xl group-hover:bg-[#f20d0d] group-hover:text-white transition-all">
-                                                View Details
-                                            </span>
-                                        </div>
+                                        <span className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#1d4ed8] px-3 py-1 text-[10px] font-bold uppercase tracking-wide group-hover:bg-[#1e40af]">
+                                            {t("categories.viewListings")}
+                                        </span>
                                     </div>
                                 </Link>
                             );
                         })}
                     </div>
-                )}
-            </section>
-
-            <section id="about" className="bg-slate-900 text-white py-24">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 className="text-4xl font-black mb-16">
-                        The {productName} <span className="text-[#f20d0d]">Difference</span>
-                    </h2>
-                    <div className="grid md:grid-cols-3 gap-12">
-                        <div className="flex flex-col items-center">
-                            <div className="w-20 h-20 bg-[#f20d0d]/20 rounded-2xl flex items-center justify-center mb-6 border border-[#f20d0d]/30 text-4xl">
-                                ♥
-                            </div>
-                            <h3 className="text-xl font-bold mb-4">Customer-Centric</h3>
-                            <p className="text-slate-400 leading-relaxed">
-                                We prioritize your needs with a tailored, low-pressure car-buying experience.
-                            </p>
-                        </div>
-                        <div className="flex flex-col items-center">
-                            <div className="w-20 h-20 bg-[#f20d0d]/20 rounded-2xl flex items-center justify-center mb-6 border border-[#f20d0d]/30 text-4xl">
-                                🛡
-                            </div>
-                            <h3 className="text-xl font-bold mb-4">Excellence in Service</h3>
-                            <p className="text-slate-400 leading-relaxed">
-                                Every vehicle is inspected to meet strict quality and safety standards.
-                            </p>
-                        </div>
-                        <div className="flex flex-col items-center">
-                            <div className="w-20 h-20 bg-[#f20d0d]/20 rounded-2xl flex items-center justify-center mb-6 border border-[#f20d0d]/30 text-4xl">
-                                🤝
-                            </div>
-                            <h3 className="text-xl font-bold mb-4">Transparency & Trust</h3>
-                            <p className="text-slate-400 leading-relaxed">
-                                Honest pricing and clear information from the first click to delivery.
-                            </p>
-                        </div>
-                    </div>
                 </div>
             </section>
 
-            <section id="financing" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="bg-[#f20d0d] rounded-3xl p-8 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-12 relative overflow-hidden text-white">
-                    <div className="absolute right-0 top-0 opacity-10 pointer-events-none text-[220px] leading-none">💳</div>
-                    <div className="relative z-10 max-w-2xl text-center lg:text-left">
-                        <h2 className="text-4xl lg:text-5xl font-black mb-6 leading-tight">
-                            Fast &amp; Flexible Financing Solutions
-                        </h2>
-                        <p className="text-white/80 text-lg mb-0">
-                            We work with trusted lenders to help you get approved quickly with competitive rates.
-                        </p>
-                    </div>
-                    <div className="relative z-10">
-                        <a className="inline-flex bg-white text-[#f20d0d] px-10 py-5 rounded-2xl font-black text-lg hover:bg-slate-100 transition-all shadow-2xl" href="#contact">
-                            Apply for Financing
-                        </a>
-                    </div>
+            <section className="bg-gradient-to-b from-[#17181f] via-[#15161d] to-[#111217] py-6">
+                <div className="mx-auto max-w-6xl px-4">
+                    <div className="mx-auto h-px max-w-xs bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-80" />
                 </div>
             </section>
 
-            <section id="reviews" className="py-24 bg-[#f8f5f5]">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-16">
-                        <div className="flex justify-center gap-1 text-yellow-500 mb-4">
-                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                        </div>
-                        <h2 className="text-4xl font-black mb-4">What Our Clients Say</h2>
-                        <p className="text-slate-600">4.9/5 stars based on 500+ reviews</p>
-                    </div>
-                    <div className="grid md:grid-cols-3 gap-8">
-                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                            <p className="italic text-slate-600 mb-6">
-                                &quot;Smooth process from start to finish. Transparent, fast, and professional service.&quot;
+            <section className="bg-[#111217] py-12 text-white">
+                <div className="mx-auto max-w-6xl px-4">
+                    <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-white/60">
+                                {t("reviews.label")}
                             </p>
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-bold">JD</div>
-                                <div>
-                                    <p className="font-bold">James Dalton</p>
-                                    <p className="text-xs text-slate-500">Verified Buyer</p>
+                            <h3 className="text-xl font-black tracking-tight sm:text-2xl">
+                                {t("reviews.title")}
+                            </h3>
+                        </div>
+                        <div className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-[11px] font-medium text-white/80 ring-1 ring-white/10">
+                            <div className="flex items-center text-[#f4c84b]">
+                                <span className="mr-0.5 text-xs">★</span>
+                                <span className="mr-0.5 text-xs">★</span>
+                                <span className="mr-0.5 text-xs">★</span>
+                                <span className="mr-0.5 text-xs">★</span>
+                                <span className="text-xs">★</span>
+                            </div>
+                            <span>{t("reviews.summary")}</span>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                        {[
+                            {
+                                key: "james" as const,
+                            },
+                            {
+                                key: "sarah" as const,
+                            },
+                            {
+                                key: "mike" as const,
+                            },
+                        ].map((review, index) => (
+                            <div
+                                key={index}
+                                className="group rounded-xl border border-[#1d4ed8]/30 bg-[#1e3a5f]/30 p-0 transition-transform duration-300 hover:-translate-y-1.5 hover:border-[#4338ca]/70"
+                            >
+                                <div className="flex items-start gap-3 p-4">
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1d4ed8]/25 ring-2 ring-[#1d4ed8]/40">
+                                        <span className="text-lg font-bold text-white/80">
+                                            {t(`reviews.items.${review.key}.name`).charAt(0)}
+                                        </span>
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                        <p className="text-sm font-semibold text-white">
+                                            {t(`reviews.items.${review.key}.name`)}
+                                        </p>
+                                        <p className="mt-1 text-[11px] font-medium uppercase tracking-wide text-white/60">
+                                            {t(`reviews.items.${review.key}.role`)}
+                                        </p>
+                                        <p className="mt-3 text-sm leading-relaxed text-white/80">
+                                            {t(`reviews.items.${review.key}.text`)}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                            <p className="italic text-slate-600 mb-6">
-                                &quot;I have bought multiple cars here. Their quality and customer care are unmatched.&quot;
-                            </p>
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-bold">SR</div>
-                                <div>
-                                    <p className="font-bold">Sarah Reynolds</p>
-                                    <p className="text-xs text-slate-500">Loyal Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                            <p className="italic text-slate-600 mb-6">
-                                &quot;Great value on my trade-in and a clean process. Highly recommended dealership team.&quot;
-                            </p>
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-bold">MK</div>
-                                <div>
-                                    <p className="font-bold">Michael K.</p>
-                                    <p className="text-xs text-slate-500">Verified Seller</p>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            <section id="trade" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center">
-                    <h3 className="text-2xl font-black mb-3">Sell or Trade Your Vehicle</h3>
-                    <p className="text-slate-600 mb-6">Get a fair market offer and fast turnaround from our team.</p>
-                    <a href="#contact" className="inline-flex bg-[#f20d0d] text-white px-8 py-3 rounded-xl font-bold hover:opacity-90">
-                        Start Your Appraisal
-                    </a>
-                </div>
+            <section id="contact" className="bg-[#0c1320] pt-0 pb-0 text-white">
+                <ContactMap variant="large" />
             </section>
 
-            <footer id="contact" className="bg-slate-900 text-slate-300 pt-20 pb-10 border-t border-slate-800">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+            <footer className="bg-[#171717] py-10 text-xs text-white/80">
+                <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 md:grid-cols-3">
                     <div>
-                        <div className="flex items-center gap-2 mb-8">
-                            <div className="text-[#f20d0d] text-2xl">🚗</div>
-                            <span className="text-xl font-black tracking-tighter text-white uppercase">{productName}</span>
+                        <h4 className="mb-3 font-bold uppercase text-white">
+                            {t("footer.contactTitle")}
+                        </h4>
+                        <p className="text-white/60">{t("footer.addressLine1")}</p>
+                        <p className="text-white/60">{t("footer.phone")}</p>
+                        <p className="text-white/60">{t("footer.email")}</p>
+                        <div className="mt-4 flex items-center gap-3">
+                            <a
+                                href={siteSettings?.facebook_url || DEFAULT_FACEBOOK}
+                                aria-label="Visit us on Facebook"
+                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-[#1877f2]/60"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src="/new-landing/icons/icon-facebook.png"
+                                    alt="Facebook"
+                                    className="h-4 w-4 brightness-0 invert"
+                                />
+                            </a>
+                            <a
+                                href={siteSettings?.instagram_url || DEFAULT_INSTAGRAM}
+                                aria-label="Visit us on Instagram"
+                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-[#e1306c]/60"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src="/new-landing/icons/icon-instagram.png"
+                                    alt="Instagram"
+                                    className="h-4 w-4 brightness-0 invert"
+                                />
+                            </a>
+                            <a
+                                href={siteSettings?.twitter_url || DEFAULT_TWITTER}
+                                aria-label="Visit us on X"
+                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-white/70"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src="/new-landing/icons/icon-x-twitter.png"
+                                    alt="X (Twitter)"
+                                    className="h-4 w-4 brightness-0 invert"
+                                />
+                            </a>
                         </div>
-                        <p className="text-sm leading-relaxed mb-6">
-                            Premium automotive dealership specializing in quality pre-owned vehicles and trusted service.
-                        </p>
-                        <div className="flex gap-4">
-                            <a className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-[#f20d0d] transition-colors" href="#">🌐</a>
-                            <a className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-[#f20d0d] transition-colors" href="#">✉</a>
-                            <a className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-[#f20d0d] transition-colors" href="#">☎</a>
-                        </div>
                     </div>
-                    <div>
-                        <h4 className="text-white font-bold mb-8 uppercase tracking-widest text-xs">Quick Links</h4>
-                        <ul className="space-y-4 text-sm">
-                            <li><Link className="hover:text-[#f20d0d] transition-colors" href="/inventory">Our Inventory</Link></li>
-                            <li><a className="hover:text-[#f20d0d] transition-colors" href="#financing">Apply for Finance</a></li>
-                            <li><a className="hover:text-[#f20d0d] transition-colors" href="#trade">Value Your Trade</a></li>
-                            <li><a className="hover:text-[#f20d0d] transition-colors" href="#about">About Us</a></li>
-                        </ul>
+                    <div className="w-fit min-w-[10rem] max-w-full">
+                        <h4 className="mb-2 font-bold uppercase tracking-wide text-white text-[11px]">
+                            {t("footer.hoursTitle")}
+                        </h4>
+                        <dl className="flex flex-col gap-0.5 text-[11px] text-white/60">
+                            {(["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const).map((key) => {
+                                const raw = t(`footer.hours.${key}`);
+                                const colonIdx = raw.indexOf(":");
+                                const day = colonIdx >= 0 ? raw.slice(0, colonIdx).trim() : raw;
+                                const hours = colonIdx >= 0 ? raw.slice(colonIdx + 1).trim() : "";
+                                const isWeekend = key === "sat";
+                                return (
+                                    <div
+                                        key={key}
+                                        className={`flex justify-between gap-4 ${isWeekend ? "border-t border-white/10 pt-1 mt-0.5" : ""}`}
+                                    >
+                                        <dt className="w-10 shrink-0 text-white/50">{day}</dt>
+                                        <dd className="text-right tabular-nums">{hours}</dd>
+                                    </div>
+                                );
+                            })}
+                        </dl>
                     </div>
-                    <div>
-                        <h4 className="text-white font-bold mb-8 uppercase tracking-widest text-xs">Showroom Hours</h4>
-                        <ul className="space-y-4 text-sm">
-                            <li className="flex justify-between"><span>Monday - Friday</span> <span>9am - 7pm</span></li>
-                            <li className="flex justify-between"><span>Saturday</span> <span>10am - 5pm</span></li>
-                            <li className="flex justify-between text-slate-500"><span>Sunday</span> <span>Closed</span></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 className="text-white font-bold mb-8 uppercase tracking-widest text-xs">Visit Us</h4>
-                        <p className="text-sm mb-4">1230 Automotive Blvd,<br />Prestige Heights, CA 90210</p>
-                        <p className="text-sm font-bold text-white mb-2">Sales: (555) 123-4567</p>
-                        <p className="text-sm font-bold text-white mb-6">Service: (555) 123-9999</p>
+                    <div className="hidden md:block">
+                        <h4 className="mb-3 font-bold uppercase text-white">
+                            {t("footer.navTitle")}
+                        </h4>
+                        <nav className="flex flex-col gap-1">
+                            <Link href="/inventory" className="text-white/60 hover:text-white">
+                                {navT("links.inventory")}
+                            </Link>
+                            <Link href="/#about" className="text-white/60 hover:text-white">
+                                {navT("links.about")}
+                            </Link>
+                            <Link href="/#contact" className="text-white/60 hover:text-white">
+                                {navT("links.contact")}
+                            </Link>
+                        </nav>
                     </div>
                 </div>
-                <div className="max-w-7xl mx-auto px-4 border-t border-slate-800 pt-10 text-center">
-                    <p className="text-xs text-slate-500">© 2024 {productName}. All Rights Reserved.</p>
+                <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60">
+                    <div>{t("footer.poweredBy", { businessName })}</div>
+                    <div>{t("footer.copyright", { businessName })}</div>
                 </div>
             </footer>
+            <ScrollToTopButton />
         </div>
     );
 }

@@ -29,8 +29,8 @@ const DEFAULT_TWITTER = "https://x.com";
 
 const navLinks = [
     { href: "/inventory", labelKey: "links.inventory" },
-    { href: "/new-landing#about", labelKey: "links.about" },
-    { href: "/new-landing#contact", labelKey: "links.contact" },
+    { href: "/#about", labelKey: "links.about" },
+    { href: "/#contact", labelKey: "links.contact" },
 ];
 
 export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavbarProps) {
@@ -74,7 +74,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
             <div className="mx-auto max-w-6xl px-4">
                 <div className="flex items-center justify-between py-1 md:py-2 text-[11px]">
                     <div className="flex items-center gap-3">
-                        <Link href="/new-landing" className="flex items-center">
+                        <Link href="/" className="flex items-center">
                             {logoUrl ? (
                                 /* eslint-disable-next-line @next/next/no-img-element */
                                 <img src={logoUrl} alt={businessName ?? t("brand")} className="h-8 max-w-[140px] object-contain object-left" />

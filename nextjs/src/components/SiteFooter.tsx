@@ -5,8 +5,8 @@ import { getCachedSiteSettings } from "@/lib/supabase/cached";
 
 const navLinks = [
     { href: "/inventory", labelKey: "links.inventory" },
-    { href: "/new-landing#about", labelKey: "links.about" },
-    { href: "/new-landing#contact", labelKey: "links.contact" },
+    { href: "/#about", labelKey: "links.about" },
+    { href: "/#contact", labelKey: "links.contact" },
 ];
 
 const DEFAULT_FACEBOOK = "https://facebook.com";
