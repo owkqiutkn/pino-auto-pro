@@ -5,7 +5,6 @@ import { createSPASassClient } from '@/lib/supabase/client';
 import {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import SSOButtons from '@/components/SSOButtons';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -120,16 +119,6 @@ export default function LoginPage() {
                     </button>
                 </div>
             </form>
-
-            <SSOButtons onError={setError} />
-
-            <div className="mt-6 text-center text-sm">
-                <span className="text-gray-600">Single admin account setup.</span>
-                {' '}
-                <Link href="/auth/register" className="font-medium text-primary-600 hover:text-primary-500">
-                    Access info
-                </Link>
-            </div>
         </div>
     );
 }
