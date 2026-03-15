@@ -46,11 +46,18 @@ type Car = {
     cargurus_url?: string | null;
 };
 
+type InitialFeaturedData = {
+    cars: Car[];
+    coverImageByCarId: Record<string, string>;
+};
+
 type LookupProps = {
     categories: Category[];
     engines: Engine[];
     fuels: Fuel[];
     transmissions: Transmission[];
+    /** Preloaded data for the "featured" segment so the client does not need to fetch on mount. */
+    initialFeaturedData?: InitialFeaturedData;
 };
 
 const DESKTOP_ITEMS_PER_PAGE = 8;
@@ -92,18 +99,18 @@ function getTransmissionDisplay(transmissionValue: string | null, transmissions:
     return transmission ? getLocalizedTransmissionName(transmission, locale) : transmissionValue;
 }
 
-export default function InventoryLineup({ categories, engines, fuels, transmissions }: LookupProps) {
+export default function InventoryLineup({ categories, engines, fuels, transmissions, initialFeaturedData }: LookupProps) {
     const t = useTranslations("NewLanding.inventorySection");
     const tCard = useTranslations("Inventory.page");
     const locale = useLocale();
     const isMobile = useIsMobile();
     const [segment, setSegment] = useState<Segment>("featured");
     const [page, setPage] = useState(1);
-    const [cars, setCars] = useState<Car[]>([]);
+    const [cars, setCars] = useState<Car[]>(() => initialFeaturedData?.cars ?? []);
     const [coverImageByCarId, setCoverImageByCarId] = useState<
         Record<string, string>
-    >({});
-    const [loading, setLoading] = useState(true);
+    >(() => initialFeaturedData?.coverImageByCarId ?? {});
+    const [loading, setLoading] = useState(!initialFeaturedData);
 
     const itemsPerPage = isMobile ? MOBILE_ITEMS_PER_PAGE : DESKTOP_ITEMS_PER_PAGE;
     const totalPages = Math.ceil(cars.length / itemsPerPage);
@@ -113,6 +120,12 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
     );
 
     useEffect(() => {
+        if (segment === "featured" && initialFeaturedData) {
+            setCars(initialFeaturedData.cars);
+            setCoverImageByCarId(initialFeaturedData.coverImageByCarId);
+            setLoading(false);
+            return;
+        }
         let cancelled = false;
         setLoading(true);
         fetch(`/api/inventory/segment?segment=${segment}`)
@@ -137,7 +150,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
         return () => {
             cancelled = true;
         };
-    }, [segment]);
+    }, [segment, initialFeaturedData]);
 
     useEffect(() => {
         setPage(1);

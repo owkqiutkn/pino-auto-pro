@@ -11,6 +11,7 @@ import {
     getCachedBrands,
     getCachedSiteSettings,
 } from "@/lib/supabase/cached";
+import { getInventorySegmentData } from "@/lib/inventory/segment";
 import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { Database } from "@/lib/types";
 import { getLocale, getTranslations } from "next-intl/server";
@@ -59,13 +60,14 @@ const DEFAULT_INSTAGRAM = "https://instagram.com";
 const DEFAULT_TWITTER = "https://x.com";
 
 export default async function Home() {
-    const [brands, categories, engines, fuels, transmissions, siteSettings, t, navT, locale] = await Promise.all([
+    const [brands, categories, engines, fuels, transmissions, siteSettings, featuredSegment, t, navT, locale] = await Promise.all([
         getCachedBrands(),
         getCachedCategories(),
         getCachedEngines(),
         getCachedFuels(),
         getCachedTransmissions(),
         getCachedSiteSettings(),
+        getInventorySegmentData("featured"),
         getTranslations("NewLanding"),
         getTranslations("Navbar"),
         getLocale(),
@@ -190,6 +192,7 @@ export default async function Home() {
                 engines={enginesTyped}
                 fuels={fuelsTyped}
                 transmissions={transmissionsTyped}
+                initialFeaturedData={featuredSegment}
             />
 
             <section id="financing" className="relative overflow-hidden py-16">
