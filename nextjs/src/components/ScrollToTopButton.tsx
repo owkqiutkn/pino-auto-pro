@@ -1,20 +1,36 @@
 "use client";
 
-import {useEffect, useState} from "react";
-import {useTranslations} from "next-intl";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+
+const SCROLL_THRESHOLD = 400;
 
 export default function ScrollToTopButton() {
   const [visible, setVisible] = useState(false);
+  const lastVisibleRef = useRef(false);
+  const tickingRef = useRef(false);
   const t = useTranslations("Common");
+
+  const updateVisibility = useCallback(() => {
+    const nowVisible = window.scrollY > SCROLL_THRESHOLD;
+    if (lastVisibleRef.current !== nowVisible) {
+      lastVisibleRef.current = nowVisible;
+      setVisible(nowVisible);
+    }
+    tickingRef.current = false;
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
-      setVisible(window.scrollY > 400);
+      if (!tickingRef.current) {
+        tickingRef.current = true;
+        requestAnimationFrame(updateVisibility);
+      }
     };
-    onScroll();
-    window.addEventListener("scroll", onScroll);
+    updateVisibility();
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [updateVisibility]);
 
   if (!visible) return null;
 
