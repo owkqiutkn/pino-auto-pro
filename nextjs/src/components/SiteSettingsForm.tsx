@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Settings, CheckCircle, Upload, X, Clock } from "lucide-react";
+import { Settings, CheckCircle, Upload, X, Clock, Search } from "lucide-react";
 import { createSPASassClientAuthenticated } from "@/lib/supabase/client";
 import type { Database, OpeningHoursJson } from "@/lib/types";
 
@@ -25,11 +25,17 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
     const [facebookUrl, setFacebookUrl] = useState("");
     const [twitterUrl, setTwitterUrl] = useState("");
     const [openingHours, setOpeningHours] = useState<OpeningHoursJson>({});
+    const [metaTitle, setMetaTitle] = useState("");
+    const [metaDescription, setMetaDescription] = useState("");
+    const [siteUrl, setSiteUrl] = useState("");
+    const [ogImage, setOgImage] = useState("");
+    const [ogImageFile, setOgImageFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const lightInputRef = useRef<HTMLInputElement>(null);
     const darkInputRef = useRef<HTMLInputElement>(null);
+    const ogInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (initialSettings) {
@@ -39,6 +45,10 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
             setInstagramUrl(initialSettings.instagram_url ?? "");
             setFacebookUrl(initialSettings.facebook_url ?? "");
             setTwitterUrl(initialSettings.twitter_url ?? "");
+            setMetaTitle(initialSettings.meta_title ?? "");
+            setMetaDescription(initialSettings.meta_description ?? "");
+            setSiteUrl(initialSettings.site_url ?? "");
+            setOgImage(initialSettings.og_image ?? "");
             const hours = (initialSettings.opening_hours as OpeningHoursJson) ?? {};
             if (Object.keys(hours).length === 0) {
                 const defaults: OpeningHoursJson = {};
@@ -76,6 +86,15 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                 darkInputRef.current?.setAttribute("value", "");
             }
 
+            let finalOgImage: string = ogImage;
+            if (ogImageFile) {
+                const { data, error: uploadErr } = await client.uploadSiteOgImage(ogImageFile);
+                if (uploadErr) throw uploadErr;
+                finalOgImage = data?.publicUrl ?? ogImage;
+                setOgImageFile(null);
+                ogInputRef.current?.setAttribute("value", "");
+            }
+
             const res = await fetch("/api/settings", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -87,6 +106,10 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                     facebook_url: facebookUrl || null,
                     twitter_url: twitterUrl || null,
                     opening_hours: Object.keys(openingHours).length ? openingHours : null,
+                    meta_title: metaTitle.trim() || null,
+                    meta_description: metaDescription.trim() || null,
+                    site_url: siteUrl.trim() || null,
+                    og_image: finalOgImage?.trim() || null,
                 }),
             });
 
@@ -96,6 +119,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
             }
             setLogoLight(finalLogoLight || "");
             setLogoDark(finalLogoDark || "");
+            setOgImage(finalOgImage || "");
             setSuccess("Settings saved successfully");
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to update settings");
@@ -300,6 +324,95 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
                             />
                         </div>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+                        >
+                            {loading ? "Saving..." : "Save Settings"}
+                        </button>
+                    </form>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <Search className="h-5 w-5" />
+                        SEO &amp; Social Sharing
+                    </CardTitle>
+                    <CardDescription>
+                        These values are used for search results and for Open Graph (Facebook, LinkedIn) and Twitter Cards when your site is shared. Leave blank to use business name and default description.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="space-y-4">
+                            <h3 className="text-sm font-semibold text-gray-800 border-b border-gray-200 pb-1">
+                                Open Graph (Facebook, LinkedIn) &amp; Twitter Cards
+                            </h3>
+                        </div>
+                        <div>
+                            <label htmlFor="meta-title" className="block text-sm font-medium text-gray-700">
+                                Title (og:title, twitter:title)
+                            </label>
+                            <input
+                                type="text"
+                                id="meta-title"
+                                value={metaTitle}
+                                onChange={(e) => setMetaTitle(e.target.value)}
+                                placeholder="e.g. Used Cars Montreal"
+                                maxLength={70}
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
+                            />
+                            <p className="mt-0.5 text-xs text-gray-500">Page title for search and social. Recommended under 60 characters.</p>
+                        </div>
+                        <div>
+                            <label htmlFor="meta-description" className="block text-sm font-medium text-gray-700">
+                                Description (og:description, twitter:description)
+                            </label>
+                            <textarea
+                                id="meta-description"
+                                value={metaDescription}
+                                onChange={(e) => setMetaDescription(e.target.value)}
+                                placeholder="e.g. Browse our inventory of quality used vehicles."
+                                maxLength={160}
+                                rows={3}
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
+                            />
+                            <p className="mt-0.5 text-xs text-gray-500">Short description for search and social. Recommended 150–160 characters.</p>
+                        </div>
+                        <div>
+                            <label htmlFor="site-url" className="block text-sm font-medium text-gray-700">
+                                Site URL (og:url)
+                            </label>
+                            <input
+                                type="url"
+                                id="site-url"
+                                value={siteUrl}
+                                onChange={(e) => setSiteUrl(e.target.value)}
+                                placeholder="https://yoursite.com"
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
+                            />
+                            <p className="mt-0.5 text-xs text-gray-500">Canonical URL for the site. Used as og:url when sharing.</p>
+                        </div>
+                        <LogoUploadField
+                            label="Image (og:image, twitter:image)"
+                            hint="Image for social sharing. Recommended 1200×630 px. Used as og:image and twitter:image."
+                            file={ogImageFile}
+                            setFile={setOgImageFile}
+                            currentUrl={ogImage}
+                            setCurrentUrl={setOgImage}
+                            inputRef={ogInputRef}
+                            inputId="og-image"
+                            onFileChange={(e) => {
+                                const f = e.target.files?.[0];
+                                if (f) setOgImageFile(f);
+                            }}
+                        />
+                        <p className="text-xs text-gray-500">
+                            og:type is set to &quot;website&quot; and twitter:card to &quot;summary_large_image&quot; automatically.
+                        </p>
                         <button
                             type="submit"
                             disabled={loading}

@@ -344,6 +344,24 @@ export class SassClient {
         };
     }
 
+    /** Upload the Open Graph image for social sharing. Returns public URL. */
+    async uploadSiteOgImage(file: File) {
+        const cleaned = file.name.replace(/[^0-9a-zA-Z!\-_.*'()]/g, '_');
+        const ext = cleaned.slice(cleaned.lastIndexOf('.')) || '.png';
+        const storagePath = `logos/og_${Date.now()}${ext}`;
+        const uploadResponse = await this.client.storage.from('site-logos').upload(storagePath, file, {
+            upsert: true,
+        });
+        if (uploadResponse.error) {
+            return { data: null, error: uploadResponse.error };
+        }
+        const publicUrlResponse = this.client.storage.from('site-logos').getPublicUrl(storagePath);
+        return {
+            data: { path: storagePath, publicUrl: publicUrlResponse.data.publicUrl },
+            error: null,
+        };
+    }
+
     async deleteCategory(id: string) {
         return this.client
             .from('categories')

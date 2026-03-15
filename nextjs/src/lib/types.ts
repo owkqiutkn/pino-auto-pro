@@ -496,6 +496,10 @@ export type Database = {
           facebook_url: string | null
           twitter_url: string | null
           opening_hours: OpeningHoursJson | null
+          meta_title: string | null
+          meta_description: string | null
+          og_image: string | null
+          site_url: string | null
           updated_at: string
         }
         Insert: {
@@ -507,6 +511,10 @@ export type Database = {
           facebook_url?: string | null
           twitter_url?: string | null
           opening_hours?: OpeningHoursJson | null
+          meta_title?: string | null
+          meta_description?: string | null
+          og_image?: string | null
+          site_url?: string | null
           updated_at?: string
         }
         Update: {
@@ -518,6 +526,10 @@ export type Database = {
           facebook_url?: string | null
           twitter_url?: string | null
           opening_hours?: OpeningHoursJson | null
+          meta_title?: string | null
+          meta_description?: string | null
+          og_image?: string | null
+          site_url?: string | null
           updated_at?: string
         }
         Relationships: []

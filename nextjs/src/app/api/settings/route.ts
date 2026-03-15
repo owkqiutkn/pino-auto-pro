@@ -12,7 +12,19 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { business_name, logo_light, logo_dark, instagram_url, facebook_url, twitter_url, opening_hours } = body;
+        const {
+            business_name,
+            logo_light,
+            logo_dark,
+            instagram_url,
+            facebook_url,
+            twitter_url,
+            opening_hours,
+            meta_title,
+            meta_description,
+            og_image,
+            site_url,
+        } = body;
 
         const updates: Record<string, unknown> = {};
         if (business_name !== undefined) updates.business_name = business_name ?? null;
@@ -22,6 +34,10 @@ export async function POST(request: NextRequest) {
         if (facebook_url !== undefined) updates.facebook_url = facebook_url ?? null;
         if (twitter_url !== undefined) updates.twitter_url = twitter_url ?? null;
         if (opening_hours !== undefined) updates.opening_hours = opening_hours ?? null;
+        if (meta_title !== undefined) updates.meta_title = meta_title ?? null;
+        if (meta_description !== undefined) updates.meta_description = meta_description ?? null;
+        if (og_image !== undefined) updates.og_image = og_image ?? null;
+        if (site_url !== undefined) updates.site_url = site_url ?? null;
 
         const client = await createSSRSassClient();
         const { data, error } = await client.updateSiteSettings(updates);
