@@ -1,5 +1,11 @@
 .expo
 
+# Environment (never commit secrets)
+.env
+.env.*
+!.env.template
+!.env.example
+
 # Cursor IDE
 .cursor/
 .agents/
