@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState, use } from "react";
 import { ArrowDown, ArrowUp, Star, Trash2 } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
+import { compressImageForUpload } from "@/lib/image-compression";
 import { Database } from "@/lib/types";
 import { storagePathFromPublicUrl } from "@/lib/cars";
 import { getTransformedStorageUrl } from "@/lib/storage";
@@ -319,7 +320,8 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
             let sortOrder = images.reduce((max, image) => Math.max(max, image.sort_order), 0) + 1;
             for (let index = 0; index < files.length; index += 1) {
                 const file = files[index];
-                const upload = await client.uploadCarImage(id, file.name, file);
+                const compressed = await compressImageForUpload(file);
+                const upload = await client.uploadCarImage(id, compressed.name, compressed);
                 if (upload.error) throw upload.error;
                 const { error: createImageError } = await client.createCarImage({
                     car_id: id,

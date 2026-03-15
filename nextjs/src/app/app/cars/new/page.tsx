@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState, use } from "react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { slugifyCar } from "@/lib/cars";
+import { compressImageForUpload } from "@/lib/image-compression";
 import { Database } from "@/lib/types";
 import { getLocalizedExteriorColorName } from "@/lib/i18n/colors";
 import { getLocalizedCategoryName } from "@/lib/i18n/categories";
@@ -288,7 +289,8 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
             }
 
             if (mainImageFile) {
-                const mainUpload = await client.uploadCarImage(createdCar.id, mainImageFile.name, mainImageFile);
+                const mainCompressed = await compressImageForUpload(mainImageFile);
+                const mainUpload = await client.uploadCarImage(createdCar.id, mainCompressed.name, mainCompressed);
                 if (mainUpload.error) {
                     throw mainUpload.error;
                 }
@@ -305,7 +307,8 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
 
             for (let index = 0; index < extraImageFiles.length; index += 1) {
                 const file = extraImageFiles[index];
-                const upload = await client.uploadCarImage(createdCar.id, file.name, file);
+                const compressed = await compressImageForUpload(file);
+                const upload = await client.uploadCarImage(createdCar.id, compressed.name, compressed);
                 if (upload.error) {
                     throw upload.error;
                 }

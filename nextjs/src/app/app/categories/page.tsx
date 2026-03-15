@@ -4,6 +4,7 @@ import { FormEvent, useCallback, useEffect, useRef, useState, use } from "react"
 import Image from "next/image";
 import { Loader2, Plus, Trash2, Pencil, ImagePlus, X } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
+import { compressImageForUpload } from "@/lib/image-compression";
 import { Database } from "@/lib/types";
 import { getTransformedStorageUrl } from "@/lib/storage";
 import { useTranslations } from "next-intl";
@@ -89,7 +90,8 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
             const { data: created, error: createError } = await client.createCategory(nameEn.trim(), nameEs.trim(), nameFr.trim());
             if (createError) throw createError;
             if (created && imageFile) {
-                const { data: uploadData, error: uploadError } = await client.uploadCategoryImage(created.id, imageFile.name, imageFile);
+                const compressed = await compressImageForUpload(imageFile);
+                const { data: uploadData, error: uploadError } = await client.uploadCategoryImage(created.id, compressed.name, compressed);
                 if (uploadError) throw uploadError;
                 if (uploadData?.publicUrl) {
                     await client.updateCategory(created.id, nameEn.trim(), nameEs.trim(), nameFr.trim(), uploadData.publicUrl);
@@ -126,7 +128,8 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
             if (removeImage) {
                 imageUrl = null;
             } else if (imageFile) {
-                const { data: uploadData, error: uploadError } = await client.uploadCategoryImage(editingId, imageFile.name, imageFile);
+                const compressed = await compressImageForUpload(imageFile);
+                const { data: uploadData, error: uploadError } = await client.uploadCategoryImage(editingId, compressed.name, compressed);
                 if (uploadError) throw uploadError;
                 imageUrl = uploadData?.publicUrl ?? null;
             }
