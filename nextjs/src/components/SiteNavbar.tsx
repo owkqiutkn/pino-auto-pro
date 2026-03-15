@@ -37,27 +37,35 @@ const navLinks = [
 export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavbarProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+    const [langDropdownSource, setLangDropdownSource] = useState<"desktop" | "mobile">("desktop");
     const [langDropdownPosition, setLangDropdownPosition] = useState<{ top: number; right: number; minWidth: number } | null>(null);
     const langDropdownRef = useRef<HTMLDivElement>(null);
+    const mobileLangDropdownRef = useRef<HTMLDivElement>(null);
     const langDropdownPortalRef = useRef<HTMLDivElement>(null);
 
     useLayoutEffect(() => {
-        if (!isLangDropdownOpen || !langDropdownRef.current) {
+        if (!isLangDropdownOpen) {
             setLangDropdownPosition(null);
             return;
         }
-        const rect = langDropdownRef.current.getBoundingClientRect();
+        const triggerRef = langDropdownSource === "mobile" ? mobileLangDropdownRef : langDropdownRef;
+        if (!triggerRef.current) {
+            setLangDropdownPosition(null);
+            return;
+        }
+        const rect = triggerRef.current.getBoundingClientRect();
         setLangDropdownPosition({
             top: rect.bottom + 4,
             right: window.innerWidth - rect.right,
             minWidth: rect.width,
         });
-    }, [isLangDropdownOpen]);
+    }, [isLangDropdownOpen, langDropdownSource]);
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             const target = e.target as Node;
             if (langDropdownRef.current?.contains(target)) return;
+            if (mobileLangDropdownRef.current?.contains(target)) return;
             if (langDropdownPortalRef.current?.contains(target)) return;
             setIsLangDropdownOpen(false);
         };
@@ -110,7 +118,10 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                             <div ref={langDropdownRef} className="relative">
                                 <button
                                     type="button"
-                                    onClick={() => setIsLangDropdownOpen((o) => !o)}
+                                    onClick={() => {
+                                        setLangDropdownSource("desktop");
+                                        setIsLangDropdownOpen((o) => !o);
+                                    }}
                                     aria-label={t("language.label")}
                                     aria-expanded={isLangDropdownOpen}
                                     aria-haspopup="listbox"
@@ -278,12 +289,16 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                             <span className="text-[10px] uppercase tracking-[0.16em] text-white/60">
                                 {t("language.label")}
                             </span>
-                            <div className="relative">
+                            <div ref={mobileLangDropdownRef} className="relative">
                                 <button
                                     type="button"
-                                    onClick={() => setIsLangDropdownOpen((o) => !o)}
+                                    onClick={() => {
+                                        setLangDropdownSource("mobile");
+                                        setIsLangDropdownOpen((o) => !o);
+                                    }}
                                     aria-label={t("language.label")}
                                     aria-expanded={isLangDropdownOpen}
+                                    aria-haspopup="listbox"
                                     className="flex items-center gap-1 rounded-full bg-white/5 px-2.5 py-1 text-[10px] ring-1 ring-white/20"
                                 >
                                     <span className="uppercase font-semibold">{locale}</span>
@@ -297,23 +312,6 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                                         <path d="M3 4.5L6 7.5L9 4.5" />
                                     </svg>
                                 </button>
-                                {isLangDropdownOpen && (
-                                    <div className="absolute right-0 top-full mt-1 min-w-[120px] rounded-lg bg-[#0a0a0d] py-1 shadow-lg ring-1 ring-white/20 z-[10020]">
-                                        {LOCALES.map((loc) => (
-                                            <a
-                                                key={loc}
-                                                href={localeSwitchHref(loc)}
-                                                className={`block px-3 py-1.5 text-[10px] uppercase tracking-wide ${
-                                                    locale === loc
-                                                        ? "bg-white/20 text-white font-semibold"
-                                                        : "text-white/80 hover:bg-white/10 hover:text-white"
-                                                }`}
-                                            >
-                                                {t(`language.${loc}`)}
-                                            </a>
-                                        ))}
-                                    </div>
-                                )}
                             </div>
                         </div>
                         <div className="mt-1 flex items-center gap-2 text-white/80">
