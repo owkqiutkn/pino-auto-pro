@@ -50,7 +50,8 @@ export default async function RootLayout({
   if (!theme) {
     theme = "theme-sass3";
   }
-  const gaID = process.env.NEXT_PUBLIC_GOOGLE_TAG;
+  const settings = await getCachedSiteSettings();
+  const gaID = settings?.google_analytics_id?.trim() || process.env.NEXT_PUBLIC_GOOGLE_TAG;
   const locale = await getLocale();
   const messages = await getMessages();
 

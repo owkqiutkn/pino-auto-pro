@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Settings, CheckCircle, Upload, X, Clock, Search } from "lucide-react";
+import { Settings, CheckCircle, Upload, X, Clock, Search, BarChart3 } from "lucide-react";
 import { createSPASassClientAuthenticated } from "@/lib/supabase/client";
 import type { Database, OpeningHoursJson } from "@/lib/types";
 
@@ -28,6 +28,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
     const [metaTitle, setMetaTitle] = useState("");
     const [metaDescription, setMetaDescription] = useState("");
     const [siteUrl, setSiteUrl] = useState("");
+    const [googleAnalyticsId, setGoogleAnalyticsId] = useState("");
     const [ogImage, setOgImage] = useState("");
     const [ogImageFile, setOgImageFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
@@ -48,6 +49,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
             setMetaTitle(initialSettings.meta_title ?? "");
             setMetaDescription(initialSettings.meta_description ?? "");
             setSiteUrl(initialSettings.site_url ?? "");
+            setGoogleAnalyticsId(initialSettings.google_analytics_id ?? "");
             setOgImage(initialSettings.og_image ?? "");
             const hours = (initialSettings.opening_hours as OpeningHoursJson) ?? {};
             if (Object.keys(hours).length === 0) {
@@ -109,6 +111,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                     meta_title: metaTitle.trim() || null,
                     meta_description: metaDescription.trim() || null,
                     site_url: siteUrl.trim() || null,
+                    google_analytics_id: googleAnalyticsId.trim() || null,
                     og_image: finalOgImage?.trim() || null,
                 }),
             });
@@ -166,7 +169,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                         {previewUrl ? (
                             <img src={previewUrl} alt="" className="h-full w-full object-contain" />
                         ) : (
-                            <span className="text-xs text-gray-400">No logo</span>
+                            <span className="text-xs text-gray-400">No image</span>
                         )}
                     </div>
                     <div className="flex flex-1 flex-col gap-2">
@@ -410,6 +413,43 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                                 if (f) setOgImageFile(f);
                             }}
                         />
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+                        >
+                            {loading ? "Saving..." : "Save Settings"}
+                        </button>
+                    </form>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <BarChart3 className="h-5 w-5" />
+                        Google Analytics
+                    </CardTitle>
+                    <CardDescription>
+                        Optional. Enter your Google Analytics 4 Measurement ID (e.g. G-XXXXXXXXXX) to track traffic. Leave blank to disable or to use the environment variable.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div>
+                            <label htmlFor="google-analytics-id" className="block text-sm font-medium text-gray-700">
+                                Measurement ID
+                            </label>
+                            <input
+                                type="text"
+                                id="google-analytics-id"
+                                value={googleAnalyticsId}
+                                onChange={(e) => setGoogleAnalyticsId(e.target.value)}
+                                placeholder="G-XXXXXXXXXX"
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
+                            />
+                            <p className="mt-0.5 text-xs text-gray-500">Find this in Google Analytics under Admin → Data Streams → your stream → Measurement ID.</p>
+                        </div>
                         <button
                             type="submit"
                             disabled={loading}

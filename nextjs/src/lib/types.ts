@@ -500,6 +500,7 @@ export type Database = {
           meta_description: string | null
           og_image: string | null
           site_url: string | null
+          google_analytics_id: string | null
           updated_at: string
         }
         Insert: {
@@ -515,6 +516,7 @@ export type Database = {
           meta_description?: string | null
           og_image?: string | null
           site_url?: string | null
+          google_analytics_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -530,6 +532,7 @@ export type Database = {
           meta_description?: string | null
           og_image?: string | null
           site_url?: string | null
+          google_analytics_id?: string | null
           updated_at?: string
         }
         Relationships: []

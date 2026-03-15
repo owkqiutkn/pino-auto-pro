@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
             meta_description,
             og_image,
             site_url,
+            google_analytics_id,
         } = body;
 
         const updates: Record<string, unknown> = {};
@@ -38,6 +39,7 @@ export async function POST(request: NextRequest) {
         if (meta_description !== undefined) updates.meta_description = meta_description ?? null;
         if (og_image !== undefined) updates.og_image = og_image ?? null;
         if (site_url !== undefined) updates.site_url = site_url ?? null;
+        if (google_analytics_id !== undefined) updates.google_analytics_id = google_analytics_id ?? null;
 
         const client = await createSSRSassClient();
         const { data, error } = await client.updateSiteSettings(updates);
