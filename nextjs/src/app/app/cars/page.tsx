@@ -6,7 +6,7 @@ import { useEffect, useState, use } from "react";
 import { Loader2, Pencil, Plus, Trash2 } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/types";
-import { getTransformedStorageUrl, CAR_IMAGE_LIST } from "@/lib/storage";
+import { getTransformedStorageUrl } from "@/lib/storage";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
@@ -157,7 +157,7 @@ export default function CarsListPage({ searchParams }: CarsListPageProps) {
                                 <div className="relative w-16 h-12 rounded bg-gray-100 overflow-hidden">
                                     {coverByCar[car.id] ? (
                                         <Image
-                                            src={getTransformedStorageUrl(coverByCar[car.id], CAR_IMAGE_LIST)}
+                                            src={getTransformedStorageUrl(coverByCar[car.id])}
                                             alt={car.title}
                                             fill
                                             className="object-cover"

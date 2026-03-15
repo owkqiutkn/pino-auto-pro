@@ -21,7 +21,7 @@ import { getLocalizedEngineName } from "@/lib/i18n/engines";
 import { getLocalizedFuelName } from "@/lib/i18n/fuels";
 import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
 import type { Database } from "@/lib/types";
-import { getTransformedStorageUrl, CAR_IMAGE_LIST } from "@/lib/storage";
+import { getTransformedStorageUrl } from "@/lib/storage";
 
 type Category = Database["public"]["Tables"]["categories"]["Row"];
 type Engine = Database["public"]["Tables"]["engines"]["Row"];
@@ -233,7 +233,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                     <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                                         {coverImageByCarId[car.id] ? (
                                             <Image
-                                                src={getTransformedStorageUrl(coverImageByCarId[car.id], CAR_IMAGE_LIST)}
+                                                src={getTransformedStorageUrl(coverImageByCarId[car.id])}
                                                 alt={car.title}
                                                 fill
                                                 className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"

@@ -8,7 +8,7 @@ import { ArrowDown, ArrowUp, Star, Trash2 } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/types";
 import { storagePathFromPublicUrl } from "@/lib/cars";
-import { getTransformedStorageUrl, CAR_IMAGE_LIST } from "@/lib/storage";
+import { getTransformedStorageUrl } from "@/lib/storage";
 import { getLocalizedExteriorColorName } from "@/lib/i18n/colors";
 import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { getLocalizedEngineName } from "@/lib/i18n/engines";
@@ -671,7 +671,7 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                             <div className="max-w-sm border rounded-lg overflow-hidden">
                                 <div className="relative aspect-[4/3] bg-gray-100">
                                     <Image
-                                        src={getTransformedStorageUrl(coverImage.image_url, CAR_IMAGE_LIST)}
+                                        src={getTransformedStorageUrl(coverImage.image_url)}
                                         alt={`${car.title} main image`}
                                         fill
                                         className="object-cover"
@@ -705,7 +705,7 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                                     <div key={image.id} className="border rounded-lg overflow-hidden">
                                         <div className="relative aspect-[4/3] bg-gray-100">
                                             <Image
-                                                src={getTransformedStorageUrl(image.image_url, CAR_IMAGE_LIST)}
+                                                src={getTransformedStorageUrl(image.image_url)}
                                                 alt={car.title}
                                                 fill
                                                 className="object-cover"

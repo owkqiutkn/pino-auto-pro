@@ -43,15 +43,3 @@ export function getTransformedStorageUrl(
   const qs = params.toString();
   return qs ? `${base}?${qs}` : base;
 }
-
-/** Defaults for car list/cover thumbnails (e.g. cards). */
-export const CAR_IMAGE_LIST = { width: 800, height: 600, resize: "cover" as const };
-
-/** Defaults for car detail main image. */
-export const CAR_IMAGE_DETAIL = { width: 1200, height: 900, resize: "cover" as const };
-
-/** Defaults for car gallery thumbnails. */
-export const CAR_IMAGE_THUMB = { width: 192, height: 128, resize: "cover" as const };
-
-/** Defaults for category/site images (small icons or cards). */
-export const CATEGORY_IMAGE = { width: 400, height: 300, resize: "cover" as const };

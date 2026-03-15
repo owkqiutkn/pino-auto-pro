@@ -22,7 +22,7 @@ import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { getLocalizedEngineName } from "@/lib/i18n/engines";
 import { getLocalizedFuelName } from "@/lib/i18n/fuels";
 import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
-import { getTransformedStorageUrl, CAR_IMAGE_LIST } from "@/lib/storage";
+import { getTransformedStorageUrl } from "@/lib/storage";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
@@ -264,7 +264,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                         <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                                             {cover ? (
                                                 <Image
-                                                    src={getTransformedStorageUrl(cover.image_url, CAR_IMAGE_LIST)}
+                                                    src={getTransformedStorageUrl(cover.image_url)}
                                                     alt={car.title}
                                                     fill
                                                     className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
