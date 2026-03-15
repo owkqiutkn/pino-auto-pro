@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Analytics } from '@vercel/analytics/next';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
@@ -63,7 +62,6 @@ export default async function RootLayout({
             {children}
           </CookieManagerProvider>
         </NextIntlClientProvider>
-        <Analytics />
         {gaID && <GoogleAnalytics gaId={gaID} />}
       </body>
     </html>
