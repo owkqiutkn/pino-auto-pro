@@ -142,7 +142,7 @@ export default async function Home() {
                                         className="absolute inset-0 h-full w-full object-cover scale-110 opacity-60"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-br from-blue-950/70 via-blue-950/85 to-blue-950/95 mix-blend-multiply" />
-                                    <div className="relative z-10 flex h-full w-full flex-col justify-center p-5">
+                                    <div className="relative z-10 flex h-full w-full flex-col justify-center p-5 text-center md:text-left items-center md:items-start">
                                         <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-[11px] font-black text-blue-600">
                                             {"iconImage" in item && item.iconImage ? (
                                                 /* eslint-disable-next-line @next/next/no-img-element */
