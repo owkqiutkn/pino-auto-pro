@@ -1,5 +1,5 @@
 "use client";
-import React, { use } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, FileText, ShieldAlert, RefreshCw } from 'lucide-react';
@@ -27,13 +27,9 @@ const legalDocuments = [
 
 type LegalLayoutProps = {
     children: React.ReactNode;
-    params?: Promise<Record<string, string | string[]>>;
-    searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export default function LegalLayout({ children, params, searchParams }: LegalLayoutProps) {
-    use(params ?? Promise.resolve({})); // Unwrap to satisfy Next.js 15 async dynamic APIs
-    use(searchParams ?? Promise.resolve({})); // Unwrap to satisfy Next.js 15 async dynamic APIs
+export default function LegalLayout({ children }: LegalLayoutProps) {
     const router = useRouter();
 
     return (

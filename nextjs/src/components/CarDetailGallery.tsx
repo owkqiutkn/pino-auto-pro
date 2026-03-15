@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { Database } from "@/lib/types";
 
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
@@ -44,12 +45,12 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
     const displayImages = sortedImages.length > 0 ? sortedImages : [];
     const currentImage = displayImages[selectedIndex] ?? null;
 
-    const goPrev = () => {
+    const goPrev = useCallback(() => {
         setSelectedIndex((i) => (i === 0 ? displayImages.length - 1 : i - 1));
-    };
-    const goNext = () => {
+    }, [displayImages.length]);
+    const goNext = useCallback(() => {
         setSelectedIndex((i) => (i === displayImages.length - 1 ? 0 : i + 1));
-    };
+    }, [displayImages.length]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -60,7 +61,7 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
         };
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [lightboxOpen]);
+    }, [lightboxOpen, goPrev, goNext]);
 
     useEffect(() => {
         if (lightboxOpen) {
@@ -85,11 +86,13 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
                 aria-label="View image full screen"
             >
                 {currentImage ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
+                    <Image
                         src={currentImage.image_url}
                         alt={title}
-                        className="h-full w-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 800px"
+                        unoptimized
                     />
                 ) : (
                     <div className="flex h-full w-full items-center justify-center text-gray-400">No image</div>
@@ -137,12 +140,16 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
                             <NavButton direction="next" onClick={goNext} stopPropagation />
                         </>
                     )}
-                    <img
-                        src={currentImage.image_url}
-                        alt={title}
-                        className="max-h-full max-w-full object-contain"
-                        onClick={(e) => e.stopPropagation()}
-                    />
+                    <div className="relative w-[90vw] h-[80vh]" onClick={(e) => e.stopPropagation()}>
+                        <Image
+                            src={currentImage.image_url}
+                            alt={title}
+                            fill
+                            className="object-contain"
+                            sizes="90vw"
+                            unoptimized
+                        />
+                    </div>
                 </div>
             )}
 
@@ -169,11 +176,13 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
                                     idx === selectedIndex ? "border-[#1d4ed8]" : "border-gray-200 hover:border-gray-300"
                                 }`}
                             >
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
+                                <Image
                                     src={img.image_url}
                                     alt={`${title} - view ${idx + 1}`}
+                                    width={96}
+                                    height={64}
                                     className="h-full w-full object-cover"
+                                    unoptimized
                                 />
                             </button>
                         ))}

@@ -63,9 +63,10 @@ export default function FuelsPage({ searchParams }: FuelsPageProps) {
             setSaving(true);
             setError("");
             const client = await createSPASassClient();
-            const { error: createError } = await client.createFuel(nameEn.trim(), nameFr.trim());
+            const { error: createError } = await client.createFuel(nameEn.trim(), nameEs.trim(), nameFr.trim());
             if (createError) throw createError;
             setNameEn("");
+            setNameEs("");
             setNameFr("");
             await loadFuels();
         } catch (err) {

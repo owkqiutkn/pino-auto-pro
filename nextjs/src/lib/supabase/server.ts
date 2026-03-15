@@ -6,7 +6,7 @@ import { Database } from "@/lib/types";
 
 /** Anonymous client for cacheable public data (no cookies). Safe inside unstable_cache. */
 export function createAnonymousSassClient() {
-    const client = createClient<Database, "public", Database["public"]>(
+    const client = createClient<Database>(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
@@ -17,7 +17,7 @@ export function createAnonymousSassClient() {
 export async function createSSRClient() {
     const cookieStore = await cookies()
 
-    return createServerClient<Database, "public", Database["public"]>(
+    return createServerClient<Database>(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
         {

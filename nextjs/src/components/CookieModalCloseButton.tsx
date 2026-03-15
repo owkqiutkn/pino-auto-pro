@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 const MODAL_SELECTOR =
   ".cookie-manager div.fixed.inset-0 div[class*='max-w-lg'][class*='rounded-xl']";
@@ -17,8 +17,6 @@ function findCancelButton(container: HTMLElement): HTMLButtonElement | null {
 
 export function CookieModalCloseButton() {
   useEffect(() => {
-    let closeBtn: HTMLButtonElement | null = null;
-
     const injectCloseButton = () => {
       const modalContent = document.querySelector(MODAL_SELECTOR);
       if (!modalContent || !(modalContent instanceof HTMLElement)) return false;
@@ -45,14 +43,12 @@ export function CookieModalCloseButton() {
 
       modalContent.style.position = "relative";
       modalContent.appendChild(btn);
-      closeBtn = btn;
       return true;
     };
 
     const removeCloseButton = () => {
       const existing = document.querySelector("[data-cookie-modal-close]");
       if (existing?.parentElement) existing.remove();
-      closeBtn = null;
     };
 
     const checkAndInject = () => {

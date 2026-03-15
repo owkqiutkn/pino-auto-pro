@@ -60,10 +60,12 @@ export default function TransmissionsPage({ searchParams }: TransmissionsPagePro
             const client = await createSPASassClient();
             const { error: createError } = await client.createTransmission(
                 nameEn.trim(),
+                nameEs.trim(),
                 nameFr.trim()
             );
             if (createError) throw createError;
             setNameEn("");
+            setNameEs("");
             setNameFr("");
             await loadTransmissions();
         } catch (err) {

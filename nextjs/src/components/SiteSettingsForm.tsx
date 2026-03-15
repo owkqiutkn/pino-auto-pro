@@ -167,7 +167,10 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                 <div className="mt-1 flex items-center gap-4">
                     <div className="flex h-16 w-32 flex-shrink-0 items-center justify-center overflow-hidden rounded-md border border-gray-200 bg-gray-50">
                         {previewUrl ? (
-                            <img src={previewUrl} alt="" className="h-full w-full object-contain" />
+                            <>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={previewUrl} alt="" className="h-full w-full object-contain" />
+                            </>
                         ) : (
                             <span className="text-xs text-gray-400">No image</span>
                         )}

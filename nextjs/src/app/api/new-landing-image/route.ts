@@ -6,7 +6,7 @@ const IMAGE_PATH =
 export async function GET() {
     try {
         const image = await readFile(IMAGE_PATH);
-        return new Response(image, {
+        return new Response(new Uint8Array(image), {
             headers: {
                 "Content-Type": "image/png",
                 "Cache-Control": "no-store",

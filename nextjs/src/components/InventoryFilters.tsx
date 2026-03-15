@@ -111,6 +111,7 @@ export default function InventoryFilters({
             if (value === prevValue) return;
             const timer = setTimeout(() => navigate({ [name]: value === "" ? undefined : value }), DEBOUNCE_MS);
             return () => clearTimeout(timer);
+            // eslint-disable-next-line react-hooks/exhaustive-deps -- navigate is stable (useCallback), listing it triggers "unnecessary dependency"
         }, [value, prevValue, name, navigate]);
     };
 
