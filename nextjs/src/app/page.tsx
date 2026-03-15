@@ -414,9 +414,18 @@ export default async function Home() {
             <footer className="bg-[#171717] py-10 text-xs text-white/80">
                 <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 md:grid-cols-3">
                     <div>
-                        <h4 className="mb-3 font-bold uppercase text-white">
-                            {t("footer.contactTitle")}
-                        </h4>
+                        {siteSettings?.logo_light ? (
+                            /* eslint-disable-next-line @next/next/no-img-element */
+                            <img
+                                src={siteSettings.logo_light}
+                                alt={businessName}
+                                className="mb-3 h-8 max-w-[140px] object-contain object-left"
+                            />
+                        ) : (
+                            <h4 className="mb-3 font-bold uppercase text-white">
+                                {businessName}
+                            </h4>
+                        )}
                         <p className="text-white/60">{t("footer.addressLine1")}</p>
                         <p className="text-white/60">{t("footer.phone")}</p>
                         <p className="text-white/60">{t("footer.email")}</p>
@@ -465,7 +474,7 @@ export default async function Home() {
                             </a>
                         </div>
                     </div>
-                    <div className="w-fit min-w-[10rem] max-w-full">
+                    <div className="ml-auto w-fit min-w-[10rem] max-w-full md:ml-0">
                         <h4 className="mb-2 font-bold uppercase tracking-wide text-white text-[11px]">
                             {t("footer.hoursTitle")}
                         </h4>

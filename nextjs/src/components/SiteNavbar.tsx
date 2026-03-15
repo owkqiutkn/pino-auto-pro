@@ -35,6 +35,7 @@ const navLinks = [
 ];
 
 export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavbarProps) {
+    const [logoError, setLogoError] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
     const [langDropdownSource, setLangDropdownSource] = useState<"desktop" | "mobile">("desktop");
@@ -77,6 +78,10 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
 
     const businessName = siteSettings?.business_name ?? null;
     const logoUrl = siteSettings?.logo_light ?? null;
+
+    useEffect(() => {
+        setLogoError(false);
+    }, [logoUrl]);
     const facebookUrl = siteSettings?.facebook_url || DEFAULT_FACEBOOK;
     const instagramUrl = siteSettings?.instagram_url || DEFAULT_INSTAGRAM;
     const twitterUrl = siteSettings?.twitter_url || DEFAULT_TWITTER;
@@ -100,9 +105,14 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                 <div className="flex items-center justify-between py-1 md:py-2 text-[11px]">
                     <div className="flex items-center gap-3">
                         <Link href="/" className="flex items-center">
-                            {logoUrl ? (
+                            {logoUrl && !logoError ? (
                                 /* eslint-disable-next-line @next/next/no-img-element */
-                                <img src={logoUrl} alt={businessName ?? t("brand")} className="h-8 max-w-[140px] object-contain object-left" />
+                                <img
+                                    src={logoUrl}
+                                    alt={businessName ?? t("brand")}
+                                    className="h-8 max-w-[140px] object-contain object-left"
+                                    onError={() => setLogoError(true)}
+                                />
                             ) : (
                                 <span className="text-sm font-black tracking-wider">{businessName ?? t("brand")}</span>
                             )}
