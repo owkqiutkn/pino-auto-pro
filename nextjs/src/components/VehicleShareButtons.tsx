@@ -51,7 +51,7 @@ export default function VehicleShareButtons({ shareUrl, vehicleTitle, label }: V
                 >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                        src="https://img.icons8.com/?id=118466&format=png&size=24"
+                        src="/images/icon-facebook.png"
                         alt="Facebook"
                         className="h-4 w-4"
                     />
@@ -65,7 +65,7 @@ export default function VehicleShareButtons({ shareUrl, vehicleTitle, label }: V
                 >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                        src="https://img.icons8.com/?id=01GWmP9aUoPj&format=png&size=24"
+                        src="/images/icon-x.png"
                         alt="X (Twitter)"
                         className="h-4 w-4"
                     />
@@ -84,7 +84,7 @@ export default function VehicleShareButtons({ shareUrl, vehicleTitle, label }: V
                     ) : (
                         /* eslint-disable-next-line @next/next/no-img-element */
                         <img
-                            src="https://img.icons8.com/?id=32292&format=png&size=24"
+                            src="/images/icon-instagram.png"
                             alt="Instagram"
                             className="h-4 w-4 brightness-0 contrast-[1.3] saturate-0"
                         />

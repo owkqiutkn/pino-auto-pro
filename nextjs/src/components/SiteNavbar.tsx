@@ -143,7 +143,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                                 >
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
-                                        src="https://img.icons8.com/?id=118466&format=png&size=32"
+                                        src="/images/icon-facebook.png"
                                         alt="Facebook"
                                         className="h-3.5 w-3.5 brightness-0 invert"
                                     />
@@ -157,7 +157,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                                 >
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
-                                        src="https://img.icons8.com/?id=32292&format=png&size=32"
+                                        src="/images/icon-instagram.png"
                                         alt="Instagram"
                                         className="h-3.5 w-3.5 brightness-0 invert"
                                     />
@@ -171,7 +171,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                                 >
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
-                                        src="https://img.icons8.com/?id=01GWmP9aUoPj&format=png&size=32"
+                                        src="/images/icon-x.png"
                                         alt="X (Twitter)"
                                         className="h-3.5 w-3.5 brightness-0 invert"
                                     />
@@ -299,7 +299,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
-                                    src="https://img.icons8.com/?id=118466&format=png&size=32"
+                                    src="/images/icon-facebook.png"
                                     alt="Facebook"
                                     className="h-3.5 w-3.5 brightness-0 invert"
                                 />
@@ -313,7 +313,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
-                                    src="https://img.icons8.com/?id=32292&format=png&size=32"
+                                    src="/images/icon-instagram.png"
                                     alt="Instagram"
                                     className="h-3.5 w-3.5 brightness-0 invert"
                                 />
@@ -327,7 +327,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                             >
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
-                                    src="https://img.icons8.com/?id=01GWmP9aUoPj&format=png&size=32"
+                                    src="/images/icon-x.png"
                                     alt="X (Twitter)"
                                     className="h-3.5 w-3.5 brightness-0 invert"
                                 />
