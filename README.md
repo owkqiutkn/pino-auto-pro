@@ -3,22 +3,6 @@
 A production-ready SaaS template built with Next.js 15, Supabase, and Tailwind CSS. This template provides everything you need to quickly launch your SaaS product, including authentication, user management, file storage, and more.
 
 
-> **🎉 NEW: Mobile App Now Available!** Check out [README_MOBILE.md](./README_MOBILE.md) for the complete React Native + Expo mobile app that shares the same Supabase backend!
-> https://youtube.com/shorts/qcASa0Ywsy4?feature=share
-
-
-## 🇨🇳 Chinese Documentation Available
-
-[中文文档](./README_ZH.md) | [移动端中文文档](./README_MOBILE_ZH.md)
-
-This repository includes full documentation in Simplified Chinese:
-- **README_ZH.md** - Complete Chinese translation of the main documentation
-- **README_MOBILE_ZH.md** - Complete Chinese translation of the mobile app documentation
-
-本仓库包含完整的简体中文文档：
-- **README_ZH.md** - 主文档的完整中文翻译
-- **README_MOBILE_ZH.md** - 移动应用文档的完整中文翻译
-
 ## LIVE DEMO
 
 Demo is here - https://basicsass.razikus.com
