@@ -127,28 +127,31 @@ export default async function CarDetailPage({ params }: CarPageProps) {
         imagesByCar.set(img.car_id, bucket);
     }
 
-    const categoryRow = categories.find((c) => c.name_en === car.category || c.name_fr === car.category || c.name === car.category);
+    const categoryRow = categories.find((c) => c.name_en === car.category || c.name_es === car.category || c.name_fr === car.category || c.name === car.category);
     const bodyStyleDisplay = categoryRow ? getLocalizedCategoryName(categoryRow, locale) : car.category ?? t("na");
 
     const price = car.discounted_price ?? car.price;
 
     const carFeaturesByCategory = (() => {
         const data = carFeaturesResult.data ?? [];
-        const byCat = new Map<string, { categoryId: string; categoryName: string; features: { name_en: string; name_fr: string }[] }>();
+        const byCat = new Map<string, { categoryId: string; categoryName: string; features: { name_en: string; name_es: string; name_fr: string }[] }>();
         for (const item of data) {
             const catId = item.feature_category.id;
-            const catName = locale.startsWith("fr") ? item.feature_category.name_fr : item.feature_category.name_en;
+            const catName = locale.startsWith("fr") ? item.feature_category.name_fr : locale.startsWith("es") ? item.feature_category.name_es : item.feature_category.name_en;
             const entry = byCat.get(catId);
+            const featNames = { name_en: item.feature.name_en, name_es: item.feature.name_es, name_fr: item.feature.name_fr };
             if (entry) {
-                entry.features.push({ name_en: item.feature.name_en, name_fr: item.feature.name_fr });
+                entry.features.push(featNames);
             } else {
-                byCat.set(catId, { categoryId: catId, categoryName: catName, features: [{ name_en: item.feature.name_en, name_fr: item.feature.name_fr }] });
+                byCat.set(catId, { categoryId: catId, categoryName: catName, features: [featNames] });
             }
         }
+        const getFeatName = (f: { name_en: string; name_es: string; name_fr: string }) =>
+            locale.startsWith("fr") ? f.name_fr : locale.startsWith("es") ? f.name_es : f.name_en;
         return Array.from(byCat.values()).map((v) => ({
             categoryId: v.categoryId,
             categoryName: v.categoryName,
-            features: v.features.map((f) => (locale.startsWith("fr") ? f.name_fr : f.name_en)),
+            features: v.features.map((f) => getFeatName(f)),
         }));
     })();
 
@@ -271,7 +274,9 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                             <p className="mt-2 text-gray-700 whitespace-pre-wrap">
                                 {locale.startsWith("fr")
                                     ? (car.description_fr ?? car.description_en ?? car.description) || "No description provided."
-                                    : (car.description_en ?? car.description_fr ?? car.description) || "No description provided."}
+                                    : locale.startsWith("es")
+                                    ? (car.description_es ?? car.description_en ?? car.description) || "No description provided."
+                                    : (car.description_en ?? car.description_fr ?? car.description_es ?? car.description) || "No description provided."}
                             </p>
                             <p className="mt-3 text-xs text-gray-500">
                                 Information is subject to verification. Contact us for the most current details.

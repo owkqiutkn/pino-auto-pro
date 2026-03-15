@@ -66,20 +66,20 @@ function formatPrice(value: number) {
 
 function getEngineDisplay(engineValue: string | null, engines: Engine[], locale: string): string | null {
     if (!engineValue) return null;
-    const engine = engines.find((e) => (e.name_en ?? e.name) === engineValue || e.name === engineValue);
+    const engine = engines.find((e) => (e.name_en ?? e.name) === engineValue || e.name_es === engineValue || e.name === engineValue);
     return engine ? getLocalizedEngineName(engine, locale) : engineValue;
 }
 
 function getFuelDisplay(fuelValue: string | null, fuels: Fuel[], locale: string): string | null {
     if (!fuelValue) return null;
-    const fuel = fuels.find((f) => (f.name_en ?? f.name) === fuelValue || f.name === fuelValue);
+    const fuel = fuels.find((f) => (f.name_en ?? f.name) === fuelValue || f.name_es === fuelValue || f.name === fuelValue);
     return fuel ? getLocalizedFuelName(fuel, locale) : fuelValue;
 }
 
 function getCategoryDisplay(categoryValue: string | null, categories: Category[], locale: string): string | null {
     if (!categoryValue) return null;
     const category = categories.find(
-        (c) => c.name_en === categoryValue || c.name_fr === categoryValue || c.name === categoryValue
+        (c) => c.name_en === categoryValue || c.name_es === categoryValue || c.name_fr === categoryValue || c.name === categoryValue
     );
     return category ? getLocalizedCategoryName(category, locale) : categoryValue;
 }
@@ -87,7 +87,7 @@ function getCategoryDisplay(categoryValue: string | null, categories: Category[]
 function getTransmissionDisplay(transmissionValue: string | null, transmissions: Transmission[], locale: string): string | null {
     if (!transmissionValue) return null;
     const transmission = transmissions.find(
-        (tr) => (tr.name_en ?? tr.name) === transmissionValue || tr.name_fr === transmissionValue || tr.name === transmissionValue
+        (tr) => (tr.name_en ?? tr.name) === transmissionValue || tr.name_es === transmissionValue || tr.name_fr === transmissionValue || tr.name === transmissionValue
     );
     return transmission ? getLocalizedTransmissionName(transmission, locale) : transmissionValue;
 }

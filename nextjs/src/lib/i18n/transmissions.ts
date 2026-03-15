@@ -11,6 +11,9 @@ export function getLocalizedTransmissionName(
   if (baseLocale === "fr") {
     return transmission.name_fr ?? transmission.name_en ?? transmission.name;
   }
+  if (baseLocale === "es") {
+    return transmission.name_es ?? transmission.name_en ?? transmission.name;
+  }
 
-  return transmission.name_en ?? transmission.name_fr ?? transmission.name;
+  return transmission.name_en ?? transmission.name_fr ?? transmission.name_es ?? transmission.name;
 }

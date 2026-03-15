@@ -32,6 +32,7 @@ export default function EnginesPage({ searchParams }: EnginesPageProps) {
   const t = useTranslations("App.Engines");
   const [engines, setEngines] = useState<Engine[]>([]);
   const [nameEn, setNameEn] = useState("");
+  const [nameEs, setNameEs] = useState("");
   const [nameFr, setNameFr] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -67,10 +68,12 @@ export default function EnginesPage({ searchParams }: EnginesPageProps) {
       const client = await createSPASassClient();
       const { error: createError } = await client.createEngine(
         nameEn.trim(),
+        nameEs.trim(),
         nameFr.trim()
       );
       if (createError) throw createError;
       setNameEn("");
+      setNameEs("");
       setNameFr("");
       await loadEngines();
     } catch (err) {
@@ -84,6 +87,7 @@ export default function EnginesPage({ searchParams }: EnginesPageProps) {
   const handleStartEdit = (engine: Engine) => {
     setEditingId(engine.id);
     setNameEn(engine.name_en ?? engine.name ?? "");
+    setNameEs(engine.name_es ?? engine.name ?? "");
     setNameFr(engine.name_fr ?? engine.name ?? "");
   };
 
@@ -97,11 +101,13 @@ export default function EnginesPage({ searchParams }: EnginesPageProps) {
       const { error: updateError } = await client.updateEngine(
         editingId,
         nameEn.trim(),
+        nameEs.trim(),
         nameFr.trim()
       );
       if (updateError) throw updateError;
       setEditingId(null);
       setNameEn("");
+      setNameEs("");
       setNameFr("");
       await loadEngines();
     } catch (err) {
@@ -150,6 +156,13 @@ export default function EnginesPage({ searchParams }: EnginesPageProps) {
           className="flex-1 rounded-md border px-3 py-2"
         />
         <input
+          value={nameEs}
+          onChange={(event) => setNameEs(event.target.value)}
+          required
+          placeholder={t("nameEsPlaceholder")}
+          className="flex-1 rounded-md border px-3 py-2"
+        />
+        <input
           value={nameFr}
           onChange={(event) => setNameFr(event.target.value)}
           required
@@ -182,6 +195,7 @@ export default function EnginesPage({ searchParams }: EnginesPageProps) {
           <thead className="bg-gray-50">
             <tr>
               <th className="p-3 text-left">{t("tableNameEn")}</th>
+              <th className="p-3 text-left">{t("tableNameEs")}</th>
               <th className="p-3 text-left">{t("tableNameFr")}</th>
               <th className="p-3 text-left">{t("tableCreated")}</th>
               <th className="p-3 text-left">{t("tableActions")}</th>
@@ -191,6 +205,7 @@ export default function EnginesPage({ searchParams }: EnginesPageProps) {
             {engines.map((engine) => (
               <tr key={engine.id} className="border-t">
                 <td className="p-3">{engine.name_en ?? engine.name}</td>
+                <td className="p-3">{engine.name_es ?? engine.name}</td>
                 <td className="p-3">{engine.name_fr ?? engine.name}</td>
                 <td className="p-3">
                   {new Date(engine.created_at).toLocaleDateString()}
@@ -217,7 +232,7 @@ export default function EnginesPage({ searchParams }: EnginesPageProps) {
             ))}
             {engines.length === 0 ? (
               <tr>
-                <td className="p-3 text-gray-500" colSpan={4}>
+                <td className="p-3 text-gray-500" colSpan={5}>
                   {t("empty")}
                 </td>
               </tr>

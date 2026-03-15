@@ -25,10 +25,12 @@ function getErrorMessage(error: unknown, fallback: string) {
 }
 
 function getLocalizedName(
-  row: { name_en: string; name_fr: string },
+  row: { name_en: string; name_es?: string; name_fr: string },
   locale: string
 ) {
-  return locale.startsWith("fr") ? row.name_fr : row.name_en;
+  if (locale.startsWith("fr")) return row.name_fr;
+  if (locale.startsWith("es")) return row.name_es ?? row.name_en;
+  return row.name_en;
 }
 
 type FeaturesPageProps = {
@@ -45,6 +47,7 @@ export default function FeaturesPage({ searchParams }: FeaturesPageProps) {
   const [categoryFilter, setCategoryFilter] = useState<string>("");
 
   const [featNameEn, setFeatNameEn] = useState("");
+  const [featNameEs, setFeatNameEs] = useState("");
   const [featNameFr, setFeatNameFr] = useState("");
   const [featCategoryId, setFeatCategoryId] = useState("");
   const [featEditingId, setFeatEditingId] = useState<string | null>(null);
@@ -91,7 +94,7 @@ export default function FeaturesPage({ searchParams }: FeaturesPageProps) {
 
   const handleCreateFeature = async (event: FormEvent) => {
     event.preventDefault();
-    if (!featNameEn.trim() || !featNameFr.trim() || !featCategoryId) return;
+    if (!featNameEn.trim() || !featNameEs.trim() || !featNameFr.trim() || !featCategoryId) return;
     try {
       setSaving(true);
       setError("");
@@ -99,10 +102,12 @@ export default function FeaturesPage({ searchParams }: FeaturesPageProps) {
       const { error: createError } = await client.createFeature(
         featCategoryId,
         featNameEn.trim(),
+        featNameEs.trim(),
         featNameFr.trim()
       );
       if (createError) throw createError;
       setFeatNameEn("");
+      setFeatNameEs("");
       setFeatNameFr("");
       setFeatCategoryId("");
       await loadFeatures();
@@ -117,13 +122,14 @@ export default function FeaturesPage({ searchParams }: FeaturesPageProps) {
   const handleStartEditFeature = (feat: Feature) => {
     setFeatEditingId(feat.id);
     setFeatNameEn(feat.name_en ?? feat.name ?? "");
+    setFeatNameEs(feat.name_es ?? feat.name ?? "");
     setFeatNameFr(feat.name_fr ?? feat.name ?? "");
     setFeatCategoryId(feat.feature_category_id);
   };
 
   const handleUpdateFeature = async (event: FormEvent) => {
     event.preventDefault();
-    if (!featEditingId || !featNameEn.trim() || !featNameFr.trim() || !featCategoryId) return;
+    if (!featEditingId || !featNameEn.trim() || !featNameEs.trim() || !featNameFr.trim() || !featCategoryId) return;
     try {
       setSaving(true);
       setError("");
@@ -131,11 +137,13 @@ export default function FeaturesPage({ searchParams }: FeaturesPageProps) {
       const { error: updateError } = await client.updateFeature(
         featEditingId,
         featNameEn.trim(),
+        featNameEs.trim(),
         featNameFr.trim()
       );
       if (updateError) throw updateError;
       setFeatEditingId(null);
       setFeatNameEn("");
+      setFeatNameEs("");
       setFeatNameFr("");
       setFeatCategoryId("");
       await loadFeatures();
@@ -203,6 +211,13 @@ export default function FeaturesPage({ searchParams }: FeaturesPageProps) {
           className="min-w-[140px] flex-1 rounded-md border px-3 py-2"
         />
         <input
+          value={featNameEs}
+          onChange={(e) => setFeatNameEs(e.target.value)}
+          required
+          placeholder={t("nameEsPlaceholder")}
+          className="min-w-[140px] flex-1 rounded-md border px-3 py-2"
+        />
+        <input
           value={featNameFr}
           onChange={(e) => setFeatNameFr(e.target.value)}
           required
@@ -246,6 +261,7 @@ export default function FeaturesPage({ searchParams }: FeaturesPageProps) {
           <thead className="bg-gray-50">
             <tr>
               <th className="p-3 text-left">{t("tableNameEn")}</th>
+              <th className="p-3 text-left">{t("tableNameEs")}</th>
               <th className="p-3 text-left">{t("tableNameFr")}</th>
               <th className="p-3 text-left">{t("tableCategory")}</th>
               <th className="p-3 text-left">{t("tableActions")}</th>
@@ -257,6 +273,7 @@ export default function FeaturesPage({ searchParams }: FeaturesPageProps) {
               return (
                 <tr key={feat.id} className="border-t">
                   <td className="p-3">{feat.name_en ?? feat.name}</td>
+                  <td className="p-3">{feat.name_es ?? feat.name}</td>
                   <td className="p-3">{feat.name_fr ?? feat.name}</td>
                   <td className="p-3">
                     {cat ? getLocalizedName(cat, locale) : "-"}
@@ -284,7 +301,7 @@ export default function FeaturesPage({ searchParams }: FeaturesPageProps) {
             })}
             {features.length === 0 && (
               <tr>
-                <td className="p-3 text-gray-500" colSpan={4}>
+                <td className="p-3 text-gray-500" colSpan={5}>
                   {t("empty")}
                 </td>
               </tr>

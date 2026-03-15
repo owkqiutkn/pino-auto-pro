@@ -8,7 +8,10 @@ export function getLocalizedExteriorColorName(color: ExteriorColorRow, locale: s
   if (baseLocale === "fr") {
     return color.name_fr ?? color.name_en ?? color.name;
   }
+  if (baseLocale === "es") {
+    return color.name_es ?? color.name_en ?? color.name;
+  }
 
-  return color.name_en ?? color.name_fr ?? color.name;
+  return color.name_en ?? color.name_fr ?? color.name_es ?? color.name;
 }
 

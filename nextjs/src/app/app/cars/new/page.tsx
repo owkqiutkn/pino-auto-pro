@@ -60,6 +60,7 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
     const [price, setPrice] = useState<number | "">("");
     const [discountedPrice, setDiscountedPrice] = useState<number | "">("");
     const [descriptionEn, setDescriptionEn] = useState("");
+    const [descriptionEs, setDescriptionEs] = useState("");
     const [descriptionFr, setDescriptionFr] = useState("");
     const [status, setStatus] = useState<CarStatus>("available");
     const [featured, setFeatured] = useState(false);
@@ -262,6 +263,7 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                     price: parsedPrice,
                     discounted_price: parsedDiscountedPrice,
                     description_en: descriptionEn || null,
+                    description_es: descriptionEs || null,
                     description_fr: descriptionFr || null,
                     status,
                     featured,
@@ -518,6 +520,10 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                 <div>
                     <label htmlFor="descriptionEn" className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1">Description (English)<img src="/icons/ai.png" alt="AI" className="w-4 h-4" /></label>
                     <textarea id="descriptionEn" value={descriptionEn} onChange={(e) => setDescriptionEn(e.target.value)} rows={5} placeholder="Vehicle description, features, condition..." className="w-full border rounded-md px-3 py-2" />
+                </div>
+                <div>
+                    <label htmlFor="descriptionEs" className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1">Description (Spanish)</label>
+                    <textarea id="descriptionEs" value={descriptionEs} onChange={(e) => setDescriptionEs(e.target.value)} rows={5} placeholder="Descripción del vehículo, equipamiento, estado..." className="w-full border rounded-md px-3 py-2" />
                 </div>
                 <div>
                     <label htmlFor="descriptionFr" className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1">Description (French)<img src="/icons/ai.png" alt="AI" className="w-4 h-4" /></label>

@@ -29,6 +29,7 @@ export default function FuelsPage({ searchParams }: FuelsPageProps) {
     const t = useTranslations("App.Fuels");
     const [fuels, setFuels] = useState<Fuel[]>([]);
     const [nameEn, setNameEn] = useState("");
+    const [nameEs, setNameEs] = useState("");
     const [nameFr, setNameFr] = useState("");
     const [editingId, setEditingId] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -57,7 +58,7 @@ export default function FuelsPage({ searchParams }: FuelsPageProps) {
 
     const handleCreate = async (event: FormEvent) => {
         event.preventDefault();
-        if (!nameEn.trim() || !nameFr.trim()) return;
+        if (!nameEn.trim() || !nameEs.trim() || !nameFr.trim()) return;
         try {
             setSaving(true);
             setError("");
@@ -78,6 +79,7 @@ export default function FuelsPage({ searchParams }: FuelsPageProps) {
     const handleStartEdit = (fuel: Fuel) => {
         setEditingId(fuel.id);
         setNameEn(fuel.name_en ?? fuel.name ?? "");
+        setNameEs(fuel.name_es ?? fuel.name ?? "");
         setNameFr(fuel.name_fr ?? fuel.name ?? "");
     };
 
@@ -88,10 +90,11 @@ export default function FuelsPage({ searchParams }: FuelsPageProps) {
             setSaving(true);
             setError("");
             const client = await createSPASassClient();
-            const { error: updateError } = await client.updateFuel(editingId, nameEn.trim(), nameFr.trim());
+            const { error: updateError } = await client.updateFuel(editingId, nameEn.trim(), nameEs.trim(), nameFr.trim());
             if (updateError) throw updateError;
             setEditingId(null);
             setNameEn("");
+            setNameEs("");
             setNameFr("");
             await loadFuels();
         } catch (err) {
@@ -140,6 +143,13 @@ export default function FuelsPage({ searchParams }: FuelsPageProps) {
                     className="flex-1 border rounded-md px-3 py-2"
                 />
                 <input
+                    value={nameEs}
+                    onChange={(event) => setNameEs(event.target.value)}
+                    required
+                    placeholder={t("nameEsPlaceholder")}
+                    className="flex-1 border rounded-md px-3 py-2"
+                />
+                <input
                     value={nameFr}
                     onChange={(event) => setNameFr(event.target.value)}
                     required
@@ -181,6 +191,7 @@ export default function FuelsPage({ searchParams }: FuelsPageProps) {
                         {fuels.map((fuel) => (
                             <tr key={fuel.id} className="border-t">
                                 <td className="p-3">{fuel.name_en ?? fuel.name}</td>
+                                <td className="p-3">{fuel.name_es ?? fuel.name}</td>
                                 <td className="p-3">{fuel.name_fr ?? fuel.name}</td>
                                 <td className="p-3">{new Date(fuel.created_at).toLocaleDateString()}</td>
                                 <td className="flex gap-2 p-3">
@@ -205,7 +216,7 @@ export default function FuelsPage({ searchParams }: FuelsPageProps) {
                         ))}
                         {fuels.length === 0 ? (
                             <tr>
-                                <td className="p-3 text-gray-500" colSpan={4}>
+                                <td className="p-3 text-gray-500" colSpan={5}>
                                     {t("empty")}
                                 </td>
                             </tr>

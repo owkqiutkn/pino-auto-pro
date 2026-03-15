@@ -24,6 +24,7 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
     const t = useTranslations("App.Categories");
     const [categories, setCategories] = useState<Category[]>([]);
     const [nameEn, setNameEn] = useState("");
+    const [nameEs, setNameEs] = useState("");
     const [nameFr, setNameFr] = useState("");
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [removeImage, setRemoveImage] = useState(false);
@@ -68,6 +69,7 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
 
     const resetForm = useCallback(() => {
         setNameEn("");
+        setNameEs("");
         setNameFr("");
         setImageFile(null);
         setRemoveImage(false);
@@ -77,18 +79,18 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
 
     const handleCreate = async (event: FormEvent) => {
         event.preventDefault();
-        if (!nameEn.trim() || !nameFr.trim()) return;
+        if (!nameEn.trim() || !nameEs.trim() || !nameFr.trim()) return;
         try {
             setSaving(true);
             setError("");
             const client = await createSPASassClient();
-            const { data: created, error: createError } = await client.createCategory(nameEn.trim(), nameFr.trim());
+            const { data: created, error: createError } = await client.createCategory(nameEn.trim(), nameEs.trim(), nameFr.trim());
             if (createError) throw createError;
             if (created && imageFile) {
                 const { data: uploadData, error: uploadError } = await client.uploadCategoryImage(created.id, imageFile.name, imageFile);
                 if (uploadError) throw uploadError;
                 if (uploadData?.publicUrl) {
-                    await client.updateCategory(created.id, nameEn.trim(), nameFr.trim(), uploadData.publicUrl);
+                    await client.updateCategory(created.id, nameEn.trim(), nameEs.trim(), nameFr.trim(), uploadData.publicUrl);
                 }
             }
             resetForm();
@@ -104,6 +106,7 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
     const handleStartEdit = (cat: Category) => {
         setEditingId(cat.id);
         setNameEn(cat.name_en ?? cat.name ?? "");
+        setNameEs(cat.name_es ?? cat.name ?? "");
         setNameFr(cat.name_fr ?? cat.name ?? "");
         setImageFile(null);
         setRemoveImage(false);
@@ -112,7 +115,7 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
 
     const handleUpdate = async (event: FormEvent) => {
         event.preventDefault();
-        if (!editingId || !nameEn.trim() || !nameFr.trim()) return;
+        if (!editingId || !nameEn.trim() || !nameEs.trim() || !nameFr.trim()) return;
         try {
             setSaving(true);
             setError("");
@@ -125,7 +128,7 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
                 if (uploadError) throw uploadError;
                 imageUrl = uploadData?.publicUrl ?? null;
             }
-            const { error: updateError } = await client.updateCategory(editingId, nameEn.trim(), nameFr.trim(), imageUrl);
+            const { error: updateError } = await client.updateCategory(editingId, nameEn.trim(), nameEs.trim(), nameFr.trim(), imageUrl);
             if (updateError) throw updateError;
             resetForm();
             await loadCategories();
@@ -179,6 +182,13 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
                         onChange={(event) => setNameEn(event.target.value)}
                         required
                         placeholder={t("nameEnPlaceholder")}
+                        className="flex-1 border rounded-md px-3 py-2"
+                    />
+                    <input
+                        value={nameEs}
+                        onChange={(event) => setNameEs(event.target.value)}
+                        required
+                        placeholder={t("nameEsPlaceholder")}
                         className="flex-1 border rounded-md px-3 py-2"
                     />
                     <input
@@ -267,6 +277,7 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
                         <tr>
                             <th className="text-left p-3">{t("tableImage")}</th>
                             <th className="text-left p-3">{t("tableNameEn")}</th>
+                            <th className="text-left p-3">{t("tableNameEs")}</th>
                             <th className="text-left p-3">{t("tableNameFr")}</th>
                             <th className="text-left p-3">{t("tableCreated")}</th>
                             <th className="text-left p-3">{t("tableActions")}</th>
@@ -286,6 +297,7 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
                                     )}
                                 </td>
                                 <td className="p-3">{category.name_en ?? category.name}</td>
+                                <td className="p-3">{category.name_es ?? category.name}</td>
                                 <td className="p-3">{category.name_fr ?? category.name}</td>
                                 <td className="p-3">{new Date(category.created_at).toLocaleDateString()}</td>
                                 <td className="p-3 flex gap-2">
@@ -310,7 +322,7 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
                         ))}
                         {categories.length === 0 ? (
                             <tr>
-                                <td className="p-3 text-gray-500" colSpan={5}>
+                                <td className="p-3 text-gray-500" colSpan={6}>
                                     {t("empty")}
                                 </td>
                             </tr>

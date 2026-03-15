@@ -32,6 +32,7 @@ export default function ExteriorColorsPage({ searchParams }: ExteriorColorsPageP
   const t = useTranslations("App.ExteriorColors");
   const [colors, setColors] = useState<ExteriorColor[]>([]);
   const [nameEn, setNameEn] = useState("");
+  const [nameEs, setNameEs] = useState("");
   const [nameFr, setNameFr] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -60,17 +61,19 @@ export default function ExteriorColorsPage({ searchParams }: ExteriorColorsPageP
 
   const handleCreate = async (event: FormEvent) => {
     event.preventDefault();
-    if (!nameEn.trim() || !nameFr.trim()) return;
+    if (!nameEn.trim() || !nameEs.trim() || !nameFr.trim()) return;
     try {
       setSaving(true);
       setError("");
       const client = await createSPASassClient();
       const { error: createError } = await client.createExteriorColor(
         nameEn.trim(),
+        nameEs.trim(),
         nameFr.trim()
       );
       if (createError) throw createError;
       setNameEn("");
+      setNameEs("");
       setNameFr("");
       await loadColors();
     } catch (err) {
@@ -84,12 +87,13 @@ export default function ExteriorColorsPage({ searchParams }: ExteriorColorsPageP
   const handleStartEdit = (color: ExteriorColor) => {
     setEditingId(color.id);
     setNameEn(color.name_en ?? color.name ?? "");
+    setNameEs(color.name_es ?? color.name ?? "");
     setNameFr(color.name_fr ?? color.name ?? "");
   };
 
   const handleUpdate = async (event: FormEvent) => {
     event.preventDefault();
-    if (!editingId || !nameEn.trim() || !nameFr.trim()) return;
+    if (!editingId || !nameEn.trim() || !nameEs.trim() || !nameFr.trim()) return;
     try {
       setSaving(true);
       setError("");
@@ -97,11 +101,13 @@ export default function ExteriorColorsPage({ searchParams }: ExteriorColorsPageP
       const { error: updateError } = await client.updateExteriorColor(
         editingId,
         nameEn.trim(),
+        nameEs.trim(),
         nameFr.trim()
       );
       if (updateError) throw updateError;
       setEditingId(null);
       setNameEn("");
+      setNameEs("");
       setNameFr("");
       await loadColors();
     } catch (err) {
@@ -150,6 +156,13 @@ export default function ExteriorColorsPage({ searchParams }: ExteriorColorsPageP
           className="flex-1 rounded-md border px-3 py-2"
         />
         <input
+          value={nameEs}
+          onChange={(event) => setNameEs(event.target.value)}
+          required
+          placeholder={t("nameEsPlaceholder")}
+          className="flex-1 rounded-md border px-3 py-2"
+        />
+        <input
           value={nameFr}
           onChange={(event) => setNameFr(event.target.value)}
           required
@@ -182,6 +195,7 @@ export default function ExteriorColorsPage({ searchParams }: ExteriorColorsPageP
           <thead className="bg-gray-50">
             <tr>
               <th className="p-3 text-left">{t("tableNameEn")}</th>
+              <th className="p-3 text-left">{t("tableNameEs")}</th>
               <th className="p-3 text-left">{t("tableNameFr")}</th>
               <th className="p-3 text-left">{t("tableCreated")}</th>
               <th className="p-3 text-left">{t("tableActions")}</th>
@@ -191,6 +205,7 @@ export default function ExteriorColorsPage({ searchParams }: ExteriorColorsPageP
             {colors.map((color) => (
               <tr key={color.id} className="border-t">
                 <td className="p-3">{color.name_en ?? color.name}</td>
+                <td className="p-3">{color.name_es ?? color.name}</td>
                 <td className="p-3">{color.name_fr ?? color.name}</td>
                 <td className="p-3">
                   {new Date(color.created_at).toLocaleDateString()}
@@ -217,7 +232,7 @@ export default function ExteriorColorsPage({ searchParams }: ExteriorColorsPageP
             ))}
             {colors.length === 0 ? (
               <tr>
-                <td className="p-3 text-gray-500" colSpan={4}>
+                <td className="p-3 text-gray-500" colSpan={5}>
                   {t("empty")}
                 </td>
               </tr>

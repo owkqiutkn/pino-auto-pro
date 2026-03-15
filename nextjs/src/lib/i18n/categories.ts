@@ -8,6 +8,9 @@ export function getLocalizedCategoryName(category: CategoryRow, locale: string) 
   if (baseLocale === "fr") {
     return category.name_fr ?? category.name_en ?? category.name;
   }
+  if (baseLocale === "es") {
+    return category.name_es ?? category.name_en ?? category.name;
+  }
 
-  return category.name_en ?? category.name_fr ?? category.name;
+  return category.name_en ?? category.name_fr ?? category.name_es ?? category.name;
 }

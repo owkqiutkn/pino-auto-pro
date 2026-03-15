@@ -33,6 +33,7 @@ export default function FeatureCategoriesPage({ searchParams }: FeatureCategorie
 
   const [categories, setCategories] = useState<FeatureCategory[]>([]);
   const [nameEn, setNameEn] = useState("");
+  const [nameEs, setNameEs] = useState("");
   const [nameFr, setNameFr] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -61,17 +62,19 @@ export default function FeatureCategoriesPage({ searchParams }: FeatureCategorie
 
   const handleCreate = async (event: FormEvent) => {
     event.preventDefault();
-    if (!nameEn.trim() || !nameFr.trim()) return;
+    if (!nameEn.trim() || !nameEs.trim() || !nameFr.trim()) return;
     try {
       setSaving(true);
       setError("");
       const client = await createSPASassClient();
       const { error: createError } = await client.createFeatureCategory(
         nameEn.trim(),
+        nameEs.trim(),
         nameFr.trim()
       );
       if (createError) throw createError;
       setNameEn("");
+      setNameEs("");
       setNameFr("");
       await loadCategories();
     } catch (err) {
@@ -85,12 +88,13 @@ export default function FeatureCategoriesPage({ searchParams }: FeatureCategorie
   const handleStartEdit = (cat: FeatureCategory) => {
     setEditingId(cat.id);
     setNameEn(cat.name_en ?? cat.name ?? "");
+    setNameEs(cat.name_es ?? cat.name ?? "");
     setNameFr(cat.name_fr ?? cat.name ?? "");
   };
 
   const handleUpdate = async (event: FormEvent) => {
     event.preventDefault();
-    if (!editingId || !nameEn.trim() || !nameFr.trim()) return;
+    if (!editingId || !nameEn.trim() || !nameEs.trim() || !nameFr.trim()) return;
     try {
       setSaving(true);
       setError("");
@@ -98,11 +102,13 @@ export default function FeatureCategoriesPage({ searchParams }: FeatureCategorie
       const { error: updateError } = await client.updateFeatureCategory(
         editingId,
         nameEn.trim(),
+        nameEs.trim(),
         nameFr.trim()
       );
       if (updateError) throw updateError;
       setEditingId(null);
       setNameEn("");
+      setNameEs("");
       setNameFr("");
       await loadCategories();
     } catch (err) {
@@ -153,6 +159,13 @@ export default function FeatureCategoriesPage({ searchParams }: FeatureCategorie
           className="flex-1 rounded-md border px-3 py-2"
         />
         <input
+          value={nameEs}
+          onChange={(e) => setNameEs(e.target.value)}
+          required
+          placeholder={t("nameEsPlaceholder")}
+          className="flex-1 rounded-md border px-3 py-2"
+        />
+        <input
           value={nameFr}
           onChange={(e) => setNameFr(e.target.value)}
           required
@@ -183,6 +196,7 @@ export default function FeatureCategoriesPage({ searchParams }: FeatureCategorie
           <thead className="bg-gray-50">
             <tr>
               <th className="p-3 text-left">{t("tableNameEn")}</th>
+              <th className="p-3 text-left">{t("tableNameEs")}</th>
               <th className="p-3 text-left">{t("tableNameFr")}</th>
               <th className="p-3 text-left">{t("tableCreated")}</th>
               <th className="p-3 text-left">{t("tableActions")}</th>
@@ -192,6 +206,7 @@ export default function FeatureCategoriesPage({ searchParams }: FeatureCategorie
             {categories.map((cat) => (
               <tr key={cat.id} className="border-t">
                 <td className="p-3">{cat.name_en ?? cat.name}</td>
+                <td className="p-3">{cat.name_es ?? cat.name}</td>
                 <td className="p-3">{cat.name_fr ?? cat.name}</td>
                 <td className="p-3">{new Date(cat.created_at).toLocaleDateString()}</td>
                 <td className="flex gap-2 p-3">
@@ -216,7 +231,7 @@ export default function FeatureCategoriesPage({ searchParams }: FeatureCategorie
             ))}
             {categories.length === 0 && (
               <tr>
-                <td className="p-3 text-gray-500" colSpan={4}>
+                <td className="p-3 text-gray-500" colSpan={5}>
                   {t("empty")}
                 </td>
               </tr>

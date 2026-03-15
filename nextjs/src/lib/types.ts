@@ -51,6 +51,7 @@ export type Database = {
           id: string
           name: string
           name_en: string
+          name_es: string
           name_fr: string
         }
         Insert: {
@@ -58,6 +59,7 @@ export type Database = {
           id?: string
           name?: string
           name_en: string
+          name_es: string
           name_fr: string
         }
         Update: {
@@ -65,6 +67,7 @@ export type Database = {
           id?: string
           name?: string
           name_en?: string
+          name_es?: string
           name_fr?: string
         }
         Relationships: []
@@ -75,6 +78,7 @@ export type Database = {
           id: string
           name: string
           name_en: string | null
+          name_es: string
           name_fr: string | null
         }
         Insert: {
@@ -82,6 +86,7 @@ export type Database = {
           id?: string
           name?: string
           name_en: string
+          name_es: string
           name_fr: string
         }
         Update: {
@@ -89,6 +94,7 @@ export type Database = {
           id?: string
           name?: string
           name_en?: string
+          name_es?: string
           name_fr?: string
         }
         Relationships: []
@@ -99,6 +105,7 @@ export type Database = {
           id: string
           name: string
           name_en: string
+          name_es: string
           name_fr: string
         }
         Insert: {
@@ -106,6 +113,7 @@ export type Database = {
           id?: string
           name?: string
           name_en: string
+          name_es: string
           name_fr: string
         }
         Update: {
@@ -113,6 +121,7 @@ export type Database = {
           id?: string
           name?: string
           name_en?: string
+          name_es?: string
           name_fr?: string
         }
         Relationships: []
@@ -123,6 +132,7 @@ export type Database = {
           id: string
           name: string
           name_en: string | null
+          name_es: string
           name_fr: string | null
         }
         Insert: {
@@ -130,6 +140,7 @@ export type Database = {
           id?: string
           name?: string
           name_en: string
+          name_es: string
           name_fr: string
         }
         Update: {
@@ -137,6 +148,7 @@ export type Database = {
           id?: string
           name?: string
           name_en?: string
+          name_es?: string
           name_fr?: string
         }
         Relationships: []
@@ -147,6 +159,7 @@ export type Database = {
           id: string
           name: string
           name_en: string | null
+          name_es: string
           name_fr: string | null
           image_url: string | null
         }
@@ -155,6 +168,7 @@ export type Database = {
           id?: string
           name?: string
           name_en: string
+          name_es: string
           name_fr: string
           image_url?: string | null
         }
@@ -163,6 +177,7 @@ export type Database = {
           id?: string
           name?: string
           name_en?: string
+          name_es?: string
           name_fr?: string
           image_url?: string | null
         }
@@ -262,6 +277,7 @@ export type Database = {
           created_at: string
           description: string | null
           description_en: string | null
+          description_es: string | null
           description_fr: string | null
           discounted_price: number | null
           featured: boolean
@@ -289,6 +305,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           description_en?: string | null
+          description_es?: string | null
           description_fr?: string | null
           discounted_price?: number | null
           featured?: boolean
@@ -316,6 +333,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           description_en?: string | null
+          description_es?: string | null
           description_fr?: string | null
           discounted_price?: number | null
           featured?: boolean
@@ -372,6 +390,7 @@ export type Database = {
           id: string
           name: string | null
           name_en: string
+          name_es: string
           name_fr: string
           sort_order: number
           created_at: string
@@ -380,6 +399,7 @@ export type Database = {
           id?: string
           name?: string | null
           name_en: string
+          name_es: string
           name_fr: string
           sort_order?: number
           created_at?: string
@@ -388,6 +408,7 @@ export type Database = {
           id?: string
           name?: string | null
           name_en?: string
+          name_es?: string
           name_fr?: string
           sort_order?: number
           created_at?: string
@@ -400,6 +421,7 @@ export type Database = {
           feature_category_id: string
           name: string | null
           name_en: string
+          name_es: string
           name_fr: string
           sort_order: number
           created_at: string
@@ -409,6 +431,7 @@ export type Database = {
           feature_category_id: string
           name?: string | null
           name_en: string
+          name_es: string
           name_fr: string
           sort_order?: number
           created_at?: string
@@ -418,6 +441,7 @@ export type Database = {
           feature_category_id?: string
           name?: string | null
           name_en?: string
+          name_es?: string
           name_fr?: string
           sort_order?: number
           created_at?: string

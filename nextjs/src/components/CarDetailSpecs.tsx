@@ -39,13 +39,13 @@ export default async function CarDetailSpecs({
     const t = await getTranslations("Inventory.carDetail");
     const locale = await getLocale();
 
-    const categoryRow = categories.find((c) => c.name_en === car.category || c.name_fr === car.category || c.name === car.category);
+    const categoryRow = categories.find((c) => c.name_en === car.category || c.name_es === car.category || c.name_fr === car.category || c.name === car.category);
     const categoryDisplay = categoryRow ? getLocalizedCategoryName(categoryRow, locale) : car.category;
-    const engineRow = engines.find((e) => (e.name_en ?? e.name) === car.engine || e.name === car.engine);
+    const engineRow = engines.find((e) => (e.name_en ?? e.name) === car.engine || e.name_es === car.engine || e.name === car.engine);
     const engineDisplay = engineRow ? getLocalizedEngineName(engineRow, locale) : car.engine;
     const fuelRow = fuels.find((f) => (f.name_en ?? f.name) === car.fuel || f.name === car.fuel);
     const fuelDisplay = fuelRow ? getLocalizedFuelName(fuelRow, locale) : car.fuel;
-    const transmissionRow = transmissions.find((tr) => (tr.name_en ?? tr.name) === car.transmission || tr.name_fr === car.transmission || tr.name === car.transmission);
+    const transmissionRow = transmissions.find((tr) => (tr.name_en ?? tr.name) === car.transmission || tr.name_es === car.transmission || tr.name_fr === car.transmission || tr.name === car.transmission);
     const transmissionDisplay = transmissionRow ? getLocalizedTransmissionName(transmissionRow, locale) : car.transmission;
 
     const specs = [

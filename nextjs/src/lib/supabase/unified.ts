@@ -280,20 +280,20 @@ export class SassClient {
     async getCategories() {
         return this.client
             .from('categories')
-            .select('id, created_at, name, name_en, name_fr, image_url')
+            .select('id, created_at, name, name_en, name_es, name_fr, image_url')
             .order('name', { ascending: true });
     }
 
-    async createCategory(name_en: string, name_fr: string, image_url?: string | null) {
+    async createCategory(name_en: string, name_es: string, name_fr: string, image_url?: string | null) {
         return this.client
             .from('categories')
-            .insert({ name: name_en, name_en, name_fr, image_url: image_url ?? null })
+            .insert({ name: name_en, name_en, name_es, name_fr, image_url: image_url ?? null })
             .select('*')
             .single();
     }
 
-    async updateCategory(id: string, name_en: string, name_fr: string, image_url?: string | null) {
-        const updates: { name_en: string; name_fr: string; image_url?: string | null } = { name_en, name_fr };
+    async updateCategory(id: string, name_en: string, name_es: string, name_fr: string, image_url?: string | null) {
+        const updates: { name_en: string; name_es: string; name_fr: string; image_url?: string | null } = { name_en, name_es, name_fr };
         if (image_url !== undefined) updates.image_url = image_url;
         return this.client
             .from('categories')
@@ -354,22 +354,22 @@ export class SassClient {
     async getExteriorColors() {
         return this.client
             .from('exterior_colors')
-            .select('id, created_at, name, name_en, name_fr')
+            .select('id, created_at, name, name_en, name_es, name_fr')
             .order('name_en', { ascending: true });
     }
 
-    async createExteriorColor(name_en: string, name_fr: string) {
+    async createExteriorColor(name_en: string, name_es: string, name_fr: string) {
         return this.client
             .from('exterior_colors')
-            .insert({ name: name_en, name_en, name_fr })
+            .insert({ name: name_en, name_en, name_es, name_fr })
             .select('*')
             .single();
     }
 
-    async updateExteriorColor(id: string, name_en: string, name_fr: string) {
+    async updateExteriorColor(id: string, name_en: string, name_es: string, name_fr: string) {
         return this.client
             .from('exterior_colors')
-            .update({ name_en, name_fr })
+            .update({ name_en, name_es, name_fr })
             .eq('id', id)
             .select('*')
             .single();
@@ -385,22 +385,22 @@ export class SassClient {
     async getEngines() {
         return this.client
             .from('engines')
-            .select('id, created_at, name, name_en, name_fr')
+            .select('id, created_at, name, name_en, name_es, name_fr')
             .order('name_en', { ascending: true });
     }
 
-    async createEngine(name_en: string, name_fr: string) {
+    async createEngine(name_en: string, name_es: string, name_fr: string) {
         return this.client
             .from('engines')
-            .insert({ name: name_en, name_en, name_fr })
+            .insert({ name: name_en, name_en, name_es, name_fr })
             .select('*')
             .single();
     }
 
-    async updateEngine(id: string, name_en: string, name_fr: string) {
+    async updateEngine(id: string, name_en: string, name_es: string, name_fr: string) {
         return this.client
             .from('engines')
-            .update({ name_en, name_fr })
+            .update({ name_en, name_es, name_fr })
             .eq('id', id)
             .select('*')
             .single();
@@ -416,22 +416,22 @@ export class SassClient {
     async getFuels() {
         return this.client
             .from('fuels')
-            .select('id, created_at, name, name_en, name_fr')
+            .select('id, created_at, name, name_en, name_es, name_fr')
             .order('name_en', { ascending: true });
     }
 
-    async createFuel(name_en: string, name_fr: string) {
+    async createFuel(name_en: string, name_es: string, name_fr: string) {
         return this.client
             .from('fuels')
-            .insert({ name: name_en, name_en, name_fr })
+            .insert({ name: name_en, name_en, name_es, name_fr })
             .select('*')
             .single();
     }
 
-    async updateFuel(id: string, name_en: string, name_fr: string) {
+    async updateFuel(id: string, name_en: string, name_es: string, name_fr: string) {
         return this.client
             .from('fuels')
-            .update({ name_en, name_fr })
+            .update({ name_en, name_es, name_fr })
             .eq('id', id)
             .select('*')
             .single();
@@ -447,22 +447,22 @@ export class SassClient {
     async getTransmissions() {
         return this.client
             .from('transmissions')
-            .select('id, created_at, name, name_en, name_fr')
+            .select('id, created_at, name, name_en, name_es, name_fr')
             .order('name_en', { ascending: true });
     }
 
-    async createTransmission(name_en: string, name_fr: string) {
+    async createTransmission(name_en: string, name_es: string, name_fr: string) {
         return this.client
             .from('transmissions')
-            .insert({ name: name_en, name_en, name_fr })
+            .insert({ name: name_en, name_en, name_es, name_fr })
             .select('*')
             .single();
     }
 
-    async updateTransmission(id: string, name_en: string, name_fr: string) {
+    async updateTransmission(id: string, name_en: string, name_es: string, name_fr: string) {
         return this.client
             .from('transmissions')
-            .update({ name_en, name_fr })
+            .update({ name_en, name_es, name_fr })
             .eq('id', id)
             .select('*')
             .single();
@@ -601,7 +601,7 @@ export class SassClient {
     async getFeatureCategories() {
         return this.client
             .from('feature_categories')
-            .select('id, name, name_en, name_fr, sort_order, created_at')
+            .select('id, name, name_en, name_es, name_fr, sort_order, created_at')
             .order('sort_order', { ascending: true })
             .order('name_en', { ascending: true });
     }
@@ -609,7 +609,7 @@ export class SassClient {
     async getFeatures(categoryId?: string) {
         let query = this.client
             .from('features')
-            .select('id, feature_category_id, name, name_en, name_fr, sort_order, created_at')
+            .select('id, feature_category_id, name, name_en, name_es, name_fr, sort_order, created_at')
             .order('sort_order', { ascending: true })
             .order('name_en', { ascending: true });
         if (categoryId) {
@@ -625,12 +625,12 @@ export class SassClient {
             .select('feature_id')
             .eq('car_id', carId);
         if (cfError || !carFeatures?.length) {
-            return { data: [] as { feature_id: string; feature: { id: string; name_en: string; name_fr: string; feature_category_id: string }; feature_category: { id: string; name_en: string; name_fr: string } }[], error: cfError };
+            return { data: [] as { feature_id: string; feature: { id: string; name_en: string; name_es: string; name_fr: string; feature_category_id: string }; feature_category: { id: string; name_en: string; name_es: string; name_fr: string } }[], error: cfError };
         }
         const featureIds = carFeatures.map((cf) => cf.feature_id);
         const { data: features, error: fError } = await this.client
             .from('features')
-            .select('id, name_en, name_fr, feature_category_id')
+            .select('id, name_en, name_es, name_fr, feature_category_id')
             .in('id', featureIds);
         if (fError || !features?.length) {
             return { data: [], error: fError };
@@ -638,7 +638,7 @@ export class SassClient {
         const categoryIds = [...new Set(features.map((f) => f.feature_category_id))];
         const { data: categories, error: cError } = await this.client
             .from('feature_categories')
-            .select('id, name_en, name_fr')
+            .select('id, name_en, name_es, name_fr')
             .in('id', categoryIds);
         if (cError) {
             return { data: [], error: cError };
@@ -647,7 +647,7 @@ export class SassClient {
         const result = features.map((f) => ({
             feature_id: f.id,
             feature: f,
-            feature_category: catMap.get(f.feature_category_id) ?? { id: f.feature_category_id, name_en: '', name_fr: '' },
+            feature_category: catMap.get(f.feature_category_id) ?? { id: f.feature_category_id, name_en: '', name_es: '', name_fr: '' },
         }));
         return { data: result, error: null };
     }
@@ -665,16 +665,16 @@ export class SassClient {
         return { error: insError };
     }
 
-    async createFeatureCategory(name_en: string, name_fr: string, sort_order?: number) {
+    async createFeatureCategory(name_en: string, name_es: string, name_fr: string, sort_order?: number) {
         return this.client
             .from('feature_categories')
-            .insert({ name: name_en, name_en, name_fr, sort_order: sort_order ?? 0 })
+            .insert({ name: name_en, name_en, name_es, name_fr, sort_order: sort_order ?? 0 })
             .select('*')
             .single();
     }
 
-    async updateFeatureCategory(id: string, name_en: string, name_fr: string, sort_order?: number) {
-        const updates: { name_en: string; name_fr: string; sort_order?: number } = { name_en, name_fr };
+    async updateFeatureCategory(id: string, name_en: string, name_es: string, name_fr: string, sort_order?: number) {
+        const updates: { name_en: string; name_es: string; name_fr: string; sort_order?: number } = { name_en, name_es, name_fr };
         if (sort_order !== undefined) updates.sort_order = sort_order;
         return this.client
             .from('feature_categories')
@@ -691,16 +691,16 @@ export class SassClient {
             .eq('id', id);
     }
 
-    async createFeature(categoryId: string, name_en: string, name_fr: string, sort_order?: number) {
+    async createFeature(categoryId: string, name_en: string, name_es: string, name_fr: string, sort_order?: number) {
         return this.client
             .from('features')
-            .insert({ feature_category_id: categoryId, name: name_en, name_en, name_fr, sort_order: sort_order ?? 0 })
+            .insert({ feature_category_id: categoryId, name: name_en, name_en, name_es, name_fr, sort_order: sort_order ?? 0 })
             .select('*')
             .single();
     }
 
-    async updateFeature(id: string, name_en: string, name_fr: string, sort_order?: number) {
-        const updates: { name_en: string; name_fr: string; sort_order?: number } = { name_en, name_fr };
+    async updateFeature(id: string, name_en: string, name_es: string, name_fr: string, sort_order?: number) {
+        const updates: { name_en: string; name_es: string; name_fr: string; sort_order?: number } = { name_en, name_es, name_fr };
         if (sort_order !== undefined) updates.sort_order = sort_order;
         return this.client
             .from('features')

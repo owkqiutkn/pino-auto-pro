@@ -52,6 +52,7 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
     const [price, setPrice] = useState<number | "">("");
     const [discountedPrice, setDiscountedPrice] = useState<number | "">("");
     const [descriptionEn, setDescriptionEn] = useState("");
+    const [descriptionEs, setDescriptionEs] = useState("");
     const [descriptionFr, setDescriptionFr] = useState("");
     const [status, setStatus] = useState<CarStatus>("available");
     const [featured, setFeatured] = useState(false);
@@ -131,6 +132,7 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
             setPrice(carData.price);
             setDiscountedPrice(carData.discounted_price ?? "");
             setDescriptionEn(carData.description_en ?? carData.description ?? "");
+            setDescriptionEs(carData.description_es ?? "");
             setDescriptionFr(carData.description_fr ?? "");
             setStatus(carData.status as CarStatus);
             setFeatured(carData.featured ?? false);
@@ -286,6 +288,7 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                 price: parsedPrice,
                 discounted_price: parsedDiscountedPrice,
                 description_en: descriptionEn || null,
+                description_es: descriptionEs || null,
                 description_fr: descriptionFr || null,
                 status,
                 featured,
@@ -607,6 +610,10 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                 <div>
                     <label htmlFor="edit-description-en" className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1">Description (English)<img src="/icons/ai.png" alt="AI" className="w-4 h-4" /></label>
                     <textarea id="edit-description-en" value={descriptionEn} onChange={(e) => setDescriptionEn(e.target.value)} rows={5} placeholder="Vehicle description, features, condition..." className="w-full border rounded-md px-3 py-2" />
+                </div>
+                <div>
+                    <label htmlFor="edit-description-es" className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1">Description (Spanish)</label>
+                    <textarea id="edit-description-es" value={descriptionEs} onChange={(e) => setDescriptionEs(e.target.value)} rows={5} placeholder="Descripción del vehículo, equipamiento, estado..." className="w-full border rounded-md px-3 py-2" />
                 </div>
                 <div>
                     <label htmlFor="edit-description-fr" className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1">Description (French)<img src="/icons/ai.png" alt="AI" className="w-4 h-4" /></label>

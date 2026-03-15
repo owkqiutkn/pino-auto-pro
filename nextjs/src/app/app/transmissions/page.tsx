@@ -24,6 +24,7 @@ export default function TransmissionsPage({ searchParams }: TransmissionsPagePro
     const t = useTranslations("App.Transmissions");
     const [transmissions, setTransmissions] = useState<Transmission[]>([]);
     const [nameEn, setNameEn] = useState("");
+    const [nameEs, setNameEs] = useState("");
     const [nameFr, setNameFr] = useState("");
     const [editingId, setEditingId] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -52,7 +53,7 @@ export default function TransmissionsPage({ searchParams }: TransmissionsPagePro
 
     const handleCreate = async (event: FormEvent) => {
         event.preventDefault();
-        if (!nameEn.trim() || !nameFr.trim()) return;
+        if (!nameEn.trim() || !nameEs.trim() || !nameFr.trim()) return;
         try {
             setSaving(true);
             setError("");
@@ -76,6 +77,7 @@ export default function TransmissionsPage({ searchParams }: TransmissionsPagePro
     const handleStartEdit = (transmission: Transmission) => {
         setEditingId(transmission.id);
         setNameEn(transmission.name_en ?? transmission.name ?? "");
+        setNameEs(transmission.name_es ?? transmission.name ?? "");
         setNameFr(transmission.name_fr ?? transmission.name ?? "");
     };
 
@@ -89,11 +91,13 @@ export default function TransmissionsPage({ searchParams }: TransmissionsPagePro
             const { error: updateError } = await client.updateTransmission(
                 editingId,
                 nameEn.trim(),
+                nameEs.trim(),
                 nameFr.trim()
             );
             if (updateError) throw updateError;
             setEditingId(null);
             setNameEn("");
+            setNameEs("");
             setNameFr("");
             await loadTransmissions();
         } catch (err) {
@@ -142,6 +146,13 @@ export default function TransmissionsPage({ searchParams }: TransmissionsPagePro
                     className="flex-1 rounded-md border px-3 py-2"
                 />
                 <input
+                    value={nameEs}
+                    onChange={(event) => setNameEs(event.target.value)}
+                    required
+                    placeholder={t("nameEsPlaceholder")}
+                    className="flex-1 rounded-md border px-3 py-2"
+                />
+                <input
                     value={nameFr}
                     onChange={(event) => setNameFr(event.target.value)}
                     required
@@ -183,6 +194,7 @@ export default function TransmissionsPage({ searchParams }: TransmissionsPagePro
                         {transmissions.map((transmission) => (
                             <tr key={transmission.id} className="border-t">
                                 <td className="p-3">{transmission.name_en ?? transmission.name}</td>
+                                <td className="p-3">{transmission.name_es ?? transmission.name}</td>
                                 <td className="p-3">{transmission.name_fr ?? transmission.name}</td>
                                 <td className="p-3">
                                     {new Date(transmission.created_at).toLocaleDateString()}
@@ -209,7 +221,7 @@ export default function TransmissionsPage({ searchParams }: TransmissionsPagePro
                         ))}
                         {transmissions.length === 0 ? (
                             <tr>
-                                <td className="p-3 text-gray-500" colSpan={4}>
+                                <td className="p-3 text-gray-500" colSpan={5}>
                                     {t("empty")}
                                 </td>
                             </tr>
