@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {usePathname, useRouter} from 'next/navigation';
 import {
@@ -30,6 +30,11 @@ export default function AppLayout({ children, businessName }: { children: React.
     const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
+
+    // Close sidebar when navigating to a new page (e.g. after clicking a menu item)
+    useEffect(() => {
+        setSidebarOpen(false);
+    }, [pathname]);
 
 
     const { user } = useGlobal();
