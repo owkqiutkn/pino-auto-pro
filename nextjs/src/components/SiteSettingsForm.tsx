@@ -410,9 +410,6 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                                 if (f) setOgImageFile(f);
                             }}
                         />
-                        <p className="text-xs text-gray-500">
-                            og:type is set to &quot;website&quot; and twitter:card to &quot;summary_large_image&quot; automatically.
-                        </p>
                         <button
                             type="submit"
                             disabled={loading}
