@@ -132,7 +132,7 @@ export default async function SiteFooter() {
                     </nav>
                 </div>
             </div>
-            <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60">
+            <div id="footer-bottom-bar" className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60">
                 <div>{landingT("footer.poweredBy", { businessName })}</div>
                 <div>{landingT("footer.copyright", { businessName })}</div>
             </div>

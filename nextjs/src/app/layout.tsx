@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { getCachedSiteSettings } from "@/lib/supabase/cached";
 import { CookieManagerProvider } from "@/components/CookieManagerProvider";
+import { FooterVisibilityProvider } from "@/components/FooterVisibilityProvider";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getCachedSiteSettings();
@@ -63,7 +64,9 @@ export default async function RootLayout({
       <body className={theme}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <CookieManagerProvider>
-            {children}
+            <FooterVisibilityProvider>
+              {children}
+            </FooterVisibilityProvider>
           </CookieManagerProvider>
         </NextIntlClientProvider>
         {gaID && <GoogleAnalytics gaId={gaID} />}

@@ -341,3 +341,13 @@
     @apply bg-background text-foreground;
     }
 }
+
+/* When footer bottom bar is in view, float scroll/cookie buttons above it so footer text stays visible */
+body.footer-visible .cookie-floating-btn {
+  bottom: 4rem !important;
+}
+@media (min-width: 768px) {
+  body.footer-visible .cookie-floating-btn {
+    bottom: 5rem !important;
+  }
+}
