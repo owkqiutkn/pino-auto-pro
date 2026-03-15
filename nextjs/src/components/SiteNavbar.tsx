@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect, useLayoutEffect } from "react";
+import { createPortal } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 
 const LOCALES = ["fr", "en", "es"] as const;
@@ -36,13 +37,29 @@ const navLinks = [
 export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavbarProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+    const [langDropdownPosition, setLangDropdownPosition] = useState<{ top: number; right: number; minWidth: number } | null>(null);
     const langDropdownRef = useRef<HTMLDivElement>(null);
+    const langDropdownPortalRef = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+        if (!isLangDropdownOpen || !langDropdownRef.current) {
+            setLangDropdownPosition(null);
+            return;
+        }
+        const rect = langDropdownRef.current.getBoundingClientRect();
+        setLangDropdownPosition({
+            top: rect.bottom + 4,
+            right: window.innerWidth - rect.right,
+            minWidth: rect.width,
+        });
+    }, [isLangDropdownOpen]);
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
-            if (langDropdownRef.current && !langDropdownRef.current.contains(e.target as Node)) {
-                setIsLangDropdownOpen(false);
-            }
+            const target = e.target as Node;
+            if (langDropdownRef.current?.contains(target)) return;
+            if (langDropdownPortalRef.current?.contains(target)) return;
+            setIsLangDropdownOpen(false);
         };
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -110,28 +127,38 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                                         <path d="M3 4.5L6 7.5L9 4.5" />
                                     </svg>
                                 </button>
-                                {isLangDropdownOpen && (
-                                    <div
-                                        role="listbox"
-                                        className="absolute right-0 top-full mt-1 min-w-[100%] rounded-lg bg-[#0a0a0d] py-1 shadow-lg ring-1 ring-white/20 z-50"
-                                    >
-                                        {LOCALES.map((loc) => (
-                                            <a
-                                                key={loc}
-                                                href={localeSwitchHref(loc)}
-                                                role="option"
-                                                aria-selected={locale === loc}
-                                                className={`block px-3 py-1.5 text-[10px] uppercase tracking-wide transition-colors ${
-                                                    locale === loc
-                                                        ? "bg-white/20 text-white font-semibold"
-                                                        : "text-white/80 hover:bg-white/10 hover:text-white"
-                                                }`}
-                                            >
-                                                {t(`language.${loc}`)}
-                                            </a>
-                                        ))}
-                                    </div>
-                                )}
+                                {isLangDropdownOpen &&
+                                    langDropdownPosition &&
+                                    typeof document !== "undefined" &&
+                                    createPortal(
+                                        <div
+                                            ref={langDropdownPortalRef}
+                                            role="listbox"
+                                            className="fixed rounded-lg bg-[#0a0a0d] py-1 shadow-lg ring-1 ring-white/20 z-[99999]"
+                                            style={{
+                                                top: langDropdownPosition.top,
+                                                right: langDropdownPosition.right,
+                                                minWidth: langDropdownPosition.minWidth,
+                                            }}
+                                        >
+                                            {LOCALES.map((loc) => (
+                                                <a
+                                                    key={loc}
+                                                    href={localeSwitchHref(loc)}
+                                                    role="option"
+                                                    aria-selected={locale === loc}
+                                                    className={`block px-3 py-1.5 text-[10px] uppercase tracking-wide transition-colors ${
+                                                        locale === loc
+                                                            ? "bg-white/20 text-white font-semibold"
+                                                            : "text-white/80 hover:bg-white/10 hover:text-white"
+                                                    }`}
+                                                >
+                                                    {t(`language.${loc}`)}
+                                                </a>
+                                            ))}
+                                        </div>,
+                                        document.body
+                                    )}
                             </div>
                             <div className="flex items-center gap-2">
                                 <a
