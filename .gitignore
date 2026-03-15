@@ -8,4 +8,5 @@
 
 # Cursor IDE
 .cursor/
+.agents
 .agents/
