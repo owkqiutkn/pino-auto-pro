@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
             business_name,
             logo_light,
             logo_dark,
+            favicon,
             instagram_url,
             facebook_url,
             twitter_url,
@@ -31,6 +32,7 @@ export async function POST(request: NextRequest) {
         if (business_name !== undefined) updates.business_name = business_name ?? null;
         if (logo_light !== undefined) updates.logo_light = logo_light ?? null;
         if (logo_dark !== undefined) updates.logo_dark = logo_dark ?? null;
+        if (favicon !== undefined) updates.favicon = favicon ?? null;
         if (instagram_url !== undefined) updates.instagram_url = instagram_url ?? null;
         if (facebook_url !== undefined) updates.facebook_url = facebook_url ?? null;
         if (twitter_url !== undefined) updates.twitter_url = twitter_url ?? null;

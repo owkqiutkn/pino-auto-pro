@@ -7,6 +7,5 @@
 !.env.example
 
 # Cursor IDE
-.cursor/
-.agents
-.agents/
+.cursor/*
+.agents/*

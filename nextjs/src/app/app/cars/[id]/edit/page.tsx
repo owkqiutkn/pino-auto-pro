@@ -8,6 +8,7 @@ import { ArrowDown, ArrowUp, Star, Trash2 } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/types";
 import { storagePathFromPublicUrl } from "@/lib/cars";
+import { getTransformedStorageUrl, CAR_IMAGE_LIST } from "@/lib/storage";
 import { getLocalizedExteriorColorName } from "@/lib/i18n/colors";
 import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { getLocalizedEngineName } from "@/lib/i18n/engines";
@@ -668,9 +669,15 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                         </div>
                         {coverImage ? (
                             <div className="max-w-sm border rounded-lg overflow-hidden">
-                                <div className="aspect-[4/3] bg-gray-100">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={coverImage.image_url} alt={`${car.title} main image`} className="w-full h-full object-cover" />
+                                <div className="relative aspect-[4/3] bg-gray-100">
+                                    <Image
+                                        src={getTransformedStorageUrl(coverImage.image_url, CAR_IMAGE_LIST)}
+                                        alt={`${car.title} main image`}
+                                        fill
+                                        className="object-cover"
+                                        sizes="384px"
+                                        unoptimized
+                                    />
                                 </div>
                                 <div className="p-2 text-xs text-gray-600 flex items-center gap-1">
                                     <Star className="w-3 h-3 text-yellow-500" />
@@ -696,9 +703,15 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {extraImages.map((image, index) => (
                                     <div key={image.id} className="border rounded-lg overflow-hidden">
-                                        <div className="aspect-[4/3] bg-gray-100">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img src={image.image_url} alt={car.title} className="w-full h-full object-cover" />
+                                        <div className="relative aspect-[4/3] bg-gray-100">
+                                            <Image
+                                                src={getTransformedStorageUrl(image.image_url, CAR_IMAGE_LIST)}
+                                                alt={car.title}
+                                                fill
+                                                className="object-cover"
+                                                sizes="(max-width: 640px) 100vw, 33vw"
+                                                unoptimized
+                                            />
                                         </div>
                                         <div className="p-3 flex items-center justify-between gap-2">
                                             <div className="flex items-center gap-2">

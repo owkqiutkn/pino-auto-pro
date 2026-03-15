@@ -14,12 +14,14 @@ function useIsMobile() {
     return isMobile;
 }
 import Link from "next/link";
+import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { getLocalizedEngineName } from "@/lib/i18n/engines";
 import { getLocalizedFuelName } from "@/lib/i18n/fuels";
 import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
 import type { Database } from "@/lib/types";
+import { getTransformedStorageUrl, CAR_IMAGE_LIST } from "@/lib/storage";
 
 type Category = Database["public"]["Tables"]["categories"]["Row"];
 type Engine = Database["public"]["Tables"]["engines"]["Row"];
@@ -230,11 +232,13 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                 <Link href={`/inventory/${car.slug}`} className="block">
                                     <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                                         {coverImageByCarId[car.id] ? (
-                                            /* eslint-disable-next-line @next/next/no-img-element */
-                                            <img
-                                                src={coverImageByCarId[car.id]}
+                                            <Image
+                                                src={getTransformedStorageUrl(coverImageByCarId[car.id], CAR_IMAGE_LIST)}
                                                 alt={car.title}
-                                                className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                                                fill
+                                                className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                                                sizes="(max-width: 768px) 100vw, 400px"
+                                                unoptimized
                                             />
                                         ) : (
                                             <div className="flex h-full w-full items-center justify-center text-gray-400">

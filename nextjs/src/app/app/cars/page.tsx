@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState, use } from "react";
 import { Loader2, Pencil, Plus, Trash2 } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/types";
+import { getTransformedStorageUrl, CAR_IMAGE_LIST } from "@/lib/storage";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
@@ -152,10 +154,16 @@ export default function CarsListPage({ searchParams }: CarsListPageProps) {
                     {cars.map((car) => (
                         <tr key={car.id} className="border-t">
                             <td className="p-3">
-                                <div className="w-16 h-12 rounded bg-gray-100 overflow-hidden">
+                                <div className="relative w-16 h-12 rounded bg-gray-100 overflow-hidden">
                                     {coverByCar[car.id] ? (
-                                        // eslint-disable-next-line @next/next/no-img-element
-                                        <img src={coverByCar[car.id]} alt={car.title} className="w-full h-full object-cover" />
+                                        <Image
+                                            src={getTransformedStorageUrl(coverByCar[car.id], CAR_IMAGE_LIST)}
+                                            alt={car.title}
+                                            fill
+                                            className="object-cover"
+                                            sizes="64px"
+                                            unoptimized
+                                        />
                                     ) : null}
                                 </div>
                             </td>

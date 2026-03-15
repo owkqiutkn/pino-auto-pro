@@ -492,6 +492,7 @@ export type Database = {
           business_name: string | null
           logo_light: string | null
           logo_dark: string | null
+          favicon: string | null
           instagram_url: string | null
           facebook_url: string | null
           twitter_url: string | null
@@ -508,6 +509,7 @@ export type Database = {
           business_name?: string | null
           logo_light?: string | null
           logo_dark?: string | null
+          favicon?: string | null
           instagram_url?: string | null
           facebook_url?: string | null
           twitter_url?: string | null
@@ -524,6 +526,7 @@ export type Database = {
           business_name?: string | null
           logo_light?: string | null
           logo_dark?: string | null
+          favicon?: string | null
           instagram_url?: string | null
           facebook_url?: string | null
           twitter_url?: string | null

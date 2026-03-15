@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Settings, CheckCircle, Upload, X, Clock, Search, BarChart3 } from "lucide-react";
+import { Settings, CheckCircle, Upload, X, Clock, Search, BarChart3, Globe } from "lucide-react";
 import { createSPASassClientAuthenticated } from "@/lib/supabase/client";
 import type { Database, OpeningHoursJson } from "@/lib/types";
 
@@ -31,12 +31,15 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
     const [googleAnalyticsId, setGoogleAnalyticsId] = useState("");
     const [ogImage, setOgImage] = useState("");
     const [ogImageFile, setOgImageFile] = useState<File | null>(null);
+    const [favicon, setFavicon] = useState("");
+    const [faviconFile, setFaviconFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const lightInputRef = useRef<HTMLInputElement>(null);
     const darkInputRef = useRef<HTMLInputElement>(null);
     const ogInputRef = useRef<HTMLInputElement>(null);
+    const faviconInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (initialSettings) {
@@ -51,6 +54,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
             setSiteUrl(initialSettings.site_url ?? "");
             setGoogleAnalyticsId(initialSettings.google_analytics_id ?? "");
             setOgImage(initialSettings.og_image ?? "");
+            setFavicon(initialSettings.favicon ?? "");
             const hours = (initialSettings.opening_hours as OpeningHoursJson) ?? {};
             if (Object.keys(hours).length === 0) {
                 const defaults: OpeningHoursJson = {};
@@ -97,6 +101,15 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                 ogInputRef.current?.setAttribute("value", "");
             }
 
+            let finalFavicon = favicon;
+            if (faviconFile) {
+                const { data, error: uploadErr } = await client.uploadSiteFavicon(faviconFile);
+                if (uploadErr) throw uploadErr;
+                finalFavicon = data?.publicUrl ?? favicon;
+                setFaviconFile(null);
+                faviconInputRef.current?.setAttribute("value", "");
+            }
+
             const res = await fetch("/api/settings", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -113,6 +126,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                     site_url: siteUrl.trim() || null,
                     google_analytics_id: googleAnalyticsId.trim() || null,
                     og_image: finalOgImage?.trim() || null,
+                    favicon: finalFavicon?.trim() || null,
                 }),
             });
 
@@ -123,6 +137,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
             setLogoLight(finalLogoLight || "");
             setLogoDark(finalLogoDark || "");
             setOgImage(finalOgImage || "");
+            setFavicon(finalFavicon || "");
             setSuccess("Settings saved successfully");
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to update settings");
@@ -181,6 +196,88 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                             type="file"
                             id={inputId}
                             accept="image/*"
+                            onChange={onFileChange}
+                            className="hidden"
+                        />
+                        <div className="flex gap-2">
+                            <button
+                                type="button"
+                                onClick={() => inputRef.current?.click()}
+                                className="inline-flex items-center gap-1.5 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+                            >
+                                <Upload className="h-4 w-4" />
+                                Upload
+                            </button>
+                            {(file || currentUrl) && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setFile(null);
+                                        setCurrentUrl("");
+                                        inputRef.current?.setAttribute("value", "");
+                                    }}
+                                    className="inline-flex items-center gap-1.5 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-50"
+                                >
+                                    <X className="h-4 w-4" />
+                                    Remove
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+                <p className="mt-0.5 text-xs text-gray-500">{hint}</p>
+            </div>
+        );
+    }
+
+    function FaviconUploadField({
+        label,
+        hint,
+        file,
+        setFile,
+        currentUrl,
+        setCurrentUrl,
+        inputRef,
+        inputId,
+        onFileChange,
+    }: {
+        label: string;
+        hint: string;
+        file: File | null;
+        setFile: (f: File | null) => void;
+        currentUrl: string;
+        setCurrentUrl: (url: string) => void;
+        inputRef: React.RefObject<HTMLInputElement | null>;
+        inputId: string;
+        onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    }) {
+        const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+        useEffect(() => {
+            if (file) {
+                const url = URL.createObjectURL(file);
+                setPreviewUrl(url);
+                return () => URL.revokeObjectURL(url);
+            }
+            setPreviewUrl(currentUrl || null);
+        }, [file, currentUrl]);
+        return (
+            <div>
+                <label className="block text-sm font-medium text-gray-700">{label}</label>
+                <div className="mt-1 flex items-center gap-4">
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded border border-gray-200 bg-gray-50">
+                        {previewUrl ? (
+                            /* eslint-disable-next-line @next/next/no-img-element */
+                            <img src={previewUrl} alt="" className="h-full w-full object-contain" />
+                        ) : (
+                            <Globe className="h-5 w-5 text-gray-400" />
+                        )}
+                    </div>
+                    <div className="flex flex-1 flex-col gap-2">
+                        <input
+                            ref={inputRef}
+                            type="file"
+                            id={inputId}
+                            accept="image/x-icon,image/png,image/svg+xml,.ico,.png,.svg"
                             onChange={onFileChange}
                             className="hidden"
                         />
@@ -289,6 +386,20 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                             onFileChange={(e) => {
                                 const f = e.target.files?.[0];
                                 if (f) setLogoDarkFile(f);
+                            }}
+                        />
+                        <FaviconUploadField
+                            label="Favicon"
+                            hint="Browser tab icon. Use .ico, .png or .svg. Recommended 32×32 or 16×16."
+                            file={faviconFile}
+                            setFile={setFaviconFile}
+                            currentUrl={favicon}
+                            setCurrentUrl={setFavicon}
+                            inputRef={faviconInputRef}
+                            inputId="favicon"
+                            onFileChange={(e) => {
+                                const f = e.target.files?.[0];
+                                if (f) setFaviconFile(f);
                             }}
                         />
                         <div>

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Database } from "@/lib/types";
+import { getTransformedStorageUrl, CAR_IMAGE_DETAIL, CAR_IMAGE_THUMB } from "@/lib/storage";
 
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
 
@@ -87,7 +88,7 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
             >
                 {currentImage ? (
                     <Image
-                        src={currentImage.image_url}
+                        src={getTransformedStorageUrl(currentImage.image_url, CAR_IMAGE_DETAIL)}
                         alt={title}
                         fill
                         className="object-cover"
@@ -142,7 +143,7 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
                     )}
                     <div className="relative w-[90vw] h-[80vh]" onClick={(e) => e.stopPropagation()}>
                         <Image
-                            src={currentImage.image_url}
+                            src={getTransformedStorageUrl(currentImage.image_url, { ...CAR_IMAGE_DETAIL, width: 1600 })}
                             alt={title}
                             fill
                             className="object-contain"
@@ -177,7 +178,7 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
                                 }`}
                             >
                                 <Image
-                                    src={img.image_url}
+                                    src={getTransformedStorageUrl(img.image_url, CAR_IMAGE_THUMB)}
                                     alt={`${title} - view ${idx + 1}`}
                                     width={96}
                                     height={64}

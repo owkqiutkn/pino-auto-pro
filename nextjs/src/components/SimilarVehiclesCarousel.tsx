@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Database } from "@/lib/types";
@@ -8,6 +9,7 @@ import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { getLocalizedEngineName } from "@/lib/i18n/engines";
 import { getLocalizedFuelName } from "@/lib/i18n/fuels";
 import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
+import { getTransformedStorageUrl, CAR_IMAGE_LIST } from "@/lib/storage";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
@@ -157,11 +159,13 @@ export default function SimilarVehiclesCarousel({
                                     <Link href={`/inventory/${car.slug}`} className="block">
                                         <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                                             {cover ? (
-                                                /* eslint-disable-next-line @next/next/no-img-element */
-                                                <img
-                                                    src={cover.image_url}
+                                                <Image
+                                                    src={getTransformedStorageUrl(cover.image_url, CAR_IMAGE_LIST)}
                                                     alt={car.title}
-                                                    className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                                                    fill
+                                                    className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                                                    sizes="(max-width: 768px) 100vw, 400px"
+                                                    unoptimized
                                                 />
                                             ) : (
                                                 <div className="flex h-full w-full items-center justify-center text-gray-400">

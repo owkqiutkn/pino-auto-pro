@@ -1,9 +1,11 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useRef, useState, use } from "react";
+import Image from "next/image";
 import { Loader2, Plus, Trash2, Pencil, ImagePlus, X } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/types";
+import { getTransformedStorageUrl, CATEGORY_IMAGE } from "@/lib/storage";
 import { useTranslations } from "next-intl";
 
 type Category = Database["public"]["Tables"]["categories"]["Row"];
@@ -232,9 +234,15 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
                             </button>
                         )}
                         {previewUrl && (
-                            <div className="h-12 w-16 rounded overflow-hidden border border-gray-200 shrink-0">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={previewUrl} alt="" className="h-full w-full object-cover" />
+                            <div className="relative h-12 w-16 rounded overflow-hidden border border-gray-200 shrink-0">
+                                <Image
+                                    src={getTransformedStorageUrl(previewUrl ?? "", CATEGORY_IMAGE)}
+                                    alt=""
+                                    fill
+                                    className="object-cover"
+                                    sizes="64px"
+                                    unoptimized
+                                />
                             </div>
                         )}
                     </div>
@@ -288,9 +296,15 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
                             <tr key={category.id} className="border-t">
                                 <td className="p-3">
                                     {category.image_url ? (
-                                        <div className="h-10 w-14 rounded overflow-hidden border border-gray-200 shrink-0">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img src={category.image_url} alt="" className="h-full w-full object-cover" />
+                                        <div className="relative h-10 w-14 rounded overflow-hidden border border-gray-200 shrink-0">
+                                            <Image
+                                                src={getTransformedStorageUrl(category.image_url, CATEGORY_IMAGE)}
+                                                alt=""
+                                                fill
+                                                className="object-cover"
+                                                sizes="56px"
+                                                unoptimized
+                                            />
                                         </div>
                                     ) : (
                                         <span className="text-gray-400 text-xs">—</span>

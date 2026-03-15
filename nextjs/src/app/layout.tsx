@@ -32,9 +32,13 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     ...(ogImage && { images: [settings!.og_image!] }),
   };
+  const icons = settings?.favicon
+    ? [{ url: settings.favicon, type: "image/x-icon" as const }]
+    : undefined;
   return {
     title,
     description,
+    icons,
     openGraph,
     twitter,
   };
