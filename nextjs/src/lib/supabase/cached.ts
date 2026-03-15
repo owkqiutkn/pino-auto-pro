@@ -17,7 +17,11 @@ const CACHE_REVALIDATE = 3600; // 1 hour for lookup tables
 
 async function fetchCategories(): Promise<Category[]> {
     const client = createAnonymousSassClient();
-    const { data } = await client.getCategories();
+    const { data, error } = await client.getCategories();
+    if (error) {
+        console.error("[getCachedCategories] Supabase error:", error.message, error.details);
+        throw new Error(`Failed to fetch categories: ${error.message}`);
+    }
     return (data ?? []) as Category[];
 }
 
@@ -77,7 +81,7 @@ async function fetchSiteSettings(): Promise<SiteSettings | null> {
 
 export const getCachedCategories = unstable_cache(
     fetchCategories,
-    ["inventory-lookup-categories"],
+    ["inventory-lookup-categories", "v2"],
     { revalidate: CACHE_REVALIDATE }
 );
 

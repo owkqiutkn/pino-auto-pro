@@ -11,8 +11,9 @@ import {
     getCachedBrands,
     getCachedSiteSettings,
 } from "@/lib/supabase/cached";
+import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { Database } from "@/lib/types";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
 type Category = Database["public"]["Tables"]["categories"]["Row"];
@@ -58,7 +59,7 @@ const DEFAULT_INSTAGRAM = "https://instagram.com";
 const DEFAULT_TWITTER = "https://x.com";
 
 export default async function Home() {
-    const [brands, categories, engines, fuels, transmissions, siteSettings, t, navT] = await Promise.all([
+    const [brands, categories, engines, fuels, transmissions, siteSettings, t, navT, locale] = await Promise.all([
         getCachedBrands(),
         getCachedCategories(),
         getCachedEngines(),
@@ -67,6 +68,7 @@ export default async function Home() {
         getCachedSiteSettings(),
         getTranslations("NewLanding"),
         getTranslations("Navbar"),
+        getLocale(),
     ]);
     const businessName = siteSettings?.business_name || "Pino Auto Pro";
     const brandsTyped = (brands ?? []) as Brand[];
@@ -284,40 +286,52 @@ export default async function Home() {
                 </div>
             </section>
 
-            <section className="bg-[#17181f] pt-3 pb-10 text-white">
+            <section id="browse-by-category" className="bg-[#17181f] pt-3 pb-10 text-white" aria-labelledby="browse-by-category-title">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="mb-4">
-                        <h3 className="text-lg font-black uppercase tracking-wide">{t("categories.title")}</h3>
+                        <h3 id="browse-by-category-title" className="text-lg font-black uppercase tracking-wide">{t("categories.title")}</h3>
                     </div>
-                    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                        {categoriesTyped.slice(0, 8).map((cat) => {
-                            const displayName = cat.name_en ?? cat.name;
-                            const imageSrc = cat.image_url ?? CATEGORY_PLACEHOLDER;
-                            return (
-                                <Link
-                                    key={cat.id}
-                                    href={`/inventory?category=${encodeURIComponent(displayName)}`}
-                                    className="group block overflow-hidden rounded-sm border border-white/10 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)]"
-                                >
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
-                                        src={imageSrc}
-                                        alt={displayName}
-                                        loading="eager"
-                                        className="h-20 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                    />
-                                    <div className="border-t border-white/5 bg-gradient-to-r from-[#1d283a] via-[#111827] to-[#1d283a] p-3 text-center">
-                                        <div className="text-xs font-bold uppercase tracking-wide">
-                                            {displayName}
+                    {categoriesTyped.length > 0 ? (
+                        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                            {categoriesTyped.slice(0, 8).map((cat) => {
+                                const displayName = getLocalizedCategoryName(cat, locale) || (cat.name_en ?? cat.name_es ?? cat.name) || "";
+                                const imageSrc = cat.image_url ?? CATEGORY_PLACEHOLDER;
+                                return (
+                                    <Link
+                                        key={cat.id}
+                                        href={`/inventory?category=${encodeURIComponent(displayName)}`}
+                                        className="group block overflow-hidden rounded-sm border border-white/10 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)]"
+                                    >
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img
+                                            src={imageSrc}
+                                            alt={displayName}
+                                            loading="eager"
+                                            className="h-20 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                        />
+                                        <div className="border-t border-white/5 bg-gradient-to-r from-[#1d283a] via-[#111827] to-[#1d283a] p-3 text-center">
+                                            <div className="text-xs font-bold uppercase tracking-wide">
+                                                {displayName}
+                                            </div>
+                                            <span className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#1d4ed8] px-3 py-1 text-[10px] font-bold uppercase tracking-wide group-hover:bg-[#1e40af]">
+                                                {t("categories.viewListings")}
+                                            </span>
                                         </div>
-                                        <span className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#1d4ed8] px-3 py-1 text-[10px] font-bold uppercase tracking-wide group-hover:bg-[#1e40af]">
-                                            {t("categories.viewListings")}
-                                        </span>
-                                    </div>
-                                </Link>
-                            );
-                        })}
-                    </div>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    ) : (
+                        <div className="rounded-sm border border-white/10 bg-[#22242c] p-6 text-center">
+                            <p className="text-sm text-white/80">{t("categories.subtitle")}</p>
+                            <Link
+                                href="/inventory"
+                                className="mt-4 inline-flex items-center justify-center rounded-sm bg-[#1d4ed8] px-4 py-2 text-sm font-bold uppercase tracking-wide hover:bg-[#1e40af]"
+                            >
+                                {t("categories.viewListings")}
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </section>
 
