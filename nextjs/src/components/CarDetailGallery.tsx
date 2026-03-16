@@ -101,7 +101,7 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
 
     const handleMainClick = useCallback(() => {
         if (didSwipeRef.current) return;
-        currentImage && setLightboxOpen(true);
+        if (currentImage) setLightboxOpen(true);
     }, [currentImage]);
 
     return (
