@@ -1,9 +1,12 @@
 "use client";
 
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import {useTranslations} from "next-intl";
+import { useTranslations } from "next-intl";
 
 const defaultCenter = {lat: 45.5019, lng: -73.5674};
 
@@ -14,10 +17,75 @@ interface ContactMapProps {
     variant?: "default" | "large";
 }
 
+type ContactFormValues = {
+    name: string;
+    email: string;
+    phone: string;
+    message: string;
+};
+
 export default function ContactMap({ showForm = true, variant = "default" }: ContactMapProps) {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const t = useTranslations("NewLanding.contactForm");
     const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+
+    const contactSchema = useMemo(
+        () =>
+            z.object({
+                name: z
+                    .string()
+                    .min(1, t("validation.nameRequired"))
+                    .min(2, t("validation.nameMin"))
+                    .max(100),
+                email: z
+                    .string()
+                    .min(1, t("validation.emailRequired"))
+                    .email(t("validation.emailInvalid"))
+                    .max(200),
+                phone: z
+                    .string()
+                    .max(50, t("validation.phoneMax"))
+                    .optional()
+                    .or(z.literal("")),
+                message: z
+                    .string()
+                    .min(1, t("validation.messageRequired"))
+                    .min(10, t("validation.messageMin"))
+                    .max(2000, t("validation.messageMax")),
+            }),
+        [t]
+    );
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<ContactFormValues>({
+        resolver: zodResolver(contactSchema),
+        defaultValues: { name: "", email: "", phone: "", message: "" },
+    });
+
+    const onSubmit = async (values: ContactFormValues) => {
+        setStatus("submitting");
+        try {
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(values),
+            });
+            if (!res.ok) {
+                setStatus("error");
+                return;
+            }
+            setStatus("success");
+            reset();
+        } catch {
+            setStatus("error");
+        } finally {
+            setTimeout(() => setStatus("idle"), 4000);
+        }
+    };
 
     useEffect(() => {
         if (!mapContainerRef.current) return;
@@ -70,92 +138,79 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                         <div className="w-full max-w-xs rounded-2xl bg-white p-5 text-gray-900 shadow-[0_22px_55px_rgba(0,0,0,0.7)] md:max-w-sm md:p-6">
                             <form
                                 className="space-y-4 w-full"
-                                onSubmit={async (e) => {
-                                    e.preventDefault();
-                                    const formData = new FormData(e.currentTarget);
-                                    const name = String(formData.get("name") || "").trim();
-                                    const email = String(formData.get("email") || "").trim();
-                                    const phone = String(formData.get("phone") || "").trim();
-                                    const message = String(formData.get("message") || "").trim();
-
-                                    setStatus("submitting");
-                                    try {
-                                        const res = await fetch("/api/contact", {
-                                            method: "POST",
-                                            headers: {
-                                                "Content-Type": "application/json",
-                                            },
-                                            body: JSON.stringify({
-                                                name,
-                                                email,
-                                                phone,
-                                                message,
-                                            }),
-                                        });
-
-                                        if (!res.ok) {
-                                            setStatus("error");
-                                            return;
-                                        }
-
-                                        setStatus("success");
-                                        e.currentTarget.reset();
-                                    } catch {
-                                        setStatus("error");
-                                    } finally {
-                                        setTimeout(() => {
-                                            setStatus("idle");
-                                        }, 4000);
-                                    }
-                                }}
+                                onSubmit={handleSubmit(onSubmit)}
                             >
                                 <div>
                                     <label htmlFor="contact-name" className="block text-xs font-semibold uppercase tracking-wide text-gray-600">
                                         {t("nameLabel")}
                                     </label>
                                     <input
-                                        name="name"
+                                        {...register("name")}
                                         id="contact-name"
                                         type="text"
                                         placeholder={t("namePlaceholder")}
-                                        className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:border-[#1d4ed8] focus:ring-2 focus:ring-[#1d4ed8]/40"
+                                        disabled={status === "submitting"}
+                                        className={`mt-1 w-full rounded-md border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-[#1d4ed8]/40 ${
+                                            errors.name ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-[#1d4ed8]"
+                                        }`}
                                     />
+                                    {errors.name && (
+                                        <p className="mt-0.5 text-xs text-red-600">{errors.name.message}</p>
+                                    )}
                                 </div>
                                 <div>
                                     <label htmlFor="contact-email" className="block text-xs font-semibold uppercase tracking-wide text-gray-600">
                                         {t("emailLabel")}
                                     </label>
                                     <input
-                                        name="email"
+                                        {...register("email")}
                                         id="contact-email"
                                         type="email"
                                         placeholder={t("emailPlaceholder")}
-                                        className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:border-[#1d4ed8] focus:ring-2 focus:ring-[#1d4ed8]/40"
+                                        disabled={status === "submitting"}
+                                        className={`mt-1 w-full rounded-md border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-[#1d4ed8]/40 ${
+                                            errors.email ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-[#1d4ed8]"
+                                        }`}
                                     />
+                                    {errors.email && (
+                                        <p className="mt-0.5 text-xs text-red-600">{errors.email.message}</p>
+                                    )}
                                 </div>
                                 <div>
                                     <label htmlFor="contact-phone" className="block text-xs font-semibold uppercase tracking-wide text-gray-600">
                                         {t("phoneLabel")}
                                     </label>
                                     <input
-                                        name="phone"
+                                        {...register("phone")}
                                         id="contact-phone"
                                         type="tel"
                                         placeholder={t("phonePlaceholder")}
-                                        className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:border-[#1d4ed8] focus:ring-2 focus:ring-[#1d4ed8]/40"
+                                        disabled={status === "submitting"}
+                                        className={`mt-1 w-full rounded-md border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-[#1d4ed8]/40 ${
+                                            errors.phone ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-[#1d4ed8]"
+                                        }`}
                                     />
+                                    {errors.phone && (
+                                        <p className="mt-0.5 text-xs text-red-600">{errors.phone.message}</p>
+                                    )}
                                 </div>
                                 <div>
                                     <label htmlFor="contact-message" className="block text-xs font-semibold uppercase tracking-wide text-gray-600">
                                         {t("messageLabel")}
                                     </label>
                                     <textarea
-                                        name="message"
+                                        {...register("message")}
                                         id="contact-message"
                                         rows={3}
                                         placeholder={t("messagePlaceholder")}
-                                        className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:border-[#1d4ed8] focus:ring-2 focus:ring-[#1d4ed8]/40"
+                                        disabled={status === "submitting"}
+                                        className={`mt-1 w-full rounded-md border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-[#1d4ed8]/40 ${
+                                            errors.message ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-[#1d4ed8]"
+                                        }`}
                                     />
+                                    {errors.message && (
+                                        <p className="mt-0.5 text-xs text-red-600">{errors.message.message}</p>
+                                    )}
                                 </div>
                                 <button
                                     type="submit"

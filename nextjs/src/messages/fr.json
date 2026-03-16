@@ -159,7 +159,17 @@
       "submit": "Envoyer le message",
       "submitting": "Envoi en cours...",
       "successMessage": "Message envoyé. Nous vous répondrons sous peu.",
-      "errorMessage": "Une erreur s'est produite. Veuillez réessayer."
+      "errorMessage": "Une erreur s'est produite. Veuillez réessayer.",
+      "validation": {
+        "nameMin": "Veuillez entrer au moins 2 caractères.",
+        "nameRequired": "Le nom est requis.",
+        "emailInvalid": "Veuillez entrer une adresse courriel valide.",
+        "emailRequired": "L'adresse courriel est requise.",
+        "phoneMax": "Le numéro de téléphone est trop long.",
+        "messageMin": "Veuillez inclure au moins 10 caractères.",
+        "messageMax": "Le message est trop long.",
+        "messageRequired": "Le message est requis."
+      }
     },
     "inventorySection": {
       "title": "Sélection de l'inventaire",

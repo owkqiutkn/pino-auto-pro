@@ -159,7 +159,17 @@
       "submit": "Send Message",
       "submitting": "Sending...",
       "successMessage": "Message sent. We'll be in touch soon.",
-      "errorMessage": "Something went wrong. Please try again."
+      "errorMessage": "Something went wrong. Please try again.",
+      "validation": {
+        "nameMin": "Please enter at least 2 characters.",
+        "nameRequired": "Name is required.",
+        "emailInvalid": "Please enter a valid email address.",
+        "emailRequired": "Email is required.",
+        "phoneMax": "Phone number is too long.",
+        "messageMin": "Please include at least 10 characters.",
+        "messageMax": "Message is too long.",
+        "messageRequired": "Message is required."
+      }
     },
     "inventorySection": {
       "title": "Inventory Lineup",
