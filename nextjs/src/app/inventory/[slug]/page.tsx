@@ -19,6 +19,7 @@ import CarDetailGallery from "@/components/CarDetailGallery";
 import CarDetailSpecs from "@/components/CarDetailSpecs";
 import CarDetailRequestForm from "@/components/CarDetailRequestForm";
 import CarDetailAccordion from "@/components/CarDetailAccordion";
+import PaymentCalculator from "@/components/PaymentCalculator";
 import SimilarVehiclesCarousel from "@/components/SimilarVehiclesCarousel";
 import VehicleShareButtons from "@/components/VehicleShareButtons";
 
@@ -299,6 +300,9 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                                 </div>
                             </>
                         )}
+
+                        {/* Payment Calculator - above form, below features */}
+                        <PaymentCalculator vehiclePrice={price} />
 
                         {/* Request Information form */}
                         <div id="car-detail-form" className="rounded-lg border border-gray-200 scroll-mt-4">

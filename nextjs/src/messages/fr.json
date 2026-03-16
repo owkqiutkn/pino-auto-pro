@@ -266,7 +266,23 @@
       "hstAndLicensing": "+ TVH et immatriculation",
       "viewDetails": "Voir les détails",
       "noImage": "Aucune image",
-      "na": "N/D"
+      "na": "N/D",
+      "paymentCalculator": {
+        "title": "Calculer vos paiements",
+        "vehiclePrice": "Prix du véhicule",
+        "tradeInPrice": "Valeur de reprise",
+        "salesTax": "Taxe de vente",
+        "downPayment": "Mise de fonds",
+        "balanceToFinance": "Solde à financer",
+        "term": "Terme*",
+        "paymentFrequency": "Fréquence des paiements",
+        "interestRate": "Taux d'intérêt",
+        "monthly": "Mensuel",
+        "biWeekly": "Aux deux semaines",
+        "weekly": "Hebdomadaire",
+        "disclaimer": "*estimé à des fins de démonstration",
+        "recurringPayment": "Votre paiement récurrent"
+      }
     },
     "page": {
       "heroAria": "Section héros de l'inventaire",

@@ -266,7 +266,23 @@
       "hstAndLicensing": "+ IVA y matriculación",
       "viewDetails": "Ver detalles",
       "noImage": "Sin imagen",
-      "na": "N/D"
+      "na": "N/D",
+      "paymentCalculator": {
+        "title": "Calcular tus pagos",
+        "vehiclePrice": "Precio del vehículo",
+        "tradeInPrice": "Valor de permuta",
+        "salesTax": "Impuesto de ventas",
+        "downPayment": "Enganche",
+        "balanceToFinance": "Saldo a financiar",
+        "term": "Plazo*",
+        "paymentFrequency": "Frecuencia de pago",
+        "interestRate": "Tasa de interés",
+        "monthly": "Mensual",
+        "biWeekly": "Quincenal",
+        "weekly": "Semanal",
+        "disclaimer": "*estimado con fines de demostración",
+        "recurringPayment": "Tu pago recurrente"
+      }
     },
     "page": {
       "heroAria": "Sección hero del inventario",

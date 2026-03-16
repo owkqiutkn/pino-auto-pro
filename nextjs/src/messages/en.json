@@ -266,7 +266,23 @@
       "hstAndLicensing": "+ HST and Licensing",
       "viewDetails": "View Details",
       "noImage": "No image",
-      "na": "N/A"
+      "na": "N/A",
+      "paymentCalculator": {
+        "title": "Calculate Your Payments",
+        "vehiclePrice": "Vehicle Price",
+        "tradeInPrice": "Trade-In Price",
+        "salesTax": "Sales Tax",
+        "downPayment": "Down Payment",
+        "balanceToFinance": "Balance to Finance",
+        "term": "Term*",
+        "paymentFrequency": "Payment Frequency",
+        "interestRate": "Interest Rate",
+        "monthly": "Monthly",
+        "biWeekly": "Bi-Weekly",
+        "weekly": "Weekly",
+        "disclaimer": "*estimated for demonstration purpose",
+        "recurringPayment": "Your Recurring Payment Amount"
+      }
     },
     "page": {
       "heroAria": "Inventory hero section",
