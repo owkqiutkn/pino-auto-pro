@@ -61,6 +61,24 @@
       "body": "We offer financing options to help you get behind the wheel. Just ask our team will walk you through your options and find a plan that works for you.",
       "cta": "Get in touch"
     },
+    "process": {
+      "title": "How It Works",
+      "subtitle": "Three simple steps to drive away in your next vehicle.",
+      "steps": {
+        "browse": {
+          "title": "Browse",
+          "body": "Explore our handpicked inventory online or in person. Every vehicle is inspected and ready for the road."
+        },
+        "apply": {
+          "title": "Apply",
+          "body": "Get pre-approved for financing or bring your trade-in. Our team finds a plan that fits your budget."
+        },
+        "drive": {
+          "title": "Drive",
+          "body": "Complete your paperwork and drive away. We handle the details so you can focus on the road."
+        }
+      }
+    },
     "mission": {
       "title": "Our Mission",
       "intro": "At {businessName}, our mission is to redefine automotive service around five core principles.",

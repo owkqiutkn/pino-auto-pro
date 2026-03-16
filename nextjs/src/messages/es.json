@@ -61,6 +61,24 @@
       "body": "Ofrecemos opciones de financiación para ayudarte a ponerte al volante. Nuestro equipo te guiará por tus opciones y encontrará un plan que se adapte a tu presupuesto.",
       "cta": "Contáctanos"
     },
+    "process": {
+      "title": "Cómo funciona",
+      "subtitle": "Tres pasos sencillos para llevarte tu próximo vehículo.",
+      "steps": {
+        "browse": {
+          "title": "Explorar",
+          "body": "Descubre nuestro inventario en línea o en persona. Cada vehículo está inspeccionado y listo para la carretera."
+        },
+        "apply": {
+          "title": "Solicitar",
+          "body": "Obtén preaprobación de financiación o trae tu permuta. Nuestro equipo encuentra un plan que se ajuste a tu presupuesto."
+        },
+        "drive": {
+          "title": "Conducir",
+          "body": "Completa el papeleo y llévate tu coche. Nos ocupamos de los detalles para que tú disfrutes del camino."
+        }
+      }
+    },
     "mission": {
       "title": "Nuestra misión",
       "intro": "En {businessName}, nuestra misión es redefinir el servicio automotriz en torno a cinco principios fundamentales.",

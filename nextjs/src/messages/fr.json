@@ -61,6 +61,24 @@
       "body": "Nous offrons des options de financement pour vous aider à prendre le volant. Notre équipe vous expliquera vos options et trouvera un plan adapté à votre budget.",
       "cta": "Nous joindre"
     },
+    "process": {
+      "title": "Comment ça marche",
+      "subtitle": "Trois étapes simples pour repartir au volant de votre prochain véhicule.",
+      "steps": {
+        "browse": {
+          "title": "Parcourir",
+          "body": "Explorez notre inventaire en ligne ou sur place. Chaque véhicule est inspecté et prêt pour la route."
+        },
+        "apply": {
+          "title": "Demander",
+          "body": "Obtenez une préapprobation de financement ou apportez votre véhicule en échange. Notre équipe trouve un plan adapté à votre budget."
+        },
+        "drive": {
+          "title": "Conduire",
+          "body": "Finalisez les démarches et repartez au volant. Nous gérons les formalités pour que vous puissiez profiter de la route."
+        }
+      }
+    },
     "mission": {
       "title": "Notre mission",
       "intro": "Chez {businessName}, notre mission est de redéfinir le service automobile autour de cinq principes clés.",
