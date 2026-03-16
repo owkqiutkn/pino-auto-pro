@@ -179,7 +179,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                             />
 
                             {/* Red banner */}
-                        <div className="min-h-[75vw] lg:min-h-[18rem] overflow-hidden rounded-xl border border-blue-400/30 bg-[#071d38] px-6 py-5 text-white shadow-[0_12px_30px_rgba(0,0,0,0.45)] transition-transform duration-300 ease-out hover:-translate-y-2">
+                        <div className="lg:min-h-[18rem] overflow-hidden rounded-xl border border-blue-400/30 bg-[#071d38] px-6 pt-5 pb-4 text-white shadow-[0_12px_30px_rgba(0,0,0,0.45)] transition-transform duration-300 ease-out hover:-translate-y-2">
                             <h1 className="text-2xl font-bold md:text-3xl">
                                 {car.year} {car.brand} {car.model}
                             </h1>
