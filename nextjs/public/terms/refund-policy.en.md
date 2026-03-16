@@ -10,7 +10,7 @@ Pino Auto Pro is committed to customer satisfaction. This Refund Policy outlines
 
 ### 2.1 Sold Vehicles
 - Vehicle sales are generally final once the purchase agreement is signed and the vehicle is delivered
-- Any applicable "cooling-off" or return rights depend on your province’s consumer protection laws
+- Any applicable "cooling-off" or return rights depend on your province's consumer protection laws
 - We recommend reviewing your purchase agreement for specific terms
 
 ### 2.2 Deposits

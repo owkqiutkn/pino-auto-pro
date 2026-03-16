@@ -7,6 +7,8 @@ const navLinks = [
     { href: "/inventory", labelKey: "links.inventory" },
     { href: "/#about", labelKey: "links.about" },
     { href: "/#contact", labelKey: "links.contact" },
+    { href: "/legal/terms", labelKey: "links.terms" },
+    { href: "/legal/privacy", labelKey: "links.privacy" },
 ];
 
 const DEFAULT_FACEBOOK = "https://facebook.com";

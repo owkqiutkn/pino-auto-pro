@@ -1,84 +1,58 @@
-"use client";
-import React from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { ArrowLeft, FileText, ShieldAlert, RefreshCw } from 'lucide-react';
+import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import InventoryHero from "@/components/InventoryHero";
+import SiteFooter from "@/components/SiteFooter";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 const legalDocuments = [
-    {
-        id: 'privacy',
-        title: 'Privacy Policy',
-        icon: ShieldAlert,
-        description: 'How we handle and protect your data'
-    },
-    {
-        id: 'terms',
-        title: 'Terms of Service',
-        icon: FileText,
-        description: 'Rules and guidelines for using our service'
-    },
-    {
-        id: 'refund',
-        title: 'Refund Policy',
-        icon: RefreshCw,
-        description: 'Our policy on refunds and cancellations'
-    }
+    { id: "terms", titleKey: "terms" },
+    { id: "privacy", titleKey: "privacy" },
+    { id: "refund", titleKey: "refund" },
 ];
 
-type LegalLayoutProps = {
+export default async function LegalLayout({
+    children,
+}: {
     children: React.ReactNode;
-};
-
-export default function LegalLayout({ children }: LegalLayoutProps) {
-    const router = useRouter();
+}) {
+    const t = await getTranslations("Legal");
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="py-6">
-                    <button
-                        onClick={() => router.back()}
-                        className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900"
-                    >
-                        <ArrowLeft className="w-4 h-4 mr-2" />
-                        Back
-                    </button>
-                </div>
+        <div className="min-h-screen bg-white">
+            <InventoryHero title={t("title")} />
 
-                <div className="flex flex-col lg:flex-row gap-8">
-                    {/* Sidebar Navigation */}
-                    <div className="w-full lg:w-64 flex-shrink-0">
-                        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-                            <div className="p-4 border-b border-gray-200">
-                                <h2 className="text-lg font-semibold text-gray-900">Legal Documents</h2>
-                                <p className="text-sm text-gray-500 mt-1">Important information about our services</p>
-                            </div>
-                            <nav className="p-4 space-y-2">
-                                {legalDocuments.map((doc) => (
-                                    <Link
-                                        key={doc.id}
-                                        href={`/legal/${doc.id}`}
-                                        className="block p-3 rounded-md hover:bg-gray-50 transition-colors"
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <doc.icon className="w-5 h-5 text-gray-400" />
-                                            <div>
-                                                <div className="text-sm font-medium text-gray-900">{doc.title}</div>
-                                                <div className="text-xs text-gray-500">{doc.description}</div>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                ))}
-                            </nav>
+            <div className="mx-auto max-w-6xl px-4 pt-8 pb-16">
+                <div className="space-y-4">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <h3
+                                className="text-lg font-bold"
+                                style={{ color: "#1d4ed8" }}
+                            >
+                                {t("heading")}
+                            </h3>
+                            <p className="mt-1 text-sm text-gray-500">
+                                {t("intro")}
+                            </p>
                         </div>
+                        <nav className="flex items-center gap-2">
+                            {legalDocuments.map((doc) => (
+                                <Link
+                                    key={doc.id}
+                                    href={`/legal/${doc.id}`}
+                                    className="rounded border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:border-[#1d4ed8] hover:bg-gray-50 hover:text-[#1d4ed8]"
+                                >
+                                    {t(doc.titleKey)}
+                                </Link>
+                            ))}
+                        </nav>
                     </div>
-
-                    {/* Main Content */}
-                    <div className="flex-1">
-                        {children}
-                    </div>
+                    {children}
                 </div>
             </div>
+
+            <SiteFooter />
+            <ScrollToTopButton />
         </div>
     );
 }

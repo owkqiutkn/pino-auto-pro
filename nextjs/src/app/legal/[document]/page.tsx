@@ -1,49 +1,43 @@
-'use client';
+"use client";
 
-import React, { use } from 'react';
-import LegalDocument from '@/components/LegalDocument';
-import { notFound, useParams } from 'next/navigation';
+import React, { use } from "react";
+import LegalDocument from "@/components/LegalDocument";
+import { notFound, useParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 
-const legalDocuments = {
-    'privacy': {
-        title: 'Privacy Notice',
-        path: '/terms/privacy-notice.md'
-    },
-    'terms': {
-        title: 'Terms of Service',
-        path: '/terms/terms-of-service.md'
-    },
-    'refund': {
-        title: 'Refund Policy',
-        path: '/terms/refund-policy.md'
-    }
+const DOCUMENT_FILE_MAP = {
+    terms: "terms-of-service",
+    privacy: "privacy-notice",
+    refund: "refund-policy",
 } as const;
 
-type LegalDocument = keyof typeof legalDocuments;
+const SUPPORTED_LOCALES = ["en", "fr", "es"] as const;
 
-type RouteDocument = 'terms' | 'privacy' | 'cookies';
+type LegalDocId = keyof typeof DOCUMENT_FILE_MAP;
+type RouteDocument = "terms" | "privacy" | "refund";
 
 type LegalPageProps = {
     params?: Promise<Record<string, string | string[]>>;
 };
 
 export default function LegalPage({ params }: LegalPageProps) {
-    use(params ?? Promise.resolve({})); // Unwrap to satisfy Next.js 15 async dynamic APIs
+    use(params ?? Promise.resolve({}));
     const { document: rawDocument } = useParams<{ document: RouteDocument | string[] }>();
     const document = Array.isArray(rawDocument) ? rawDocument[0] : rawDocument;
+    const locale = useLocale();
+    const t = useTranslations("Legal");
 
-    if (!legalDocuments[document as LegalDocument]) {
+    if (!(document in DOCUMENT_FILE_MAP)) {
         notFound();
     }
 
-    const { title, path } = legalDocuments[document as LegalDocument];
+    const baseName = DOCUMENT_FILE_MAP[document as LegalDocId];
+    const resolvedLocale = SUPPORTED_LOCALES.includes(locale as (typeof SUPPORTED_LOCALES)[number])
+        ? locale
+        : "en";
+    const filePath = `/terms/${baseName}.${resolvedLocale}.md`;
+    const titleKey = document as LegalDocId;
+    const title = t(titleKey);
 
-    return (
-        <div className="container mx-auto px-4 py-8">
-            <LegalDocument
-                title={title}
-                filePath={path}
-            />
-        </div>
-    );
+    return <LegalDocument title={title} filePath={filePath} fallbackPath={`/terms/${baseName}.en.md`} />;
 }

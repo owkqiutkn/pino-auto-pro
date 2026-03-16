@@ -1,4 +1,12 @@
 {
+  "Legal": {
+    "title": "Información legal",
+    "heading": "Documentos legales",
+    "intro": "Información importante sobre nuestros servicios",
+    "terms": "Términos de servicio",
+    "privacy": "Política de privacidad",
+    "refund": "Política de reembolso"
+  },
   "Auth": {
     "backToHomepage": "Volver al inicio",
     "emailLabel": "Correo electrónico",
@@ -12,7 +20,9 @@
     "links": {
       "inventory": "Inventario",
       "about": "Nosotros",
-      "contact": "Contacto"
+      "contact": "Contacto",
+      "terms": "Términos",
+      "privacy": "Privacidad"
     },
     "language": {
       "label": "Idioma",

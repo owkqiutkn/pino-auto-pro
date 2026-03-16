@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 interface LegalDocumentProps {
     filePath: string;
     title: string;
+    /** Fallback path (e.g. English) if the locale-specific file is not found */
+    fallbackPath?: string;
 }
 
-const LegalDocument: React.FC<LegalDocumentProps> = ({ filePath, title }) => {
-    const [content, setContent] = useState('');
+export default function LegalDocument({ filePath, title, fallbackPath }: LegalDocumentProps) {
+    const [content, setContent] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -19,55 +19,100 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ filePath, title }) => {
         setLoading(true);
         setError(null);
 
-        fetch(filePath)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load document');
-                }
+        const tryFetch = (path: string): Promise<string> =>
+            fetch(path).then((response) => {
+                if (!response.ok) throw new Error("Failed to load");
                 return response.text();
-            })
-            .then(text => {
+            });
+
+        tryFetch(filePath)
+            .then((text) => {
                 setContent(text);
                 setLoading(false);
             })
-            .catch(error => {
-                console.error('Error loading markdown:', error);
-                setError('Failed to load document. Please try again later.');
+            .catch(() => {
+                if (fallbackPath && fallbackPath !== filePath) {
+                    return tryFetch(fallbackPath).then((text) => {
+                        setContent(text);
+                        setLoading(false);
+                    });
+                }
+                setError("Failed to load document. Please try again later.");
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.error("Error loading markdown:", err);
+                setError("Failed to load document. Please try again later.");
                 setLoading(false);
             });
-    }, [filePath]);
+    }, [filePath, fallbackPath]);
 
     return (
-        <Card className="w-full max-w-4xl mx-auto my-8">
-            <CardHeader>
-                <h1 className="text-2xl font-bold text-center">{title}</h1>
-            </CardHeader>
-            <CardContent className="prose prose-blue max-w-none min-h-[200px]">
+        <div className="mt-8 space-y-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h3
+                        className="text-lg font-bold"
+                        style={{ color: "#1d4ed8" }}
+                    >
+                        {title}
+                    </h3>
+                </div>
+            </div>
+            <div className="prose prose-gray max-w-none min-h-[200px] text-gray-700">
                 {loading ? (
-                    <div className="flex items-center justify-center h-[200px]">
-                        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                    <div className="flex h-[200px] items-center justify-center">
+                        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#1d4ed8] border-t-transparent" />
                     </div>
                 ) : error ? (
-                    <div className="text-center text-red-600 py-8">
+                    <div className="py-8 text-center text-red-600">
                         {error}
                     </div>
                 ) : (
                     <ReactMarkdown
                         components={{
-                            h1: ({ children }) => <h1 className="text-2xl font-bold mt-8 mb-4">{children}</h1>,
-                            h2: ({ children }) => <h2 className="text-xl font-semibold mt-6 mb-3">{children}</h2>,
-                            h3: ({ children }) => <h3 className="text-lg font-medium mt-4 mb-2">{children}</h3>,
-                            ul: ({ children }) => <ul className="list-disc pl-6 mb-4">{children}</ul>,
-                            li: ({ children }) => <li className="mb-1">{children}</li>,
-                            p: ({ children }) => <p className="mb-4">{children}</p>,
+                            h1: ({ children }) => (
+                                <h1 className="mb-4 mt-8 text-2xl font-bold text-gray-900">
+                                    {children}
+                                </h1>
+                            ),
+                            h2: ({ children }) => (
+                                <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900">
+                                    {children}
+                                </h2>
+                            ),
+                            h3: ({ children }) => (
+                                <h3 className="mb-2 mt-4 text-lg font-medium text-gray-900">
+                                    {children}
+                                </h3>
+                            ),
+                            ul: ({ children }) => (
+                                <ul className="mb-4 list-disc pl-6">
+                                    {children}
+                                </ul>
+                            ),
+                            li: ({ children }) => (
+                                <li className="mb-1">{children}</li>
+                            ),
+                            p: ({ children }) => (
+                                <p className="mb-4 leading-relaxed">{children}</p>
+                            ),
+                            a: ({ href, children }) => (
+                                <a
+                                    href={href}
+                                    className="font-medium text-[#1d4ed8] hover:underline"
+                                    target={href?.startsWith("http") ? "_blank" : undefined}
+                                    rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
+                                >
+                                    {children}
+                                </a>
+                            ),
                         }}
                     >
                         {content}
                     </ReactMarkdown>
                 )}
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
-};
-
-export default LegalDocument;
+}

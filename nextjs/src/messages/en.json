@@ -1,4 +1,12 @@
 {
+  "Legal": {
+    "title": "Legal",
+    "heading": "Legal Documents",
+    "intro": "Important information about our services",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "refund": "Refund Policy"
+  },
   "Auth": {
     "backToHomepage": "Back to Homepage",
     "emailLabel": "Email address",
@@ -12,7 +20,9 @@
     "links": {
       "inventory": "Inventory",
       "about": "About",
-      "contact": "Contact"
+      "contact": "Contact",
+      "terms": "Terms",
+      "privacy": "Privacy"
     },
     "language": {
       "label": "Language",
