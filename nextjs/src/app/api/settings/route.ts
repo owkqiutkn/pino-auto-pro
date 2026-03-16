@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createSSRClient } from "@/lib/supabase/server";
 import { createSSRSassClient } from "@/lib/supabase/server";
 
@@ -14,6 +14,8 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const {
             business_name,
+            email,
+            phone,
             logo_light,
             logo_dark,
             favicon,
@@ -30,6 +32,8 @@ export async function POST(request: NextRequest) {
 
         const updates: Record<string, unknown> = {};
         if (business_name !== undefined) updates.business_name = business_name ?? null;
+        if (email !== undefined) updates.email = email ?? null;
+        if (phone !== undefined) updates.phone = phone ?? null;
         if (logo_light !== undefined) updates.logo_light = logo_light ?? null;
         if (logo_dark !== undefined) updates.logo_dark = logo_dark ?? null;
         if (favicon !== undefined) updates.favicon = favicon ?? null;
@@ -50,6 +54,7 @@ export async function POST(request: NextRequest) {
             return Response.json({ error: error.message }, { status: 500 });
         }
         revalidateTag("site-settings");
+        revalidatePath("/", "layout");
         return Response.json({ data });
     } catch (err) {
         console.error("Settings update error:", err);

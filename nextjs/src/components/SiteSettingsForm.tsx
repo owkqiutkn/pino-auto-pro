@@ -11,12 +11,39 @@ type SiteSettingsRow = Database["public"]["Tables"]["site_settings"]["Row"];
 
 const DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
 
+function SaveSettingsButton({ loading, saved }: { loading: boolean; saved: boolean }) {
+    return (
+        <button
+            type="submit"
+            disabled={loading}
+            className={`w-full flex items-center justify-center gap-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 transition-colors ${
+                saved
+                    ? "bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500"
+                    : "bg-primary-600 hover:bg-primary-700 focus:ring-primary-500"
+            }`}
+        >
+            {loading ? (
+                "Saving..."
+            ) : saved ? (
+                <>
+                    <CheckCircle className="h-4 w-4" aria-hidden />
+                    Saved!
+                </>
+            ) : (
+                "Save Settings"
+            )}
+        </button>
+    );
+}
+
 interface SiteSettingsFormProps {
     initialSettings: SiteSettingsRow | null;
 }
 
 export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormProps) {
     const [businessName, setBusinessName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
     const [logoLight, setLogoLight] = useState("");
     const [logoDark, setLogoDark] = useState("");
     const [logoLightFile, setLogoLightFile] = useState<File | null>(null);
@@ -36,6 +63,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [showSavedFeedback, setShowSavedFeedback] = useState(false);
     const lightInputRef = useRef<HTMLInputElement>(null);
     const darkInputRef = useRef<HTMLInputElement>(null);
     const ogInputRef = useRef<HTMLInputElement>(null);
@@ -44,6 +72,8 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
     useEffect(() => {
         if (initialSettings) {
             setBusinessName(initialSettings.business_name ?? "");
+            setEmail(initialSettings.email ?? "");
+            setPhone(initialSettings.phone ?? "");
             setLogoLight(initialSettings.logo_light ?? "");
             setLogoDark(initialSettings.logo_dark ?? "");
             setInstagramUrl(initialSettings.instagram_url ?? "");
@@ -56,15 +86,25 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
             setOgImage(initialSettings.og_image ?? "");
             setFavicon(initialSettings.favicon ?? "");
             const hours = (initialSettings.opening_hours as OpeningHoursJson) ?? {};
-            if (Object.keys(hours).length === 0) {
-                const defaults: OpeningHoursJson = {};
-                DAYS.forEach((d) => { defaults[d] = { open: "09:00", close: "17:00" }; });
-                setOpeningHours(defaults);
-            } else {
-                setOpeningHours(hours);
-            }
+            const merged: OpeningHoursJson = {};
+            const defaultHours = { open: "09:00", close: "17:00" };
+            DAYS.forEach((d) => {
+                const existing = hours[d];
+                if (existing && typeof existing === "object" && !Array.isArray(existing)) {
+                    merged[d] = existing;
+                } else {
+                    merged[d] = defaultHours;
+                }
+            });
+            setOpeningHours(merged);
         }
     }, [initialSettings]);
+
+    useEffect(() => {
+        if (!showSavedFeedback) return;
+        const t = setTimeout(() => setShowSavedFeedback(false), 2500);
+        return () => clearTimeout(t);
+    }, [showSavedFeedback]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -115,12 +155,20 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     business_name: businessName.trim() || null,
+                    email: email.trim() || null,
+                    phone: phone.trim() || null,
                     logo_light: finalLogoLight || null,
                     logo_dark: finalLogoDark || null,
                     instagram_url: instagramUrl || null,
                     facebook_url: facebookUrl || null,
                     twitter_url: twitterUrl || null,
-                    opening_hours: Object.keys(openingHours).length ? openingHours : null,
+                    opening_hours: (() => {
+                        const full: OpeningHoursJson = {};
+                        DAYS.forEach((d) => {
+                            full[d] = openingHours[d] ?? { open: "09:00", close: "17:00" };
+                        });
+                        return full;
+                    })(),
                     meta_title: metaTitle.trim() || null,
                     meta_description: metaDescription.trim() || null,
                     site_url: siteUrl.trim() || null,
@@ -139,6 +187,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
             setOgImage(finalOgImage || "");
             setFavicon(finalFavicon || "");
             setSuccess("Settings saved successfully");
+            setShowSavedFeedback(true);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to update settings");
         } finally {
@@ -403,6 +452,34 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                             }}
                         />
                         <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                Email
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="info@example.com"
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
+                            />
+                            <p className="mt-0.5 text-xs text-gray-500">Dealer contact email shown in footer and contact sections</p>
+                        </div>
+                        <div>
+                            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                                Phone Number
+                            </label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                placeholder="(555) 123-4567"
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
+                            />
+                            <p className="mt-0.5 text-xs text-gray-500">Dealer phone shown in footer and contact sections</p>
+                        </div>
+                        <div>
                             <label htmlFor="instagram-url" className="block text-sm font-medium text-gray-700">
                                 Instagram URL
                             </label>
@@ -441,13 +518,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
                             />
                         </div>
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
-                        >
-                            {loading ? "Saving..." : "Save Settings"}
-                        </button>
+                        <SaveSettingsButton loading={loading} saved={showSavedFeedback} />
                     </form>
                 </CardContent>
             </Card>
@@ -527,13 +598,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                                 if (f) setOgImageFile(f);
                             }}
                         />
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
-                        >
-                            {loading ? "Saving..." : "Save Settings"}
-                        </button>
+                        <SaveSettingsButton loading={loading} saved={showSavedFeedback} />
                     </form>
                 </CardContent>
             </Card>
@@ -564,13 +629,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                             />
                             <p className="mt-0.5 text-xs text-gray-500">Find this in Google Analytics under Admin → Data Streams → your stream → Measurement ID.</p>
                         </div>
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
-                        >
-                            {loading ? "Saving..." : "Save Settings"}
-                        </button>
+                        <SaveSettingsButton loading={loading} saved={showSavedFeedback} />
                     </form>
                 </CardContent>
             </Card>
@@ -587,6 +646,19 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-3">
+                        <div className="flex justify-end">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const all: OpeningHoursJson = {};
+                                    DAYS.forEach((d) => { all[d] = { open: "09:00", close: "17:00" }; });
+                                    setOpeningHours(all);
+                                }}
+                                className="text-sm text-primary-600 hover:text-primary-700 hover:underline"
+                            >
+                                Set all to 9am–5pm
+                            </button>
+                        </div>
                         {DAYS.map((day) => {
                             const dayData = openingHours[day];
                             const closed = dayData && "closed" in dayData && dayData.closed;
@@ -648,13 +720,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                                 </div>
                             );
                         })}
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
-                        >
-                            {loading ? "Saving..." : "Save Settings"}
-                        </button>
+                        <SaveSettingsButton loading={loading} saved={showSavedFeedback} />
                     </form>
                 </CardContent>
             </Card>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ContactMap from "@/components/ContactMap";
 import InventoryLineup from "@/components/InventoryLineup";
+import SiteFooter from "@/components/SiteFooter";
 import SiteNavbar from "@/components/SiteNavbar";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import {
@@ -55,12 +56,8 @@ const featureCards = [
     },
 ];
 
-const DEFAULT_FACEBOOK = "https://facebook.com";
-const DEFAULT_INSTAGRAM = "https://instagram.com";
-const DEFAULT_TWITTER = "https://x.com";
-
 export default async function NewPage() {
-    const [brands, categories, engines, fuels, transmissions, siteSettings, featuredSegment, t, navT, locale] = await Promise.all([
+    const [brands, categories, engines, fuels, transmissions, siteSettings, featuredSegment, t, locale] = await Promise.all([
         getCachedBrands(),
         getCachedCategories(),
         getCachedEngines(),
@@ -69,7 +66,6 @@ export default async function NewPage() {
         getCachedSiteSettings(),
         getInventorySegmentData("featured"),
         getTranslations("NewLanding"),
-        getTranslations("Navbar"),
         getLocale(),
     ]);
     const businessName = siteSettings?.business_name || "Pino Auto Pro";
@@ -437,123 +433,7 @@ export default async function NewPage() {
                 <ContactMap variant="large" />
             </section>
 
-            <footer className="bg-[#171717] py-10 text-xs text-white/80">
-                <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 text-center sm:grid-cols-2 sm:gap-8 sm:text-left md:grid-cols-3">
-                    <div>
-                        {siteSettings?.logo_light ? (
-                            /* eslint-disable-next-line @next/next/no-img-element */
-                            <img
-                                src={siteSettings.logo_light}
-                                alt={businessName}
-                                className="mx-auto mb-3 h-8 max-w-[140px] object-contain object-center sm:mx-0 sm:object-left"
-                            />
-                        ) : (
-                            <h4 className="mb-3 font-bold uppercase text-white">
-                                {businessName}
-                            </h4>
-                        )}
-                        <p className="text-white/60">{t("footer.addressLine1")}</p>
-                        <p className="text-white/60">{t("footer.phone")}</p>
-                        <p className="text-white/60">{t("footer.email")}</p>
-                        <hr className="mt-4 mb-2 border-white/10" />
-                        <div className="mt-2 flex flex-col gap-1">
-                            <Link href="/legal/terms" className="text-white/60 hover:text-white">
-                                {navT("links.terms")}
-                            </Link>
-                            <Link href="/legal/privacy" className="text-white/60 hover:text-white">
-                                {navT("links.privacy")}
-                            </Link>
-                        </div>
-                        <div className="mt-4 flex items-center justify-center gap-3 sm:justify-start">
-                            <a
-                                href={siteSettings?.facebook_url || DEFAULT_FACEBOOK}
-                                aria-label="Visit us on Facebook"
-                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-[#1877f2]/60"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src="/new-landing/icons/icon-facebook.png"
-                                    alt="Facebook"
-                                    className="h-4 w-4 brightness-0 invert"
-                                />
-                            </a>
-                            <a
-                                href={siteSettings?.instagram_url || DEFAULT_INSTAGRAM}
-                                aria-label="Visit us on Instagram"
-                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-[#e1306c]/60"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src="/new-landing/icons/icon-instagram.png"
-                                    alt="Instagram"
-                                    className="h-4 w-4 brightness-0 invert"
-                                />
-                            </a>
-                            <a
-                                href={siteSettings?.twitter_url || DEFAULT_TWITTER}
-                                aria-label="Visit us on X"
-                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/15 hover:bg-white/10 hover:ring-white/70"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src="/new-landing/icons/icon-x-twitter.png"
-                                    alt="X (Twitter)"
-                                    className="h-4 w-4 brightness-0 invert"
-                                />
-                            </a>
-                        </div>
-                    </div>
-                    <div className="min-w-0 text-center sm:ml-auto sm:w-fit sm:min-w-[10rem] sm:text-left md:ml-0">
-                        <h4 className="mb-2 font-bold uppercase tracking-wide text-white text-[11px]">
-                            {t("footer.hoursTitle")}
-                        </h4>
-                        <dl className="mx-auto flex w-fit flex-col gap-0.5 text-[11px] text-white/60 sm:mx-0 sm:w-full">
-                            {(["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const).map((key) => {
-                                const raw = t(`footer.hours.${key}`);
-                                const colonIdx = raw.indexOf(":");
-                                const day = colonIdx >= 0 ? raw.slice(0, colonIdx).trim() : raw;
-                                const hours = colonIdx >= 0 ? raw.slice(colonIdx + 1).trim() : "";
-                                const isWeekend = key === "sat";
-                                return (
-                                    <div
-                                        key={key}
-                                        className={`flex justify-between gap-4 ${isWeekend ? "border-t border-white/10 pt-1 mt-0.5" : ""}`}
-                                    >
-                                        <dt className="w-10 shrink-0 text-white/50">{day}</dt>
-                                        <dd className="text-right tabular-nums">{hours}</dd>
-                                    </div>
-                                );
-                            })}
-                        </dl>
-                    </div>
-                    <div className="hidden md:block">
-                        <h4 className="mb-3 font-bold uppercase text-white">
-                            {t("footer.navTitle")}
-                        </h4>
-                        <nav className="flex flex-col gap-1">
-                            <Link href="/inventory" className="text-white/60 hover:text-white">
-                                {navT("links.inventory")}
-                            </Link>
-                            <Link href="/new#about" className="text-white/60 hover:text-white">
-                                {navT("links.about")}
-                            </Link>
-                            <Link href="/new#contact" className="text-white/60 hover:text-white">
-                                {navT("links.contact")}
-                            </Link>
-                        </nav>
-                    </div>
-                </div>
-                <div id="footer-bottom-bar" className="mx-auto mt-8 flex max-w-6xl flex-col items-center gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60 sm:flex-row sm:justify-between">
-                    <div>{t("footer.poweredBy", { businessName })}</div>
-                    <div>{t("footer.copyright", { businessName })}</div>
-                </div>
-            </footer>
+            <SiteFooter showMap={false} basePath="/new" />
             <ScrollToTopButton />
         </div>
     );

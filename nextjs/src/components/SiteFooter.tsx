@@ -1,34 +1,75 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import ContactMap from "@/components/ContactMap";
 import { getCachedSiteSettings } from "@/lib/supabase/cached";
+import type { OpeningHoursJson } from "@/lib/types";
 
-const navLinks = [
-    { href: "/inventory", labelKey: "links.inventory" },
-    { href: "/#about", labelKey: "links.about" },
-    { href: "/#contact", labelKey: "links.contact" },
-];
+interface SiteFooterProps {
+    /** When false, skip the map section (page already has it). Default: true */
+    showMap?: boolean;
+    /** Base path for about/contact anchors (e.g. "/new" for /new#about). Default: "" for /#about */
+    basePath?: string;
+}
 
 const DEFAULT_FACEBOOK = "https://facebook.com";
 const DEFAULT_INSTAGRAM = "https://instagram.com";
 const DEFAULT_TWITTER = "https://x.com";
 
-export default async function SiteFooter() {
-    const [landingT, navT, siteSettings] = await Promise.all([
+const DAY_KEYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const;
+const DB_DAY_KEYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
+
+function formatTimeForLocale(time24: string, locale: string): string {
+    const [hStr, mStr] = time24.split(":");
+    const hour = parseInt(hStr ?? "0", 10);
+    const minute = parseInt(mStr ?? "0", 10);
+    if (locale === "fr") {
+        return `${hour} h`;
+    }
+    if (locale === "es") {
+        return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+    }
+    const period = hour >= 12 ? "pm" : "am";
+    const h12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+    return `${h12}${minute > 0 ? ":" + mStr : ""}${period}`;
+}
+
+function formatHoursRange(open: string, close: string, locale: string): string {
+    const openFmt = formatTimeForLocale(open, locale);
+    const closeFmt = formatTimeForLocale(close, locale);
+    if (locale === "fr") return `${openFmt} à ${closeFmt}`;
+    return `${openFmt}-${closeFmt}`;
+}
+
+function getNavLinks(basePath: string) {
+    return [
+        { href: "/inventory", labelKey: "links.inventory" as const },
+        { href: basePath ? `${basePath}#about` : "/#about", labelKey: "links.about" as const },
+        { href: basePath ? `${basePath}#contact` : "/#contact", labelKey: "links.contact" as const },
+    ];
+}
+
+export default async function SiteFooter({ showMap = true, basePath = "" }: SiteFooterProps) {
+    const [landingT, navT, siteSettings, locale] = await Promise.all([
         getTranslations("NewLanding"),
         getTranslations("Navbar"),
         getCachedSiteSettings(),
+        getLocale(),
     ]);
+    const openingHours = (siteSettings?.opening_hours ?? null) as OpeningHoursJson | null;
     const businessName = siteSettings?.business_name || "Pino Auto Pro";
+    const email = siteSettings?.email || landingT("footer.email");
+    const phone = siteSettings?.phone || landingT("footer.phone");
     const facebookUrl = siteSettings?.facebook_url || DEFAULT_FACEBOOK;
     const instagramUrl = siteSettings?.instagram_url || DEFAULT_INSTAGRAM;
     const twitterUrl = siteSettings?.twitter_url || DEFAULT_TWITTER;
 
     return (
         <>
-            <section className="bg-[#0c1320] text-white" aria-label="Map">
-                <ContactMap showForm={false} />
-            </section>
+            {showMap && (
+                <section className="bg-[#0c1320] text-white" aria-label="Map">
+                    <ContactMap showForm={false} />
+                </section>
+            )}
             <footer className="bg-[#171717] py-10 text-xs text-white/80">
             <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 text-center sm:grid-cols-2 sm:gap-8 sm:text-left md:grid-cols-3">
                 <div>
@@ -45,8 +86,20 @@ export default async function SiteFooter() {
                         </h4>
                     )}
                     <p className="text-white/60">{landingT("footer.addressLine1")}</p>
-                    <p className="text-white/60">{landingT("footer.phone")}</p>
-                    <p className="text-white/60">{landingT("footer.email")}</p>
+                    {phone && (
+                        <p className="text-white/60">
+                            <a href={`tel:${phone.replace(/\D/g, "")}`} className="hover:text-white">
+                                {phone}
+                            </a>
+                        </p>
+                    )}
+                    {email && (
+                        <p className="text-white/60">
+                            <a href={`mailto:${email}`} className="hover:text-white">
+                                {email}
+                            </a>
+                        </p>
+                    )}
                     <hr className="mt-4 mb-2 border-white/10" />
                     <div className="mt-2 flex flex-col gap-1">
                         <Link href="/legal/terms" className="text-white/60 hover:text-white">
@@ -101,35 +154,48 @@ export default async function SiteFooter() {
                         </a>
                     </div>
                 </div>
+                {openingHours && Object.keys(openingHours).length > 0 && (
                 <div className="min-w-0 text-center sm:ml-auto sm:w-fit sm:min-w-[10rem] sm:text-left md:ml-0">
                     <h4 className="mb-2 font-bold uppercase tracking-wide text-white text-[11px]">
                         {landingT("footer.hoursTitle")}
                     </h4>
                     <dl className="mx-auto flex w-fit flex-col gap-0.5 text-[11px] text-white/60 sm:mx-0 sm:w-full">
-                        {(["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const).map((key) => {
-                            const raw = landingT(`footer.hours.${key}`);
-                            const colonIdx = raw.indexOf(":");
-                            const day = colonIdx >= 0 ? raw.slice(0, colonIdx).trim() : raw;
-                            const hours = colonIdx >= 0 ? raw.slice(colonIdx + 1).trim() : "";
+                        {DAY_KEYS.map((key, idx) => {
+                            const dbKey = DB_DAY_KEYS[idx];
+                            const dayLabel = landingT(`footer.dayAbbrev.${key}`);
+                            const dayData = openingHours?.[dbKey] ?? null;
+                            let hoursDisplay: string;
+                            if (dayData) {
+                                if ("closed" in dayData && dayData.closed) {
+                                    hoursDisplay = landingT("footer.hoursClosed");
+                                } else if ("open" in dayData && "close" in dayData) {
+                                    hoursDisplay = formatHoursRange(dayData.open, dayData.close, locale);
+                                } else {
+                                    hoursDisplay = landingT("footer.hoursClosed");
+                                }
+                            } else {
+                                hoursDisplay = "—";
+                            }
                             const isWeekend = key === "sat";
                             return (
                                 <div
                                     key={key}
                                     className={`flex justify-between gap-4 ${isWeekend ? "border-t border-white/10 pt-1 mt-0.5" : ""}`}
                                 >
-                                    <dt className="w-10 shrink-0 text-white/50">{day}</dt>
-                                    <dd className="text-right tabular-nums">{hours}</dd>
+                                    <dt className="w-10 shrink-0 text-white/50">{dayLabel}</dt>
+                                    <dd className="text-right tabular-nums">{hoursDisplay}</dd>
                                 </div>
                             );
                         })}
                     </dl>
                 </div>
+                )}
                 <div className="hidden md:block">
                     <h4 className="mb-3 font-bold uppercase text-white">
                         {landingT("footer.navTitle")}
                     </h4>
                     <nav className="flex flex-col gap-1">
-                        {navLinks.map((link) => (
+                        {getNavLinks(basePath).map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}

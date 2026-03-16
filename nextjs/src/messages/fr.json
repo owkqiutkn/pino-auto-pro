@@ -156,12 +156,22 @@
       "phone": "Ventes : (555) 123-4567",
       "email": "info@pinoautopro.com",
       "hoursTitle": "Heures d'ouverture",
+      "hoursClosed": "Fermé",
+      "dayAbbrev": {
+        "mon": "Lun",
+        "tue": "Mar",
+        "wed": "Mer",
+        "thu": "Jeu",
+        "fri": "Ven",
+        "sat": "Sam",
+        "sun": "Dim"
+      },
       "hours": {
-        "mon": "Lun : 9 h à 19 h",
-        "tue": "Mar : 9 h à 19 h",
-        "wed": "Mer : 9 h à 19 h",
-        "thu": "Jeu : 9 h à 19 h",
-        "fri": "Ven : 9 h à 19 h",
+        "mon": "Lun : 9 h à 17 h",
+        "tue": "Mar : 9 h à 17 h",
+        "wed": "Mer : 9 h à 17 h",
+        "thu": "Jeu : 9 h à 17 h",
+        "fri": "Ven : 9 h à 17 h",
         "sat": "Sam : 10 h à 17 h",
         "sun": "Dim : Fermé"
       },
