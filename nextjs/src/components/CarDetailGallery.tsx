@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { Database } from "@/lib/types";
 import { getTransformedStorageUrl } from "@/lib/storage";
@@ -39,9 +39,13 @@ function NavButton({ direction, onClick, stopPropagation }: { direction: "prev" 
     );
 }
 
+const MIN_SWIPE_DISTANCE = 50;
+
 export default function CarDetailGallery({ images, title, businessName = "Pino Auto Pro" }: CarDetailGalleryProps) {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
+    const touchStartX = useRef<number | null>(null);
+    const didSwipeRef = useRef(false);
     const sortedImages = [...images].sort((a, b) => a.sort_order - b.sort_order);
     const displayImages = sortedImages.length > 0 ? sortedImages : [];
     const currentImage = displayImages[selectedIndex] ?? null;
@@ -75,16 +79,43 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
         };
     }, [lightboxOpen]);
 
+    const handleTouchStart = useCallback((e: React.TouchEvent) => {
+        touchStartX.current = e.targetTouches[0].clientX;
+        didSwipeRef.current = false;
+    }, []);
+
+    const handleTouchEnd = useCallback(
+        (e: React.TouchEvent) => {
+            if (touchStartX.current === null || displayImages.length <= 1) return;
+            const touchEndX = e.changedTouches[0].clientX;
+            const distance = touchStartX.current - touchEndX;
+            if (Math.abs(distance) >= MIN_SWIPE_DISTANCE) {
+                didSwipeRef.current = true;
+                if (distance > 0) goNext(); // swiped left -> next
+                else goPrev(); // swiped right -> prev
+            }
+            touchStartX.current = null;
+        },
+        [displayImages.length, goPrev, goNext]
+    );
+
+    const handleMainClick = useCallback(() => {
+        if (didSwipeRef.current) return;
+        currentImage && setLightboxOpen(true);
+    }, [currentImage]);
+
     return (
         <div className="space-y-3">
             {/* Main image */}
             <div
                 role="button"
                 tabIndex={0}
-                onClick={() => currentImage && setLightboxOpen(true)}
+                onClick={handleMainClick}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
                 onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && currentImage) { e.preventDefault(); setLightboxOpen(true); } }}
-                className="relative block w-full aspect-[4/3] overflow-hidden rounded-lg bg-gray-100 cursor-pointer text-left"
-                aria-label="View image full screen"
+                className="relative block w-full aspect-[4/3] overflow-hidden rounded-lg bg-gray-100 cursor-pointer text-left touch-pan-y"
+                aria-label="View image full screen. Swipe left or right to change photos."
             >
                 {currentImage ? (
                     <Image
@@ -141,7 +172,12 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
                             <NavButton direction="next" onClick={goNext} stopPropagation />
                         </>
                     )}
-                    <div className="relative w-[90vw] h-[80vh]" onClick={(e) => e.stopPropagation()}>
+                    <div
+                        className="relative w-[90vw] h-[80vh] touch-pan-y"
+                        onClick={(e) => e.stopPropagation()}
+                        onTouchStart={handleTouchStart}
+                        onTouchEnd={handleTouchEnd}
+                    >
                         <Image
                             src={getTransformedStorageUrl(currentImage.image_url)}
                             alt={title}
