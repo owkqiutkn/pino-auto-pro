@@ -30,14 +30,14 @@ export default async function SiteFooter() {
                 <ContactMap showForm={false} />
             </section>
             <footer className="bg-[#171717] py-10 text-xs text-white/80">
-            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 sm:gap-8 md:grid-cols-3">
+            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 text-center sm:grid-cols-2 sm:gap-8 sm:text-left md:grid-cols-3">
                 <div>
                     {siteSettings?.logo_light ? (
                         /* eslint-disable-next-line @next/next/no-img-element */
                         <img
                             src={siteSettings.logo_light}
                             alt={businessName}
-                            className="mb-3 h-8 max-w-[140px] object-contain object-left"
+                            className="mx-auto mb-3 h-8 max-w-[140px] object-contain object-center sm:mx-0 sm:object-left"
                         />
                     ) : (
                         <h4 className="mb-3 font-bold uppercase text-white">
@@ -56,7 +56,7 @@ export default async function SiteFooter() {
                             {navT("links.privacy")}
                         </Link>
                     </div>
-                    <div className="mt-4 flex items-center gap-3">
+                    <div className="mt-4 flex items-center justify-center gap-3 sm:justify-start">
                         <a
                             href={facebookUrl}
                             aria-label="Visit us on Facebook"
@@ -101,11 +101,11 @@ export default async function SiteFooter() {
                         </a>
                     </div>
                 </div>
-                <div className="min-w-0 sm:ml-auto sm:w-fit sm:min-w-[10rem] md:ml-0">
+                <div className="min-w-0 text-center sm:ml-auto sm:w-fit sm:min-w-[10rem] sm:text-left md:ml-0">
                     <h4 className="mb-2 font-bold uppercase tracking-wide text-white text-[11px]">
                         {landingT("footer.hoursTitle")}
                     </h4>
-                    <dl className="flex flex-col gap-0.5 text-[11px] text-white/60">
+                    <dl className="mx-auto flex w-fit flex-col gap-0.5 text-[11px] text-white/60 sm:mx-0 sm:w-full">
                         {(["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const).map((key) => {
                             const raw = landingT(`footer.hours.${key}`);
                             const colonIdx = raw.indexOf(":");
