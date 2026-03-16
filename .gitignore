@@ -6,6 +6,9 @@
 !.env.template
 !.env.example
 
+# Dependencies
+node_modules/
+
 # Cursor IDE
 .cursor/*
 .agents/*

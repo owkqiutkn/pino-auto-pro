@@ -156,7 +156,10 @@
       "phonePlaceholder": "Introduce tu teléfono",
       "messageLabel": "Escribe tu mensaje",
       "messagePlaceholder": "Escribe aquí tu pregunta...",
-      "submit": "Enviar mensaje"
+      "submit": "Enviar mensaje",
+      "submitting": "Enviando...",
+      "successMessage": "Mensaje enviado. Nos pondremos en contacto pronto.",
+      "errorMessage": "Algo salió mal. Inténtalo de nuevo."
     },
     "inventorySection": {
       "title": "Línea de inventario",

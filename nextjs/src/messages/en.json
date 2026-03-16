@@ -156,7 +156,10 @@
       "phonePlaceholder": "Enter your phone number",
       "messageLabel": "Write Your Message",
       "messagePlaceholder": "Write us your question here...",
-      "submit": "Send Message"
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "successMessage": "Message sent. We'll be in touch soon.",
+      "errorMessage": "Something went wrong. Please try again."
     },
     "inventorySection": {
       "title": "Inventory Lineup",

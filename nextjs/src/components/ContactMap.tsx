@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import {useTranslations} from "next-intl";
@@ -17,6 +17,7 @@ interface ContactMapProps {
 export default function ContactMap({ showForm = true, variant = "default" }: ContactMapProps) {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const t = useTranslations("NewLanding.contactForm");
+    const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
     useEffect(() => {
         if (!mapContainerRef.current) return;
@@ -67,12 +68,53 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                 <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
                     <div className="pointer-events-auto flex h-full w-full max-w-none items-center justify-center px-4">
                         <div className="w-full max-w-xs rounded-2xl bg-white p-5 text-gray-900 shadow-[0_22px_55px_rgba(0,0,0,0.7)] md:max-w-sm md:p-6">
-                            <form className="space-y-4 w-full">
+                            <form
+                                className="space-y-4 w-full"
+                                onSubmit={async (e) => {
+                                    e.preventDefault();
+                                    const formData = new FormData(e.currentTarget);
+                                    const name = String(formData.get("name") || "").trim();
+                                    const email = String(formData.get("email") || "").trim();
+                                    const phone = String(formData.get("phone") || "").trim();
+                                    const message = String(formData.get("message") || "").trim();
+
+                                    setStatus("submitting");
+                                    try {
+                                        const res = await fetch("/api/contact", {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                            },
+                                            body: JSON.stringify({
+                                                name,
+                                                email,
+                                                phone,
+                                                message,
+                                            }),
+                                        });
+
+                                        if (!res.ok) {
+                                            setStatus("error");
+                                            return;
+                                        }
+
+                                        setStatus("success");
+                                        e.currentTarget.reset();
+                                    } catch {
+                                        setStatus("error");
+                                    } finally {
+                                        setTimeout(() => {
+                                            setStatus("idle");
+                                        }, 4000);
+                                    }
+                                }}
+                            >
                                 <div>
                                     <label htmlFor="contact-name" className="block text-xs font-semibold uppercase tracking-wide text-gray-600">
                                         {t("nameLabel")}
                                     </label>
                                     <input
+                                        name="name"
                                         id="contact-name"
                                         type="text"
                                         placeholder={t("namePlaceholder")}
@@ -84,6 +126,7 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                                         {t("emailLabel")}
                                     </label>
                                     <input
+                                        name="email"
                                         id="contact-email"
                                         type="email"
                                         placeholder={t("emailPlaceholder")}
@@ -95,6 +138,7 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                                         {t("phoneLabel")}
                                     </label>
                                     <input
+                                        name="phone"
                                         id="contact-phone"
                                         type="tel"
                                         placeholder={t("phonePlaceholder")}
@@ -106,6 +150,7 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                                         {t("messageLabel")}
                                     </label>
                                     <textarea
+                                        name="message"
                                         id="contact-message"
                                         rows={3}
                                         placeholder={t("messagePlaceholder")}
@@ -113,11 +158,22 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                                     />
                                 </div>
                                 <button
-                                    type="button"
-                                    className="inline-flex w-full items-center justify-center rounded-md bg-[#1d4ed8] px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-[#1e40af]"
+                                    type="submit"
+                                    disabled={status === "submitting"}
+                                    className="inline-flex w-full items-center justify-center rounded-md bg-[#1d4ed8] px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-[#1e40af] disabled:opacity-70"
                                 >
-                                    {t("submit")}
+                                    {status === "submitting" ? t("submitting") : t("submit")}
                                 </button>
+                                {status === "success" && (
+                                    <p className="text-xs text-emerald-600">
+                                        {t("successMessage")}
+                                    </p>
+                                )}
+                                {status === "error" && (
+                                    <p className="text-xs text-red-600">
+                                        {t("errorMessage")}
+                                    </p>
+                                )}
                             </form>
                         </div>
                     </div>
