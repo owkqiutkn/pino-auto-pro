@@ -12,3 +12,4 @@ node_modules/
 # Cursor IDE
 .cursor/*
 .agents/*
+.agents/skills/frontend-design/SKILL.md

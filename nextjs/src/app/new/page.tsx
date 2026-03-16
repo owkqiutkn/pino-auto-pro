@@ -249,7 +249,20 @@ export default async function NewPage() {
                 <div className="absolute inset-0 bg-black/70" />
                 <div className="relative mx-auto max-w-6xl px-4">
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-10">
-                        {/* Mission block - preserves white-card aesthetic on dark overlay */}
+                        {/* About block - left on desktop, first on mobile */}
+                        <div className="flex flex-col justify-center rounded-sm border border-white/10 bg-black/60 p-6 md:p-7">
+                            <h3 className="text-2xl font-black text-white md:text-3xl">{t("about.title", { businessName })}</h3>
+                            <p className="mt-3 text-sm text-white/85">
+                                {t("about.paragraph1", { businessName })}
+                            </p>
+                            <p className="mt-3 text-sm text-white/80">
+                                {t("about.paragraph2")}
+                            </p>
+                            <p className="mt-3 text-sm text-white/80">
+                                {t("about.paragraph3", { businessName })}
+                            </p>
+                        </div>
+                        {/* Mission block - right on desktop, second on mobile */}
                         <div className="rounded-sm border border-white/10 bg-white/95 p-6 text-black shadow-xl backdrop-blur-sm">
                             <h3 className="text-xl font-black">{t("mission.title")}</h3>
                             <p className="mt-3 text-sm text-gray-700">
@@ -279,19 +292,6 @@ export default async function NewPage() {
                             </ul>
                             <p className="mt-4 text-xs text-gray-700">
                                 {t("mission.outro")}
-                            </p>
-                        </div>
-                        {/* About block - preserves dark card aesthetic */}
-                        <div className="flex flex-col justify-center rounded-sm border border-white/10 bg-black/60 p-6 md:p-7">
-                            <h3 className="text-2xl font-black text-white md:text-3xl">{t("about.title", { businessName })}</h3>
-                            <p className="mt-3 text-sm text-white/85">
-                                {t("about.paragraph1", { businessName })}
-                            </p>
-                            <p className="mt-3 text-sm text-white/80">
-                                {t("about.paragraph2")}
-                            </p>
-                            <p className="mt-3 text-sm text-white/80">
-                                {t("about.paragraph3", { businessName })}
                             </p>
                         </div>
                     </div>
