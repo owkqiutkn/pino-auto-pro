@@ -6,7 +6,7 @@ import { Loader2, Plus, Trash2, Pencil, ImagePlus, X } from "lucide-react";
 import { createSPASassClientAuthenticated as createSPASassClient } from "@/lib/supabase/client";
 import { compressImageForUpload } from "@/lib/image-compression";
 import { Database } from "@/lib/types";
-import { getTransformedStorageUrl } from "@/lib/storage";
+import { CATEGORY_IMAGE, getTransformedStorageUrl } from "@/lib/storage";
 import { useTranslations } from "next-intl";
 
 type Category = Database["public"]["Tables"]["categories"]["Row"];
@@ -239,7 +239,7 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
                         {previewUrl && (
                             <div className="relative h-12 w-16 rounded overflow-hidden border border-gray-200 shrink-0">
                                 <Image
-                                    src={getTransformedStorageUrl(previewUrl ?? "")}
+                                    src={getTransformedStorageUrl(previewUrl ?? "", CATEGORY_IMAGE)}
                                     alt=""
                                     fill
                                     className="object-cover"
@@ -301,7 +301,7 @@ export default function CategoriesPage({ searchParams }: CategoriesPageProps) {
                                     {category.image_url ? (
                                         <div className="relative h-10 w-14 rounded overflow-hidden border border-gray-200 shrink-0">
                                             <Image
-                                                src={getTransformedStorageUrl(category.image_url)}
+                                                src={getTransformedStorageUrl(category.image_url, CATEGORY_IMAGE)}
                                                 alt=""
                                                 fill
                                                 className="object-cover"

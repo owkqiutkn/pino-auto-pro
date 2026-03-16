@@ -14,7 +14,7 @@ import {
 import { getInventorySegmentData } from "@/lib/inventory/segment";
 import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { Database } from "@/lib/types";
-import { getTransformedStorageUrl } from "@/lib/storage";
+import { CATEGORY_IMAGE, getTransformedStorageUrl } from "@/lib/storage";
 import { getLocale, getTranslations } from "next-intl/server";
 
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
@@ -298,9 +298,12 @@ export default async function Home() {
                     {categoriesTyped.length > 0 ? (
                         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                             {categoriesTyped.slice(0, 8).map((cat) => {
-                                const displayName = getLocalizedCategoryName(cat, locale) || (cat.name_en ?? cat.name_es ?? cat.name) || "";
-                                const imageSrc = cat.image_url ? getTransformedStorageUrl(cat.image_url) : CATEGORY_PLACEHOLDER;
-                                return (
+                            const displayName =
+                                getLocalizedCategoryName(cat, locale) || (cat.name_en ?? cat.name_es ?? cat.name) || "";
+                            const imageSrc = cat.image_url
+                                ? getTransformedStorageUrl(cat.image_url, CATEGORY_IMAGE)
+                                : CATEGORY_PLACEHOLDER;
+                            return (
                                     <Link
                                         key={cat.id}
                                         href={`/inventory?category=${encodeURIComponent(displayName)}`}

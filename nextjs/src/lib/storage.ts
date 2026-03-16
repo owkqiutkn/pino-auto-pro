@@ -15,6 +15,15 @@ export type ImageTransformOptions = {
 const OBJECT_PREFIX = "/storage/v1/object/public/";
 const RENDER_PREFIX = "/storage/v1/render/image/public/";
 
+// Category thumbnails on the home page are rendered around 200×80–90px
+// in the DOM. Request a slightly larger cover crop so they stay sharp.
+export const CATEGORY_IMAGE: ImageTransformOptions = {
+  width: 220,
+  height: 100,
+  resize: "cover",
+  quality: 80,
+};
+
 /**
  * Returns a URL that requests the image with the given transform options.
  * If the URL is not a Supabase storage object URL, or no transform is given,
