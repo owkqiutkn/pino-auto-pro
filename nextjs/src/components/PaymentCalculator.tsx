@@ -215,9 +215,15 @@ export default function PaymentCalculator({ vehiclePrice }: PaymentCalculatorPro
                                 }
                                 className="mt-1 block w-full rounded-md border border-gray-300 py-2 pl-3 pr-8 text-sm text-gray-900 focus:border-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300"
                             >
-                                <option value="monthly">{t("monthly")}</option>
-                                <option value="bi-weekly">{t("biWeekly")}</option>
-                                <option value="weekly">{t("weekly")}</option>
+                                {PAYMENT_FREQUENCIES.map((f) => (
+                                    <option key={f} value={f}>
+                                        {f === "monthly"
+                                            ? t("monthly")
+                                            : f === "bi-weekly"
+                                            ? t("biWeekly")
+                                            : t("weekly")}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                     </div>
