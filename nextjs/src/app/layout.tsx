@@ -55,7 +55,7 @@ export default async function RootLayout({
     theme = "theme-sass3";
   }
   const settings = await getCachedSiteSettings();
-  const gaID = settings?.google_analytics_id?.trim() || process.env.NEXT_PUBLIC_GOOGLE_TAG;
+  const gaID = settings?.google_analytics_id?.trim();
   const locale = await getLocale();
   const messages = await getMessages();
 
@@ -63,7 +63,7 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={theme}>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <CookieManagerProvider>
+          <CookieManagerProvider analyticsMeasurementId={gaID}>
             <FooterVisibilityProvider>
               {children}
             </FooterVisibilityProvider>

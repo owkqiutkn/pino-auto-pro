@@ -66,18 +66,51 @@ const COOKIE_TRANSLATIONS = {
   },
 } as const;
 
+type CookiePreferences = {
+  Analytics: boolean;
+  Social: boolean;
+  Advertising: boolean;
+};
+
 export function CookieManagerProvider({
+  analyticsMeasurementId,
   children,
 }: {
+  analyticsMeasurementId?: string | null;
   children: React.ReactNode;
 }) {
   const locale = useLocale();
   const translations =
     COOKIE_TRANSLATIONS[locale === "fr" ? "fr" : "en"] ??
     COOKIE_TRANSLATIONS.en;
+  const measurementId = analyticsMeasurementId?.trim();
+
+  const applyConsent = (preferences: CookiePreferences) => {
+    if (typeof window === "undefined") return;
+
+    if (measurementId) {
+      // When true, GA library will ignore all hits for this measurement ID.
+      (window as Window & Record<string, unknown>)[`ga-disable-${measurementId}`] =
+        !preferences.Analytics;
+    }
+
+    if (typeof window.gtag === "function") {
+      window.gtag("consent", "update", {
+        analytics_storage: preferences.Analytics ? "granted" : "denied",
+        ad_storage: preferences.Advertising ? "granted" : "denied",
+        ad_user_data: preferences.Advertising ? "granted" : "denied",
+        ad_personalization: preferences.Advertising ? "granted" : "denied",
+      });
+    }
+  };
 
   return (
     <CookieManager
+      initialPreferences={{
+        Analytics: true,
+        Social: true,
+        Advertising: true,
+      }}
       disableGeolocation
       showManageButton
       enableFloatingButton
@@ -85,6 +118,19 @@ export function CookieManagerProvider({
       theme="light"
       privacyPolicyUrl="/legal/privacy"
       translations={translations}
+      onAccept={() => {
+        applyConsent({ Analytics: true, Social: true, Advertising: true });
+      }}
+      onDecline={() => {
+        applyConsent({ Analytics: false, Social: false, Advertising: false });
+      }}
+      onManage={(preferences) => {
+        applyConsent({
+          Analytics: preferences?.Analytics ?? true,
+          Social: preferences?.Social ?? true,
+          Advertising: preferences?.Advertising ?? true,
+        });
+      }}
       classNames={{
         floatingButtonCloseButton: "!hidden",
         modalContent: "relative",
