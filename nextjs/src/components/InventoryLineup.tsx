@@ -337,7 +337,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                 type="button"
                                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                                 disabled={page === 1}
-                                className="rounded-sm border border-[#1f1f25] px-3 py-1.5 text-sm font-bold uppercase text-[#1f1f25] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1f1f25] hover:text-white"
+                                className="rounded-sm border border-[#1d4ed8] bg-[#1d4ed8] px-3 py-1.5 text-sm font-bold uppercase text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1e40af] hover:border-[#1e40af]"
                             >
                                 {t("pagination.previous")}
                             </button>
@@ -348,7 +348,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                 type="button"
                                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                                 disabled={page === totalPages}
-                                className="rounded-sm border border-[#1f1f25] px-3 py-1.5 text-sm font-bold uppercase text-[#1f1f25] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1f1f25] hover:text-white"
+                                className="rounded-sm border border-[#1d4ed8] bg-[#1d4ed8] px-3 py-1.5 text-sm font-bold uppercase text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1e40af] hover:border-[#1e40af]"
                             >
                                 {t("pagination.next")}
                             </button>
