@@ -7,8 +7,6 @@ const navLinks = [
     { href: "/inventory", labelKey: "links.inventory" },
     { href: "/#about", labelKey: "links.about" },
     { href: "/#contact", labelKey: "links.contact" },
-    { href: "/legal/terms", labelKey: "links.terms" },
-    { href: "/legal/privacy", labelKey: "links.privacy" },
 ];
 
 const DEFAULT_FACEBOOK = "https://facebook.com";
@@ -32,7 +30,7 @@ export default async function SiteFooter() {
                 <ContactMap showForm={false} />
             </section>
             <footer className="bg-[#171717] py-10 text-xs text-white/80">
-            <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 md:grid-cols-3">
+            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 sm:gap-8 md:grid-cols-3">
                 <div>
                     {siteSettings?.logo_light ? (
                         /* eslint-disable-next-line @next/next/no-img-element */
@@ -49,6 +47,15 @@ export default async function SiteFooter() {
                     <p className="text-white/60">{landingT("footer.addressLine1")}</p>
                     <p className="text-white/60">{landingT("footer.phone")}</p>
                     <p className="text-white/60">{landingT("footer.email")}</p>
+                    <hr className="mt-4 mb-2 border-white/10" />
+                    <div className="mt-2 flex flex-col gap-1">
+                        <Link href="/legal/terms" className="text-white/60 hover:text-white">
+                            {navT("links.terms")}
+                        </Link>
+                        <Link href="/legal/privacy" className="text-white/60 hover:text-white">
+                            {navT("links.privacy")}
+                        </Link>
+                    </div>
                     <div className="mt-4 flex items-center gap-3">
                         <a
                             href={facebookUrl}
@@ -94,7 +101,7 @@ export default async function SiteFooter() {
                         </a>
                     </div>
                 </div>
-                <div className="ml-auto w-fit min-w-[10rem] max-w-full md:ml-0">
+                <div className="min-w-0 sm:ml-auto sm:w-fit sm:min-w-[10rem] md:ml-0">
                     <h4 className="mb-2 font-bold uppercase tracking-wide text-white text-[11px]">
                         {landingT("footer.hoursTitle")}
                     </h4>
@@ -134,7 +141,7 @@ export default async function SiteFooter() {
                     </nav>
                 </div>
             </div>
-            <div id="footer-bottom-bar" className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-between gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60">
+            <div id="footer-bottom-bar" className="mx-auto mt-8 flex max-w-6xl flex-col items-center gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60 sm:flex-row sm:justify-between">
                 <div>{landingT("footer.poweredBy", { businessName })}</div>
                 <div>{landingT("footer.copyright", { businessName })}</div>
             </div>
