@@ -514,6 +514,12 @@ export default async function Home() {
                             <Link href="/#contact" className="text-white/60 hover:text-white">
                                 {navT("links.contact")}
                             </Link>
+                            <Link href="/legal/terms" className="text-white/60 hover:text-white">
+                                {navT("links.terms")}
+                            </Link>
+                            <Link href="/legal/privacy" className="text-white/60 hover:text-white">
+                                {navT("links.privacy")}
+                            </Link>
                         </nav>
                     </div>
                 </div>
