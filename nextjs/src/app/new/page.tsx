@@ -378,7 +378,7 @@ export default async function NewPage() {
                 </div>
             </section>
 
-            <section className="bg-[#111217] pt4 pb-12 md:pt-12 md:pb-12 text-white">
+            <section className="bg-[#111217] pt6 pb-12 md:pt-12 md:pb-12 text-white">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <div>
