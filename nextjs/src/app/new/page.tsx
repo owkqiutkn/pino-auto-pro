@@ -93,7 +93,7 @@ export default async function NewPage() {
                         <p className="mt-3 max-w-2xl mx-auto text-sm text-white/80">
                             {t("hero.subtitle")}
                         </p>
-                        <form action="/inventory" method="get" className="mt-6 grid max-w-5xl mx-auto grid-cols-1 gap-2 md:grid-cols-4">
+                        <form action="/inventory" method="get" className="mt-6 grid max-w-5xl mx-auto grid-cols-2 gap-2 md:grid-cols-4">
                             <select name="yearMin" className="h-10 rounded-sm bg-white px-3 text-xs text-black outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]" defaultValue="">
                                 <option value="" disabled>
                                     {t("hero.filters.year")}
