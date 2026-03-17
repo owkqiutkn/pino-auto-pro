@@ -73,8 +73,8 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
-    const bgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/90";
-    const mobileDrawerBgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/95";
+    const bgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/70";
+    const mobileDrawerBgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/60";
 
     const businessName = siteSettings?.business_name ?? null;
     const logoUrl = siteSettings?.logo_light ?? null;
@@ -102,7 +102,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
     return (
         <header className={`${bgClass} text-white`}>
             <div className="mx-auto max-w-6xl px-4">
-                <div className="flex items-center justify-between py-2 md:py-3 text-[11px]">
+                <div className="flex items-center justify-between py-3 md:py-3 text-[11px]">
                     <div className="flex items-center gap-3">
                         <Link href="/" className="flex items-center">
                             {logoUrl && !logoError ? (
@@ -110,7 +110,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                                 <img
                                     src={logoUrl}
                                     alt={businessName ?? t("brand")}
-                                    className="h-12 md:h-12 max-w-[160px] object-contain object-left"
+                                    className="h-10 md:h-10 max-w-[160px] object-contain object-left"
                                     onError={() => setLogoError(true)}
                                 />
                             ) : (
