@@ -493,6 +493,7 @@ export type Database = {
           logo_light: string | null
           logo_dark: string | null
           favicon: string | null
+          address: string | null
           email: string | null
           phone: string | null
           instagram_url: string | null
@@ -512,6 +513,7 @@ export type Database = {
           logo_light?: string | null
           logo_dark?: string | null
           favicon?: string | null
+          address?: string | null
           email?: string | null
           phone?: string | null
           instagram_url?: string | null
@@ -531,6 +533,7 @@ export type Database = {
           logo_light?: string | null
           logo_dark?: string | null
           favicon?: string | null
+          address?: string | null
           email?: string | null
           phone?: string | null
           instagram_url?: string | null

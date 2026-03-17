@@ -57,6 +57,7 @@ export default async function SiteFooter({ showMap = true, basePath = "" }: Site
     ]);
     const openingHours = (siteSettings?.opening_hours ?? null) as OpeningHoursJson | null;
     const businessName = siteSettings?.business_name || "Pino Auto Pro";
+    const address = siteSettings?.address || landingT("footer.addressLine1");
     const email = siteSettings?.email || landingT("footer.email");
     const phone = siteSettings?.phone || landingT("footer.phone");
     const facebookUrl = siteSettings?.facebook_url || DEFAULT_FACEBOOK;
@@ -85,7 +86,7 @@ export default async function SiteFooter({ showMap = true, basePath = "" }: Site
                             {businessName}
                         </h4>
                     )}
-                    <p className="text-white/60">{landingT("footer.addressLine1")}</p>
+                    <p className="text-white/60">{address}</p>
                     {phone && (
                         <p className="text-white/60">
                             <a href={`tel:${phone.replace(/\D/g, "")}`} className="hover:text-white">

@@ -42,6 +42,7 @@ interface SiteSettingsFormProps {
 
 export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormProps) {
     const [businessName, setBusinessName] = useState("");
+    const [address, setAddress] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [logoLight, setLogoLight] = useState("");
@@ -72,6 +73,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
     useEffect(() => {
         if (initialSettings) {
             setBusinessName(initialSettings.business_name ?? "");
+            setAddress(initialSettings.address ?? "");
             setEmail(initialSettings.email ?? "");
             setPhone(initialSettings.phone ?? "");
             setLogoLight(initialSettings.logo_light ?? "");
@@ -155,6 +157,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     business_name: businessName.trim() || null,
+                    address: address.trim() || null,
                     email: email.trim() || null,
                     phone: phone.trim() || null,
                     logo_light: finalLogoLight || null,
@@ -408,6 +411,20 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
                             />
                             <p className="mt-0.5 text-xs text-gray-500">Used in the navbar, page titles, and metadata</p>
+                        </div>
+                        <div>
+                            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                                Address
+                            </label>
+                            <input
+                                type="text"
+                                id="address"
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
+                                placeholder="e.g. 1230 Automotive Blvd"
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
+                            />
+                            <p className="mt-0.5 text-xs text-gray-500">Dealer address shown in footer and contact sections</p>
                         </div>
                         <LogoUploadField
                             label="Logo Light"
