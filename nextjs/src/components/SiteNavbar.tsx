@@ -110,7 +110,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                                 <img
                                     src={logoUrl}
                                     alt={businessName ?? t("brand")}
-                                    className="h-8 md:h-10 max-w-[160px] object-contain object-left"
+                                    className="h-12 md:h-12 max-w-[160px] object-contain object-left"
                                     onError={() => setLogoError(true)}
                                 />
                             ) : (
