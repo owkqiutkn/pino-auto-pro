@@ -122,7 +122,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                         {phone && (
                             <a
                                 href={`tel:${phone.replace(/\D/g, "")}`}
-                                className="ml-1 inline-flex flex-col leading-tight md:hidden"
+                                className="ml-1 inline-flex flex-col leading-tight"
                             >
                                 <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/60">
                                     {t("phoneLabel")}
