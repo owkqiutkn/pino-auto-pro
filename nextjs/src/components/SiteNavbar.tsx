@@ -102,7 +102,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
     return (
         <header className={`${bgClass} text-white`}>
             <div className="mx-auto max-w-6xl px-4">
-                <div className="flex items-center justify-between py-1 md:py-2 text-[11px]">
+                <div className="flex items-center justify-between py-2 md:py-3 text-[11px]">
                     <div className="flex items-center gap-3">
                         <Link href="/" className="flex items-center">
                             {logoUrl && !logoError ? (
@@ -110,7 +110,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                                 <img
                                     src={logoUrl}
                                     alt={businessName ?? t("brand")}
-                                    className="h-8 max-w-[140px] object-contain object-left"
+                                    className="h-8 md:h-10 max-w-[160px] object-contain object-left"
                                     onError={() => setLogoError(true)}
                                 />
                             ) : (

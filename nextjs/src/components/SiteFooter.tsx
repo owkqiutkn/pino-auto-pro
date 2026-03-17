@@ -79,7 +79,7 @@ export default async function SiteFooter({ showMap = true, basePath = "" }: Site
                         <img
                             src={siteSettings.logo_light}
                             alt={businessName}
-                            className="mx-auto mb-3 h-8 max-w-[140px] object-contain object-center sm:mx-0 sm:object-left"
+                            className="mx-auto mb-3 h-8 md:h-10 max-w-[160px] object-contain object-center sm:mx-0 sm:object-left"
                         />
                     ) : (
                         <h4 className="mb-3 font-bold uppercase text-white">
