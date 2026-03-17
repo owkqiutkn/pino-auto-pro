@@ -320,7 +320,7 @@ export default async function NewPage() {
                 </div>
             </section>
 
-            <section id="browse-by-category" className="bg-[#17181f] pt-3 pb-10 text-white" aria-labelledby="browse-by-category-title">
+            <section id="browse-by-category" className="bg-[#17181f] pt-3 pb-6 text-white" aria-labelledby="browse-by-category-title">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="mb-4">
                         <h3 id="browse-by-category-title" className="text-lg font-black uppercase tracking-wide">{t("categories.title")}</h3>
