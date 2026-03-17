@@ -314,11 +314,11 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                             </div>
                                         </div>
                                     </Link>
-                                    <div className="mx-4 mt-0 mb-2 space-y-2">
-                                        <span className="block rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700 w-fit">
-                                            {t("card.fairDeal")}
-                                        </span>
+                                    <div className="mx-4 mt-0 mb-2">
                                         <div className="flex flex-wrap items-center gap-2">
+                                            <span className="block rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700 w-fit">
+                                                {t("card.fairDeal")}
+                                            </span>
                                             {car.carfax_url ? (
                                                 <a
                                                     href={car.carfax_url}

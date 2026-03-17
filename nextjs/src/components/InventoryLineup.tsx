@@ -166,10 +166,10 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
     }, [itemsPerPage]);
 
     return (
-        <section id="inventory" className="bg-[#f2f2f3] py-2 md:py-10 text-black">
+        <section id="inventory" className="bg-transparent md:bg-[#f2f2f3] py-2 md:py-10 text-black">
             <div className="mx-auto max-w-6xl px-4">
                 <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                    <h2 className="text-lg font-black uppercase">
+                    <h2 className="text-lg font-black uppercase text-white md:text-black">
                         {t("title")}
                     </h2>
                     <div className="flex flex-wrap gap-2 text-[10px] font-bold uppercase">
@@ -234,7 +234,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                     return (
                                         <div className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
                                             <Link href={`/inventory/${car.slug}`} className="block">
-                                                <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
+                                                <div className="relative aspect-[4/3] md:aspect-[16/9] overflow-hidden bg-gray-100">
                                                     {coverImageByCarId[car.id] ? (
                                                         <Image
                                                             src={getTransformedStorageUrl(coverImageByCarId[car.id])}
@@ -296,11 +296,11 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                                     </div>
                                                 </div>
                                             </Link>
-                                            <div className="mx-4 mt-0 mb-2 space-y-2">
-                                                <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
-                                                    {tCard("card.fairDeal")}
-                                                </span>
+                                            <div className="mx-4 mt-0 mb-2">
                                                 <div className="flex flex-wrap items-center gap-2">
+                                                    <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
+                                                        {tCard("card.fairDeal")}
+                                                    </span>
                                                     {car.carfax_url ? (
                                                         <a
                                                             href={car.carfax_url}
@@ -360,7 +360,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                         >
                                             ›
                                         </button>
-                                        <div className={`${isMobile ? "mt-0" : "mt-3"} text-center text-[11px] text-gray-600`}>
+                                        <div className={`${isMobile ? "mt-0" : "mt-3"} text-center text-[11px] text-white md:text-gray-600`}>
                                             {mobileIndex + 1} / {cars.length}
                                         </div>
                                     </>

@@ -365,6 +365,15 @@ export default function InventoryFilters({
 
                 <Link
                     href="/inventory"
+                    onClick={() => {
+                        // Close mobile panel and scroll up shortly after reset navigation
+                        setMobileOpen(false);
+                        if (typeof window !== "undefined" && window.innerWidth < 768) {
+                            setTimeout(() => {
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                            }, 400);
+                        }
+                    }}
                     className="block w-full rounded border border-gray-300 py-2 text-center text-sm font-bold uppercase text-gray-700 hover:bg-gray-50"
                 >
                     {t("reset")}

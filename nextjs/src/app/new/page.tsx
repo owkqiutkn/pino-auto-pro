@@ -119,7 +119,7 @@ export default async function NewPage() {
                                 {t("hero.filters.search")}
                             </button>
                         </form>
-                        <div className="mt-10 block md:hidden">
+                        <div className="mt-4 md:mt-10 block md:hidden">
                             <InventoryLineup
                                 categories={categoriesTyped}
                                 engines={enginesTyped}
