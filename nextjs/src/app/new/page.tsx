@@ -86,7 +86,7 @@ export default async function NewPage() {
                 </div>
 
                 <div className="relative z-10 mx-auto max-w-6xl px-4">
-                    <div className="pt-14 pb-16 text-center">
+                    <div className="pt-14 pb-6 text-center">
                         <h1 className="max-w-3xl mx-auto text-3xl md:text-5xl font-black leading-tight">
                             {t("hero.title")}
                         </h1>
@@ -119,11 +119,20 @@ export default async function NewPage() {
                                 {t("hero.filters.search")}
                             </button>
                         </form>
+                        <div className="mt-10 block md:hidden">
+                            <InventoryLineup
+                                categories={categoriesTyped}
+                                engines={enginesTyped}
+                                fuels={fuelsTyped}
+                                transmissions={transmissionsTyped}
+                                initialFeaturedData={featuredSegment}
+                            />
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section className="relative z-20 bg-[#071d38] pt-10 pb-10 md:pt-12 md:pb-14">
+            <section className="relative z-20 hidden bg-[#071d38] pt-10 pb-10 md:block md:pt-12 md:pb-14">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-3 -mt-20 md:-mt-28">
                         {featureCards.map((item) => {
@@ -183,13 +192,15 @@ export default async function NewPage() {
                 </div>
             </section>
 
-            <InventoryLineup
-                categories={categoriesTyped}
-                engines={enginesTyped}
-                fuels={fuelsTyped}
-                transmissions={transmissionsTyped}
-                initialFeaturedData={featuredSegment}
-            />
+            <div className="hidden md:block">
+                <InventoryLineup
+                    categories={categoriesTyped}
+                    engines={enginesTyped}
+                    fuels={fuelsTyped}
+                    transmissions={transmissionsTyped}
+                    initialFeaturedData={featuredSegment}
+                />
+            </div>
 
             <section id="financing" className="relative overflow-hidden py-16">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

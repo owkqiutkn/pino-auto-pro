@@ -108,6 +108,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
     const isMobile = useIsMobile();
     const [segment, setSegment] = useState<Segment>("featured");
     const [page, setPage] = useState(1);
+    const [mobileIndex, setMobileIndex] = useState(0);
     const [cars, setCars] = useState<Car[]>(() => initialFeaturedData?.cars ?? []);
     const [coverImageByCarId, setCoverImageByCarId] = useState<
         Record<string, string>
@@ -115,7 +116,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
     const [loading, setLoading] = useState(!initialFeaturedData);
 
     const itemsPerPage = isMobile ? MOBILE_ITEMS_PER_PAGE : DESKTOP_ITEMS_PER_PAGE;
-    const totalPages = Math.ceil(cars.length / itemsPerPage);
+    const totalPages = Math.ceil(cars.length / itemsPerPage || 1);
     const paginatedCars = cars.slice(
         (page - 1) * itemsPerPage,
         page * itemsPerPage
@@ -156,29 +157,31 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
 
     useEffect(() => {
         setPage(1);
+        setMobileIndex(0);
     }, [segment]);
 
     useEffect(() => {
         setPage(1);
+        setMobileIndex(0);
     }, [itemsPerPage]);
 
     return (
-        <section id="inventory" className="bg-[#f2f2f3] py-10 text-black">
+        <section id="inventory" className="bg-[#f2f2f3] py-2 md:py-10 text-black">
             <div className="mx-auto max-w-6xl px-4">
                 <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                     <h2 className="text-lg font-black uppercase">
                         {t("title")}
                     </h2>
-                    <div className="flex w-full flex-col gap-2 text-[10px] font-bold uppercase md:w-auto md:flex-row">
+                    <div className="flex flex-wrap gap-2 text-[10px] font-bold uppercase">
                         <button
                             type="button"
                             onClick={() => setSegment("featured")}
                             className={
                                 segment === "featured"
-                                    ? "w-full rounded-sm bg-[#1d4ed8] px-2 py-1 text-center text-white md:w-auto"
-                                    : "w-full rounded-sm bg-[#1f1f25] px-2 py-1 text-center text-white hover:bg-[#2d2d35] md:w-auto"
+                                    ? "flex-1 md:flex-none rounded-sm bg-[#1d4ed8] px-2 py-1 text-center text-white shadow-sm"
+                                    : "flex-1 md:flex-none rounded-sm border border-gray-500/50 bg-gray-800 px-2 py-1 text-center text-gray-200 hover:bg-gray-700"
                             }
-                            >
+                        >
                             {t("segments.featured")}
                         </button>
                         <button
@@ -186,16 +189,16 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                             onClick={() => setSegment("new-arrivals")}
                             className={
                                 segment === "new-arrivals"
-                                    ? "w-full rounded-sm bg-[#1d4ed8] px-2 py-1 text-center text-white md:w-auto"
-                                    : "w-full rounded-sm bg-[#1f1f25] px-2 py-1 text-center text-white hover:bg-[#2d2d35] md:w-auto"
+                                    ? "flex-1 md:flex-none rounded-sm bg-[#1d4ed8] px-2 py-1 text-center text-white shadow-sm"
+                                    : "flex-1 md:flex-none rounded-sm border border-gray-500/50 bg-gray-800 px-2 py-1 text-center text-gray-200 hover:bg-gray-700"
                             }
-                            >
+                        >
                             {t("segments.newArrivals")}
                         </button>
                         <Link
                             href="/inventory"
-                            className="w-full rounded-sm border border-[#1d4ed8] px-2 py-1 text-center text-[#1d4ed8] hover:bg-[#1d4ed8]/5 md:w-auto"
-                            >
+                            className="flex-1 md:flex-none rounded-sm border border-gray-500/50 bg-gray-800 px-2 py-1 text-center text-gray-200 hover:bg-gray-700"
+                        >
                             {t("cta.viewAll")}
                         </Link>
                     </div>
@@ -223,137 +226,280 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                     </p>
                 ) : (
                     <>
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                        {paginatedCars.map((car) => (
-                            <div
-                                key={car.id}
-                                className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#1d4ed8] hover:shadow-lg"
-                            >
-                                <Link href={`/inventory/${car.slug}`} className="block">
-                                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
-                                        {coverImageByCarId[car.id] ? (
-                                            <Image
-                                                src={getTransformedStorageUrl(coverImageByCarId[car.id])}
-                                                alt={car.title}
-                                                fill
-                                                className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
-                                                sizes="(max-width: 768px) 100vw, 400px"
-                                                unoptimized
-                                            />
-                                        ) : (
-                                            <div className="flex h-full w-full items-center justify-center text-gray-400">
-                                                {tCard("card.noImage")}
+                        {isMobile ? (
+                            <div className="relative">
+                                {(() => {
+                                    const car = cars[mobileIndex] ?? cars[0];
+                                    if (!car) return null;
+                                    return (
+                                        <div className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
+                                            <Link href={`/inventory/${car.slug}`} className="block">
+                                                <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
+                                                    {coverImageByCarId[car.id] ? (
+                                                        <Image
+                                                            src={getTransformedStorageUrl(coverImageByCarId[car.id])}
+                                                            alt={car.title}
+                                                            fill
+                                                            className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                                                            sizes="100vw"
+                                                            unoptimized
+                                                        />
+                                                    ) : (
+                                                        <div className="flex h-full w-full items-center justify-center text-gray-400">
+                                                            {tCard("card.noImage")}
+                                                        </div>
+                                                    )}
+                                                    <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#0c1320] text-[8px] font-bold text-white">
+                                                        PAP
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col p-3">
+                                                    <h2 className="text-sm font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
+                                                        {car.year} {car.brand} {car.model}
+                                                    </h2>
+                                                    <p className="mt-0.5 text-xs text-gray-600">
+                                                        {getCategoryDisplay(car.category, categories, locale) ??
+                                                            tCard("card.fallbackBodyStyle")}{" "}
+                                                        {car.model} {car.km.toLocaleString()} km
+                                                    </p>
+                                                    <p className="mt-2 min-h-[1rem] text-[11px] text-gray-600">
+                                                        {[
+                                                            car.engine && getEngineDisplay(car.engine, engines, locale),
+                                                            car.fuel && getFuelDisplay(car.fuel, fuels, locale),
+                                                            car.transmission &&
+                                                                getTransmissionDisplay(car.transmission, transmissions, locale),
+                                                        ]
+                                                            .filter(Boolean)
+                                                            .join(" • ")}
+                                                    </p>
+                                                    <div className="mt-2">
+                                                        <p className="text-xs font-semibold text-gray-600">
+                                                            {tCard("card.dealerPriceLabel")}
+                                                        </p>
+                                                        {car.discounted_price != null ? (
+                                                            <p>
+                                                                <span className="text-sm text-gray-500 line-through">
+                                                                    {formatPrice(car.price)}
+                                                                </span>
+                                                                <span className="ml-2 text-xl font-bold text-[#1d4ed8]">
+                                                                    {formatPrice(car.discounted_price)}
+                                                                </span>
+                                                            </p>
+                                                        ) : (
+                                                            <p className="text-xl font-bold text-[#1d4ed8]">
+                                                                {formatPrice(car.price)}
+                                                            </p>
+                                                        )}
+                                                        <p className="mt-0.5 text-[10px] text-gray-500">
+                                                            {tCard("card.taxNote")}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                            <div className="mx-4 mt-0 mb-2 space-y-2">
+                                                <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
+                                                    {tCard("card.fairDeal")}
+                                                </span>
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                    {car.carfax_url ? (
+                                                        <a
+                                                            href={car.carfax_url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                                        >
+                                                            {tCard("card.carfax")}
+                                                        </a>
+                                                    ) : (
+                                                        <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
+                                                            {tCard("card.carfax")}
+                                                        </span>
+                                                    )}
+                                                    {car.cargurus_url ? (
+                                                        <a
+                                                            href={car.cargurus_url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                                        >
+                                                            {tCard("card.cargurus")}
+                                                        </a>
+                                                    ) : (
+                                                        <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
+                                                            {tCard("card.cargurus")}
+                                                        </span>
+                                                    )}
+                                                </div>
                                             </div>
-                                        )}
-                                        <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#0c1320] text-[8px] font-bold text-white">
-                                            PAP
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col p-4">
-                                        <h2 className="text-base font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
-                                            {car.year} {car.brand} {car.model}
-                                        </h2>
-                                        <p className="mt-0.5 text-sm text-gray-600">
-                                            {getCategoryDisplay(car.category, categories, locale) ?? tCard("card.fallbackBodyStyle")} {car.model} {car.km.toLocaleString()} km
-                                        </p>
-                                        <p className="mt-3 min-h-[1rem] text-xs text-gray-600">
-                                            {[
-                                                car.engine && getEngineDisplay(car.engine, engines, locale),
-                                                car.fuel && getFuelDisplay(car.fuel, fuels, locale),
-                                                car.transmission && getTransmissionDisplay(car.transmission, transmissions, locale),
-                                            ]
-                                                .filter(Boolean)
-                                                .join(" • ")}
-                                        </p>
-                                        <div className="mt-2">
-                                            <p className="text-xs font-semibold text-gray-600">{tCard("card.dealerPriceLabel")}</p>
-                                            {car.discounted_price != null ? (
-                                                <p>
-                                                    <span className="text-sm text-gray-500 line-through">
-                                                        {formatPrice(car.price)}
-                                                    </span>
-                                                    <span className="ml-2 text-xl font-bold text-[#1d4ed8]">
-                                                        {formatPrice(car.discounted_price)}
-                                                    </span>
-                                                </p>
-                                            ) : (
-                                                <p className="text-xl font-bold text-[#1d4ed8]">
-                                                    {formatPrice(car.price)}
-                                                </p>
-                                            )}
-                                            <p className="mt-0.5 text-[10px] text-gray-500">
-                                                {tCard("card.taxNote")}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                                <div className="mx-4 mt-0 mb-2 space-y-2">
-                                    <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
-                                        {tCard("card.fairDeal")}
-                                    </span>
-                                    <div className="flex flex-wrap items-center gap-2">
-                                        {car.carfax_url ? (
-                                            <a
-                                                href={car.carfax_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                            <Link
+                                                href={`/inventory/${car.slug}`}
+                                                className="mx-4 mb-4 mt-3 block rounded bg-[#0c1320] py-2 text-center text-sm font-bold text-white hover:bg-gray-800"
                                             >
-                                                {tCard("card.carfax")}
-                                            </a>
-                                        ) : (
-                                            <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
-                                                {tCard("card.carfax")}
-                                            </span>
-                                        )}
-                                        {car.cargurus_url ? (
-                                            <a
-                                                href={car.cargurus_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
-                                            >
-                                                {tCard("card.cargurus")}
-                                            </a>
-                                        ) : (
-                                            <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
-                                                {tCard("card.cargurus")}
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
-                                <Link
-                                    href={`/inventory/${car.slug}`}
-                                    className="mx-4 mb-4 mt-3 block rounded bg-[#0c1320] py-2 text-center text-sm font-bold text-white hover:bg-gray-800"
-                                >
-                                    {tCard("card.viewDetails")}
-                                </Link>
+                                                {tCard("card.viewDetails")}
+                                            </Link>
+                                        </div>
+                                    );
+                                })()}
+                                {cars.length > 1 && (
+                                    <>
+                                        <button
+                                            type="button"
+                                            onClick={() => setMobileIndex((i) => Math.max(0, i - 1))}
+                        disabled={mobileIndex === 0}
+                                            className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#1d4ed8] text-white shadow-lg ring-2 ring-white/60 hover:bg-[#1e40af] disabled:opacity-40 disabled:hover:bg-[#1d4ed8]"
+                                        >
+                                            ‹
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setMobileIndex((i) => Math.min(cars.length - 1, i + 1))
+                                            }
+                                            disabled={mobileIndex === cars.length - 1}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#1d4ed8] text-white shadow-lg ring-2 ring-white/60 hover:bg-[#1e40af] disabled:opacity-40 disabled:hover:bg-[#1d4ed8]"
+                                        >
+                                            ›
+                                        </button>
+                                        <div className={`${isMobile ? "mt-0" : "mt-3"} text-center text-[11px] text-gray-600`}>
+                                            {mobileIndex + 1} / {cars.length}
+                                        </div>
+                                    </>
+                                )}
                             </div>
-                        ))}
-                    </div>
-                    {totalPages > 1 && (
-                        <div className="mt-6 flex items-center justify-center gap-2">
-                            <button
-                                type="button"
-                                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                                disabled={page === 1}
-                                className="rounded-sm border border-[#1d4ed8] bg-[#1d4ed8] px-3 py-1.5 text-sm font-bold uppercase text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1e40af] hover:border-[#1e40af]"
-                            >
-                                {t("pagination.previous")}
-                            </button>
-                            <span className="text-sm font-medium text-gray-600">
-                                {t("pagination.pageOf", { page, totalPages })}
-                            </span>
-                            <button
-                                type="button"
-                                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                                disabled={page === totalPages}
-                                className="rounded-sm border border-[#1d4ed8] bg-[#1d4ed8] px-3 py-1.5 text-sm font-bold uppercase text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1e40af] hover:border-[#1e40af]"
-                            >
-                                {t("pagination.next")}
-                            </button>
-                        </div>
-                    )}
+                        ) : (
+                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                                {paginatedCars.map((car) => (
+                                    <div
+                                        key={car.id}
+                                        className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#1d4ed8] hover:shadow-lg"
+                                    >
+                                        <Link href={`/inventory/${car.slug}`} className="block">
+                                            <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                                                {coverImageByCarId[car.id] ? (
+                                                    <Image
+                                                        src={getTransformedStorageUrl(coverImageByCarId[car.id])}
+                                                        alt={car.title}
+                                                        fill
+                                                        className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                                                        sizes="(max-width: 768px) 100vw, 400px"
+                                                        unoptimized
+                                                    />
+                                                ) : (
+                                                    <div className="flex h-full w-full items-center justify-center text-gray-400">
+                                                        {tCard("card.noImage")}
+                                                    </div>
+                                                )}
+                                                <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#0c1320] text-[8px] font-bold text-white">
+                                                    PAP
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col p-4">
+                                                <h2 className="text-base font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
+                                                    {car.year} {car.brand} {car.model}
+                                                </h2>
+                                                <p className="mt-0.5 text-sm text-gray-600">
+                                                    {getCategoryDisplay(car.category, categories, locale) ?? tCard("card.fallbackBodyStyle")}{" "}
+                                                    {car.model} {car.km.toLocaleString()} km
+                                                </p>
+                                                <p className="mt-3 min-h-[1rem] text-xs text-gray-600">
+                                                    {[
+                                                        car.engine && getEngineDisplay(car.engine, engines, locale),
+                                                        car.fuel && getFuelDisplay(car.fuel, fuels, locale),
+                                                        car.transmission && getTransmissionDisplay(car.transmission, transmissions, locale),
+                                                    ]
+                                                        .filter(Boolean)
+                                                        .join(" • ")}
+                                                </p>
+                                                <div className="mt-2">
+                                                    <p className="text-xs font-semibold text-gray-600">{tCard("card.dealerPriceLabel")}</p>
+                                                    {car.discounted_price != null ? (
+                                                        <p>
+                                                            <span className="text-sm text-gray-500 line-through">
+                                                                {formatPrice(car.price)}
+                                                            </span>
+                                                            <span className="ml-2 text-xl font-bold text-[#1d4ed8]">
+                                                                {formatPrice(car.discounted_price)}
+                                                            </span>
+                                                        </p>
+                                                    ) : (
+                                                        <p className="text-xl font-bold text-[#1d4ed8]">
+                                                            {formatPrice(car.price)}
+                                                        </p>
+                                                    )}
+                                                    <p className="mt-0.5 text-[10px] text-gray-500">
+                                                        {tCard("card.taxNote")}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                        <div className="mx-4 mt-0 mb-2 space-y-2">
+                                            <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
+                                                {tCard("card.fairDeal")}
+                                            </span>
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                {car.carfax_url ? (
+                                                    <a
+                                                        href={car.carfax_url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                                    >
+                                                        {tCard("card.carfax")}
+                                                    </a>
+                                                ) : (
+                                                    <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
+                                                        {tCard("card.carfax")}
+                                                    </span>
+                                                )}
+                                                {car.cargurus_url ? (
+                                                    <a
+                                                        href={car.cargurus_url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                                    >
+                                                        {tCard("card.cargurus")}
+                                                    </a>
+                                                ) : (
+                                                    <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
+                                                        {tCard("card.cargurus")}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <Link
+                                            href={`/inventory/${car.slug}`}
+                                            className="mx-4 mb-4 mt-3 block rounded bg-[#0c1320] py-2 text-center text-sm font-bold text-white hover:bg-gray-800"
+                                        >
+                                            {tCard("card.viewDetails")}
+                                        </Link>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        {!isMobile && totalPages > 1 && (
+                            <div className="mt-6 flex items-center justify-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                                    disabled={page === 1}
+                                    className="rounded-sm border border-[#1d4ed8] bg-[#1d4ed8] px-3 py-1.5 text-sm font-bold uppercase text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1e40af] hover:border-[#1e40af]"
+                                >
+                                    {t("pagination.previous")}
+                                </button>
+                                <span className="text-sm font-medium text-gray-600">
+                                    {t("pagination.pageOf", { page, totalPages })}
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                                    disabled={page === totalPages}
+                                    className="rounded-sm border border-[#1d4ed8] bg-[#1d4ed8] px-3 py-1.5 text-sm font-bold uppercase text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1e40af] hover:border-[#1e40af]"
+                                >
+                                    {t("pagination.next")}
+                                </button>
+                            </div>
+                        )}
                     </>
                 )}
             </div>

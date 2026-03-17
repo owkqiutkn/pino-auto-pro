@@ -74,7 +74,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
     const bgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/70";
-    const mobileDrawerBgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/60";
+    const mobileDrawerBgClass = variant === "standalone" ? "bg-[#0c1320]" : "bg-[#0a0a0d]/90";
 
     const businessName = siteSettings?.business_name ?? null;
     const logoUrl = siteSettings?.logo_light ?? null;
