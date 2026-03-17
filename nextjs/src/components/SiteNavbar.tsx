@@ -15,6 +15,7 @@ type SiteSettingsRow = {
     instagram_url: string | null;
     facebook_url: string | null;
     twitter_url: string | null;
+    phone?: string | null;
 };
 
 interface SiteNavbarProps {
@@ -78,6 +79,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
 
     const businessName = siteSettings?.business_name ?? null;
     const logoUrl = siteSettings?.logo_light ?? null;
+    const phone = siteSettings?.phone ?? null;
 
     useEffect(() => {
         setLogoError(false);
@@ -117,6 +119,19 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                                 <span className="text-sm font-black tracking-wider">{businessName ?? t("brand")}</span>
                             )}
                         </Link>
+                        {phone && (
+                            <a
+                                href={`tel:${phone.replace(/\D/g, "")}`}
+                                className="ml-1 inline-flex flex-col leading-tight md:hidden"
+                            >
+                                <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/60">
+                                    {t("phoneLabel")}
+                                </span>
+                                <span className="text-[11px] font-semibold text-white">
+                                    {phone}
+                                </span>
+                            </a>
+                        )}
                     </div>
                     <nav className="hidden md:flex items-center gap-5 font-semibold uppercase tracking-wide text-white/85">
                         {navLinks.map((link) => (

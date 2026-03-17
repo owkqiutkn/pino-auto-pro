@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function useIsMobile() {
     const [isMobile, setIsMobile] = useState(false);
@@ -115,6 +115,43 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
     >(() => initialFeaturedData?.coverImageByCarId ?? {});
     const [loading, setLoading] = useState(!initialFeaturedData);
 
+    const touchStartXRef = useRef<number | null>(null);
+    const touchStartYRef = useRef<number | null>(null);
+
+    const handleMobileTouchStart = (e: React.TouchEvent) => {
+        if (!isMobile) return;
+        const touch = e.touches[0];
+        touchStartXRef.current = touch.clientX;
+        touchStartYRef.current = touch.clientY;
+    };
+
+    const handleMobileTouchEnd = (e: React.TouchEvent) => {
+        if (!isMobile) return;
+        if (touchStartXRef.current == null || touchStartYRef.current == null) return;
+
+        const touch = e.changedTouches[0];
+        const dx = touch.clientX - touchStartXRef.current;
+        const dy = touch.clientY - touchStartYRef.current;
+
+        const absDx = Math.abs(dx);
+        const absDy = Math.abs(dy);
+        const SWIPE_THRESHOLD = 40;
+
+        if (absDx > absDy && absDx > SWIPE_THRESHOLD) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (dx < 0 && mobileIndex < cars.length - 1) {
+                setMobileIndex((i) => Math.min(cars.length - 1, i + 1));
+            } else if (dx > 0 && mobileIndex > 0) {
+                setMobileIndex((i) => Math.max(0, i - 1));
+            }
+        }
+
+        touchStartXRef.current = null;
+        touchStartYRef.current = null;
+    };
+
     const itemsPerPage = isMobile ? MOBILE_ITEMS_PER_PAGE : DESKTOP_ITEMS_PER_PAGE;
     const totalPages = Math.ceil(cars.length / itemsPerPage || 1);
     const paginatedCars = cars.slice(
@@ -227,14 +264,18 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                 ) : (
                     <>
                         {isMobile ? (
-                            <div className="relative">
+                            <>
                                 {(() => {
                                     const car = cars[mobileIndex] ?? cars[0];
                                     if (!car) return null;
                                     return (
                                         <div className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
                                             <Link href={`/inventory/${car.slug}`} className="block">
-                                                <div className="relative aspect-[4/3] md:aspect-[16/9] overflow-hidden bg-gray-100">
+                                                <div
+                                                    className="relative aspect-[4/3] md:aspect-[16/9] overflow-hidden bg-gray-100"
+                                                    onTouchStart={handleMobileTouchStart}
+                                                    onTouchEnd={handleMobileTouchEnd}
+                                                >
                                                     {coverImageByCarId[car.id] ? (
                                                         <Image
                                                             src={getTransformedStorageUrl(coverImageByCarId[car.id])}
@@ -252,6 +293,60 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                                     <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#0c1320] text-[8px] font-bold text-white">
                                                         PAP
                                                     </div>
+                                                    {cars.length > 1 && (
+                                                        <>
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    e.stopPropagation();
+                                                                    setMobileIndex((i) => Math.max(0, i - 1));
+                                                                }}
+                                                                disabled={mobileIndex === 0}
+                                                                className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#1d4ed8] text-white shadow-lg ring-2 ring-white/60 hover:bg-[#1e40af] disabled:opacity-40 disabled:hover:bg-[#1d4ed8]"
+                                                            >
+                                                                <svg
+                                                                    viewBox="0 0 24 24"
+                                                                    className="h-4 w-4"
+                                                                    aria-hidden="true"
+                                                                >
+                                                                    <path
+                                                                        d="M14.5 5.5L8 12l6.5 6.5"
+                                                                        fill="none"
+                                                                        stroke="currentColor"
+                                                                        strokeWidth="2"
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                    />
+                                                                </svg>
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    e.stopPropagation();
+                                                                    setMobileIndex((i) => Math.min(cars.length - 1, i + 1));
+                                                                }}
+                                                                disabled={mobileIndex === cars.length - 1}
+                                                                className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#1d4ed8] text-white shadow-lg ring-2 ring-white/60 hover:bg-[#1e40af] disabled:opacity-40 disabled:hover:bg-[#1d4ed8]"
+                                                            >
+                                                                <svg
+                                                                    viewBox="0 0 24 24"
+                                                                    className="h-4 w-4"
+                                                                    aria-hidden="true"
+                                                                >
+                                                                    <path
+                                                                        d="M9.5 5.5L16 12l-6.5 6.5"
+                                                                        fill="none"
+                                                                        stroke="currentColor"
+                                                                        strokeWidth="2"
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                    />
+                                                                </svg>
+                                                            </button>
+                                                        </>
+                                                    )}
                                                 </div>
                                                 <div className="flex flex-col p-3">
                                                     <h2 className="text-sm font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
@@ -341,31 +436,11 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                     );
                                 })()}
                                 {cars.length > 1 && (
-                                    <>
-                                        <button
-                                            type="button"
-                                            onClick={() => setMobileIndex((i) => Math.max(0, i - 1))}
-                        disabled={mobileIndex === 0}
-                                            className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#1d4ed8] text-white shadow-lg ring-2 ring-white/60 hover:bg-[#1e40af] disabled:opacity-40 disabled:hover:bg-[#1d4ed8]"
-                                        >
-                                            ‹
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                setMobileIndex((i) => Math.min(cars.length - 1, i + 1))
-                                            }
-                                            disabled={mobileIndex === cars.length - 1}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#1d4ed8] text-white shadow-lg ring-2 ring-white/60 hover:bg-[#1e40af] disabled:opacity-40 disabled:hover:bg-[#1d4ed8]"
-                                        >
-                                            ›
-                                        </button>
-                                        <div className={`${isMobile ? "mt-0" : "mt-3"} text-center text-[11px] text-white md:text-gray-600`}>
-                                            {mobileIndex + 1} / {cars.length}
-                                        </div>
-                                    </>
+                                    <div className="mt-2 text-center text-[11px] text-white md:text-gray-600">
+                                        {mobileIndex + 1} / {cars.length}
+                                    </div>
                                 )}
-                            </div>
+                            </>
                         ) : (
                             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                                 {paginatedCars.map((car) => (

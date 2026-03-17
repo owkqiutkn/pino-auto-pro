@@ -17,6 +17,7 @@
   },
   "Navbar": {
     "brand": "Pino Auto Pro",
+    "phoneLabel": "Appelez-nous",
     "links": {
       "inventory": "Inventaire",
       "about": "À propos",
