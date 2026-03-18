@@ -101,7 +101,7 @@ function getTransmissionDisplay(transmissionValue: string | null, transmissions:
     return transmission ? getLocalizedTransmissionName(transmission, locale) : transmissionValue;
 }
 
-export default function InventoryLineup({ categories, engines, fuels, transmissions, initialFeaturedData }: LookupProps) {
+export default function InventoryLineupRed({ categories, engines, fuels, transmissions, initialFeaturedData }: LookupProps) {
     const t = useTranslations("NewLanding.inventorySection");
     const tCard = useTranslations("Inventory.page");
     const locale = useLocale();
@@ -154,10 +154,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
 
     const itemsPerPage = isMobile ? MOBILE_ITEMS_PER_PAGE : DESKTOP_ITEMS_PER_PAGE;
     const totalPages = Math.ceil(cars.length / itemsPerPage || 1);
-    const paginatedCars = cars.slice(
-        (page - 1) * itemsPerPage,
-        page * itemsPerPage
-    );
+    const paginatedCars = cars.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
     useEffect(() => {
         if (segment === "featured" && initialFeaturedData) {
@@ -215,7 +212,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                             onClick={() => setSegment("featured")}
                             className={
                                 segment === "featured"
-                                    ? "flex-1 md:flex-none rounded-sm bg-[#1d4ed8] px-2 py-1 text-center text-white shadow-sm"
+                                    ? "flex-1 md:flex-none rounded-sm bg-[#b91c1c] px-2 py-1 text-center text-white shadow-sm"
                                     : "flex-1 md:flex-none rounded-sm border border-gray-500/50 bg-gray-800 px-2 py-1 text-center text-gray-200 hover:bg-gray-700"
                             }
                         >
@@ -226,7 +223,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                             onClick={() => setSegment("new-arrivals")}
                             className={
                                 segment === "new-arrivals"
-                                    ? "flex-1 md:flex-none rounded-sm bg-[#1d4ed8] px-2 py-1 text-center text-white shadow-sm"
+                                    ? "flex-1 md:flex-none rounded-sm bg-[#b91c1c] px-2 py-1 text-center text-white shadow-sm"
                                     : "flex-1 md:flex-none rounded-sm border border-gray-500/50 bg-gray-800 px-2 py-1 text-center text-gray-200 hover:bg-gray-700"
                             }
                         >
@@ -290,7 +287,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                                             {tCard("card.noImage")}
                                                         </div>
                                                     )}
-                                                    <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#0c1320] text-[8px] font-bold text-white">
+                                                    <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#b91c1c] text-[8px] font-bold text-white">
                                                         PAP
                                                     </div>
                                                     {cars.length > 1 && (
@@ -303,7 +300,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                                                     setMobileIndex((i) => Math.max(0, i - 1));
                                                                 }}
                                                                 disabled={mobileIndex === 0}
-                                                                className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#1d4ed8] text-white shadow-lg ring-2 ring-white/60 hover:bg-[#1e40af] disabled:opacity-40 disabled:hover:bg-[#1d4ed8]"
+                                                                className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#b91c1c] text-white shadow-lg ring-2 ring-white/60 hover:bg-[#7f1d1d] disabled:opacity-40 disabled:hover:bg-[#b91c1c]"
                                                             >
                                                                 <svg
                                                                     viewBox="0 0 24 24"
@@ -328,7 +325,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                                                     setMobileIndex((i) => Math.min(cars.length - 1, i + 1));
                                                                 }}
                                                                 disabled={mobileIndex === cars.length - 1}
-                                                                className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#1d4ed8] text-white shadow-lg ring-2 ring-white/60 hover:bg-[#1e40af] disabled:opacity-40 disabled:hover:bg-[#1d4ed8]"
+                                                                className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#b91c1c] text-white shadow-lg ring-2 ring-white/60 hover:bg-[#7f1d1d] disabled:opacity-40 disabled:hover:bg-[#b91c1c]"
                                                             >
                                                                 <svg
                                                                     viewBox="0 0 24 24"
@@ -376,12 +373,12 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                                                 <span className="text-sm text-gray-500 line-through">
                                                                     {formatPrice(car.price)}
                                                                 </span>
-                                                                <span className="ml-2 text-xl font-bold text-[#1d4ed8]">
+                                                                <span className="ml-2 text-xl font-bold text-[#b91c1c]">
                                                                     {formatPrice(car.discounted_price)}
                                                                 </span>
                                                             </p>
                                                         ) : (
-                                                            <p className="text-xl font-bold text-[#1d4ed8]">
+                                                            <p className="text-xl font-bold text-[#b91c1c]">
                                                                 {formatPrice(car.price)}
                                                             </p>
                                                         )}
@@ -401,7 +398,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                                             href={car.carfax_url}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                                            className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#b91c1c] transition-colors"
                                                         >
                                                             {tCard("card.carfax")}
                                                         </a>
@@ -415,7 +412,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                                             href={car.cargurus_url}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                                            className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#b91c1c] transition-colors"
                                                         >
                                                             {tCard("card.cargurus")}
                                                         </a>
@@ -428,7 +425,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                             </div>
                                             <Link
                                                 href={`/inventory/${car.slug}`}
-                                                className="mx-4 mb-4 mt-3 block rounded bg-[#0c1320] py-2 text-center text-sm font-bold text-white hover:bg-gray-800"
+                                                className="mx-4 mb-4 mt-3 block rounded bg-[#dc2626] py-2 text-center text-sm font-bold text-white hover:bg-[#b91c1c]"
                                             >
                                                 {tCard("card.viewDetails")}
                                             </Link>
@@ -460,11 +457,11 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                                         unoptimized
                                                     />
                                                 ) : (
-                                                    <div className="flex h-full w-full items-center justifycenter text-gray-400">
+                                                    <div className="flex h-full w-full items-center justify-center text-gray-400">
                                                         {tCard("card.noImage")}
                                                     </div>
                                                 )}
-                                                <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#0c1320] text-[8px] font-bold text-white">
+                                                <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#b91c1c] text-[8px] font-bold text-white">
                                                     PAP
                                                 </div>
                                             </div>
@@ -492,12 +489,12 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                                             <span className="text-sm text-gray-500 line-through">
                                                                 {formatPrice(car.price)}
                                                             </span>
-                                                            <span className="ml-2 text-xl font-bold text-[#1d4ed8]">
+                                                            <span className="ml-2 text-xl font-bold text-[#b91c1c]">
                                                                 {formatPrice(car.discounted_price)}
                                                             </span>
                                                         </p>
                                                     ) : (
-                                                        <p className="text-xl font-bold text-[#1d4ed8]">
+                                                        <p className="text-xl font-bold text-[#b91c1c]">
                                                             {formatPrice(car.price)}
                                                         </p>
                                                     )}
@@ -517,7 +514,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                                         href={car.carfax_url}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                                        className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#b91c1c] transition-colors"
                                                     >
                                                         {tCard("card.carfax")}
                                                     </a>
@@ -531,7 +528,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                                         href={car.cargurus_url}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#1d4ed8] transition-colors"
+                                                        className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#b91c1c] transition-colors"
                                                     >
                                                         {tCard("card.cargurus")}
                                                     </a>
@@ -544,7 +541,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                         </div>
                                         <Link
                                             href={`/inventory/${car.slug}`}
-                                            className="mx-4 mb-4 mt-3 block rounded bg-[#0c1320] py-2 text-center text-sm font-bold text-white hover:bg-gray-800"
+                                            className="mx-4 mb-4 mt-3 block rounded bg-[#dc2626] py-2 text-center text-sm font-bold text-white hover:bg-[#b91c1c]"
                                         >
                                             {tCard("card.viewDetails")}
                                         </Link>
@@ -558,7 +555,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                     type="button"
                                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                                     disabled={page === 1}
-                                    className="rounded-sm border border-[#1d4ed8] bg-[#1d4ed8] px-3 py-1.5 text-sm font-bold uppercase text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1e40af] hover:border-[#1e40af]"
+                                    className="rounded-sm border border-[#b91c1c] bg-[#b91c1c] px-3 py-1.5 text-sm font-bold uppercase text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#7f1d1d] hover:border-[#7f1d1d]"
                                 >
                                     {t("pagination.previous")}
                                 </button>
@@ -569,7 +566,7 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
                                     type="button"
                                     onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                                     disabled={page === totalPages}
-                                    className="rounded-sm border border-[#1d4ed8] bg-[#1d4ed8] px-3 py-1.5 text-sm font-bold uppercase text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1e40af] hover:border-[#1e40af]"
+                                    className="rounded-sm border border-[#b91c1c] bg-[#b91c1c] px-3 py-1.5 text-sm font-bold uppercase text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#7f1d1d] hover:border-[#7f1d1d]"
                                 >
                                     {t("pagination.next")}
                                 </button>
@@ -581,3 +578,4 @@ export default function InventoryLineup({ categories, engines, fuels, transmissi
         </section>
     );
 }
+

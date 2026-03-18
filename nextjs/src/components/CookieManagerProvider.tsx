@@ -135,7 +135,7 @@ export function CookieManagerProvider({
         floatingButtonCloseButton: "!hidden",
         modalContent: "relative",
         floatingButton:
-          "cookie-floating-btn fixed bottom-5 left-4 z-[99999] h-9 w-9 rounded-full flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:scale-110 focus:outline-none group cursor-pointer bg-[#0c1320] text-white shadow-[0_10px_30px_rgba(0,0,0,0.6)] ring-1 ring-white/40 backdrop-blur-sm hover:bg-black/90 md:bottom-7 md:left-6",
+          "cookie-floating-btn fixed bottom-5 left-4 z-[99999] h-9 w-9 rounded-full flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.32,0,72,1)] hover:scale-110 focus:outline-none group cursor-pointer bg-[#b91c1c] text-white shadow-[0_10px_30px_rgba(0,0,0,0.6)] ring-1 ring-red-500/60 backdrop-blur-sm hover:bg-[#dc2626] md:bottom-7 md:left-6",
       }}
     >
       <CookieModalCloseButton />
