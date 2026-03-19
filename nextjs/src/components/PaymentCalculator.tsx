@@ -83,7 +83,7 @@ export default function PaymentCalculator({ vehiclePrice }: PaymentCalculatorPro
                 onClick={() => setCollapsed((c) => !c)}
                 className="flex w-full items-center justify-between rounded-t-lg border-b border-gray-200 bg-white px-4 py-3 text-left transition-colors hover:bg-gray-50"
             >
-                <span className="flex items-center gap-2 font-bold text-blue-600">
+                <span className="flex items-center gap-2 font-bold text-[#dc2626]">
                     <span className="text-lg">$</span>
                     {t("title")}
                 </span>
@@ -112,7 +112,7 @@ export default function PaymentCalculator({ vehiclePrice }: PaymentCalculatorPro
                         <label className="block text-sm font-medium text-gray-700">
                             {t("vehiclePrice")}
                         </label>
-                        <div className="mt-1 text-lg font-bold text-blue-600">
+                        <div className="mt-1 text-lg font-bold text-[#dc2626]">
                             {formatCurrency(vehiclePrice)}
                         </div>
                     </div>
@@ -181,7 +181,7 @@ export default function PaymentCalculator({ vehiclePrice }: PaymentCalculatorPro
                         <label className="block text-sm font-medium text-gray-700">
                             {t("balanceToFinance")}
                         </label>
-                        <div className="mt-1 text-lg font-bold text-blue-600">
+                        <div className="mt-1 text-lg font-bold text-[#dc2626]">
                             {formatCurrency(balanceToFinance)}
                         </div>
                     </div>
@@ -250,11 +250,11 @@ export default function PaymentCalculator({ vehiclePrice }: PaymentCalculatorPro
                     <p className="text-xs text-gray-500">{t("disclaimer")}</p>
 
                     {/* Result */}
-                    <div className="rounded-md bg-blue-50 px-4 py-3">
+                    <div className="rounded-md bg-red-50 px-4 py-3">
                         <p className="text-sm font-medium text-gray-700">
                             {t("recurringPayment")}
                         </p>
-                        <p className="mt-1 text-xl font-bold text-blue-600">
+                        <p className="mt-1 text-xl font-bold text-[#dc2626]">
                             {formatCurrency(paymentAmount)} / {frequencyLabel}
                         </p>
                     </div>

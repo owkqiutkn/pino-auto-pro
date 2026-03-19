@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ContactMap from "@/components/ContactMap";
-import InventoryLineup from "@/components/InventoryLineup";
+import InventoryLineupRed from "@/components/InventoryLineupRed";
 import SiteFooter from "@/components/SiteFooter";
 import SiteNavbar from "@/components/SiteNavbar";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
@@ -76,7 +76,7 @@ export default async function NewPage() {
     const transmissionsTyped = (transmissions ?? []) as Transmission[];
 
     return (
-        <div className="bg-[#0c1320] text-white">
+        <div className="bg-[#16040a] text-white">
             <section className="relative min-h-[440px] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={heroImage} alt="ML Autos hero" className="absolute inset-0 h-full w-full object-cover" />
@@ -86,7 +86,7 @@ export default async function NewPage() {
                 </div>
 
                 <div className="relative z-10 mx-auto max-w-6xl px-4">
-                    <div className="pt-14 pb-16 text-center">
+                    <div className="pt-14 pb-6 text-center">
                         <h1 className="max-w-3xl mx-auto text-3xl md:text-5xl font-black leading-tight">
                             {t("hero.title")}
                         </h1>
@@ -94,7 +94,7 @@ export default async function NewPage() {
                             {t("hero.subtitle")}
                         </p>
                         <form action="/inventory" method="get" className="mt-6 grid max-w-5xl mx-auto grid-cols-2 gap-2 md:grid-cols-4">
-                            <select name="yearMin" className="h-10 rounded-sm bg-white px-3 text-xs text-black outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]" defaultValue="">
+                            <select name="yearMin" className="h-10 rounded-sm bg-white px-3 text-xs text-black outline-none focus:ring-2 focus:ring-[#b91c1c] focus:border-[#b91c1c]" defaultValue="">
                                 <option value="" disabled>
                                     {t("hero.filters.year")}
                                 </option>
@@ -102,7 +102,7 @@ export default async function NewPage() {
                                     <option key={y} value={y}>{y}</option>
                                 ))}
                             </select>
-                            <select name="brand" className="h-10 rounded-sm bg-white px-3 text-xs text-black outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]" defaultValue="">
+                            <select name="brand" className="h-10 rounded-sm bg-white px-3 text-xs text-black outline-none focus:ring-2 focus:ring-[#b91c1c] focus:border-[#b91c1c]" defaultValue="">
                                 <option value="" disabled>
                                     {t("hero.filters.brand")}
                                 </option>
@@ -113,36 +113,45 @@ export default async function NewPage() {
                             <input
                                 name="priceMax"
                                 placeholder={t("hero.filters.maxPrice")}
-                                className="h-10 rounded-sm bg-white px-3 text-xs text-black placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]"
+                                className="h-10 rounded-sm bg-white px-3 text-xs text-black placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-[#b91c1c] focus:border-[#b91c1c]"
                             />
-                            <button className="h-10 rounded-sm bg-[#1d4ed8] text-xs font-bold uppercase tracking-wide hover:bg-[#1e40af]">
+                            <button className="h-10 rounded-sm bg-[#b91c1c] text-xs font-bold uppercase tracking-wide hover:bg-[#7f1d1d]">
                                 {t("hero.filters.search")}
                             </button>
                         </form>
+                        <div className="mt-4 md:mt-10 block md:hidden">
+                            <InventoryLineupRed
+                                categories={categoriesTyped}
+                                engines={enginesTyped}
+                                fuels={fuelsTyped}
+                                transmissions={transmissionsTyped}
+                                initialFeaturedData={featuredSegment}
+                            />
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section className="relative z-20 bg-[#071d38] pt-10 pb-10 md:pt-12 md:pb-14">
+            <section className="relative z-20 hidden bg-[#3A0712] pt-10 pb-10 md:block md:pt-12 md:pb-14">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-3 -mt-20 md:-mt-28">
                         {featureCards.map((item) => {
                             const title = t(`features.${item.id}.title`);
                             const description = t(`features.${item.id}.description`);
                             const cardContent = (
-                                <div className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-blue-400/30 bg-[#071d38] shadow-[0_22px_55px_rgba(0,0,0,0.7)] transition-transform duration-300 ease-out hover:-translate-y-2">
+                                <div className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-red-500/30 bg-[#3A0712] shadow-[0_22px_55px_rgba(0,0,0,0.7)] transition-transform duration-300 ease-out hover:-translate-y-2">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
                                         src={item.image}
                                         alt={title}
                                         className="absolute inset-0 h-full w-full object-cover scale-110 opacity-60"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-950/70 via-blue-950/85 to-blue-950/95 mix-blend-multiply" />
+                                    <div className="absolute inset-0 bg-gradient-to-br from-red-950/55 via-red-950/70 to-black/85 mix-blend-multiply" />
                                     <div className="relative z-10 flex h-full w-full flex-col justify-center p-5 text-center md:text-left items-center md:items-start">
-                                        <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-[11px] font-black text-blue-600">
+                                        <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-[11px] font-black text-red-700">
                                             {"iconImage" in item && item.iconImage ? (
                                                 /* eslint-disable-next-line @next/next/no-img-element */
-                                                <img src={item.iconImage} alt="" className="h-5 w-5 scale-110 [filter:brightness(0)_saturate(100%)_invert(27%)_sepia(51%)_saturate(2878%)_hue-rotate(217deg)_contrast(1.15)]" aria-hidden />
+                                                <img src={item.iconImage} alt="" className="h-5 w-5 scale-110 [filter:brightness(0)_saturate(100%)_invert(17%)_sepia(89%)_saturate(7490%)_hue-rotate(356deg)_contrast(1.05)]" aria-hidden />
                                             ) : (
                                                 item.icon
                                             )}
@@ -183,13 +192,15 @@ export default async function NewPage() {
                 </div>
             </section>
 
-            <InventoryLineup
-                categories={categoriesTyped}
-                engines={enginesTyped}
-                fuels={fuelsTyped}
-                transmissions={transmissionsTyped}
-                initialFeaturedData={featuredSegment}
-            />
+            <div className="hidden md:block">
+                <InventoryLineupRed
+                    categories={categoriesTyped}
+                    engines={enginesTyped}
+                    fuels={fuelsTyped}
+                    transmissions={transmissionsTyped}
+                    initialFeaturedData={featuredSegment}
+                />
+            </div>
 
             <section id="financing" className="relative overflow-hidden py-16">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -200,7 +211,7 @@ export default async function NewPage() {
                     <p className="mt-6 max-w-xl mx-auto text-sm text-white/90">
                         {t("financing.body")}
                     </p>
-                    <a href="#contact" className="mt-6 inline-block rounded-sm bg-[#1d4ed8] px-6 py-3 text-sm font-bold uppercase tracking-wide hover:bg-[#1e40af]">
+                    <a href="#contact" className="mt-6 inline-block rounded-sm bg-[#b91c1c] px-6 py-3 text-sm font-bold uppercase tracking-wide hover:bg-[#7f1d1d]">
                         {t("financing.cta")}
                     </a>
                 </div>
@@ -218,7 +229,7 @@ export default async function NewPage() {
                                 key={key}
                                 className="relative rounded-sm border border-gray-200 bg-gray-50/50 p-4 text-center transition-shadow hover:shadow-lg"
                             >
-                                <div className="mx-auto mb-3 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#1d4ed8] text-sm font-black text-white">
+                                <div className="mx-auto mb-3 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#b91c1c] text-sm font-black text-white">
                                     {i + 1}
                                 </div>
                                 <h3 className="text-base font-bold uppercase tracking-wide text-gray-900">{t(`process.steps.${key}.title`)}</h3>
@@ -231,7 +242,7 @@ export default async function NewPage() {
                     <div className="mt-5 flex justify-center">
                         <Link
                             href="/inventory"
-                            className="rounded-sm bg-[#1d4ed8] px-6 py-2.5 text-sm font-bold text-white uppercase tracking-wide hover:bg-[#1e40af]"
+                            className="rounded-sm bg-[#b91c1c] px-6 py-2.5 text-sm font-bold text-white uppercase tracking-wide hover:bg-[#7f1d1d]"
                         >
                             {t("mission.buttons.viewInventory")}
                         </Link>
@@ -293,23 +304,23 @@ export default async function NewPage() {
                     </div>
                     {/* Shared CTAs */}
                     <div className="mt-8 flex flex-wrap justify-center md:justify-start gap-3">
-                        <Link href="/inventory" className="rounded bg-[#1d4ed8] px-4 py-2 text-xs font-bold text-white uppercase tracking-wide hover:bg-[#1e40af]">
+                        <Link href="/inventory" className="rounded bg-[#b91c1c] px-4 py-2 text-xs font-bold text-white uppercase tracking-wide hover:bg-[#7f1d1d]">
                             {t("mission.buttons.viewInventory")}
                         </Link>
-                        <a href="#contact" className="rounded bg-[#1d4ed8] px-4 py-2 text-xs font-bold text-white uppercase tracking-wide hover:bg-[#1e40af]">
+                        <a href="#contact" className="rounded bg-[#b91c1c] px-4 py-2 text-xs font-bold text-white uppercase tracking-wide hover:bg-[#7f1d1d]">
                             {t("about.cta")}
                         </a>
                     </div>
                 </div>
             </section>
 
-            <section className="flex flex-col justify-end bg-gradient-to-b from-[#0c1320] via-[#15161d] to-[#17181f] py-6 min-h-[80px]">
+            <section className="flex flex-col justify-end bg-gradient-to-b from-[#0b0204] via-[#22060b] to-[#2a0a11] py-6 min-h-[80px]">
                 <div className="mx-auto max-w-6xl px-4 w-full">
                     <div className="mx-auto h-px max-w-xs bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-80" />
                 </div>
             </section>
 
-            <section id="browse-by-category" className="bg-[#17181f] pt-3 pb-10 text-white" aria-labelledby="browse-by-category-title">
+            <section id="browse-by-category" className="bg-[#2a0a11] pt-3 pb-6 text-white" aria-labelledby="browse-by-category-title">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="mb-4">
                         <h3 id="browse-by-category-title" className="text-lg font-black uppercase tracking-wide">{t("categories.title")}</h3>
@@ -326,7 +337,7 @@ export default async function NewPage() {
                                     <Link
                                         key={cat.id}
                                         href={`/inventory?category=${encodeURIComponent(displayName)}`}
-                                        className="group block overflow-hidden rounded-sm border border-white/10 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)]"
+                                        className="group block overflow-hidden rounded-sm border border-red-500/35 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)] hover:border-red-400/80 transition-colors duration-300"
                                     >
                                         {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img
@@ -335,11 +346,11 @@ export default async function NewPage() {
                                             loading="eager"
                                             className="h-20 w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                         />
-                                        <div className="border-t border-white/5 bg-gradient-to-r from-[#1d283a] via-[#111827] to-[#1d283a] p-3 text-center">
+                                        <div className="border-t border-white/5 bg-gradient-to-r from-[#3b0710] via-[#190308] to-[#3b0710] p-3 text-center">
                                             <div className="text-xs font-bold uppercase tracking-wide">
                                                 {displayName}
                                             </div>
-                                            <span className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#1d4ed8] px-3 py-1 text-[10px] font-bold uppercase tracking-wide group-hover:bg-[#1e40af]">
+                                            <span className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#b91c1c] px-3 py-1 text-[10px] font-bold uppercase tracking-wide group-hover:bg-[#7f1d1d]">
                                                 {t("categories.viewListings")}
                                             </span>
                                         </div>
@@ -348,11 +359,11 @@ export default async function NewPage() {
                             })}
                         </div>
                     ) : (
-                        <div className="rounded-sm border border-white/10 bg-[#22242c] p-6 text-center">
+                        <div className="rounded-sm border border-white/10 bg-[#2a0a11] p-6 text-center">
                             <p className="text-sm text-white/80">{t("categories.subtitle")}</p>
                             <Link
                                 href="/inventory"
-                                className="mt-4 inline-flex items-center justify-center rounded-sm bg-[#1d4ed8] px-4 py-2 text-sm font-bold uppercase tracking-wide hover:bg-[#1e40af]"
+                                className="mt-4 inline-flex items-center justify-center rounded-sm bg-[#b91c1c] px-4 py-2 text-sm font-bold uppercase tracking-wide hover:bg-[#7f1d1d]"
                             >
                                 {t("categories.viewListings")}
                             </Link>
@@ -361,13 +372,13 @@ export default async function NewPage() {
                 </div>
             </section>
 
-            <section className="bg-gradient-to-b from-[#17181f] via-[#15161d] to-[#111217] py-6">
+            <section className="bg-gradient-to-b from-[#2a0a11] via-[#22060b] to-[#16040a] py-6">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="mx-auto h-px max-w-xs bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-80" />
                 </div>
             </section>
 
-            <section className="bg-[#111217] py-12 text-white">
+            <section className="bg-[#16040a] pt-2 pb-12 md:pt-12 md:pb-12 text-white">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <div>
@@ -378,8 +389,8 @@ export default async function NewPage() {
                                 {t("reviews.title")}
                             </h3>
                         </div>
-                        <div className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-[11px] font-medium text-white/80 ring-1 ring-white/10">
-                            <div className="flex items-center text-[#f4c84b]">
+                        <div className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-[11px] font-medium text-white/80 ring-1 ring-red-500/40">
+                            <div className="flex items-center text-[#facc15]">
                                 <span className="mr-0.5 text-xs">★</span>
                                 <span className="mr-0.5 text-xs">★</span>
                                 <span className="mr-0.5 text-xs">★</span>
@@ -403,10 +414,10 @@ export default async function NewPage() {
                         ].map((review, index) => (
                             <div
                                 key={index}
-                                className="group rounded-xl border border-[#1d4ed8]/30 bg-[#1e3a5f]/30 p-0 transition-transform duration-300 hover:-translate-y-1.5 hover:border-[#4338ca]/70"
+                                className="group rounded-xl border border-red-500/35 bg-[#4a0a18]/45 p-0 transition-transform duration-300 hover:-translate-y-1.5 hover:border-red-400/80"
                             >
                                 <div className="flex items-start gap-3 p-4">
-                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1d4ed8]/25 ring-2 ring-[#1d4ed8]/40">
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#7f1d1d]/40 ring-2 ring-red-500/60">
                                         <span className="text-lg font-bold text-white/80">
                                             {t(`reviews.items.${review.key}.name`).charAt(0)}
                                         </span>
@@ -429,7 +440,7 @@ export default async function NewPage() {
                 </div>
             </section>
 
-            <section id="contact" className="bg-[#0c1320] pt-0 pb-0 text-white">
+            <section id="contact" className="bg-[#16040a] pt-0 pb-0 text-white">
                 <ContactMap variant="large" />
             </section>
 
@@ -438,3 +449,4 @@ export default async function NewPage() {
         </div>
     );
 }
+

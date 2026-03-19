@@ -184,7 +184,7 @@
         "coupe": "Coupé"
       },
       "poweredBy": "Desarrollado por {businessName}.",
-      "copyright": "Copyright 2026 {businessName}."
+      "copyright": "Copyright {year} {businessName}."
     },
     "contactForm": {
       "nameLabel": "Tu nombre",
@@ -277,6 +277,7 @@
       "calculatePayments": "Calcular tus pagos",
       "requestInfo": "Solicitar información",
       "fairDealBadge": "BUEN PRECIO",
+      "discountBadge": "EN OFERTA",
       "warrantyBadge": "GARANTÍA",
       "namePlaceholder": "Tu nombre",
       "email": "Correo",
@@ -337,6 +338,7 @@
         "dealerPriceLabel": "Precio del concesionario",
         "taxNote": "+ IVA y matriculación",
         "fairDeal": "▲ BUEN PRECIO",
+        "discountBadge": "▼ EN OFERTA",
         "fairDealSource": "CarGurus",
         "carfax": "Carfax",
         "cargurus": "CarGurus",

@@ -19,7 +19,7 @@ type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
 type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 
 const CARDS_PER_PAGE = 4;
-const BRAND_BLUE = "#1d4ed8";
+const BRAND_ACCENT = "#dc2626";
 
 interface SimilarVehiclesCarouselProps {
     cars: Car[];
@@ -99,7 +99,7 @@ export default function SimilarVehiclesCarousel({
         <div className="space-y-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h3 className="text-lg font-bold" style={{ color: BRAND_BLUE }}>
+                    <h3 className="text-lg font-bold" style={{ color: BRAND_ACCENT }}>
                         {tDetail("similarVehicles")}
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">{tDetail("similarVehiclesIntro")}</p>
@@ -154,7 +154,7 @@ export default function SimilarVehiclesCarousel({
                             return (
                                 <div
                                     key={car.id}
-                                    className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#1d4ed8] hover:shadow-lg"
+                                    className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#b91c1c] hover:shadow-lg"
                                 >
                                     <Link href={`/inventory/${car.slug}`} className="block">
                                         <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
@@ -172,7 +172,7 @@ export default function SimilarVehiclesCarousel({
                                                     {tPage("card.noImage")}
                                                 </div>
                                             )}
-                                            <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#0c1320] text-[8px] font-bold text-white">
+                                            <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#b91c1c] text-[8px] font-bold text-white">
                                                 PAP
                                             </div>
                                         </div>
@@ -192,16 +192,16 @@ export default function SimilarVehiclesCarousel({
                                             <div className="mt-2">
                                                 <p className="text-xs font-semibold text-gray-600">{tPage("card.dealerPriceLabel")}</p>
                                                 {car.discounted_price != null ? (
-                                                    <p>
+                                                    <div className="mt-0.5 flex flex-col gap-0.5">
                                                         <span className="text-sm text-gray-500 line-through">
                                                             {formatPrice(car.price)}
                                                         </span>
-                                                        <span className="ml-2 text-xl font-bold text-[#1d4ed8]">
+                                                        <span className="text-xl font-bold text-[#dc2626]">
                                                             {formatPrice(car.discounted_price)}
                                                         </span>
-                                                    </p>
+                                                    </div>
                                                 ) : (
-                                                    <p className="text-xl font-bold text-[#1d4ed8]">
+                                                    <p className="text-xl font-bold text-[#dc2626]">
                                                         {formatPrice(car.price)}
                                                     </p>
                                                 )}
@@ -210,9 +210,16 @@ export default function SimilarVehiclesCarousel({
                                         </div>
                                     </Link>
                                     <div className="mx-4 mt-0 mb-2 space-y-2">
-                                        <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
-                                            {tPage("card.fairDeal")}
-                                        </span>
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            {car.discounted_price != null ? (
+                                                <span className="block w-fit rounded bg-red-100 px-2 py-1 text-xs font-semibold text-[#b91c1c] ring-1 ring-inset ring-red-200/80">
+                                                    {tPage("card.discountBadge")}
+                                                </span>
+                                            ) : null}
+                                            <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
+                                                {tPage("card.fairDeal")}
+                                            </span>
+                                        </div>
                                         <div className="flex flex-wrap items-center gap-2">
                                             {car.carfax_url ? (
                                                 <a
@@ -220,7 +227,7 @@ export default function SimilarVehiclesCarousel({
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     onClick={(e) => e.stopPropagation()}
-                                                    className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 transition-colors hover:border-[#1d4ed8] hover:bg-gray-50"
+                                                    className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 transition-colors hover:border-[#b91c1c] hover:bg-gray-50"
                                                 >
                                                     {tPage("card.carfax")}
                                                 </a>
@@ -235,7 +242,7 @@ export default function SimilarVehiclesCarousel({
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     onClick={(e) => e.stopPropagation()}
-                                                    className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 transition-colors hover:border-[#1d4ed8] hover:bg-gray-50"
+                                                    className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 transition-colors hover:border-[#b91c1c] hover:bg-gray-50"
                                                 >
                                                     {tPage("card.cargurus")}
                                                 </a>
@@ -248,7 +255,7 @@ export default function SimilarVehiclesCarousel({
                                     </div>
                                     <Link
                                         href={`/inventory/${car.slug}`}
-                                        className="mx-4 mb-4 mt-3 block rounded bg-[#0c1320] py-2 text-center text-sm font-bold text-white hover:bg-gray-800"
+                                        className="mx-4 mb-4 mt-3 block rounded bg-[#dc2626] py-2 text-center text-sm font-bold text-white hover:bg-[#b91c1c]"
                                     >
                                         {tPage("card.viewDetails")}
                                     </Link>

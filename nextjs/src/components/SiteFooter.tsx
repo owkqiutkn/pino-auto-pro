@@ -7,7 +7,7 @@ import type { OpeningHoursJson } from "@/lib/types";
 interface SiteFooterProps {
     /** When false, skip the map section (page already has it). Default: true */
     showMap?: boolean;
-    /** Base path for about/contact anchors (e.g. "/new" for /new#about). Default: "" for /#about */
+    /** Base path for about/contact anchor hrefs (home landing uses "/"). Default: "" for /#about */
     basePath?: string;
 }
 
@@ -57,6 +57,7 @@ export default async function SiteFooter({ showMap = true, basePath = "" }: Site
     ]);
     const openingHours = (siteSettings?.opening_hours ?? null) as OpeningHoursJson | null;
     const businessName = siteSettings?.business_name || "Pino Auto Pro";
+    const copyrightYear = new Date().getFullYear();
     const address = siteSettings?.address || landingT("footer.addressLine1");
     const email = siteSettings?.email || landingT("footer.email");
     const phone = siteSettings?.phone || landingT("footer.phone");
@@ -210,7 +211,7 @@ export default async function SiteFooter({ showMap = true, basePath = "" }: Site
             </div>
             <div id="footer-bottom-bar" className="mx-auto mt-8 flex max-w-6xl flex-col items-center gap-2 border-t border-white/10 px-4 pt-4 text-[10px] text-white/60 sm:flex-row sm:justify-between">
                 <div>{landingT("footer.poweredBy", { businessName })}</div>
-                <div>{landingT("footer.copyright", { businessName })}</div>
+                <div>{landingT("footer.copyright", { businessName, year: copyrightYear })}</div>
             </div>
         </footer>
         </>

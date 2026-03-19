@@ -23,7 +23,7 @@ function NavButton({ direction, onClick, stopPropagation }: { direction: "prev" 
         <button
             type="button"
             onClick={handleClick}
-            className={`absolute top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-[#1d4ed8] text-white shadow-lg transition-colors hover:bg-[#1e40af] ${posClass}`}
+            className={`absolute top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-[#b91c1c] text-white shadow-lg transition-colors hover:bg-[#7f1d1d] ${posClass}`}
             aria-label={direction === "prev" ? "Previous image" : "Next image"}
         >
             {direction === "prev" ? (
@@ -135,7 +135,7 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
                     <span className="text-sm font-black tracking-wider text-white drop-shadow-lg">
                         {businessName}
                     </span>
-                    <div className="h-0.5 w-full bg-[#1d4ed8]" />
+                    <div className="h-0.5 w-full bg-[#b91c1c]" />
                 </div>
 
                 {/* Prev / Next arrows */}
@@ -210,7 +210,7 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
                                 type="button"
                                 onClick={() => setSelectedIndex(idx)}
                                 className={`relative h-16 w-24 shrink-0 overflow-hidden rounded border-2 transition-colors ${
-                                    idx === selectedIndex ? "border-[#1d4ed8]" : "border-gray-200 hover:border-gray-300"
+                                    idx === selectedIndex ? "border-[#b91c1c]" : "border-gray-200 hover:border-gray-300"
                                 }`}
                             >
                                 <Image
@@ -227,7 +227,7 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
                     <button
                         type="button"
                         onClick={goNext}
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#1d4ed8] text-white hover:bg-[#1e40af]"
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#b91c1c] text-white hover:bg-[#7f1d1d]"
                         aria-label="Next thumbnail"
                     >
                         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

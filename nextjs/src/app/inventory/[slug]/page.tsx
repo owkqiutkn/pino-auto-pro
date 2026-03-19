@@ -157,7 +157,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
     })();
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-[#f2f2f3]">
             <InventoryHero title={`${car.year} ${car.brand} ${car.model}`} />
 
             <div className="mx-auto max-w-6xl px-4 pt-8 pb-16">
@@ -178,48 +178,67 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                                 label={t("shareThisVehicle")}
                             />
 
-                            {/* Red banner */}
-                        <div className="lg:min-h-[18rem] overflow-hidden rounded-xl border border-blue-400/30 bg-[#071d38] px-6 pt-5 pb-4 text-white shadow-[0_12px_30px_rgba(0,0,0,0.45)] transition-transform duration-300 ease-out hover:-translate-y-2">
-                            <h1 className="text-2xl font-bold md:text-3xl">
-                                {car.year} {car.brand} {car.model}
-                            </h1>
-                            {car.vin && (
-                                <p className="text-sm text-white/90">
-                                    {t("vin")}: {car.vin}
+                            {/* Price / CTA — high-contrast red brand strip + white body (inventory card language) */}
+                        <div className="overflow-hidden rounded-xl border border-[#b91c1c]/25 bg-white shadow-[0_12px_40px_-8px_rgba(185,28,28,0.25)] transition-transform duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_50px_-12px_rgba(185,28,28,0.3)]">
+                            <div className="bg-gradient-to-br from-[#dc2626] via-[#b91c1c] to-[#7f1d1d] px-5 py-4 text-white">
+                                <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl">
+                                    {car.year} {car.brand} {car.model}
+                                </h1>
+                                {car.vin && (
+                                    <p className="mt-2 text-xs text-white/85 sm:text-sm">
+                                        {t("vin")}: <span className="font-mono tabular-nums">{car.vin}</span>
+                                    </p>
+                                )}
+                                <p className={`text-xs text-white/90 sm:text-sm ${car.vin ? "mt-1" : "mt-2"}`}>
+                                    {t("doorBodyStyle")}: {bodyStyleDisplay}
                                 </p>
-                            )}
-                            <p className="text-sm text-white/90">
-                                {t("doorBodyStyle")}: {bodyStyleDisplay}
-                            </p>
-                            <p className="mt-3 text-2xl font-bold">{formatPrice(price)}</p>
-                            {car.discounted_price != null && (
-                                <p className="text-sm text-white/80 line-through">{formatPrice(car.price)}</p>
-                            )}
-                            <div className="mt-4 space-y-2">
-                                <a
-                                    href="#car-detail-form"
-                                    className="flex w-full items-center justify-center gap-2 rounded bg-white/20 py-2.5 text-sm font-bold text-white hover:bg-white/30"
-                                >
-                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                    </svg>
-                                    {t("requestEprice")}
-                                </a>
-                                <a
-                                    href="#car-detail-form"
-                                    className="flex w-full items-center justify-center gap-2 rounded bg-white/20 py-2.5 text-sm font-bold text-white hover:bg-white/30"
-                                >
-                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    {t("bookTestDrive")}
-                                </a>
+                            </div>
+                            <div className="px-5 py-4">
+                                <p className="text-[11px] font-bold uppercase tracking-wider text-gray-500">
+                                    {t("dealerPrice")}
+                                </p>
+                                <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0">
+                                    <p className="text-3xl font-black tabular-nums tracking-tight text-[#dc2626]">
+                                        {formatPrice(price)}
+                                    </p>
+                                    {car.discounted_price != null && (
+                                        <p className="text-base font-medium text-gray-400 line-through">
+                                            {formatPrice(car.price)}
+                                        </p>
+                                    )}
+                                </div>
+                                <p className="mt-1 text-[10px] text-gray-500">{t("hstAndLicensing")}</p>
+                                <div className="mt-4 space-y-2.5">
+                                    <a
+                                        href="#car-detail-form"
+                                        className="flex w-full items-center justify-center gap-2 rounded-md bg-[#dc2626] py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#b91c1c] hover:shadow-md"
+                                    >
+                                        <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                        {t("requestEprice")}
+                                    </a>
+                                    <a
+                                        href="#car-detail-form"
+                                        className="flex w-full items-center justify-center gap-2 rounded-md border-2 border-[#b91c1c] bg-white py-2.5 text-sm font-bold text-[#b91c1c] transition hover:bg-red-50"
+                                    >
+                                        <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        {t("bookTestDrive")}
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         </div>
 
                         {/* Fair Deal + Warranty + Carfax + CarGurus */}
                         <div className="flex flex-wrap items-center gap-3">
+                            {car.discounted_price != null ? (
+                                <span className="inline-flex items-center rounded bg-red-100 px-2.5 py-1 text-sm font-semibold text-[#b91c1c] ring-1 ring-inset ring-red-200/80">
+                                    {t("discountBadge")}
+                                </span>
+                            ) : null}
                             <span className="inline-flex items-center gap-1.5 rounded bg-emerald-100 px-2.5 py-1 text-sm font-semibold text-emerald-800">
                                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -228,7 +247,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                             </span>
                             <span
                                 className={`inline-flex items-center gap-1.5 rounded px-2.5 py-1 text-sm font-semibold ${
-                                    car.warranty ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-500"
+                                    car.warranty ? "bg-red-100 text-red-900" : "bg-gray-100 text-gray-500"
                                 }`}
                             >
                                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
@@ -241,7 +260,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                                     href={car.carfax_url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                                    className="rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:border-[#b91c1c] hover:bg-gray-50"
                                 >
                                     {t("viewCarfax")}
                                 </a>
@@ -251,7 +270,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                                     href={car.cargurus_url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                                    className="rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:border-[#b91c1c] hover:bg-gray-50"
                                 >
                                     CarGurus
                                 </a>
@@ -306,7 +325,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
 
                         {/* Request Information form */}
                         <div id="car-detail-form" className="rounded-lg border border-gray-200 scroll-mt-4">
-                            <div className="rounded-t-lg bg-[#1d4ed8] px-4 py-3">
+                            <div className="rounded-t-lg bg-[#b91c1c] px-4 py-3">
                                 <h2 className="font-bold text-white">{t("requestInfo")}</h2>
                             </div>
                             <div className="p-4">

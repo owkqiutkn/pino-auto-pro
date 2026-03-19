@@ -342,6 +342,18 @@
     }
 }
 
+/*
+ * react-cookie-manager injects `.cookie-manager * { --tw-ring-color: rgba(59,130,246,.5); }` (higher
+ * specificity than lone utilities). Force brand red + white focus ring on the FAB.
+ */
+.cookie-manager .cookie-floating-btn {
+  --tw-ring-color: rgb(239 68 68 / 0.6);
+  --tw-ring-offset-color: #b91c1c;
+}
+.cookie-manager .cookie-floating-btn:focus-visible {
+  --tw-ring-color: rgb(255 255 255 / 0.8);
+}
+
 /* When footer bottom bar is in view, float scroll/cookie buttons above it so footer text stays visible */
 body.footer-visible .cookie-floating-btn {
   bottom: 4rem !important;

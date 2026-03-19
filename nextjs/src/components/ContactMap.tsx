@@ -150,8 +150,8 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                                         type="text"
                                         placeholder={t("namePlaceholder")}
                                         disabled={status === "submitting"}
-                                        className={`mt-1 w-full rounded-md border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-[#1d4ed8]/40 ${
-                                            errors.name ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-[#1d4ed8]"
+                                        className={`mt-1 w-full rounded-md border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-[#b91c1c]/40 ${
+                                            errors.name ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-[#b91c1c]"
                                         }`}
                                     />
                                     {errors.name && (
@@ -168,8 +168,8 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                                         type="email"
                                         placeholder={t("emailPlaceholder")}
                                         disabled={status === "submitting"}
-                                        className={`mt-1 w-full rounded-md border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-[#1d4ed8]/40 ${
-                                            errors.email ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-[#1d4ed8]"
+                                        className={`mt-1 w-full rounded-md border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-[#b91c1c]/40 ${
+                                            errors.email ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-[#b91c1c]"
                                         }`}
                                     />
                                     {errors.email && (
@@ -186,8 +186,8 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                                         type="tel"
                                         placeholder={t("phonePlaceholder")}
                                         disabled={status === "submitting"}
-                                        className={`mt-1 w-full rounded-md border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-[#1d4ed8]/40 ${
-                                            errors.phone ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-[#1d4ed8]"
+                                        className={`mt-1 w-full rounded-md border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-[#b91c1c]/40 ${
+                                            errors.phone ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-[#b91c1c]"
                                         }`}
                                     />
                                     {errors.phone && (
@@ -204,8 +204,8 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                                         rows={3}
                                         placeholder={t("messagePlaceholder")}
                                         disabled={status === "submitting"}
-                                        className={`mt-1 w-full rounded-md border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-[#1d4ed8]/40 ${
-                                            errors.message ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-[#1d4ed8]"
+                                        className={`mt-1 w-full rounded-md border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-[#b91c1c]/40 ${
+                                            errors.message ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-[#b91c1c]"
                                         }`}
                                     />
                                     {errors.message && (
@@ -215,7 +215,7 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                                 <button
                                     type="submit"
                                     disabled={status === "submitting"}
-                                    className="inline-flex w-full items-center justify-center rounded-md bg-[#1d4ed8] px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-[#1e40af] disabled:opacity-70"
+                                    className="inline-flex w-full items-center justify-center rounded-md bg-[#dc2626] px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-[#b91c1c] disabled:opacity-70"
                                 >
                                     {status === "submitting" ? t("submitting") : t("submit")}
                                 </button>

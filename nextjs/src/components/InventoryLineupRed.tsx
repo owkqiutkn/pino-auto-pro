@@ -212,8 +212,8 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                             onClick={() => setSegment("featured")}
                             className={
                                 segment === "featured"
-                                    ? "flex-1 md:flex-none rounded-sm bg-[#b91c1c] px-2 py-1 text-center text-white shadow-sm"
-                                    : "flex-1 md:flex-none rounded-sm border border-gray-500/50 bg-gray-800 px-2 py-1 text-center text-gray-200 hover:bg-gray-700"
+                                    ? "flex-1 md:flex-none rounded-sm bg-[#b91c1c] px-2 py-1 text-center text-white shadow-sm outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white"
+                                    : "flex-1 md:flex-none rounded-sm border border-[#b91c1c] bg-[#2e0f14] px-2 py-1 text-center text-red-100 shadow-sm outline-none hover:bg-[#b91c1c] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white md:border-[#b91c1c] md:bg-white md:text-[#b91c1c] md:shadow-none md:hover:bg-red-100 md:focus-visible:ring-[#b91c1c]"
                             }
                         >
                             {t("segments.featured")}
@@ -223,15 +223,15 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                             onClick={() => setSegment("new-arrivals")}
                             className={
                                 segment === "new-arrivals"
-                                    ? "flex-1 md:flex-none rounded-sm bg-[#b91c1c] px-2 py-1 text-center text-white shadow-sm"
-                                    : "flex-1 md:flex-none rounded-sm border border-gray-500/50 bg-gray-800 px-2 py-1 text-center text-gray-200 hover:bg-gray-700"
+                                    ? "flex-1 md:flex-none rounded-sm bg-[#b91c1c] px-2 py-1 text-center text-white shadow-sm outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white"
+                                    : "flex-1 md:flex-none rounded-sm border border-[#b91c1c] bg-[#2e0f14] px-2 py-1 text-center text-red-100 shadow-sm outline-none hover:bg-[#b91c1c] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white md:border-[#b91c1c] md:bg-white md:text-[#b91c1c] md:shadow-none md:hover:bg-red-100 md:focus-visible:ring-[#b91c1c]"
                             }
                         >
                             {t("segments.newArrivals")}
                         </button>
                         <Link
                             href="/inventory"
-                            className="flex-1 md:flex-none rounded-sm border border-gray-500/50 bg-gray-800 px-2 py-1 text-center text-gray-200 hover:bg-gray-700"
+                            className="flex-1 md:flex-none rounded-sm border border-[#b91c1c] bg-[#2e0f14] px-2 py-1 text-center text-red-100 shadow-sm outline-none transition-colors hover:bg-[#b91c1c] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white md:border-[#b91c1c] md:bg-white md:text-[#b91c1c] md:shadow-none md:hover:bg-red-100 md:focus-visible:ring-[#b91c1c]"
                         >
                             {t("cta.viewAll")}
                         </Link>
@@ -300,7 +300,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                                     setMobileIndex((i) => Math.max(0, i - 1));
                                                                 }}
                                                                 disabled={mobileIndex === 0}
-                                                                className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#b91c1c] text-white shadow-lg ring-2 ring-white/60 hover:bg-[#7f1d1d] disabled:opacity-40 disabled:hover:bg-[#b91c1c]"
+                                                                className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#b91c1c] text-white shadow-lg ring-2 ring-white outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white hover:bg-[#7f1d1d] disabled:opacity-40 disabled:hover:bg-[#b91c1c]"
                                                             >
                                                                 <svg
                                                                     viewBox="0 0 24 24"
@@ -325,7 +325,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                                     setMobileIndex((i) => Math.min(cars.length - 1, i + 1));
                                                                 }}
                                                                 disabled={mobileIndex === cars.length - 1}
-                                                                className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#b91c1c] text-white shadow-lg ring-2 ring-white/60 hover:bg-[#7f1d1d] disabled:opacity-40 disabled:hover:bg-[#b91c1c]"
+                                                                className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#b91c1c] text-white shadow-lg ring-2 ring-white outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white hover:bg-[#7f1d1d] disabled:opacity-40 disabled:hover:bg-[#b91c1c]"
                                                             >
                                                                 <svg
                                                                     viewBox="0 0 24 24"
@@ -369,16 +369,16 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                             {tCard("card.dealerPriceLabel")}
                                                         </p>
                                                         {car.discounted_price != null ? (
-                                                            <p>
+                                                            <div className="mt-0.5 flex flex-col gap-0.5">
                                                                 <span className="text-sm text-gray-500 line-through">
                                                                     {formatPrice(car.price)}
                                                                 </span>
-                                                                <span className="ml-2 text-xl font-bold text-[#b91c1c]">
+                                                                <span className="text-xl font-bold text-[#dc2626]">
                                                                     {formatPrice(car.discounted_price)}
                                                                 </span>
-                                                            </p>
+                                                            </div>
                                                         ) : (
-                                                            <p className="text-xl font-bold text-[#b91c1c]">
+                                                            <p className="text-xl font-bold text-[#dc2626]">
                                                                 {formatPrice(car.price)}
                                                             </p>
                                                         )}
@@ -388,11 +388,18 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                     </div>
                                                 </div>
                                             </Link>
-                                            <div className="mx-4 mt-0 mb-2">
+                                            <div className="mx-4 mt-0 mb-2 space-y-2">
                                                 <div className="flex flex-wrap items-center gap-2">
+                                                    {car.discounted_price != null ? (
+                                                        <span className="block w-fit rounded bg-red-100 px-2 py-1 text-xs font-semibold text-[#b91c1c] ring-1 ring-inset ring-red-200/80">
+                                                            {tCard("card.discountBadge")}
+                                                        </span>
+                                                    ) : null}
                                                     <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
                                                         {tCard("card.fairDeal")}
                                                     </span>
+                                                </div>
+                                                <div className="flex flex-wrap items-center gap-2">
                                                     {car.carfax_url ? (
                                                         <a
                                                             href={car.carfax_url}
@@ -485,16 +492,16 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                 <div className="mt-2">
                                                     <p className="text-xs font-semibold text-gray-600">{tCard("card.dealerPriceLabel")}</p>
                                                     {car.discounted_price != null ? (
-                                                        <p>
+                                                        <div className="mt-0.5 flex flex-col gap-0.5">
                                                             <span className="text-sm text-gray-500 line-through">
                                                                 {formatPrice(car.price)}
                                                             </span>
-                                                            <span className="ml-2 text-xl font-bold text-[#b91c1c]">
+                                                            <span className="text-xl font-bold text-[#dc2626]">
                                                                 {formatPrice(car.discounted_price)}
                                                             </span>
-                                                        </p>
+                                                        </div>
                                                     ) : (
-                                                        <p className="text-xl font-bold text-[#b91c1c]">
+                                                        <p className="text-xl font-bold text-[#dc2626]">
                                                             {formatPrice(car.price)}
                                                         </p>
                                                     )}
@@ -505,9 +512,16 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                             </div>
                                         </Link>
                                         <div className="mx-4 mt-0 mb-2 space-y-2">
-                                            <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
-                                                {tCard("card.fairDeal")}
-                                            </span>
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                {car.discounted_price != null ? (
+                                                    <span className="block w-fit rounded bg-red-100 px-2 py-1 text-xs font-semibold text-[#b91c1c] ring-1 ring-inset ring-red-200/80">
+                                                        {tCard("card.discountBadge")}
+                                                    </span>
+                                                ) : null}
+                                                <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
+                                                    {tCard("card.fairDeal")}
+                                                </span>
+                                            </div>
                                             <div className="flex flex-wrap items-center gap-2">
                                                 {car.carfax_url ? (
                                                     <a

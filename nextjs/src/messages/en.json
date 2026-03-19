@@ -184,7 +184,7 @@
         "coupe": "Coupe"
       },
       "poweredBy": "Powered by {businessName}.",
-      "copyright": "Copyright 2026 {businessName}."
+      "copyright": "Copyright {year} {businessName}."
     },
     "contactForm": {
       "nameLabel": "Your Name",
@@ -277,6 +277,7 @@
       "calculatePayments": "Calculate Your Payments",
       "requestInfo": "Request Information",
       "fairDealBadge": "FAIR DEAL",
+      "discountBadge": "ON SALE",
       "warrantyBadge": "WARRANTY",
       "namePlaceholder": "Your name",
       "email": "Email",
@@ -337,6 +338,7 @@
         "dealerPriceLabel": "Dealer Price",
         "taxNote": "+ HST and Licensing",
         "fairDeal": "▲ FAIR DEAL",
+        "discountBadge": "▼ ON SALE",
         "fairDealSource": "CarGurus",
         "carfax": "Carfax",
         "cargurus": "CarGurus",
