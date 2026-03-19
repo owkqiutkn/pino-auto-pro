@@ -135,7 +135,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                     </div>
                     <nav className="hidden md:flex items-center gap-5 font-semibold uppercase tracking-wide text-white/85">
                         {navLinks.map((link) => (
-                            <Link key={link.href} href={link.href} className="hover:text-[#1d4ed8]">
+                            <Link key={link.href} href={link.href} className="hover:text-[#b91c1c]">
                                 {t(link.labelKey)}
                             </Link>
                         ))}
@@ -301,7 +301,7 @@ export default function SiteNavbar({ variant = "hero", siteSettings }: SiteNavba
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className="py-1 hover:text-[#1d4ed8]"
+                                className="py-1 hover:text-[#b91c1c]"
                                 onClick={() => {
                             setIsMobileMenuOpen(false);
                             setIsLangDropdownOpen(false);

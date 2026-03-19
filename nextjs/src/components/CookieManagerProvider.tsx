@@ -66,6 +66,20 @@ const COOKIE_TRANSLATIONS = {
   },
 } as const;
 
+/** Cookie manager UI: palette red-700/red-800 matches brand #b91c1c; `!` + no `transition-all` on bg avoids invisible default state vs. library CSS. */
+const COOKIE_BRAND = {
+  manageCookieToggle:
+    "h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-transform after:duration-200 after:content-[''] peer-focus:ring-2 peer-focus:ring-red-700 peer-checked:bg-red-700 peer-checked:after:translate-x-full",
+  manageSaveButton:
+    "w-full rounded-md !bg-red-700 px-3 py-2 text-xs font-medium !text-white transition-transform duration-200 hover:scale-105 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-offset-2 sm:w-auto sm:py-1.5",
+  manageCancelButton:
+    "w-full rounded-md bg-gray-200 px-3 py-2 text-xs font-medium text-gray-800 transition-transform duration-200 hover:scale-105 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-offset-2 sm:w-auto sm:py-1.5",
+  acceptButton:
+    "flex-1 rounded-lg !bg-red-700 px-3 py-2.5 text-sm font-medium !text-white hover:bg-red-800 focus:outline-none focus-visible:outline-none focus-visible:outline-transparent",
+  manageButton:
+    "flex-1 rounded-lg border border-red-700 bg-transparent px-3 py-2.5 text-sm font-medium text-red-700 hover:border-red-800 hover:text-red-800 focus:outline-none focus-visible:outline-none focus-visible:outline-transparent",
+} as const;
+
 type CookiePreferences = {
   Analytics: boolean;
   Social: boolean;
@@ -136,6 +150,11 @@ export function CookieManagerProvider({
         modalContent: "relative",
         floatingButton:
           "cookie-floating-btn fixed bottom-5 left-4 z-[99999] flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-[#b91c1c] text-xs font-semibold text-white shadow-[0_10px_30px_rgba(0,0,0,0.6)] ring-1 ring-red-500/60 backdrop-blur-sm hover:bg-[#dc2626] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#b91c1c] md:bottom-7 md:left-6",
+        manageCookieToggle: COOKIE_BRAND.manageCookieToggle,
+        manageSaveButton: COOKIE_BRAND.manageSaveButton,
+        manageCancelButton: COOKIE_BRAND.manageCancelButton,
+        acceptButton: COOKIE_BRAND.acceptButton,
+        manageButton: COOKIE_BRAND.manageButton,
       }}
     >
       <CookieModalCloseButton />

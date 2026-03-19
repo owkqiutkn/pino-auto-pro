@@ -22,6 +22,7 @@ import CarDetailAccordion from "@/components/CarDetailAccordion";
 import PaymentCalculator from "@/components/PaymentCalculator";
 import SimilarVehiclesCarousel from "@/components/SimilarVehiclesCarousel";
 import VehicleShareButtons from "@/components/VehicleShareButtons";
+import { getSiteUrl } from "@/lib/site-url";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
@@ -62,7 +63,7 @@ export async function generateMetadata({ params }: CarPageProps): Promise<Metada
     }
 
     const businessName = siteSettings?.business_name || "Pino Auto Pro";
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const siteUrl = await getSiteUrl();
     const cover = images.find((img) => img.is_cover) || images[0];
     const title = `${car.year} ${car.brand} ${car.model} | ${businessName}`;
     const description =
@@ -101,6 +102,8 @@ export default async function CarDetailPage({ params }: CarPageProps) {
     if (!car) {
         notFound();
     }
+
+    const siteUrl = await getSiteUrl();
 
     const client = await createSSRSassClient();
     const [t, locale, similarResult, carFeaturesResult] = await Promise.all([
@@ -173,7 +176,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                         <div className="space-y-4">
                             {/* Share this vehicle */}
                             <VehicleShareButtons
-                                shareUrl={`${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/inventory/${car.slug}`}
+                                shareUrl={`${siteUrl}/inventory/${car.slug}`}
                                 vehicleTitle={`${car.year} ${car.brand} ${car.model}`}
                                 label={t("shareThisVehicle")}
                             />
