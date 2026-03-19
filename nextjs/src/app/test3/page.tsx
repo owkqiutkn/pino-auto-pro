@@ -436,7 +436,7 @@ export default async function Test3Page() {
                 </div>
             </section>
 
-            <section className="py-6" style={{ backgroundColor: "#13051F" }}>
+            <section className="pt-6 pb-12" style={{ backgroundColor: "#13051F" }}>
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="mx-auto h-px max-w-xs opacity-80" style={{ backgroundImage: `linear-gradient(to right, transparent, rgba(229, 225, 211, 0.3), transparent)` }} />
                 </div>
