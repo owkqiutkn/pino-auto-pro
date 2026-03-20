@@ -36,6 +36,7 @@
     "hero": {
       "title": "Vehículos de ocasión de calidad, listos para conducir.",
       "subtitle": "Encuentra tu vehículo ideal en nuestro inventario seleccionado y obtén aprobación rápida.",
+      "imageAlt": "Carretera despejada sin tráfico",
       "filters": {
         "year": "Año",
         "brand": "Marca",

@@ -31,6 +31,7 @@ const CATEGORY_PLACEHOLDER =
         '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="120" viewBox="0 0 200 120"><rect fill="%23334155" width="200" height="120"/><text fill="%2394a3b8" font-family="sans-serif" font-size="14" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle">No image</text></svg>'
     );
 
+// Hero swap (Pexels): hero.jpg fog · hero-variant-highway.jpg · hero-variant-desert.jpg · hero-variant-mountain.jpg
 const heroImage = "/new-landing/hero.jpg";
 const financingImage = "/new-landing/financing.jpg";
 const aboutBackgroundImage = "/new-landing/about-bg.jpeg";
@@ -79,8 +80,8 @@ export default async function NewPage() {
         <div className="bg-[#2a0c10] text-white">
             <section className="relative min-h-[440px] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={heroImage} alt="ML Autos hero" className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-black/70" />
+                <img src={heroImage} alt={t("hero.imageAlt")} className="absolute inset-0 h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-black/45" />
                 <div className="relative z-[10020]">
                     <SiteNavbar siteSettings={siteSettings ?? undefined} />
                 </div>

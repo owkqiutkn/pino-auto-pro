@@ -36,6 +36,7 @@
     "hero": {
       "title": "Véhicules d'occasion de qualité, prêts à prendre la route.",
       "subtitle": "Trouvez le véhicule idéal dans notre inventaire sélectionné et obtenez une approbation rapide.",
+      "imageAlt": "Route dégagée sans circulation",
       "filters": {
         "year": "Année",
         "brand": "Marque",

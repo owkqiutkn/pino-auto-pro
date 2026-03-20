@@ -36,6 +36,7 @@
     "hero": {
       "title": "Quality Pre-Owned Vehicles, Ready to Drive.",
       "subtitle": "Find your perfect match from our curated inventory and get approved fast.",
+      "imageAlt": "Open road ahead, no traffic",
       "filters": {
         "year": "Year",
         "brand": "Brand",
