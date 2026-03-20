@@ -15,7 +15,6 @@ import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { getLocalizedEngineName } from "@/lib/i18n/engines";
 import { getLocalizedFuelName } from "@/lib/i18n/fuels";
 import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
-import { getLocalizedTrimName } from "@/lib/i18n/trims";
 import { useLocale } from "next-intl";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
@@ -479,8 +478,8 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                         <select id="edit-brand" value={brand} onChange={(e) => { setBrand(e.target.value); setModel(""); }} required className="border rounded-md px-3 py-2 w-full">
                         <option value="">Select brand</option>
                         {brands.map((item) => (
-                            <option key={item.id} value={item.name_en ?? item.name}>
-                                {getLocalizedTrimName(item as never, locale)}
+                            <option key={item.id} value={item.name}>
+                                {item.name}
                             </option>
                         ))}
                     </select>

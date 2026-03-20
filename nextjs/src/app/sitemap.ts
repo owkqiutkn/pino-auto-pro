@@ -1,11 +1,12 @@
 import { MetadataRoute } from "next";
+import { getSiteUrl } from "@/lib/site-url";
 import { createSSRSassClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/types";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const baseUrl = await getSiteUrl();
     const client = await createSSRSassClient();
     const { data: cars } = await client.getAvailableCars();
     const carsList = (cars ?? []) as Car[];
