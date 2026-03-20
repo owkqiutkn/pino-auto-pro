@@ -266,8 +266,8 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                     const car = cars[mobileIndex] ?? cars[0];
                                     if (!car) return null;
                                     return (
-                                        <div className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
-                                            <Link href={`/inventory/${car.slug}`} className="block">
+                                        <div className="group flex min-h-[560px] flex-col overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
+                                            <Link href={`/inventory/${car.slug}`} className="block shrink-0">
                                                 <div
                                                     className="relative aspect-[4/3] md:aspect-[16/9] overflow-hidden bg-gray-100"
                                                     onTouchStart={handleMobileTouchStart}
@@ -354,7 +354,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                             tCard("card.fallbackBodyStyle")}{" "}
                                                         {car.model} {car.km.toLocaleString()} km
                                                     </p>
-                                                    <p className="mt-2 min-h-[1rem] text-[11px] text-gray-600">
+                                                    <p className="mt-2 min-h-[2.5rem] text-[11px] leading-snug text-gray-600">
                                                         {[
                                                             car.engine && getEngineDisplay(car.engine, engines, locale),
                                                             car.fuel && getFuelDisplay(car.fuel, fuels, locale),
@@ -364,7 +364,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                             .filter(Boolean)
                                                             .join(" • ")}
                                                     </p>
-                                                    <div className="mt-2">
+                                                    <div className="mt-2 min-h-[5rem]">
                                                         <p className="text-xs font-semibold text-gray-600">
                                                             {tCard("card.dealerPriceLabel")}
                                                         </p>
@@ -388,8 +388,9 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                     </div>
                                                 </div>
                                             </Link>
-                                            <div className="mx-4 mt-0 mb-2 space-y-2">
-                                                <div className="flex flex-wrap items-center gap-2">
+                                            <div className="min-h-0 flex-1" aria-hidden="true" />
+                                            <div className="mx-4 mt-0 mb-2 shrink-0 space-y-2">
+                                                <div className="flex min-h-[2.75rem] flex-wrap items-center gap-2">
                                                     {car.discounted_price != null ? (
                                                         <span className="block w-fit rounded bg-red-100 px-2 py-1 text-xs font-semibold text-[#b91c1c] ring-1 ring-inset ring-red-200/80">
                                                             {tCard("card.discountBadge")}
@@ -399,7 +400,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                         {tCard("card.fairDeal")}
                                                     </span>
                                                 </div>
-                                                <div className="flex flex-wrap items-center gap-2">
+                                                <div className="flex min-h-[2.5rem] flex-wrap items-center gap-2">
                                                     {car.carfax_url ? (
                                                         <a
                                                             href={car.carfax_url}
@@ -432,7 +433,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                             </div>
                                             <Link
                                                 href={`/inventory/${car.slug}`}
-                                                className="mx-4 mb-4 mt-3 block rounded bg-[#dc2626] py-2 text-center text-sm font-bold text-white hover:bg-[#b91c1c]"
+                                                className="mx-4 mb-4 mt-3 block shrink-0 rounded bg-[#dc2626] py-2 text-center text-sm font-bold text-white hover:bg-[#b91c1c]"
                                             >
                                                 {tCard("card.viewDetails")}
                                             </Link>
