@@ -196,7 +196,7 @@ export default function CarDetailGallery({ images, title, businessName = "Pino A
                     <button
                         type="button"
                         onClick={goPrev}
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#1d4ed8] text-white hover:bg-[#1e40af]"
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#b91c1c] text-white hover:bg-[#7f1d1d]"
                         aria-label="Previous thumbnail"
                     >
                         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
