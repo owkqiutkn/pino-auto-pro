@@ -147,9 +147,24 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
 
             let finalFavicon = favicon;
             if (faviconFile) {
-                const { data, error: uploadErr } = await client.uploadSiteFavicon(faviconFile);
-                if (uploadErr) throw uploadErr;
-                finalFavicon = data?.publicUrl ?? favicon;
+                const fd = new FormData();
+                fd.append("file", faviconFile);
+                const uploadRes = await fetch("/api/site-favicon", {
+                    method: "POST",
+                    body: fd,
+                });
+                const uploadJson = await uploadRes.json().catch(() => ({}));
+                if (!uploadRes.ok) {
+                    throw new Error(
+                        typeof uploadJson.error === "string"
+                            ? uploadJson.error
+                            : "Favicon upload failed"
+                    );
+                }
+                finalFavicon =
+                    typeof uploadJson.publicPath === "string"
+                        ? uploadJson.publicPath
+                        : favicon;
                 setFaviconFile(null);
                 faviconInputRef.current?.setAttribute("value", "");
             }
@@ -459,7 +474,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                         />
                         <FaviconUploadField
                             label="Favicon"
-                            hint="Browser tab icon. Use .ico, .png or .svg. Recommended 32×32 or 16×16."
+                            hint="Browser tab icon. Saved on the server (public/site/). Use .ico, .png, .svg, or .webp. Recommended 32×32 or 16×16."
                             file={faviconFile}
                             setFile={setFaviconFile}
                             currentUrl={favicon}
