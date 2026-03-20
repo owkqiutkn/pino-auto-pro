@@ -57,6 +57,59 @@ function pickExt(file: File): string | null {
   return extFromFileName(file.name) ?? null;
 }
 
+function mimeForExt(ext: string): string {
+  const map: Record<string, string> = {
+    ".ico": "image/x-icon",
+    ".png": "image/png",
+    ".svg": "image/svg+xml",
+    ".webp": "image/webp",
+  };
+  return map[ext.toLowerCase()] ?? "application/octet-stream";
+}
+
+/** Writable `public/site/` works on local/VPS; serverless (e.g. Vercel) is read-only — returns null. */
+async function trySaveFaviconLocal(ext: string, bytes: Buffer): Promise<string | null> {
+  try {
+    const dir = path.join(process.cwd(), "public", SITE_SUBDIR);
+    await mkdir(dir, { recursive: true });
+    try {
+      const names = await readdir(dir);
+      for (const n of names) {
+        if (n.startsWith(`${FAVICON_PREFIX}.`)) {
+          await unlink(path.join(dir, n));
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+    const filename = `${FAVICON_PREFIX}${ext}`;
+    const absPath = path.join(dir, filename);
+    await writeFile(absPath, bytes);
+    return `/${SITE_SUBDIR}/${filename}`;
+  } catch (err) {
+    console.warn("[site-favicon] local disk save skipped:", err);
+    return null;
+  }
+}
+
+async function uploadFaviconToSupabase(
+  supabase: Awaited<ReturnType<typeof createSSRClient>>,
+  ext: string,
+  bytes: Buffer
+): Promise<string | null> {
+  const storagePath = `favicon/favicon_${Date.now()}${ext}`;
+  const { error } = await supabase.storage.from("site-logos").upload(storagePath, bytes, {
+    upsert: true,
+    contentType: mimeForExt(ext),
+  });
+  if (error) {
+    console.error("[site-favicon] Supabase upload failed:", error.message);
+    return null;
+  }
+  const { data } = supabase.storage.from("site-logos").getPublicUrl(storagePath);
+  return data.publicUrl;
+}
+
 export async function GET() {
   const settings = await getCachedSiteSettings();
   const faviconRef = settings?.favicon?.trim();
@@ -121,25 +174,20 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const dir = path.join(process.cwd(), "public", SITE_SUBDIR);
-  await mkdir(dir, { recursive: true });
+  const bytes = Buffer.from(await file.arrayBuffer());
+  const localPath = await trySaveFaviconLocal(ext, bytes);
+  const publicPath =
+    localPath ?? (await uploadFaviconToSupabase(ssrClient, ext, bytes));
 
-  try {
-    const names = await readdir(dir);
-    for (const n of names) {
-      if (n.startsWith(`${FAVICON_PREFIX}.`)) {
-        await unlink(path.join(dir, n));
-      }
-    }
-  } catch {
-    /* ignore */
+  if (!publicPath) {
+    return Response.json(
+      {
+        error:
+          "Could not save favicon. Local disk is not writable and cloud upload failed — check Supabase storage policies for site-logos/favicon/.",
+      },
+      { status: 500 }
+    );
   }
 
-  const filename = `${FAVICON_PREFIX}${ext}`;
-  const absPath = path.join(dir, filename);
-  const bytes = Buffer.from(await file.arrayBuffer());
-  await writeFile(absPath, bytes);
-
-  const publicPath = `/${SITE_SUBDIR}/${filename}`;
-  return Response.json({ publicPath });
+  return Response.json({ publicPath, storage: localPath ? "local" : "supabase" });
 }
