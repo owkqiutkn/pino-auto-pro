@@ -121,7 +121,7 @@ export default function UserSettingsPage({ searchParams }: UserSettingsPageProps
                                         id="new-password"
                                         value={newPassword}
                                         onChange={(e) => setNewPassword(e.target.value)}
-                                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
+                                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-[#b91c1c] focus:outline-none focus:ring-[#b91c1c] text-sm"
                                         required
                                     />
                                 </div>
@@ -134,14 +134,14 @@ export default function UserSettingsPage({ searchParams }: UserSettingsPageProps
                                         id="confirm-password"
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
-                                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
+                                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-[#b91c1c] focus:outline-none focus:ring-[#b91c1c] text-sm"
                                         required
                                     />
                                 </div>
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#b91c1c] hover:bg-[#7f1d1d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#b91c1c] disabled:opacity-50"
                                 >
                                     {loading ? 'Updating...' : 'Update Password'}
                                 </button>

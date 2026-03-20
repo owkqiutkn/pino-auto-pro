@@ -19,7 +19,7 @@ function SaveSettingsButton({ loading, saved }: { loading: boolean; saved: boole
             className={`w-full flex items-center justify-center gap-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 transition-colors ${
                 saved
                     ? "bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500"
-                    : "bg-primary-600 hover:bg-primary-700 focus:ring-primary-500"
+                    : "bg-[#b91c1c] hover:bg-[#7f1d1d] focus:ring-[#b91c1c]"
             }`}
         >
             {loading ? (
@@ -44,6 +44,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
     const [businessName, setBusinessName] = useState("");
     const [address, setAddress] = useState("");
     const [email, setEmail] = useState("");
+    const [contactFormEmail, setContactFormEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [logoLight, setLogoLight] = useState("");
     const [logoDark, setLogoDark] = useState("");
@@ -75,6 +76,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
             setBusinessName(initialSettings.business_name ?? "");
             setAddress(initialSettings.address ?? "");
             setEmail(initialSettings.email ?? "");
+            setContactFormEmail(initialSettings.contact_form_email ?? "");
             setPhone(initialSettings.phone ?? "");
             setLogoLight(initialSettings.logo_light ?? "");
             setLogoDark(initialSettings.logo_dark ?? "");
@@ -159,6 +161,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                     business_name: businessName.trim() || null,
                     address: address.trim() || null,
                     email: email.trim() || null,
+                    contact_form_email: contactFormEmail.trim() || null,
                     phone: phone.trim() || null,
                     logo_light: finalLogoLight || null,
                     logo_dark: finalLogoDark || null,
@@ -483,6 +486,22 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                             <p className="mt-0.5 text-xs text-gray-500">Dealer contact email shown in footer and contact sections</p>
                         </div>
                         <div>
+                            <label htmlFor="contact-form-email" className="block text-sm font-medium text-gray-700">
+                                Contact form inbox
+                            </label>
+                            <input
+                                type="email"
+                                id="contact-form-email"
+                                value={contactFormEmail}
+                                onChange={(e) => setContactFormEmail(e.target.value)}
+                                placeholder="leads@example.com"
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
+                            />
+                            <p className="mt-0.5 text-xs text-gray-500">
+                                Where contact forms and vehicle inquiries are sent
+                            </p>
+                        </div>
+                        <div>
                             <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                                 Phone Number
                             </label>
@@ -671,7 +690,7 @@ export default function SiteSettingsForm({ initialSettings }: SiteSettingsFormPr
                                     DAYS.forEach((d) => { all[d] = { open: "09:00", close: "17:00" }; });
                                     setOpeningHours(all);
                                 }}
-                                className="text-sm text-primary-600 hover:text-primary-700 hover:underline"
+                                className="text-sm text-[#b91c1c] hover:text-[#7f1d1d] hover:underline"
                             >
                                 Set all to 9am–5pm
                             </button>

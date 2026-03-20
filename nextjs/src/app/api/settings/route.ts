@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
             business_name,
             address,
             email,
+            contact_form_email,
             phone,
             logo_light,
             logo_dark,
@@ -35,6 +36,7 @@ export async function POST(request: NextRequest) {
         if (business_name !== undefined) updates.business_name = business_name ?? null;
         if (address !== undefined) updates.address = address ?? null;
         if (email !== undefined) updates.email = email ?? null;
+        if (contact_form_email !== undefined) updates.contact_form_email = contact_form_email ?? null;
         if (phone !== undefined) updates.phone = phone ?? null;
         if (logo_light !== undefined) updates.logo_light = logo_light ?? null;
         if (logo_dark !== undefined) updates.logo_dark = logo_dark ?? null;

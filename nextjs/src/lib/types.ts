@@ -495,6 +495,7 @@ export type Database = {
           favicon: string | null
           address: string | null
           email: string | null
+          contact_form_email: string | null
           phone: string | null
           instagram_url: string | null
           facebook_url: string | null
@@ -515,6 +516,7 @@ export type Database = {
           favicon?: string | null
           address?: string | null
           email?: string | null
+          contact_form_email?: string | null
           phone?: string | null
           instagram_url?: string | null
           facebook_url?: string | null
@@ -535,6 +537,7 @@ export type Database = {
           favicon?: string | null
           address?: string | null
           email?: string | null
+          contact_form_email?: string | null
           phone?: string | null
           instagram_url?: string | null
           facebook_url?: string | null

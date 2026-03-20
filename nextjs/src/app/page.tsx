@@ -77,11 +77,15 @@ export default async function NewPage() {
     const transmissionsTyped = (transmissions ?? []) as Transmission[];
 
     return (
-        <div className="bg-[#2a0c10] text-white">
+        <div className="bg-[#2a0c10]/60 text-white">
             <section className="relative min-h-[440px] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={heroImage} alt={t("hero.imageAlt")} className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-black/45" />
+                <img
+                    src={heroImage}
+                    alt={t("hero.imageAlt")}
+                    className="absolute inset-0 h-full w-full object-cover object-[50%_55%]"
+                />
+                <div className="absolute inset-0 bg-black/30" />
                 <div className="relative z-[10020]">
                     <SiteNavbar siteSettings={siteSettings ?? undefined} />
                 </div>

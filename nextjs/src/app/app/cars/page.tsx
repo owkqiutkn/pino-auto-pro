@@ -23,7 +23,7 @@ function PriceDisplay({ car }: { car: Car }) {
     if (car.discounted_price !== null) {
         return (
             <span>
-                <span className="font-semibold text-primary-700">{formatPrice(car.discounted_price)}</span>{" "}
+                <span className="font-semibold text-gray-900">{formatPrice(car.discounted_price)}</span>{" "}
                 <span className="text-xs text-gray-500 line-through">{formatPrice(car.price)}</span>
             </span>
         );
@@ -108,7 +108,7 @@ export default function CarsListPage({ searchParams }: CarsListPageProps) {
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-[200px]">
-                <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+                <Loader2 className="h-8 w-8 animate-spin text-[#b91c1c]" />
             </div>
         );
     }
@@ -117,7 +117,7 @@ export default function CarsListPage({ searchParams }: CarsListPageProps) {
         <div className="space-y-4">
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-semibold">Cars</h1>
-                <Link href="/app/cars/new" className="inline-flex items-center px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700">
+                <Link href="/app/cars/new" className="inline-flex items-center px-4 py-2 rounded-md bg-[#b91c1c] text-white hover:bg-[#7f1d1d]">
                     <Plus className="w-4 h-4 mr-2" />
                     Add Car
                 </Link>
@@ -130,7 +130,7 @@ export default function CarsListPage({ searchParams }: CarsListPageProps) {
                     <p className="text-sm text-gray-500 mt-1">Add your first vehicle to start managing inventory.</p>
                     <Link
                         href="/app/cars/new"
-                        className="inline-flex items-center px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700 mt-4"
+                        className="inline-flex items-center px-4 py-2 rounded-md bg-[#b91c1c] text-white hover:bg-[#7f1d1d] mt-4"
                     >
                         <Plus className="w-4 h-4 mr-2" />
                         Add Car
@@ -174,7 +174,7 @@ export default function CarsListPage({ searchParams }: CarsListPageProps) {
                             <td className="p-3 capitalize">{car.status}</td>
                             <td className="p-3">
                                 <div className="inline-flex items-center gap-2">
-                                    <Link href={`/app/cars/${car.id}/edit`} title="Edit" className="text-primary-600 hover:text-primary-700 inline-flex items-center">
+                                    <Link href={`/app/cars/${car.id}/edit`} title="Edit" className="text-[#b91c1c] hover:text-[#7f1d1d] inline-flex items-center">
                                         <Pencil className="w-4 h-4" />
                                     </Link>
                                     <button onClick={() => handleDelete(car.id)} title="Delete" className="text-red-600 hover:text-red-700 inline-flex items-center">

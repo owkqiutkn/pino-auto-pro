@@ -336,7 +336,7 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
         <div className="max-w-3xl space-y-4">
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-semibold">Add Car</h1>
-                <Link href="/app/cars" className="text-primary-600 hover:text-primary-700">
+                <Link href="/app/cars" className="text-[#b91c1c] hover:text-[#7f1d1d]">
                     Back to list
                 </Link>
             </div>
@@ -603,7 +603,7 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                         )}
                     </div>
                 </div>
-                <button disabled={loading} type="submit" className="px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-60">
+                <button disabled={loading} type="submit" className="px-4 py-2 rounded-md bg-[#b91c1c] text-white hover:bg-[#7f1d1d] disabled:opacity-60">
                     {loading ? "Saving..." : "Save car"}
                 </button>
             </form>

@@ -116,7 +116,7 @@ export default function BrandModelsPage({ searchParams }: BrandModelsPageProps) 
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-[200px]">
-                <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+                <Loader2 className="h-8 w-8 animate-spin text-[#b91c1c]" />
             </div>
         );
     }
@@ -151,7 +151,7 @@ export default function BrandModelsPage({ searchParams }: BrandModelsPageProps) 
                 <button
                     disabled={saving || !selectedBrandId}
                     type="submit"
-                    className="inline-flex items-center px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-60"
+                    className="inline-flex items-center px-4 py-2 rounded-md bg-[#b91c1c] text-white hover:bg-[#7f1d1d] disabled:opacity-60"
                 >
                     <Plus className="w-4 h-4 mr-2" />
                     Add

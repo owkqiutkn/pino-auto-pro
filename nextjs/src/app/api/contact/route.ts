@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
+import { getCachedSiteSettings } from "@/lib/supabase/cached";
 
 const contactSchema = z.object({
     name: z.string().min(2).max(100),
@@ -24,10 +25,10 @@ export async function POST(request: NextRequest) {
 
         const data = parseResult.data;
 
-        const to =
-            process.env.CONTACT_TO_EMAIL ||
-            process.env.NEXT_PUBLIC_SITE_URL ||
-            "";
+        const settings = await getCachedSiteSettings();
+        const fromDb =
+            settings?.contact_form_email?.trim() || settings?.email?.trim() || "";
+        const to = process.env.CONTACT_TO_EMAIL?.trim() || fromDb;
         const from = process.env.CONTACT_FROM_EMAIL || "no-reply@example.com";
 
         if (!process.env.RESEND_API_KEY || !to || !from) {

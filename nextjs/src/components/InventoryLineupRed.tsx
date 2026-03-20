@@ -213,7 +213,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                             className={
                                 segment === "featured"
                                     ? "flex-1 md:flex-none rounded-sm border border-[#b91c1c] bg-[#b91c1c] px-2 py-1 text-center text-white shadow-sm outline-none transition-colors hover:bg-[#7f1d1d] hover:border-[#7f1d1d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white"
-                                    : "flex-1 md:flex-none rounded-sm border border-[#b91c1c] bg-[#2e0f14] px-2 py-1 text-center text-red-100 shadow-sm outline-none transition-colors hover:bg-[#b91c1c] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white md:bg-white md:text-[#b91c1c] md:shadow-none md:hover:bg-[#b91c1c] md:hover:text-white md:focus-visible:ring-[#b91c1c]"
+                                    : "flex-1 md:flex-none rounded-sm border border-transparent bg-[#2e0f14]/60 px-2 py-1 text-center text-red-100 shadow-sm outline-none transition-colors hover:bg-[#b91c1c] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white md:bg-white md:text-[#b91c1c] md:shadow-none md:hover:bg-[#b91c1c] md:hover:text-white md:focus-visible:ring-[#b91c1c]"
                             }
                         >
                             {t("segments.featured")}
@@ -224,14 +224,14 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                             className={
                                 segment === "new-arrivals"
                                     ? "flex-1 md:flex-none rounded-sm border border-[#b91c1c] bg-[#b91c1c] px-2 py-1 text-center text-white shadow-sm outline-none transition-colors hover:bg-[#7f1d1d] hover:border-[#7f1d1d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white"
-                                    : "flex-1 md:flex-none rounded-sm border border-[#b91c1c] bg-[#2e0f14] px-2 py-1 text-center text-red-100 shadow-sm outline-none transition-colors hover:bg-[#b91c1c] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white md:bg-white md:text-[#b91c1c] md:shadow-none md:hover:bg-[#b91c1c] md:hover:text-white md:focus-visible:ring-[#b91c1c]"
+                                    : "flex-1 md:flex-none rounded-sm border border-transparent bg-[#2e0f14]/60 px-2 py-1 text-center text-red-100 shadow-sm outline-none transition-colors hover:bg-[#b91c1c] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white md:bg-white md:text-[#b91c1c] md:shadow-none md:hover:bg-[#b91c1c] md:hover:text-white md:focus-visible:ring-[#b91c1c]"
                             }
                         >
                             {t("segments.newArrivals")}
                         </button>
                         <Link
                             href="/inventory"
-                            className="flex-1 md:flex-none rounded-sm border border-[#b91c1c] bg-[#2e0f14] px-2 py-1 text-center text-red-100 shadow-sm outline-none transition-colors hover:bg-[#b91c1c] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white md:bg-white md:text-[#b91c1c] md:shadow-none md:hover:bg-[#b91c1c] md:hover:text-white md:focus-visible:ring-[#b91c1c]"
+                            className="flex-1 md:flex-none rounded-sm border border-transparent bg-[#2e0f14]/60 px-2 py-1 text-center text-red-100 shadow-sm outline-none transition-colors hover:bg-[#b91c1c] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white md:bg-white md:text-[#b91c1c] md:shadow-none md:hover:bg-[#b91c1c] md:hover:text-white md:focus-visible:ring-[#b91c1c]"
                         >
                             {t("cta.viewAll")}
                         </Link>

@@ -92,7 +92,7 @@ export default function AppLayout({ children, businessName }: { children: React.
                 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
 
                 <div className="h-16 flex items-center justify-between px-4 border-b">
-                    <span className="text-xl font-semibold text-primary-600">{productName}</span>
+                    <span className="text-xl font-semibold text-[#b91c1c]">{productName}</span>
                     <button
                         onClick={toggleSidebar}
                         className="lg:hidden text-gray-500 hover:text-gray-700"
@@ -111,13 +111,13 @@ export default function AppLayout({ children, businessName }: { children: React.
                                 href={item.href}
                                 className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
                                     isActive
-                                        ? 'bg-primary-50 text-primary-600'
+                                        ? 'bg-red-50 text-[#b91c1c]'
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                 }`}
                             >
                                 <item.icon
                                     className={`mr-3 h-5 w-5 ${
-                                        isActive ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500'
+                                        isActive ? 'text-[#b91c1c]' : 'text-gray-400 group-hover:text-gray-500'
                                     }`}
                                 />
                                 {item.name}
@@ -142,8 +142,8 @@ export default function AppLayout({ children, businessName }: { children: React.
                             onClick={() => setUserDropdownOpen(!isUserDropdownOpen)}
                             className="flex items-center space-x-2 text-sm text-gray-700 hover:text-gray-900"
                         >
-                            <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
-                                <span className="text-primary-700 font-medium">
+                            <div className="w-8 h-8 rounded-full bg-[#b91c1c] flex items-center justify-center">
+                                <span className="text-white font-medium">
                                     {user ? getInitials(user.email) : '??'}
                                 </span>
                             </div>

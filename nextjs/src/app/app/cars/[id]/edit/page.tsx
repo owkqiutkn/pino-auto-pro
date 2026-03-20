@@ -427,7 +427,7 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
         <div className="max-w-4xl space-y-6 pb-24">
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-semibold">Edit Car</h1>
-                <Link href="/app/cars" className="text-primary-600 hover:text-primary-700">
+                <Link href="/app/cars" className="text-[#b91c1c] hover:text-[#7f1d1d]">
                     Back to list
                 </Link>
             </div>
@@ -647,7 +647,7 @@ export default function EditCarPage({ params, searchParams }: EditCarPageProps) 
                 </div>
             </form>
             <div className="fixed bottom-6 right-6 z-50">
-                <button form="edit-car-form" disabled={saving} type="submit" className="px-5 py-2.5 rounded-md bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-60 shadow-lg font-medium">
+                <button form="edit-car-form" disabled={saving} type="submit" className="px-5 py-2.5 rounded-md bg-[#b91c1c] text-white hover:bg-[#7f1d1d] disabled:opacity-60 shadow-lg font-medium">
                     {saving ? "Saving..." : "Save changes"}
                 </button>
             </div>

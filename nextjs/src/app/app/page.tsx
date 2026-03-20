@@ -20,7 +20,7 @@ export default function DashboardContent({ searchParams }: DashboardContentProps
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#b91c1c]"></div>
             </div>
         );
     }
@@ -51,8 +51,8 @@ export default function DashboardContent({ searchParams }: DashboardContentProps
                             href="/app/user-settings"
                             className="flex items-center gap-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
                         >
-                            <div className="p-2 bg-primary-50 rounded-full">
-                                <Settings className="h-4 w-4 text-primary-600" />
+                            <div className="p-2 bg-red-50 rounded-full">
+                                <Settings className="h-4 w-4 text-[#b91c1c]" />
                             </div>
                             <div>
                                 <h3 className="font-medium">User Settings</h3>

@@ -136,7 +136,7 @@ export default function FeatureCategoriesPage({ searchParams }: FeatureCategorie
   if (loading) {
     return (
       <div className="flex min-h-[200px] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#b91c1c]" />
       </div>
     );
   }
@@ -175,7 +175,7 @@ export default function FeatureCategoriesPage({ searchParams }: FeatureCategorie
         <button
           disabled={saving}
           type="submit"
-          className="inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-white hover:bg-primary-700 disabled:opacity-60"
+          className="inline-flex items-center justify-center rounded-md bg-[#b91c1c] px-4 py-2 text-white hover:bg-[#7f1d1d] disabled:opacity-60"
         >
           {editingId ? (
             <>
