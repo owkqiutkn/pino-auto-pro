@@ -76,7 +76,7 @@ export default async function NewPage() {
     const transmissionsTyped = (transmissions ?? []) as Transmission[];
 
     return (
-        <div className="bg-[#16040a] text-white">
+        <div className="bg-[#2a0c10] text-white">
             <section className="relative min-h-[440px] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={heroImage} alt="ML Autos hero" className="absolute inset-0 h-full w-full object-cover" />
@@ -132,21 +132,21 @@ export default async function NewPage() {
                 </div>
             </section>
 
-            <section className="relative z-20 hidden bg-[#3A0712] pt-10 pb-10 md:block md:pt-12 md:pb-14">
+            <section className="relative z-20 hidden bg-[#9d1f1f] pt-10 pb-10 md:block md:pt-12 md:pb-14">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-3 -mt-20 md:-mt-28">
                         {featureCards.map((item) => {
                             const title = t(`features.${item.id}.title`);
                             const description = t(`features.${item.id}.description`);
                             const cardContent = (
-                                <div className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-red-500/30 bg-[#3A0712] shadow-[0_22px_55px_rgba(0,0,0,0.7)] transition-transform duration-300 ease-out hover:-translate-y-2">
+                                <div className="relative flex h-[180px] items-center overflow-hidden rounded-xl border border-red-400/35 bg-[#9d1f1f] shadow-[0_22px_55px_rgba(0,0,0,0.45)] transition-transform duration-300 ease-out hover:-translate-y-2">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
                                         src={item.image}
                                         alt={title}
                                         className="absolute inset-0 h-full w-full object-cover scale-110 opacity-60"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-br from-red-950/55 via-red-950/70 to-black/85 mix-blend-multiply" />
+                                    <div className="absolute inset-0 bg-gradient-to-br from-red-900/40 via-red-900/55 to-black/70 mix-blend-multiply" />
                                     <div className="relative z-10 flex h-full w-full flex-col justify-center p-5 text-center md:text-left items-center md:items-start">
                                         <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-[11px] font-black text-red-700">
                                             {"iconImage" in item && item.iconImage ? (
@@ -314,13 +314,13 @@ export default async function NewPage() {
                 </div>
             </section>
 
-            <section className="flex flex-col justify-end bg-gradient-to-b from-[#0b0204] via-[#22060b] to-[#2a0a11] py-6 min-h-[80px]">
+            <section className="flex flex-col justify-end bg-gradient-to-b from-[#6e1c22] via-[#871f24] to-[#9d1f1f] py-6 min-h-[80px]">
                 <div className="mx-auto max-w-6xl px-4 w-full">
                     <div className="mx-auto h-px max-w-xs bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-80" />
                 </div>
             </section>
 
-            <section id="browse-by-category" className="bg-[#2a0a11] pt-3 pb-6 text-white" aria-labelledby="browse-by-category-title">
+            <section id="browse-by-category" className="bg-[#9d1f1f] pt-3 pb-6 text-white" aria-labelledby="browse-by-category-title">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="mb-4">
                         <h3 id="browse-by-category-title" className="text-lg font-black uppercase tracking-wide">{t("categories.title")}</h3>
@@ -337,7 +337,7 @@ export default async function NewPage() {
                                     <Link
                                         key={cat.id}
                                         href={`/inventory?category=${encodeURIComponent(displayName)}`}
-                                        className="group block overflow-hidden rounded-sm border border-red-500/35 bg-[#22242c] shadow-[0_18px_40px_rgba(0,0,0,0.6)] hover:border-red-400/80 transition-colors duration-300"
+                                        className="group block overflow-hidden rounded-sm border border-red-400/40 bg-[#2a0e12] shadow-[0_18px_40px_rgba(0,0,0,0.45)] hover:border-red-300/70 transition-colors duration-300"
                                     >
                                         {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img
@@ -346,11 +346,11 @@ export default async function NewPage() {
                                             loading="eager"
                                             className="h-20 w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                         />
-                                        <div className="border-t border-white/5 bg-gradient-to-r from-[#3b0710] via-[#190308] to-[#3b0710] p-3 text-center">
+                                        <div className="border-t border-white/5 bg-[#8e1d1d] p-3 text-center">
                                             <div className="text-xs font-bold uppercase tracking-wide">
                                                 {displayName}
                                             </div>
-                                            <span className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#b91c1c] px-3 py-1 text-[10px] font-bold uppercase tracking-wide group-hover:bg-[#7f1d1d]">
+                                            <span className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#b91c1c] px-3 py-1 text-[10px] font-bold uppercase tracking-wide group-hover:bg-[#6b1c1c]">
                                                 {t("categories.viewListings")}
                                             </span>
                                         </div>
@@ -359,7 +359,7 @@ export default async function NewPage() {
                             })}
                         </div>
                     ) : (
-                        <div className="rounded-sm border border-white/10 bg-[#2a0a11] p-6 text-center">
+                        <div className="rounded-sm border border-white/10 bg-[#9d1f1f] p-6 text-center">
                             <p className="text-sm text-white/80">{t("categories.subtitle")}</p>
                             <Link
                                 href="/inventory"
@@ -372,13 +372,13 @@ export default async function NewPage() {
                 </div>
             </section>
 
-            <section className="bg-gradient-to-b from-[#2a0a11] via-[#22060b] to-[#16040a] py-6">
-                <div className="mx-auto max-w-6xl px-4">
-                    <div className="mx-auto h-px max-w-xs bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-80" />
+            <section className="flex flex-col justify-end bg-gradient-to-b from-[#9d1f1f] via-[#871f24] to-[#6e1c22] pt-2 pb-8 min-h-[64px] md:min-h-[88px] md:py-8">
+                <div className="mx-auto max-w-6xl w-full px-4">
+                    <div className="mx-auto h-px max-w-xs bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-80" />
                 </div>
             </section>
 
-            <section className="bg-[#16040a] pt-2 pb-12 md:pt-12 md:pb-12 text-white">
+            <section className="bg-[#6e1c22] pt-2 pb-12 md:pt-12 md:pb-12 text-white">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <div>
@@ -440,7 +440,7 @@ export default async function NewPage() {
                 </div>
             </section>
 
-            <section id="contact" className="bg-[#16040a] pt-0 pb-0 text-white">
+            <section id="contact" className="bg-[#6e1c22] pt-0 pb-0 text-white">
                 <ContactMap variant="large" />
             </section>
 

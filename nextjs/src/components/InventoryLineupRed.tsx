@@ -446,14 +446,17 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                 )}
                             </>
                         ) : (
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                            <div className="grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4">
                                 {paginatedCars.map((car) => (
                                     <div
                                         key={car.id}
-                                        className="group block overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#1d4ed8] hover:shadow-lg"
+                                        className="group flex h-full flex-col overflow-hidden rounded border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#b91c1c] hover:shadow-lg"
                                     >
-                                        <Link href={`/inventory/${car.slug}`} className="block">
-                                            <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                                        <Link
+                                            href={`/inventory/${car.slug}`}
+                                            className="flex min-h-0 flex-1 flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#b91c1c]"
+                                        >
+                                            <div className="relative aspect-[4/3] shrink-0 overflow-hidden bg-gray-100">
                                                 {coverImageByCarId[car.id] ? (
                                                     <Image
                                                         src={getTransformedStorageUrl(coverImageByCarId[car.id])}
@@ -472,7 +475,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                     PAP
                                                 </div>
                                             </div>
-                                            <div className="flex flex-col p-4">
+                                            <div className="flex min-h-0 flex-1 flex-col p-4">
                                                 <h2 className="text-base font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
                                                     {car.year} {car.brand} {car.model}
                                                 </h2>
@@ -511,54 +514,56 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                 </div>
                                             </div>
                                         </Link>
-                                        <div className="mx-4 mt-0 mb-2 space-y-2">
-                                            <div className="flex flex-wrap items-center gap-2">
-                                                {car.discounted_price != null ? (
-                                                    <span className="block w-fit rounded bg-red-100 px-2 py-1 text-xs font-semibold text-[#b91c1c] ring-1 ring-inset ring-red-200/80">
-                                                        {tCard("card.discountBadge")}
+                                        <div className="mt-auto shrink-0">
+                                            <div className="mx-4 mt-0 mb-2 space-y-2">
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                    {car.discounted_price != null ? (
+                                                        <span className="block w-fit rounded bg-red-100 px-2 py-1 text-xs font-semibold text-[#b91c1c] ring-1 ring-inset ring-red-200/80">
+                                                            {tCard("card.discountBadge")}
+                                                        </span>
+                                                    ) : null}
+                                                    <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
+                                                        {tCard("card.fairDeal")}
                                                     </span>
-                                                ) : null}
-                                                <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
-                                                    {tCard("card.fairDeal")}
-                                                </span>
+                                                </div>
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                    {car.carfax_url ? (
+                                                        <a
+                                                            href={car.carfax_url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#b91c1c] transition-colors"
+                                                        >
+                                                            {tCard("card.carfax")}
+                                                        </a>
+                                                    ) : (
+                                                        <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
+                                                            {tCard("card.carfax")}
+                                                        </span>
+                                                    )}
+                                                    {car.cargurus_url ? (
+                                                        <a
+                                                            href={car.cargurus_url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#b91c1c] transition-colors"
+                                                        >
+                                                            {tCard("card.cargurus")}
+                                                        </a>
+                                                    ) : (
+                                                        <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
+                                                            {tCard("card.cargurus")}
+                                                        </span>
+                                                    )}
+                                                </div>
                                             </div>
-                                            <div className="flex flex-wrap items-center gap-2">
-                                                {car.carfax_url ? (
-                                                    <a
-                                                        href={car.carfax_url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#b91c1c] transition-colors"
-                                                    >
-                                                        {tCard("card.carfax")}
-                                                    </a>
-                                                ) : (
-                                                    <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
-                                                        {tCard("card.carfax")}
-                                                    </span>
-                                                )}
-                                                {car.cargurus_url ? (
-                                                    <a
-                                                        href={car.cargurus_url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#b91c1c] transition-colors"
-                                                    >
-                                                        {tCard("card.cargurus")}
-                                                    </a>
-                                                ) : (
-                                                    <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
-                                                        {tCard("card.cargurus")}
-                                                    </span>
-                                                )}
-                                            </div>
+                                            <Link
+                                                href={`/inventory/${car.slug}`}
+                                                className="mx-4 mb-4 mt-3 block rounded bg-[#dc2626] py-2 text-center text-sm font-bold text-white hover:bg-[#b91c1c]"
+                                            >
+                                                {tCard("card.viewDetails")}
+                                            </Link>
                                         </div>
-                                        <Link
-                                            href={`/inventory/${car.slug}`}
-                                            className="mx-4 mb-4 mt-3 block rounded bg-[#dc2626] py-2 text-center text-sm font-bold text-white hover:bg-[#b91c1c]"
-                                        >
-                                            {tCard("card.viewDetails")}
-                                        </Link>
                                     </div>
                                 ))}
                             </div>
