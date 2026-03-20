@@ -85,7 +85,7 @@ export default function TransmissionsPage({ searchParams }: TransmissionsPagePro
 
     const handleUpdate = async (event: FormEvent) => {
         event.preventDefault();
-        if (!editingId || !nameEn.trim() || !nameFr.trim()) return;
+        if (!editingId || !nameEn.trim() || !nameEs.trim() || !nameFr.trim()) return;
         try {
             setSaving(true);
             setError("");
@@ -187,6 +187,7 @@ export default function TransmissionsPage({ searchParams }: TransmissionsPagePro
                     <thead className="bg-gray-50">
                         <tr>
                             <th className="p-3 text-left">{t("tableNameEn")}</th>
+                            <th className="p-3 text-left">{t("tableNameEs")}</th>
                             <th className="p-3 text-left">{t("tableNameFr")}</th>
                             <th className="p-3 text-left">{t("tableCreated")}</th>
                             <th className="p-3 text-left">{t("tableActions")}</th>

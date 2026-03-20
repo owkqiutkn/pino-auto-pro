@@ -86,7 +86,7 @@ export default function FuelsPage({ searchParams }: FuelsPageProps) {
 
     const handleUpdate = async (event: FormEvent) => {
         event.preventDefault();
-        if (!editingId || !nameEn.trim() || !nameFr.trim()) return;
+        if (!editingId || !nameEn.trim() || !nameEs.trim() || !nameFr.trim()) return;
         try {
             setSaving(true);
             setError("");
@@ -183,6 +183,7 @@ export default function FuelsPage({ searchParams }: FuelsPageProps) {
                     <thead className="bg-gray-50">
                         <tr>
                             <th className="text-left p-3">{t("tableNameEn")}</th>
+                            <th className="text-left p-3">{t("tableNameEs")}</th>
                             <th className="text-left p-3">{t("tableNameFr")}</th>
                             <th className="text-left p-3">{t("tableCreated")}</th>
                             <th className="text-left p-3">{t("tableActions")}</th>
