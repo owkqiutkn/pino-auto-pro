@@ -209,30 +209,28 @@ export default function SimilarVehiclesCarousel({
                                             </div>
                                         </div>
                                     </Link>
-                                    <div className="mx-4 mt-0 mb-2 space-y-2">
-                                        <div className="flex flex-wrap items-center gap-2">
+                                    <div className="mx-4 mt-0 mb-2">
+                                        <div className="flex flex-wrap items-center gap-2 max-sm:flex-nowrap max-sm:gap-1.5 max-sm:overflow-x-auto max-sm:[-ms-overflow-style:none] max-sm:[scrollbar-width:none] max-sm:[&::-webkit-scrollbar]:hidden">
                                             {car.discounted_price != null ? (
-                                                <span className="block w-fit rounded bg-red-100 px-2 py-1 text-xs font-semibold text-[#b91c1c] ring-1 ring-inset ring-red-200/80">
+                                                <span className="shrink-0 whitespace-nowrap rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-semibold text-[#b91c1c] ring-1 ring-inset ring-red-200/80 sm:px-2 sm:py-1 sm:text-xs">
                                                     {tPage("card.discountBadge")}
                                                 </span>
                                             ) : null}
-                                            <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
+                                            <span className="shrink-0 whitespace-nowrap rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700 sm:px-2 sm:py-1 sm:text-xs">
                                                 {tPage("card.fairDeal")}
                                             </span>
-                                        </div>
-                                        <div className="flex flex-wrap items-center gap-2">
                                             {car.carfax_url ? (
                                                 <a
                                                     href={car.carfax_url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     onClick={(e) => e.stopPropagation()}
-                                                    className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 transition-colors hover:border-[#b91c1c] hover:bg-gray-50"
+                                                    className="shrink-0 whitespace-nowrap rounded border border-gray-300 px-2 py-0.5 text-[10px] font-medium text-gray-700 transition-colors hover:border-[#b91c1c] hover:bg-gray-50 sm:px-2.5 sm:py-1 sm:text-[11px]"
                                                 >
                                                     {tPage("card.carfax")}
                                                 </a>
                                             ) : (
-                                                <span className="cursor-default rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400">
+                                                <span className="shrink-0 cursor-default whitespace-nowrap rounded border border-gray-200 px-2 py-0.5 text-[10px] font-medium text-gray-400 sm:px-2.5 sm:py-1 sm:text-[11px]">
                                                     {tPage("card.carfax")}
                                                 </span>
                                             )}
@@ -242,12 +240,12 @@ export default function SimilarVehiclesCarousel({
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     onClick={(e) => e.stopPropagation()}
-                                                    className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 transition-colors hover:border-[#b91c1c] hover:bg-gray-50"
+                                                    className="shrink-0 whitespace-nowrap rounded border border-gray-300 px-2 py-0.5 text-[10px] font-medium text-gray-700 transition-colors hover:border-[#b91c1c] hover:bg-gray-50 sm:px-2.5 sm:py-1 sm:text-[11px]"
                                                 >
                                                     {tPage("card.cargurus")}
                                                 </a>
                                             ) : (
-                                                <span className="cursor-default rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400">
+                                                <span className="shrink-0 cursor-default whitespace-nowrap rounded border border-gray-200 px-2 py-0.5 text-[10px] font-medium text-gray-400 sm:px-2.5 sm:py-1 sm:text-[11px]">
                                                     {tPage("card.cargurus")}
                                                 </span>
                                             )}
