@@ -8,6 +8,7 @@ import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { getLocalizedEngineName } from "@/lib/i18n/engines";
 import { getLocalizedFuelName } from "@/lib/i18n/fuels";
 import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
+import { getLocalizedTrimName } from "@/lib/i18n/trims";
 import type { Database } from "@/lib/types";
 import { getTransformedStorageUrl } from "@/lib/storage";
 
@@ -27,6 +28,7 @@ type Category = Database["public"]["Tables"]["categories"]["Row"];
 type Engine = Database["public"]["Tables"]["engines"]["Row"];
 type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
 type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
+type ModelTrim = Database["public"]["Tables"]["model_trims"]["Row"];
 
 type Segment = "featured" | "new-arrivals";
 
@@ -36,6 +38,7 @@ type Car = {
     title: string;
     brand: string;
     model: string;
+    trim: string | null;
     year: number;
     km: number;
     price: number;
@@ -58,6 +61,7 @@ type LookupProps = {
     engines: Engine[];
     fuels: Fuel[];
     transmissions: Transmission[];
+    modelTrims: ModelTrim[];
     /** Preloaded data for the "featured" segment so the client does not need to fetch on mount. */
     initialFeaturedData?: InitialFeaturedData;
 };
@@ -101,7 +105,19 @@ function getTransmissionDisplay(transmissionValue: string | null, transmissions:
     return transmission ? getLocalizedTransmissionName(transmission, locale) : transmissionValue;
 }
 
-export default function InventoryLineupRed({ categories, engines, fuels, transmissions, initialFeaturedData }: LookupProps) {
+function getTrimDisplay(trimValue: string | null, modelTrims: ModelTrim[], locale: string): string | null {
+    if (!trimValue) return null;
+    const trim = modelTrims.find(
+        (tr) =>
+            (tr.name_en ?? tr.name) === trimValue ||
+            tr.name_es === trimValue ||
+            tr.name_fr === trimValue ||
+            tr.name === trimValue
+    );
+    return trim ? getLocalizedTrimName(trim, locale) : trimValue;
+}
+
+export default function InventoryLineupRed({ categories, engines, fuels, transmissions, modelTrims, initialFeaturedData }: LookupProps) {
     const t = useTranslations("NewLanding.inventorySection");
     const tCard = useTranslations("Inventory.page");
     const locale = useLocale();
@@ -347,12 +363,12 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                 </div>
                                                 <div className="flex flex-col px-3 pt-3 pb-2">
                                                     <h2 className="text-sm font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
-                                                        {car.year} {car.brand} {car.model}
+                                                        {car.year} {car.brand} {car.model}{car.trim ? ` ${getTrimDisplay(car.trim, modelTrims, locale)}` : ""}
                                                     </h2>
                                                     <p className="mt-0.5 text-xs text-gray-600">
                                                         {getCategoryDisplay(car.category, categories, locale) ??
                                                             tCard("card.fallbackBodyStyle")}{" "}
-                                                        {car.model} {car.km.toLocaleString()} km
+                                                        {car.model}{car.trim ? ` ${getTrimDisplay(car.trim, modelTrims, locale)}` : ""} {car.km.toLocaleString()} km
                                                     </p>
                                                     <p className="mt-2 line-clamp-2 text-[11px] leading-snug text-gray-600">
                                                         {[
@@ -476,11 +492,11 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                             </div>
                                             <div className="flex min-h-0 flex-1 flex-col p-4">
                                                 <h2 className="text-base font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
-                                                    {car.year} {car.brand} {car.model}
+                                                    {car.year} {car.brand} {car.model}{car.trim ? ` ${getTrimDisplay(car.trim, modelTrims, locale)}` : ""}
                                                 </h2>
                                                 <p className="mt-0.5 text-sm text-gray-600">
                                                     {getCategoryDisplay(car.category, categories, locale) ?? tCard("card.fallbackBodyStyle")}{" "}
-                                                    {car.model} {car.km.toLocaleString()} km
+                                                    {car.model}{car.trim ? ` ${getTrimDisplay(car.trim, modelTrims, locale)}` : ""} {car.km.toLocaleString()} km
                                                 </p>
                                                 <p className="mt-3 min-h-[1rem] text-xs text-gray-600">
                                                     {[

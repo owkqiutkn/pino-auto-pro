@@ -355,6 +355,8 @@
       "allMakes": "All Makes",
       "model": "Model",
       "modelsPlaceholder": "Models",
+      "trim": "Trim",
+      "trimPlaceholder": "All Trims",
       "price": "Price",
       "noMinMax": "No minimum or maximum",
       "setRange": "Set range below",

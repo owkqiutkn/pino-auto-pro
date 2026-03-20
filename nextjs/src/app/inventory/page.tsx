@@ -14,6 +14,7 @@ import {
     getCachedEngines,
     getCachedExteriorColors,
     getCachedFuels,
+    getCachedModelTrims,
     getCachedTransmissions,
 } from "@/lib/supabase/cached";
 import { Database } from "@/lib/types";
@@ -23,6 +24,7 @@ import { getLocalizedEngineName } from "@/lib/i18n/engines";
 import { getLocalizedFuelName } from "@/lib/i18n/fuels";
 import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
 import { getTransformedStorageUrl } from "@/lib/storage";
+import { getLocalizedTrimName } from "@/lib/i18n/trims";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type CarImage = Database["public"]["Tables"]["car_images"]["Row"];
@@ -32,12 +34,14 @@ type ExteriorColor = Database["public"]["Tables"]["exterior_colors"]["Row"];
 type Engine = Database["public"]["Tables"]["engines"]["Row"];
 type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
 type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
+type ModelTrim = Database["public"]["Tables"]["model_trims"]["Row"];
 
 interface InventoryPageProps {
     searchParams: Promise<{
         brand?: string;
         category?: string;
         model?: string;
+        trim?: string;
         exteriorColor?: string;
         transmission?: string;
         engine?: string;
@@ -100,6 +104,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
     const brand = params.brand?.trim() || undefined;
     const category = params.category?.trim() || undefined;
     const model = params.model?.trim() || undefined;
+    const trim = params.trim?.trim() || undefined;
     const exteriorColor = params.exteriorColor?.trim() || undefined;
     const transmission = params.transmission?.trim() || undefined;
     const engine = params.engine?.trim() || undefined;
@@ -122,6 +127,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
         transmissionsData,
         enginesData,
         fuelsData,
+        modelTrimsData,
         t,
         locale,
     ] = await Promise.all([
@@ -129,6 +135,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
             brand,
             category: category || undefined,
             model,
+            trim,
             exteriorColor,
             transmission,
             engine,
@@ -146,6 +153,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
         getCachedTransmissions(),
         getCachedEngines(),
         getCachedFuels(),
+        getCachedModelTrims(),
         getTranslations("Inventory.page"),
         getLocale(),
     ]);
@@ -170,7 +178,8 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
             (c) =>
                 c.title.toLowerCase().includes(q) ||
                 c.brand?.toLowerCase().includes(q) ||
-                c.model?.toLowerCase().includes(q)
+                c.model?.toLowerCase().includes(q) ||
+                c.trim?.toLowerCase().includes(q)
         );
     }
 
@@ -186,7 +195,35 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
     const transmissions = (transmissionsData ?? []) as Transmission[];
     const engines = (enginesData ?? []) as Engine[];
     const fuels = (fuelsData ?? []) as Fuel[];
+    const modelTrims = (modelTrimsData ?? []) as ModelTrim[];
     const models = Array.from(new Set(carsList.map((c) => c.model).filter(Boolean))).sort();
+    const trims = Array.from(new Set(carsList.map((c) => c.trim).filter(Boolean)))
+        .map((trimValue) => {
+            const trimRow = modelTrims.find(
+                (tr) =>
+                    (tr.name_en ?? tr.name) === trimValue ||
+                    tr.name_es === trimValue ||
+                    tr.name_fr === trimValue ||
+                    tr.name === trimValue
+            );
+            return {
+                value: trimValue as string,
+                label: trimRow ? getLocalizedTrimName(trimRow, locale) : (trimValue as string),
+            };
+        })
+        .sort((a, b) => a.label.localeCompare(b.label));
+
+    const getTrimDisplay = (trimValue: string | null | undefined): string | null => {
+        if (!trimValue) return null;
+        const trimRow = modelTrims.find(
+            (tr) =>
+                (tr.name_en ?? tr.name) === trimValue ||
+                tr.name_es === trimValue ||
+                tr.name_fr === trimValue ||
+                tr.name === trimValue
+        );
+        return trimRow ? getLocalizedTrimName(trimRow, locale) : trimValue;
+    };
 
     const carIds = carsList.map((c) => c.id);
     const { data: allImages } = await client.getCarImagesForCars(carIds);
@@ -210,6 +247,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                         brands={brands}
                         categories={categories}
                         models={models}
+                        trims={trims}
                         exteriorColors={exteriorColors}
                         transmissions={transmissions}
                         engines={engines}
@@ -219,6 +257,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                             category,
                             brand,
                             model,
+                            trim,
                             exteriorColor,
                             transmission,
                             engine,
@@ -285,10 +324,10 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                                         </div>
                                         <div className="flex min-h-0 flex-1 flex-col p-4">
                                             <h2 className="text-base font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
-                                                {car.year} {car.brand} {car.model}
+                                                {car.year} {car.brand} {car.model}{car.trim ? ` ${getTrimDisplay(car.trim)}` : ""}
                                             </h2>
                                             <p className="mt-0.5 text-sm text-gray-600">
-                                                {getCategoryDisplay(car.category, categories, locale) ?? t("card.fallbackBodyStyle")} {car.model} {car.km.toLocaleString()} km
+                                                {getCategoryDisplay(car.category, categories, locale) ?? t("card.fallbackBodyStyle")} {car.model}{car.trim ? ` ${getTrimDisplay(car.trim)}` : ""} {car.km.toLocaleString()} km
                                             </p>
                                             <p className="mt-3 min-h-[1rem] text-xs text-gray-600">
                                                 {[car.engine && getEngineDisplay(car.engine, engines, locale), car.fuel && getFuelDisplay(car.fuel, fuels, locale), car.transmission && getTransmissionDisplay(car.transmission, transmissions, locale)]

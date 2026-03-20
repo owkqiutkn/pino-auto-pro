@@ -13,11 +13,13 @@ import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { getLocalizedEngineName } from "@/lib/i18n/engines";
 import { getLocalizedFuelName } from "@/lib/i18n/fuels";
 import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
+import { getLocalizedTrimName } from "@/lib/i18n/trims";
 import { useLocale } from "next-intl";
 
 type CarStatus = "available" | "sold" | "hidden";
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
 type BrandModel = Database["public"]["Tables"]["brand_models"]["Row"];
+type ModelTrim = Database["public"]["Tables"]["model_trims"]["Row"];
 type Category = Database["public"]["Tables"]["categories"]["Row"];
 type ExteriorColor = Database["public"]["Tables"]["exterior_colors"]["Row"];
 type Engine = Database["public"]["Tables"]["engines"]["Row"];
@@ -56,6 +58,7 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
     const [title, setTitle] = useState("");
     const [brand, setBrand] = useState("");
     const [model, setModel] = useState("");
+    const [trim, setTrim] = useState("");
     const [category, setCategory] = useState("");
     const [year, setYear] = useState<number | "">("");
     const [km, setKm] = useState<number | "">("");
@@ -70,6 +73,7 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
     const [extraImageFiles, setExtraImageFiles] = useState<File[]>([]);
     const [brands, setBrands] = useState<Brand[]>([]);
     const [brandModels, setBrandModels] = useState<BrandModel[]>([]);
+    const [modelTrims, setModelTrims] = useState<ModelTrim[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [exteriorColors, setExteriorColors] = useState<ExteriorColor[]>([]);
     const [engines, setEngines] = useState<Engine[]>([]);
@@ -202,6 +206,35 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
         loadModels();
     }, [brand, brands]);
 
+    useEffect(() => {
+        const loadTrims = async () => {
+            if (!model) {
+                setModelTrims([]);
+                setTrim("");
+                return;
+            }
+            const selectedModel = brandModels.find((item) => item.name === model);
+            if (!selectedModel) {
+                setModelTrims([]);
+                setTrim("");
+                return;
+            }
+            try {
+                const client = await createSPASassClient();
+                const { data, error: trimsError } = await client.getModelTrims(selectedModel.id);
+                if (trimsError) throw trimsError;
+                setModelTrims(data || []);
+                setTrim((prev) => ((data || []).some((item) => (item.name_en ?? item.name) === prev) ? prev : ""));
+            } catch (err) {
+                console.error("Load model trims failed:", err);
+                setModelTrims([]);
+                setTrim("");
+                setError("Failed to load model trims.");
+            }
+        };
+        loadTrims();
+    }, [model, brandModels]);
+
     const handleMainImageChange = (event: ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0] || null;
         setMainImageFile(selectedFile);
@@ -251,6 +284,7 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                     title,
                     brand,
                     model,
+                    trim: trim || null,
                     category: category || null,
                     exterior_color: exteriorColor || null,
                     engine: engine || null,
@@ -348,14 +382,14 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                     <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Title</label>
                     <input id="title" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="Title" className="w-full border rounded-md px-3 py-2" />
                 </div>
-                <div className="grid sm:grid-cols-3 gap-3">
+                <div className="grid sm:grid-cols-4 gap-3">
                     <div>
                         <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
                         <select id="brand" value={brand} onChange={(e) => setBrand(e.target.value)} required className="w-full border rounded-md px-3 py-2">
                         <option value="">Select brand</option>
                         {brands.map((item) => (
-                            <option key={item.id} value={item.name}>
-                                {item.name}
+                            <option key={item.id} value={item.name_en ?? item.name}>
+                                {getLocalizedTrimName(item as never, locale)}
                             </option>
                         ))}
                     </select>
@@ -376,6 +410,17 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                         <select id="model" value={model} onChange={(e) => setModel(e.target.value)} required disabled={!brand} className="w-full border rounded-md px-3 py-2 disabled:bg-gray-100">
                         <option value="">{brand ? "Select model" : "Select brand first"}</option>
                         {brandModels.map((item) => (
+                            <option key={item.id} value={item.name}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
+                    </div>
+                    <div>
+                        <label htmlFor="trim" className="block text-sm font-medium text-gray-700 mb-1">Trim</label>
+                        <select id="trim" value={trim} onChange={(e) => setTrim(e.target.value)} disabled={!model} className="w-full border rounded-md px-3 py-2 disabled:bg-gray-100">
+                        <option value="">{model ? "Select trim (optional)" : "Select model first"}</option>
+                        {modelTrims.map((item) => (
                             <option key={item.id} value={item.name}>
                                 {item.name}
                             </option>

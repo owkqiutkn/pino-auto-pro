@@ -8,6 +8,7 @@ import {
     getCachedCategories,
     getCachedEngines,
     getCachedFuels,
+    getCachedModelTrims,
     getCachedTransmissions,
     getCachedBrands,
     getCachedSiteSettings,
@@ -23,6 +24,7 @@ type Category = Database["public"]["Tables"]["categories"]["Row"];
 type Engine = Database["public"]["Tables"]["engines"]["Row"];
 type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
 type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
+type ModelTrim = Database["public"]["Tables"]["model_trims"]["Row"];
 
 // Placeholder for categories without an attached image
 const CATEGORY_PLACEHOLDER =
@@ -58,12 +60,13 @@ const featureCards = [
 ];
 
 export default async function NewPage() {
-    const [brands, categories, engines, fuels, transmissions, siteSettings, featuredSegment, t, locale] = await Promise.all([
+    const [brands, categories, engines, fuels, transmissions, modelTrims, siteSettings, featuredSegment, t, locale] = await Promise.all([
         getCachedBrands(),
         getCachedCategories(),
         getCachedEngines(),
         getCachedFuels(),
         getCachedTransmissions(),
+        getCachedModelTrims(),
         getCachedSiteSettings(),
         getInventorySegmentData("featured"),
         getTranslations("NewLanding"),
@@ -75,6 +78,7 @@ export default async function NewPage() {
     const enginesTyped = (engines ?? []) as Engine[];
     const fuelsTyped = (fuels ?? []) as Fuel[];
     const transmissionsTyped = (transmissions ?? []) as Transmission[];
+    const modelTrimsTyped = (modelTrims ?? []) as ModelTrim[];
 
     return (
         <div className="bg-[#2a0c10]/60 text-white">
@@ -130,6 +134,7 @@ export default async function NewPage() {
                                 engines={enginesTyped}
                                 fuels={fuelsTyped}
                                 transmissions={transmissionsTyped}
+                                modelTrims={modelTrimsTyped}
                                 initialFeaturedData={featuredSegment}
                             />
                         </div>
@@ -203,6 +208,7 @@ export default async function NewPage() {
                     engines={enginesTyped}
                     fuels={fuelsTyped}
                     transmissions={transmissionsTyped}
+                    modelTrims={modelTrimsTyped}
                     initialFeaturedData={featuredSegment}
                 />
             </div>

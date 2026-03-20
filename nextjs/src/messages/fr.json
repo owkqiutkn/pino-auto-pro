@@ -355,6 +355,8 @@
       "allMakes": "Toutes les marques",
       "model": "Modèle",
       "modelsPlaceholder": "Modèles",
+      "trim": "Version",
+      "trimPlaceholder": "Toutes les versions",
       "price": "Prix",
       "noMinMax": "Aucun minimum ni maximum",
       "setRange": "Définissez la plage ci-dessous",

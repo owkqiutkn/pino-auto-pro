@@ -69,6 +69,7 @@ export default function AppLayout({ children, businessName }: { children: React.
         { name: 'Brands', href: '/app/brands', icon: Tags },
         { name: 'Categories', href: '/app/categories', icon: Shapes },
         { name: 'Brand Models', href: '/app/brand-models', icon: ListTree },
+        { name: 'Model Trims', href: '/app/trims', icon: ListTree },
         { name: 'Exterior Colors', href: '/app/exterior-colors', icon: Droplets },
         { name: 'Engines', href: '/app/engines', icon: Gauge },
         { name: 'Fuels', href: '/app/fuels', icon: Fuel },

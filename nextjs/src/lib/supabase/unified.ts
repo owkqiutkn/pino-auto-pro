@@ -91,6 +91,7 @@ export class SassClient {
         brand?: string;
         category?: string;
         model?: string;
+        trim?: string;
         exteriorColor?: string;
         transmission?: string;
         engine?: string;
@@ -117,6 +118,9 @@ export class SassClient {
         }
         if (filters?.model) {
             query = query.eq('model', filters.model);
+        }
+        if (filters?.trim) {
+            query = query.eq('trim', filters.trim);
         }
         if (filters?.exteriorColor) {
             query = query.eq('exterior_color', filters.exteriorColor);
@@ -535,6 +539,34 @@ export class SassClient {
     async deleteBrandModel(id: string) {
         return this.client
             .from('brand_models')
+            .delete()
+            .eq('id', id);
+    }
+
+    async getModelTrims(brandModelId?: string) {
+        let query = this.client
+            .from('model_trims')
+            .select('*')
+            .order('name_en', { ascending: true });
+
+        if (brandModelId) {
+            query = query.eq('brand_model_id', brandModelId);
+        }
+
+        return query;
+    }
+
+    async createModelTrim(brandModelId: string, name_en: string, name_es: string, name_fr: string) {
+        return this.client
+            .from('model_trims')
+            .insert({ brand_model_id: brandModelId, name: name_en, name_en, name_es, name_fr })
+            .select('*')
+            .single();
+    }
+
+    async deleteModelTrim(id: string) {
+        return this.client
+            .from('model_trims')
             .delete()
             .eq('id', id);
     }

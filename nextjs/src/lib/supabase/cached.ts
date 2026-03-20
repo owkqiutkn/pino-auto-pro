@@ -8,6 +8,7 @@ type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
 type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
 type Brand = Database["public"]["Tables"]["brands"]["Row"];
 type BrandModel = Database["public"]["Tables"]["brand_models"]["Row"];
+type ModelTrim = Database["public"]["Tables"]["model_trims"]["Row"];
 type ExteriorColor = Database["public"]["Tables"]["exterior_colors"]["Row"];
 type FeatureCategory = Database["public"]["Tables"]["feature_categories"]["Row"];
 type Feature = Database["public"]["Tables"]["features"]["Row"];
@@ -53,6 +54,12 @@ async function fetchBrandModels(): Promise<BrandModel[]> {
     const client = createAnonymousSassClient();
     const { data } = await client.getBrandModels();
     return (data ?? []) as BrandModel[];
+}
+
+async function fetchModelTrims(): Promise<ModelTrim[]> {
+    const client = createAnonymousSassClient();
+    const { data } = await client.getModelTrims();
+    return (data ?? []) as ModelTrim[];
 }
 
 async function fetchExteriorColors(): Promise<ExteriorColor[]> {
@@ -112,6 +119,12 @@ export const getCachedBrands = unstable_cache(
 export const getCachedBrandModels = unstable_cache(
     fetchBrandModels,
     ["inventory-lookup-brand-models"],
+    { revalidate: CACHE_REVALIDATE }
+);
+
+export const getCachedModelTrims = unstable_cache(
+    fetchModelTrims,
+    ["inventory-lookup-model-trims"],
     { revalidate: CACHE_REVALIDATE }
 );
 

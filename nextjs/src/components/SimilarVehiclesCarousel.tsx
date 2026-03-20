@@ -9,6 +9,7 @@ import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { getLocalizedEngineName } from "@/lib/i18n/engines";
 import { getLocalizedFuelName } from "@/lib/i18n/fuels";
 import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
+import { getLocalizedTrimName } from "@/lib/i18n/trims";
 import { getTransformedStorageUrl } from "@/lib/storage";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
@@ -17,6 +18,7 @@ type Category = Database["public"]["Tables"]["categories"]["Row"];
 type Engine = Database["public"]["Tables"]["engines"]["Row"];
 type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
 type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
+type ModelTrim = Database["public"]["Tables"]["model_trims"]["Row"];
 
 const CARDS_PER_PAGE = 4;
 const BRAND_ACCENT = "#dc2626";
@@ -29,6 +31,7 @@ interface SimilarVehiclesCarouselProps {
     engines: Engine[];
     fuels: Fuel[];
     transmissions: Transmission[];
+    modelTrims: ModelTrim[];
     locale: string;
 }
 
@@ -72,6 +75,18 @@ function getTransmissionDisplay(
     return transmission ? getLocalizedTransmissionName(transmission, locale) : transmissionValue;
 }
 
+function getTrimDisplay(trimValue: string | null | undefined, modelTrims: ModelTrim[], locale: string): string | null {
+    if (!trimValue) return null;
+    const trim = modelTrims.find(
+        (tr) =>
+            (tr.name_en ?? tr.name) === trimValue ||
+            tr.name_es === trimValue ||
+            tr.name_fr === trimValue ||
+            tr.name === trimValue
+    );
+    return trim ? getLocalizedTrimName(trim, locale) : trimValue;
+}
+
 export default function SimilarVehiclesCarousel({
     cars,
     imagesByCar,
@@ -80,6 +95,7 @@ export default function SimilarVehiclesCarousel({
     engines,
     fuels,
     transmissions,
+    modelTrims,
     locale,
 }: SimilarVehiclesCarouselProps) {
     const tDetail = useTranslations("Inventory.carDetail");
@@ -181,10 +197,10 @@ export default function SimilarVehiclesCarousel({
                                         </div>
                                         <div className="flex min-h-0 flex-1 flex-col p-4">
                                             <h2 className="text-base font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
-                                                {car.year} {car.brand} {car.model}
+                                                {car.year} {car.brand} {car.model}{car.trim ? ` ${getTrimDisplay(car.trim, modelTrims, locale)}` : ""}
                                             </h2>
                                             <p className="mt-0.5 text-sm text-gray-600">
-                                                {getCategoryDisplay(car.category, categories, locale) ?? tPage("card.fallbackBodyStyle")} {car.model}{" "}
+                                                {getCategoryDisplay(car.category, categories, locale) ?? tPage("card.fallbackBodyStyle")} {car.model}{car.trim ? ` ${getTrimDisplay(car.trim, modelTrims, locale)}` : ""}{" "}
                                                 {car.km.toLocaleString()} km
                                             </p>
                                             <p className="mt-3 min-h-[1rem] text-xs text-gray-600">

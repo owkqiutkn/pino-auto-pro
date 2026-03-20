@@ -18,11 +18,13 @@ type ExteriorColor = { id: string; name: string; name_en: string; name_fr: strin
 type Transmission = { id: string; name: string; name_en?: string | null; name_fr?: string | null };
 type Engine = { id: string; name: string; name_en?: string | null; name_fr?: string | null };
 type Fuel = { id: string; name: string; name_en?: string; name_fr?: string };
+type TrimOption = { value: string; label: string };
 
 interface InventoryFiltersProps {
     brands: Brand[];
     categories: Category[];
     models: string[];
+    trims: TrimOption[];
     exteriorColors: ExteriorColor[];
     transmissions: Transmission[];
     engines: Engine[];
@@ -32,6 +34,7 @@ interface InventoryFiltersProps {
         category?: string;
         brand?: string;
         model?: string;
+        trim?: string;
         exteriorColor?: string;
         transmission?: string;
         engine?: string;
@@ -55,6 +58,7 @@ export default function InventoryFilters({
     brands,
     categories,
     models,
+    trims,
     exteriorColors,
     transmissions,
     engines,
@@ -214,6 +218,25 @@ export default function InventoryFilters({
                         {models.map((m) => (
                             <option key={m} value={m}>
                                 {m}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div>
+                    <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
+                        {t("trim")}
+                    </label>
+                    <select
+                        name="trim"
+                        value={filters.trim ?? ""}
+                        onChange={handleSelectChange("trim")}
+                        className={selectClass}
+                    >
+                        <option value="">{t("trimPlaceholder")}</option>
+                        {trims.map((trim) => (
+                            <option key={trim.value} value={trim.value}>
+                                {trim.label}
                             </option>
                         ))}
                     </select>

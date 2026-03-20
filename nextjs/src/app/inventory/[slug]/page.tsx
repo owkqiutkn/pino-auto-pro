@@ -6,6 +6,7 @@ import {
     getCachedCategories,
     getCachedEngines,
     getCachedFuels,
+    getCachedModelTrims,
     getCachedTransmissions,
     getCachedSiteSettings,
 } from "@/lib/supabase/cached";
@@ -88,13 +89,14 @@ export async function generateMetadata({ params }: CarPageProps): Promise<Metada
 export default async function CarDetailPage({ params }: CarPageProps) {
     const { slug } = await params;
 
-    const [carResult, categories, enginesData, fuelsData, transmissionsData, siteSettings] =
+    const [carResult, categories, enginesData, fuelsData, transmissionsData, modelTrimsData, siteSettings] =
         await Promise.all([
             getAvailableCarWithImages(slug),
             getCachedCategories(),
             getCachedEngines(),
             getCachedFuels(),
             getCachedTransmissions(),
+            getCachedModelTrims(),
             getCachedSiteSettings(),
         ]);
 
@@ -350,6 +352,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                         engines={enginesData as Database["public"]["Tables"]["engines"]["Row"][]}
                         fuels={fuelsData as Database["public"]["Tables"]["fuels"]["Row"][]}
                         transmissions={transmissionsData as Database["public"]["Tables"]["transmissions"]["Row"][]}
+                        modelTrims={modelTrimsData as Database["public"]["Tables"]["model_trims"]["Row"][]}
                         locale={locale}
                     />
                 </div>

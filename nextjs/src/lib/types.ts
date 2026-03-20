@@ -212,6 +212,44 @@ export type Database = {
           },
         ]
       }
+      model_trims: {
+        Row: {
+          brand_model_id: string
+          created_at: string
+          id: string
+          name: string
+          name_en: string
+          name_es: string
+          name_fr: string
+        }
+        Insert: {
+          brand_model_id: string
+          created_at?: string
+          id?: string
+          name: string
+          name_en: string
+          name_es: string
+          name_fr: string
+        }
+        Update: {
+          brand_model_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          name_en?: string
+          name_es?: string
+          name_fr?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "model_trims_brand_model_id_fkey"
+            columns: ["brand_model_id"]
+            isOneToOne: false
+            referencedRelation: "brand_models"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       brands: {
         Row: {
           created_at: string
@@ -288,6 +326,7 @@ export type Database = {
           slug: string
           status: string
           transmission: string | null
+          trim: string | null
           title: string
           updated_at: string
           vin: string | null
@@ -316,6 +355,7 @@ export type Database = {
           slug: string
           status?: string
           transmission?: string | null
+          trim?: string | null
           title: string
           updated_at?: string
           vin?: string | null
@@ -344,6 +384,7 @@ export type Database = {
           slug?: string
           status?: string
           transmission?: string | null
+          trim?: string | null
           title?: string
           updated_at?: string
           vin?: string | null
