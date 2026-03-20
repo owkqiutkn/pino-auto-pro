@@ -83,7 +83,7 @@ export default async function NewPage() {
                 <img
                     src={heroImage}
                     alt={t("hero.imageAlt")}
-                    className="absolute inset-0 h-full w-full object-cover object-[50%_55%]"
+                    className="absolute inset-0 h-full w-full object-cover object-[50%_62%]"
                 />
                 <div className="absolute inset-0 bg-black/30" />
                 <div className="relative z-[10020]">
