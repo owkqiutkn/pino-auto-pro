@@ -52,7 +52,10 @@ export function ContactForm() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(values),
+                body: JSON.stringify({
+                    ...values,
+                    pageUrl: typeof window !== "undefined" ? window.location.href : "",
+                }),
             });
 
             if (!res.ok) {

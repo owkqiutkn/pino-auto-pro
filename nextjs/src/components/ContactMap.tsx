@@ -72,7 +72,10 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
             const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(values),
+                body: JSON.stringify({
+                    ...values,
+                    pageUrl: typeof window !== "undefined" ? window.location.href : "",
+                }),
             });
             if (!res.ok) {
                 setStatus("error");

@@ -332,7 +332,9 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                                 <h2 className="font-bold text-white">{t("requestInfo")}</h2>
                             </div>
                             <div className="p-4">
-                                <CarDetailRequestForm />
+                                <CarDetailRequestForm
+                                    vehicleDisplayName={`${car.year} ${car.brand} ${car.model}`}
+                                />
                             </div>
                         </div>
                     </div>

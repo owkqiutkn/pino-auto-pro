@@ -13,7 +13,12 @@ type CarDetailFormValues = {
     message: string;
 };
 
-export default function CarDetailRequestForm() {
+interface CarDetailRequestFormProps {
+    /** Used as "{vehicleDisplayName} - More Information" in the notification email subject. */
+    vehicleDisplayName: string;
+}
+
+export default function CarDetailRequestForm({ vehicleDisplayName }: CarDetailRequestFormProps) {
     const t = useTranslations("Inventory.carDetail");
     const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
@@ -65,6 +70,8 @@ export default function CarDetailRequestForm() {
                     email: values.email,
                     phone: values.phone,
                     message: values.message,
+                    pageUrl: typeof window !== "undefined" ? window.location.href : "",
+                    vehicleDisplayName: vehicleDisplayName.trim(),
                 }),
             });
             if (!res.ok) {
