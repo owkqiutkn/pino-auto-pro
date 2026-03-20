@@ -266,7 +266,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                     const car = cars[mobileIndex] ?? cars[0];
                                     if (!car) return null;
                                     return (
-                                        <div className="group flex min-h-[560px] flex-col overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
+                                        <div className="group flex h-[496px] flex-col overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
                                             <Link href={`/inventory/${car.slug}`} className="block shrink-0">
                                                 <div
                                                     className="relative aspect-[4/3] md:aspect-[16/9] overflow-hidden bg-gray-100"
@@ -345,7 +345,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                         </>
                                                     )}
                                                 </div>
-                                                <div className="flex flex-col p-3">
+                                                <div className="flex flex-col px-3 pt-3 pb-2">
                                                     <h2 className="text-sm font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
                                                         {car.year} {car.brand} {car.model}
                                                     </h2>
@@ -354,7 +354,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                             tCard("card.fallbackBodyStyle")}{" "}
                                                         {car.model} {car.km.toLocaleString()} km
                                                     </p>
-                                                    <p className="mt-2 min-h-[2.5rem] text-[11px] leading-snug text-gray-600">
+                                                    <p className="mt-2 line-clamp-2 text-[11px] leading-snug text-gray-600">
                                                         {[
                                                             car.engine && getEngineDisplay(car.engine, engines, locale),
                                                             car.fuel && getFuelDisplay(car.fuel, fuels, locale),
@@ -364,7 +364,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                             .filter(Boolean)
                                                             .join(" • ")}
                                                     </p>
-                                                    <div className="mt-2 min-h-[5rem]">
+                                                    <div className="mt-2 min-h-[4.5rem]">
                                                         <p className="text-xs font-semibold text-gray-600">
                                                             {tCard("card.dealerPriceLabel")}
                                                         </p>
@@ -388,30 +388,28 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                     </div>
                                                 </div>
                                             </Link>
-                                            <div className="min-h-0 flex-1" aria-hidden="true" />
-                                            <div className="mx-4 mt-0 mb-2 shrink-0 space-y-2">
-                                                <div className="flex min-h-[2.75rem] flex-wrap items-center gap-2">
+                                            <div className="min-h-0 flex-1 shrink" aria-hidden="true" />
+                                            <div className="mx-4 mt-1 mb-1 shrink-0">
+                                                <div className="flex flex-nowrap items-center gap-1.5 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                                                     {car.discounted_price != null ? (
-                                                        <span className="block w-fit rounded bg-red-100 px-2 py-1 text-xs font-semibold text-[#b91c1c] ring-1 ring-inset ring-red-200/80">
+                                                        <span className="shrink-0 whitespace-nowrap rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-semibold text-[#b91c1c] ring-1 ring-inset ring-red-200/80 sm:px-2 sm:py-1 sm:text-xs">
                                                             {tCard("card.discountBadge")}
                                                         </span>
                                                     ) : null}
-                                                    <span className="block w-fit rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
+                                                    <span className="shrink-0 whitespace-nowrap rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700 sm:px-2 sm:py-1 sm:text-xs">
                                                         {tCard("card.fairDeal")}
                                                     </span>
-                                                </div>
-                                                <div className="flex min-h-[2.5rem] flex-wrap items-center gap-2">
                                                     {car.carfax_url ? (
                                                         <a
                                                             href={car.carfax_url}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#b91c1c] transition-colors"
+                                                            className="shrink-0 whitespace-nowrap rounded border border-gray-300 px-2 py-0.5 text-[10px] font-medium text-gray-700 transition-colors hover:border-[#b91c1c] hover:bg-gray-50 sm:px-2.5 sm:py-1 sm:text-[11px]"
                                                         >
                                                             {tCard("card.carfax")}
                                                         </a>
                                                     ) : (
-                                                        <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
+                                                        <span className="shrink-0 whitespace-nowrap rounded border border-gray-200 px-2 py-0.5 text-[10px] font-medium text-gray-400 cursor-default sm:px-2.5 sm:py-1 sm:text-[11px]">
                                                             {tCard("card.carfax")}
                                                         </span>
                                                     )}
@@ -420,12 +418,12 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                                             href={car.cargurus_url}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="rounded border border-gray-300 px-2.5 py-1 text-[11px] font-medium text-gray-700 hover:bg-gray-50 hover:border-[#b91c1c] transition-colors"
+                                                            className="shrink-0 whitespace-nowrap rounded border border-gray-300 px-2 py-0.5 text-[10px] font-medium text-gray-700 transition-colors hover:border-[#b91c1c] hover:bg-gray-50 sm:px-2.5 sm:py-1 sm:text-[11px]"
                                                         >
                                                             {tCard("card.cargurus")}
                                                         </a>
                                                     ) : (
-                                                        <span className="rounded border border-gray-200 px-2.5 py-1 text-[11px] font-medium text-gray-400 cursor-default">
+                                                        <span className="shrink-0 whitespace-nowrap rounded border border-gray-200 px-2 py-0.5 text-[10px] font-medium text-gray-400 cursor-default sm:px-2.5 sm:py-1 sm:text-[11px]">
                                                             {tCard("card.cargurus")}
                                                         </span>
                                                     )}
@@ -433,7 +431,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                             </div>
                                             <Link
                                                 href={`/inventory/${car.slug}`}
-                                                className="mx-4 mb-4 mt-3 block shrink-0 rounded bg-[#dc2626] py-2 text-center text-sm font-bold text-white hover:bg-[#b91c1c]"
+                                                className="mx-4 mb-1 mt-2 block shrink-0 rounded bg-[#dc2626] py-2 text-center text-sm font-bold text-white hover:bg-[#b91c1c]"
                                             >
                                                 {tCard("card.viewDetails")}
                                             </Link>
