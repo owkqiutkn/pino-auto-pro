@@ -114,9 +114,9 @@
     },
     "about": {
       "title": "About {businessName}",
-      "paragraph1": "{businessName} is your trusted pre-owned vehicle destination in Mississauga, making every step of buying a car clear, simple, and stress-free. We offer a carefully selected lineup of quality used cars, trucks, and SUVs, each thoroughly inspected for reliability and real value.",
-      "paragraph2": "Our friendly team helps you choose the right vehicle, explains your options in plain language, and works with you on flexible financing that fits your budget. With fair trade-in values, transparent deals, and a genuine focus on satisfaction, we want you to drive away confident in your decision.",
-      "paragraph3": "Choose {businessName} for quality vehicles, honest service, and a smooth buying experience in Mississauga and beyond.",
+      "paragraph1": "{businessName} is a family-run pre-owned vehicle destination in Saint-Jean-sur-Richelieu, making every step of buying a car clear, simple, and stress-free. We offer a carefully selected lineup of quality used cars, trucks, and SUVs, each thoroughly inspected for reliability and real value.",
+      "paragraph2": "As a family business, we take the time to help you choose the right vehicle, explain your options in plain language, and work with you on flexible financing that fits your budget. With fair trade-in values, transparent deals, and a genuine focus on satisfaction, we want you to drive away confident in your decision.",
+      "paragraph3": "Choose {businessName} for quality vehicles, honest service, and a smooth buying experience in Saint-Jean-sur-Richelieu and beyond.",
       "cta": "Contact Us"
     },
     "categories": {
