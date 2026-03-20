@@ -37,10 +37,15 @@ export async function POST(request: NextRequest) {
         const data = parseResult.data;
 
         const settings = await getCachedSiteSettings();
-        const fromDb =
-            settings?.contact_form_email?.trim() || settings?.email?.trim() || "";
-        const to = process.env.CONTACT_TO_EMAIL?.trim() || fromDb;
-        const from = process.env.CONTACT_FROM_EMAIL || "no-reply@example.com";
+        const contactFormRecipient = settings?.contact_form_email?.trim() || "";
+        const businessEmail = settings?.email?.trim() || "";
+        const envRecipient = process.env.CONTACT_TO_EMAIL?.trim() || "";
+        // To = Contact form inbox in admin (site_settings.contact_form_email), then env, then public email.
+        const to =
+            contactFormRecipient || envRecipient || businessEmail;
+        // From = CONTACT_FROM_EMAIL (Resend-verified), e.g. info@reactfuel.com.
+        const from =
+            process.env.CONTACT_FROM_EMAIL?.trim() || "no-reply@example.com";
 
         if (!process.env.RESEND_API_KEY || !to || !from) {
             return Response.json(
