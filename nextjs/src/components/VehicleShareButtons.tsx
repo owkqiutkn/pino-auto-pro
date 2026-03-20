@@ -19,6 +19,9 @@ export default function VehicleShareButtons({ shareUrl, vehicleTitle, label }: V
 
     const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
     const xShareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`;
+    const smsBody = encodeURIComponent(`${vehicleTitle} ${shareUrl}`);
+    const smsShareUrl = `sms:?body=${smsBody}`;
+    const messengerShareUrl = `fb-messenger://share/?link=${encodedUrl}`;
 
     const handleCopyLink = async () => {
         try {
@@ -69,6 +72,24 @@ export default function VehicleShareButtons({ shareUrl, vehicleTitle, label }: V
                         alt="X (Twitter)"
                         className="h-4 w-4"
                     />
+                </a>
+                <a
+                    href={smsShareUrl}
+                    aria-label="Share by text message"
+                    className={iconBtnClass}
+                >
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M7 8h10M7 12h6m-9 8l3-3h10a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v9a2 2 0 002 2h2v3z" />
+                    </svg>
+                </a>
+                <a
+                    href={messengerShareUrl}
+                    aria-label="Share on Facebook Messenger"
+                    className={iconBtnClass}
+                >
+                    <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2C6.48 2 2 6.15 2 11.26c0 2.91 1.45 5.5 3.72 7.2V22l3.24-1.78c.97.27 2 .41 3.04.41 5.52 0 10-4.15 10-9.26S17.52 2 12 2zm1 12.4l-2.55-2.72-4.95 2.72 5.45-5.78 2.6 2.72 4.9-2.72L13 14.4z" />
+                    </svg>
                 </a>
                 <button
                     type="button"
