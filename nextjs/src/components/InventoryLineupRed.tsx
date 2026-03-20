@@ -266,7 +266,7 @@ export default function InventoryLineupRed({ categories, engines, fuels, transmi
                                     const car = cars[mobileIndex] ?? cars[0];
                                     if (!car) return null;
                                     return (
-                                        <div className="group flex h-[496px] flex-col overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
+                                        <div className="group flex min-h-[496px] flex-col overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
                                             <Link href={`/inventory/${car.slug}`} className="block shrink-0">
                                                 <div
                                                     className="relative aspect-[4/3] md:aspect-[16/9] overflow-hidden bg-gray-100"
