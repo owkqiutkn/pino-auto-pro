@@ -8,7 +8,10 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useTranslations } from "next-intl";
 
-const defaultCenter = {lat: 45.5019, lng: -73.5674};
+/** 1340 Rue Bernier, Saint-Jean-sur-Richelieu, QC — geocoded via OpenStreetMap. */
+const defaultCenter = { lat: 45.3470058, lng: -73.3017958 };
+/** Viewport center east of the pin so the map sits slightly left (marker stays on true coords). */
+const MAP_VIEW_LNG_OFFSET = 0.005;
 
 interface ContactMapProps {
     /** When false, only the map is shown (no contact form overlay). Default: true */
@@ -114,8 +117,8 @@ export default function ContactMap({ showForm = true, variant = "default" }: Con
                     }
                 ]
             },
-            center: [defaultCenter.lng, defaultCenter.lat],
-            zoom: 14
+            center: [defaultCenter.lng + MAP_VIEW_LNG_OFFSET, defaultCenter.lat],
+            zoom: 16
         });
 
         new maplibregl.Marker().setLngLat([defaultCenter.lng, defaultCenter.lat]).addTo(map);
