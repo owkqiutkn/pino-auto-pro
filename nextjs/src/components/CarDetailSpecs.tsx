@@ -5,12 +5,25 @@ import { getLocalizedCategoryName } from "@/lib/i18n/categories";
 import { getLocalizedEngineName } from "@/lib/i18n/engines";
 import { getLocalizedFuelName } from "@/lib/i18n/fuels";
 import { getLocalizedTransmissionName } from "@/lib/i18n/transmissions";
+import { getLocalizedExteriorColorName } from "@/lib/i18n/colors";
 
 type Car = Database["public"]["Tables"]["cars"]["Row"];
 type Category = Database["public"]["Tables"]["categories"]["Row"];
 type Engine = Database["public"]["Tables"]["engines"]["Row"];
 type Fuel = Database["public"]["Tables"]["fuels"]["Row"];
 type Transmission = Database["public"]["Tables"]["transmissions"]["Row"];
+type ExteriorColor = Database["public"]["Tables"]["exterior_colors"]["Row"];
+
+function findColorRow(colors: ExteriorColor[], stored: string | null | undefined): ExteriorColor | undefined {
+    if (!stored) return undefined;
+    return colors.find(
+        (c) =>
+            (c.name_en ?? c.name) === stored ||
+            c.name_es === stored ||
+            c.name_fr === stored ||
+            c.name === stored
+    );
+}
 
 interface CarDetailSpecsProps {
     car: Car;
@@ -18,6 +31,7 @@ interface CarDetailSpecsProps {
     engines: Engine[];
     fuels: Fuel[];
     transmissions: Transmission[];
+    exteriorColors: ExteriorColor[];
 }
 
 function SpecItem({ label, value }: { label: string; value: string }) {
@@ -35,6 +49,7 @@ export default async function CarDetailSpecs({
     engines,
     fuels,
     transmissions,
+    exteriorColors,
 }: CarDetailSpecsProps) {
     const t = await getTranslations("Inventory.carDetail");
     const locale = await getLocale();
@@ -48,11 +63,20 @@ export default async function CarDetailSpecs({
     const transmissionRow = transmissions.find((tr) => (tr.name_en ?? tr.name) === car.transmission || tr.name_es === car.transmission || tr.name_fr === car.transmission || tr.name === car.transmission);
     const transmissionDisplay = transmissionRow ? getLocalizedTransmissionName(transmissionRow, locale) : car.transmission;
 
+    const exteriorColorRow = findColorRow(exteriorColors, car.exterior_color);
+    const exteriorColorDisplay = exteriorColorRow
+        ? getLocalizedExteriorColorName(exteriorColorRow, locale)
+        : car.exterior_color ?? t("na");
+    const interiorColorRow = findColorRow(exteriorColors, car.interior_color);
+    const interiorColorDisplay = interiorColorRow
+        ? getLocalizedExteriorColorName(interiorColorRow, locale)
+        : car.interior_color ?? t("na");
+
     const specs = [
         { id: "drive", label: t("drive"), value: categoryDisplay ?? car.category ?? t("na") },
         { id: "mileage", label: t("mileage"), value: `${car.km.toLocaleString()} km` },
-        { id: "exteriorColor", label: t("exteriorColor"), value: car.exterior_color ?? t("na") },
-        { id: "interiorColor", label: t("interiorColor"), value: t("na") },
+        { id: "exteriorColor", label: t("exteriorColor"), value: exteriorColorDisplay },
+        { id: "interiorColor", label: t("interiorColor"), value: interiorColorDisplay },
         { id: "transmission", label: t("transmission"), value: transmissionDisplay ?? t("na") },
         { id: "fuelType", label: t("fuelType"), value: fuelDisplay ?? t("na") },
         { id: "engine", label: t("engine"), value: engineDisplay ?? t("na") },

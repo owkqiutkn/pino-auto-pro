@@ -369,6 +369,8 @@
       "anyYear": "Toute année",
       "exteriorColor": "Couleur extérieure",
       "anyExteriorColor": "Toutes",
+      "interiorColor": "Couleur intérieure",
+      "anyInteriorColor": "Toutes",
       "transmission": "Transmission",
       "anyTransmission": "Toutes",
       "engine": "Moteur",

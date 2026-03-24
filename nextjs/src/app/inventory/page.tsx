@@ -43,6 +43,7 @@ interface InventoryPageProps {
         model?: string;
         trim?: string;
         exteriorColor?: string;
+        interiorColor?: string;
         transmission?: string;
         engine?: string;
         fuel?: string;
@@ -106,6 +107,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
     const model = params.model?.trim() || undefined;
     const trim = params.trim?.trim() || undefined;
     const exteriorColor = params.exteriorColor?.trim() || undefined;
+    const interiorColor = params.interiorColor?.trim() || undefined;
     const transmission = params.transmission?.trim() || undefined;
     const engine = params.engine?.trim() || undefined;
     const fuel = params.fuel?.trim() || undefined;
@@ -137,6 +139,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
             model,
             trim,
             exteriorColor,
+            interiorColor,
             transmission,
             engine,
             fuel,
@@ -259,6 +262,7 @@ export default async function InventoryPage({ searchParams }: InventoryPageProps
                             model,
                             trim,
                             exteriorColor,
+                            interiorColor,
                             transmission,
                             engine,
                             fuel,

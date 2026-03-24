@@ -36,6 +36,7 @@ interface InventoryFiltersProps {
         model?: string;
         trim?: string;
         exteriorColor?: string;
+        interiorColor?: string;
         transmission?: string;
         engine?: string;
         fuel?: string;
@@ -323,6 +324,25 @@ export default function InventoryFilters({
                         <option value="">{t("anyExteriorColor")}</option>
                         {exteriorColors.map((color) => (
                             <option key={color.id} value={color.name_en ?? color.name}>
+                                {getLocalizedExteriorColorName(color as never, locale)}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div>
+                    <label className="mb-1.5 block text-[11px] font-bold uppercase text-gray-700">
+                        {t("interiorColor")}
+                    </label>
+                    <select
+                        name="interiorColor"
+                        value={filters.interiorColor ?? ""}
+                        onChange={handleSelectChange("interiorColor")}
+                        className={selectClass}
+                    >
+                        <option value="">{t("anyInteriorColor")}</option>
+                        {exteriorColors.map((color) => (
+                            <option key={`int-${color.id}`} value={color.name_en ?? color.name}>
                                 {getLocalizedExteriorColorName(color as never, locale)}
                             </option>
                         ))}

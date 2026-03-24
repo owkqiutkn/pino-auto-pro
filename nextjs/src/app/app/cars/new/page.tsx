@@ -79,6 +79,7 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
     const [fuels, setFuels] = useState<Fuel[]>([]);
     const [transmissions, setTransmissions] = useState<Transmission[]>([]);
     const [exteriorColor, setExteriorColor] = useState("");
+    const [interiorColor, setInteriorColor] = useState("");
     const [engine, setEngine] = useState("");
     const [fuel, setFuel] = useState("");
     const [transmission, setTransmission] = useState("");
@@ -286,6 +287,7 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                     trim: trim || null,
                     category: category || null,
                     exterior_color: exteriorColor || null,
+                    interior_color: interiorColor || null,
                     engine: engine || null,
                     fuel: fuel || null,
                     transmission: transmission || null,
@@ -427,7 +429,7 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                     </select>
                     </div>
                 </div>
-                <div className="grid sm:grid-cols-4 gap-3">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
                     <div>
                         <label htmlFor="exteriorColor" className="block text-sm font-medium text-gray-700 mb-1">Exterior color</label>
                         <select
@@ -439,6 +441,22 @@ export default function NewCarPage({ searchParams }: NewCarPageProps) {
                         <option value="">Exterior color (optional)</option>
                         {exteriorColors.map((item) => (
                             <option key={item.id} value={item.name_en ?? item.name}>
+                                {getLocalizedExteriorColorName(item as never, locale)}
+                            </option>
+                        ))}
+                    </select>
+                    </div>
+                    <div>
+                        <label htmlFor="interiorColor" className="block text-sm font-medium text-gray-700 mb-1">Interior color</label>
+                        <select
+                            id="interiorColor"
+                            value={interiorColor}
+                            onChange={(e) => setInteriorColor(e.target.value)}
+                            className="w-full border rounded-md px-3 py-2"
+                        >
+                        <option value="">Interior color (optional)</option>
+                        {exteriorColors.map((item) => (
+                            <option key={`int-${item.id}`} value={item.name_en ?? item.name}>
                                 {getLocalizedExteriorColorName(item as never, locale)}
                             </option>
                         ))}

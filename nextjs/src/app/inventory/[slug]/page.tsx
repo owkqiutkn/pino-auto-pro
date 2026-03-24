@@ -5,6 +5,7 @@ import { createSSRSassClient } from "@/lib/supabase/server";
 import {
     getCachedCategories,
     getCachedEngines,
+    getCachedExteriorColors,
     getCachedFuels,
     getCachedModelTrims,
     getCachedTransmissions,
@@ -89,7 +90,7 @@ export async function generateMetadata({ params }: CarPageProps): Promise<Metada
 export default async function CarDetailPage({ params }: CarPageProps) {
     const { slug } = await params;
 
-    const [carResult, categories, enginesData, fuelsData, transmissionsData, modelTrimsData, siteSettings] =
+    const [carResult, categories, enginesData, fuelsData, transmissionsData, modelTrimsData, exteriorColorsData, siteSettings] =
         await Promise.all([
             getAvailableCarWithImages(slug),
             getCachedCategories(),
@@ -97,6 +98,7 @@ export default async function CarDetailPage({ params }: CarPageProps) {
             getCachedFuels(),
             getCachedTransmissions(),
             getCachedModelTrims(),
+            getCachedExteriorColors(),
             getCachedSiteSettings(),
         ]);
 
@@ -289,6 +291,9 @@ export default async function CarDetailPage({ params }: CarPageProps) {
                             engines={enginesData as Database["public"]["Tables"]["engines"]["Row"][]}
                             fuels={fuelsData as Database["public"]["Tables"]["fuels"]["Row"][]}
                             transmissions={transmissionsData as Database["public"]["Tables"]["transmissions"]["Row"][]}
+                            exteriorColors={
+                                (exteriorColorsData ?? []) as Database["public"]["Tables"]["exterior_colors"]["Row"][]
+                            }
                         />
 
                         {/* Car Description */}

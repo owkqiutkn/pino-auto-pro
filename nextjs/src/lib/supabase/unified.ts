@@ -93,6 +93,7 @@ export class SassClient {
         model?: string;
         trim?: string;
         exteriorColor?: string;
+        interiorColor?: string;
         transmission?: string;
         engine?: string;
         fuel?: string;
@@ -124,6 +125,9 @@ export class SassClient {
         }
         if (filters?.exteriorColor) {
             query = query.eq('exterior_color', filters.exteriorColor);
+        }
+        if (filters?.interiorColor) {
+            query = query.eq('interior_color', filters.interiorColor);
         }
         if (filters?.transmission) {
             query = query.eq('transmission', filters.transmission);

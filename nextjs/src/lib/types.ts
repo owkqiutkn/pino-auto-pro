@@ -310,6 +310,7 @@ export type Database = {
           cargurus_url: string | null
           category: string | null
           exterior_color: string | null
+          interior_color: string | null
           engine: string | null
           fuel: string | null
           created_at: string
@@ -339,6 +340,7 @@ export type Database = {
           cargurus_url?: string | null
           category?: string | null
           exterior_color?: string | null
+          interior_color?: string | null
           engine?: string | null
           fuel?: string | null
           created_at?: string
@@ -368,6 +370,7 @@ export type Database = {
           cargurus_url?: string | null
           category?: string | null
           exterior_color?: string | null
+          interior_color?: string | null
           engine?: string | null
           fuel?: string | null
           created_at?: string
