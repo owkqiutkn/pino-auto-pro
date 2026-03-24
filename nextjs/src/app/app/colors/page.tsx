@@ -23,11 +23,11 @@ function getErrorMessage(error: unknown, fallback: string) {
   return fallback;
 }
 
-type ExteriorColorsPageProps = {
+type ColorsPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export default function ExteriorColorsPage({ searchParams }: ExteriorColorsPageProps) {
+export default function ColorsPage({ searchParams }: ColorsPageProps) {
   use(searchParams ?? Promise.resolve({})); // Unwrap to satisfy Next.js 15 async dynamic APIs
   const t = useTranslations("App.ExteriorColors");
   const [colors, setColors] = useState<ExteriorColor[]>([]);
@@ -243,4 +243,3 @@ export default function ExteriorColorsPage({ searchParams }: ExteriorColorsPageP
     </div>
   );
 }
-

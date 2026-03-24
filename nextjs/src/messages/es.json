@@ -516,12 +516,12 @@
       "deleteConfirm": "¿Eliminar esta transmisión?"
     },
     "ExteriorColors": {
-      "title": "Colores exteriores",
+      "title": "Colores",
       "nameEnLabel": "Nombre (inglés)",
       "nameFrLabel": "Nombre (francés)",
-      "nameEnPlaceholder": "Color exterior en inglés",
-      "nameEsPlaceholder": "Color exterior en español",
-      "nameFrPlaceholder": "Color exterior en francés",
+      "nameEnPlaceholder": "Color en inglés",
+      "nameEsPlaceholder": "Color en español",
+      "nameFrPlaceholder": "Color en francés",
       "add": "Añadir",
       "save": "Guardar",
       "tableNameEn": "Nombre (EN)",
